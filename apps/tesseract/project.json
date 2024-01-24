@@ -1,0 +1,94 @@
+{
+  "name": "tesseract",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/tesseract/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/tesseract",
+        "format": [
+          "cjs"
+        ],
+        "bundle": false,
+        "main": "apps/tesseract/src/main.ts",
+        "tsConfig": "apps/tesseract/tsconfig.app.json",
+        "assets": [
+          "apps/tesseract/src/assets"
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "tesseract:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "tesseract:build:development"
+        },
+        "production": {
+          "buildTarget": "tesseract:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-rm",
+        "docker-build"
+      ],
+      "options": {}
+    },
+    "docker-rm": {
+      "command": "docker image rm philiplehmann/tesseract:latest && exit 0"
+    },
+    "docker-build": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --cache-to type=local,dest=.docker/tesseract,mode=max --cache-from type=local,src=.docker/tesseract --tag philiplehmann/tesseract:latest ."
+    },
+    "docker-push": {
+      "dependsOn": [
+        "docker-build"
+      ],
+      "command": "docker image push philiplehmann/tesseract:latest; docker buildx imagetools create philiplehmann/tesseract:latest --tag philiplehmann/tesseract:22.12.0"
+    }
+  },
+  "tags": []
+}

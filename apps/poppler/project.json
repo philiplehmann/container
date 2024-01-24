@@ -1,0 +1,95 @@
+{
+  "name": "poppler",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/poppler/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/poppler",
+        "format": [
+          "cjs"
+        ],
+        "bundle": false,
+        "main": "apps/poppler/src/main.ts",
+        "tsConfig": "apps/poppler/tsconfig.app.json",
+        "assets": [
+          "apps/poppler/src/assets"
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "poppler:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "poppler:build:development"
+        },
+        "production": {
+          "buildTarget": "poppler:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-rm",
+        "docker-build"
+      ],
+      "options": {}
+    },
+    "docker-rm": {
+      "command": "docker image rm philiplehmann/poppler-server:latest && exit 0"
+    },
+    "docker-build": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "docker buildx build -f apps/poppler/Dockerfile --load --cache-to type=local,dest=.docker/poppler-server,mode=max --cache-from type=local,src=.docker/poppler-server --tag philiplehmann/poppler-server:latest ."
+    },
+    "docker-push": {
+      "dependsOn": [
+        "docker-build"
+      ],
+      "command": "docker image push philiplehmann/poppler-server:latest; docker buildx imagetools create philiplehmann/poppler-server:latest --tag philiplehmann/poppler-server:22.12.0"
+    }
+  },
+  "tags": []
+}

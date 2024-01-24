@@ -1,0 +1,94 @@
+{
+  "name": "unoserver",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/unoserver/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/unoserver",
+        "format": [
+          "cjs"
+        ],
+        "bundle": false,
+        "main": "apps/unoserver/src/main.ts",
+        "tsConfig": "apps/unoserver/tsconfig.app.json",
+        "assets": [
+          "apps/unoserver/src/assets"
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "unoserver:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "unoserver:build:development"
+        },
+        "production": {
+          "buildTarget": "unoserver:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-rm",
+        "docker-build"
+      ],
+      "options": {}
+    },
+    "docker-rm": {
+      "command": "docker image rm philiplehmann/unoserver:latest && exit 0"
+    },
+    "docker-build": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --cache-to type=local,dest=.docker/unoserver,mode=max --cache-from type=local,src=.docker/unoserver --tag philiplehmann/unoserver:latest ."
+    },
+    "docker-push": {
+      "dependsOn": [
+        "docker-build"
+      ],
+      "command": "docker image push philiplehmann/unoserver:latest; docker buildx imagetools create philiplehmann/unoserver:latest --tag philiplehmann/unoserver:2.0.1"
+    }
+  },
+  "tags": []
+}
