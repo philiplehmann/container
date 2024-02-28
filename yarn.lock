@@ -1538,7 +1538,7 @@ __metadata:
     "@nx/workspace": "npm:18.0.5"
     "@swc-node/register": "npm:1.8.0"
     "@swc/core": "npm:~1.4.2"
-    "@swc/helpers": "npm:~0.5.2"
+    "@swc/helpers": "npm:~0.5.6"
     "@types/node": "npm:20.11.21"
     "@typescript-eslint/eslint-plugin": "npm:7.1.0"
     "@typescript-eslint/parser": "npm:7.1.0"
@@ -2949,7 +2949,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/helpers@npm:~0.5.2":
+"@swc/helpers@npm:~0.5.6":
   version: 0.5.6
   resolution: "@swc/helpers@npm:0.5.6"
   dependencies:
