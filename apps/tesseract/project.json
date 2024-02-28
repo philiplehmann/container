@@ -75,7 +75,7 @@
       "options": {}
     },
     "docker-rm": {
-      "command": "docker image rm philiplehmann/tesseract:latest && exit 0"
+      "command": "docker image rm philiplehmann/tesseract:latest || exit 0"
     },
     "docker-build": {
       "dependsOn": [

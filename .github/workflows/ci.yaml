@@ -1,0 +1,79 @@
+name: test, build & deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.1
+          cache: yarn
+
+      - name: corepack enable
+        shell: bash
+        run: corepack enable
+
+      - name: install dependencies
+        shell: bash
+        run: yarn install
+
+      - name: lint
+        run: yarn nx run-many --target lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.1
+          cache: yarn
+
+      - name: Set up Docker Context for Buildx
+        shell: bash
+        run: |
+          docker context create container-builder
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          version: latest
+          install: true
+          endpoint: container-builder
+
+      - name: corepack enable
+        shell: bash
+        run: corepack enable
+
+      - name: install dependencies
+        shell: bash
+        run: yarn install
+
+      - name: Cache Docker Layers
+        uses: actions/cache@v4
+        with:
+          path: .docker
+          key: ${{ runner.os }}-docker-layers
+
+      - name: test
+        run: yarn nx run-many --target test
