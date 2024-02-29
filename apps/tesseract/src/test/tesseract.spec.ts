@@ -1,6 +1,7 @@
 import { GenericContainer, StartedTestContainer } from "testcontainers";
 import { resolve } from "node:path";
 import { testRequest } from "@container/test/request";
+import { describe, beforeAll, afterAll, it, expect } from "vitest";
 
 const containerPort = 5000;
 

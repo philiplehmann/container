@@ -1,6 +1,7 @@
 import { GenericContainer, StartedTestContainer, Wait } from "testcontainers";
 import { resolve } from "node:path";
 import { testRequest } from "@container/test/request";
+import { describe, beforeAll, afterAll, it, expect } from "vitest";
 
 const containerPort = 5000;
 
@@ -18,7 +19,7 @@ describe("unoserver", () => {
 			.start();
 
 		// aditional time to start the server
-		await new Promise((resolve) => setTimeout(resolve, 1_000));
+		await new Promise((resolve) => setTimeout(resolve, 10_000));
 
 		port = container.getMappedPort(containerPort);
 	});
