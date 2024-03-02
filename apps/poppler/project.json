@@ -70,25 +70,36 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm",
-        "docker-build"
+        "docker-rm-arm",
+        "docker-rm-amd",
+        "docker-test-arm",
+        "docker-test-amd"
       ],
       "options": {}
     },
-    "docker-rm": {
-      "command": "docker image rm philiplehmann/poppler-server:latest || exit 0"
+    "docker-rm-arm": {
+      "command": "docker image rm philiplehmann/poppler-server:test-arm || exit 0"
     },
-    "docker-build": {
+    "docker-rm-amd": {
+      "command": "docker image rm philiplehmann/poppler-server:test-amd || exit 0"
+    },
+    "docker-test-arm": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --load --cache-to type=local,dest=.docker/poppler-server,mode=max --cache-from type=local,src=.docker/poppler-server --tag philiplehmann/poppler-server:latest ."
+      "command": "docker buildx build -f apps/poppler-server/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/poppler-server-arm,mode=max --cache-from type=local,src=.docker/poppler-server-arm --tag philiplehmann/poppler-server:test-arm ."
+    },
+    "docker-test-amd": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "docker buildx build -f apps/poppler-server/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/poppler-server-amd,mode=max --cache-from type=local,src=.docker/poppler-server-amd --tag philiplehmann/poppler-server:test-amd ."
     },
     "docker-push": {
       "dependsOn": [
-        "docker-build"
+        "build"
       ],
-      "command": "docker image push philiplehmann/poppler-server:latest; docker buildx imagetools create philiplehmann/poppler-server:latest --tag philiplehmann/poppler-server:22.12.0"
+      "command": "docker buildx build -f apps/poppler-server/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/poppler-server,mode=max --cache-from type=local,src=.docker/poppler-server --tag philiplehmann/poppler-server:latest --tag philiplehmann/poppler-server:22.12.0 ."
     }
   },
   "tags": []

@@ -69,25 +69,36 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm",
-        "docker-build"
+        "docker-rm-arm",
+        "docker-rm-amd",
+        "docker-test-arm",
+        "docker-test-amd"
       ],
       "options": {}
     },
-    "docker-rm": {
-      "command": "docker image rm philiplehmann/unoserver:latest || exit 0"
+    "docker-rm-arm": {
+      "command": "docker image rm philiplehmann/unoserver:test-arm || exit 0"
     },
-    "docker-build": {
+    "docker-rm-amd": {
+      "command": "docker image rm philiplehmann/unoserver:test-amd || exit 0"
+    },
+    "docker-test-arm": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --cache-to type=local,dest=.docker/unoserver,mode=max --cache-from type=local,src=.docker/unoserver --tag philiplehmann/unoserver:latest ."
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/unoserver-arm,mode=max --cache-from type=local,src=.docker/unoserver-arm --tag philiplehmann/unoserver:test-arm ."
+    },
+    "docker-test-amd": {
+      "dependsOn": [
+        "build"
+      ],
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/unoserver-amd,mode=max --cache-from type=local,src=.docker/unoserver-amd --tag philiplehmann/unoserver:test-amd ."
     },
     "docker-push": {
       "dependsOn": [
-        "docker-build"
+        "build"
       ],
-      "command": "docker image push philiplehmann/unoserver:latest; docker buildx imagetools create philiplehmann/unoserver:latest --tag philiplehmann/unoserver:2.0.1"
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/unoserver,mode=max --cache-from type=local,src=.docker/unoserver --tag philiplehmann/unoserver:latest --tag philiplehmann/unoserver:2.0.1 ."
     }
   },
   "tags": []

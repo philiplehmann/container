@@ -9,7 +9,7 @@ FROM node:lts-bookworm
 WORKDIR /app
 
 RUN apt-get update; \
-    apt-get install --no-install-recommends python3-full python3-pip virtualenv unoconv libreoffice-java-common libreoffice-writer default-jre -y; \
+    apt-get install --no-install-recommends --yes python3-full python3-pip virtualenv unoconv libreoffice-java-common libreoffice-writer default-jre; \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv; \
     virtenv/bin/pip install unoserver==2.0.1; \
     apt-get clean; \
