@@ -3,7 +3,7 @@
 ## Run Image
 
 ```
-docker run -p 5000:5000 --name poppler philiplehmann/poppler:latest
+docker run -p 3000:3000 --name poppler philiplehmann/poppler-server:latest
 ```
 
 ## Convert pdf to text
@@ -12,7 +12,7 @@ docker run -p 5000:5000 --name poppler philiplehmann/poppler:latest
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/document.pdf" \
-  'http://localhost:5000/pdf-to-text'
+  'http://localhost:3000/pdf-to-text'
 ```
 
 ## Convert pdf to html
@@ -21,9 +21,9 @@ curl -X POST \
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/document.pdf" \
-  'http://localhost:5000/pdf-to-html'
+  'http://localhost:3000/pdf-to-html'
 ```
 
 ## Ports
 
-- HTTP 5000
+- HTTP 3000

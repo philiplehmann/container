@@ -1,0 +1,38 @@
+name: Docker Setup
+description: install buildx, qemu and docker login
+inputs:
+  docker-username:
+    description: 'docker username'
+    required: false
+    default: ''
+  docker-password:
+    description: 'docker password'
+    required: false
+    default: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: arm64
+        image: tonistiigi/binfmt:qemu-v8.1.5
+
+    - name: Set up Docker Context for Buildx
+      shell: bash
+      run: |
+        docker context create container-builder
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        version: latest
+        install: true
+        endpoint: container-builder
+
+    - name: Login to dockerhub
+      uses: docker/login-action@v3
+      if: ${{ inputs.docker-username != '' && inputs.docker-password != '' }}
+      with:
+        username: ${{ inputs.docker-username }}
+        password: ${{ inputs.docker-password }}
