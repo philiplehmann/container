@@ -36,6 +36,11 @@ jobs:
         shell: bash
         run: yarn install
 
+      - name: setup nx shas
+        uses: nrwl/nx-set-shas@v3
+      - name: git add main
+        run: git branch --track main origin/main
+
       - name: lint
         run: yarn nx affected --target lint
 
@@ -78,6 +83,11 @@ jobs:
         with:
           path: .docker
           key: ${{ runner.os }}-docker-layers
+
+      - name: setup nx shas
+        uses: nrwl/nx-set-shas@v3
+      - name: git add main
+        run: git branch --track main origin/main
 
       - name: test
         run: yarn nx affected --target test
