@@ -133,4 +133,4 @@ jobs:
           key: ${{ runner.os }}-docker-layers
 
       - name: Build & Push Docker Image
-        run: yarn nx affected --target docker-push
+        run: yarn nx run-many --target docker-push
