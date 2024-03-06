@@ -16,7 +16,7 @@ describe("tesseract", () => {
 
 			beforeAll(async () => {
 				container = await new GenericContainer(
-					`philiplehmann/tesseract:test${arch}`,
+					`philiplehmann/tesseract:test-${arch}`,
 				)
 					.withEnvironment({ PORT: String(containerPort) })
 					.withExposedPorts(containerPort)
