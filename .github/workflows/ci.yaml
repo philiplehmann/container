@@ -38,8 +38,6 @@ jobs:
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v3
-      - name: git add main
-        run: git branch --track main origin/main
 
       - name: lint
         run: yarn nx affected --target lint
@@ -86,8 +84,6 @@ jobs:
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v3
-      - name: git add main
-        run: git branch --track main origin/main
 
       - name: test
         run: yarn nx affected --target test
