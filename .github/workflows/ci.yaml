@@ -78,7 +78,7 @@ jobs:
         uses: nrwl/nx-set-shas@v4
 
       - name: test
-        run: yarn nx affected --target test --parallel 1
+        run: yarn nx affected --target test
 
   build:
     runs-on: ubuntu-latest
