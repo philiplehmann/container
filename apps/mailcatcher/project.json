@@ -1,0 +1,43 @@
+{
+  "name": "mailcatcher",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mailcatcher/src",
+  "projectType": "application",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-rm-arm",
+        "docker-rm-amd",
+        "docker-test-arm",
+        "docker-test-amd"
+      ],
+      "options": {}
+    },
+    "docker-rm-arm": {
+      "command": "docker image rm philiplehmann/mailcatcher:test-arm || exit 0"
+    },
+    "docker-rm-amd": {
+      "command": "docker image rm philiplehmann/mailcatcher:test-amd || exit 0"
+    },
+    "docker-test-arm": {
+      "command": "docker buildx build -f apps/mailcatcher/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/mailcatcher-arm,mode=max --cache-from type=local,src=.docker/mailcatcher-arm --tag philiplehmann/mailcatcher:test-arm ."
+    },
+    "docker-test-amd": {
+      "command": "docker buildx build -f apps/mailcatcher/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/mailcatcher-amd,mode=max --cache-from type=local,src=.docker/mailcatcher-amd --tag philiplehmann/mailcatcher:test-amd ."
+    },
+    "docker-push": {
+      "command": "docker buildx build -f apps/mailcatcher/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/mailcatcher,mode=max --cache-from type=local,src=.docker/mailcatcher --tag philiplehmann/mailcatcher:latest --tag philiplehmann/mailcatcher:0.9.0 ."
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,43 @@
+{
+  "name": "mailhog",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/mailhog/src",
+  "projectType": "application",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-rm-arm",
+        "docker-rm-amd",
+        "docker-test-arm",
+        "docker-test-amd"
+      ],
+      "options": {}
+    },
+    "docker-rm-arm": {
+      "command": "docker image rm philiplehmann/mailhog:test-arm || exit 0"
+    },
+    "docker-rm-amd": {
+      "command": "docker image rm philiplehmann/mailhog:test-amd || exit 0"
+    },
+    "docker-test-arm": {
+      "command": "docker buildx build -f apps/mailhog/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/mailhog-arm,mode=max --cache-from type=local,src=.docker/mailhog-arm --tag philiplehmann/mailhog:test-arm ."
+    },
+    "docker-test-amd": {
+      "command": "docker buildx build -f apps/mailhog/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/mailhog-amd,mode=max --cache-from type=local,src=.docker/mailhog-amd --tag philiplehmann/mailhog:test-amd ."
+    },
+    "docker-push": {
+      "command": "docker buildx build -f apps/mailhog/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/mailhog,mode=max --cache-from type=local,src=.docker/mailhog --tag philiplehmann/mailhog:latest --tag philiplehmann/mailhog:v1.0.1 ."
+    }
+  },
+  "tags": []
+}

@@ -6,9 +6,8 @@ export const testRequest = async ({
 	file,
 	...requestParams
 }: RequestOptions & {
-	file: string;
+	file?: string;
 }): Promise<[IncomingMessage, string]> => {
-	const readStream = createReadStream(file);
 	return new Promise((resolve, reject) => {
 		const req = request(requestParams, async (response) => {
 			try {
@@ -18,6 +17,10 @@ export const testRequest = async ({
 				reject(e);
 			}
 		});
-		readStream.pipe(req, { end: true });
+		if (file) {
+			createReadStream(file).pipe(req, { end: true });
+		} else {
+			req.end();
+		}
 	});
 };

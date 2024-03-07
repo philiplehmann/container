@@ -7,7 +7,7 @@
 FROM node:lts-bookworm-slim
 
 RUN apt-get update; \
-    apt-get install --no-install-recommends poppler-utils=22.12.0-2+b1 -y;
+    apt-get install --no-install-recommends --yes poppler-utils=22.12.0-2+b1;
 
 WORKDIR /app
 
