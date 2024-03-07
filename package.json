@@ -26,6 +26,7 @@
     "jsdom": "^24.0.0",
     "nodemailer": "^6.9.11",
     "nx": "18.0.7",
+    "nx-remotecache-minio": "^18.0.0",
     "prettier": "^3.2.5",
     "testcontainers": "^10.7.2",
     "ts-node": "10.9.2",

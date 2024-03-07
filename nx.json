@@ -72,7 +72,6 @@
     ],
     "sharedGlobals": []
   },
-  "nxCloudAccessToken": "ZDYyMDY3NTUtMmM2NS00OGY3LTgzZDEtMDZmNWI3ZGFjZmJlfHJlYWQtd3JpdGU=",
   "plugins": [
     {
       "plugin": "@nx/eslint/plugin",
@@ -80,5 +79,20 @@
         "targetName": "lint"
       }
     }
-  ]
+  ],
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx-remotecache-minio",
+      "options": {
+        "url": "https://storage.riwi.dev",
+        "bucket": "nx-cache",
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "e2e"
+        ]
+      }
+    }
+  }
 }

@@ -45,3 +45,6 @@ Thumbs.db
 
 # docker cache
 .docker
+
+# .env file
+.env.local
