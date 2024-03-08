@@ -2,12 +2,13 @@
 # MailCatcher Dockerfile
 #
 
-FROM ruby:3.2-slim-bullseye as bundler
+FROM ruby:3.2-bullseye as bundler
 
 # Install MailCatcher:
-RUN apt-get update \
-  && apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev \
-  && gem install mailcatcher --version 0.9.0 --no-document
+RUN apt-get update; \
+    apt-get upgrade --yes; \
+    apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev; \
+    gem install mailcatcher --version 0.9.0 --no-document
 
 FROM ruby:3.2-slim-bullseye as runner
 
