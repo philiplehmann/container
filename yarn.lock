@@ -1470,7 +1470,7 @@ __metadata:
     eslint: "npm:8.57.0"
     eslint-config-prettier: "npm:9.1.0"
     jsdom: "npm:^24.0.0"
-    nodemailer: "npm:6.9.11"
+    nodemailer: "npm:6.9.12"
     nx: "npm:18.0.7"
     nx-remotecache-minio: "npm:18.0.0"
     prettier: "npm:3.2.5"
@@ -7673,10 +7673,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:6.9.11":
-  version: 6.9.11
-  resolution: "nodemailer@npm:6.9.11"
-  checksum: 10c0/ca45d4676758dc9878c3aff19cbfd97921d9d4a34b306e8088c1ada96fe60badf14bdb1b4c70abe5ea3393d281ee12b0d5b75e474e21e8dfb5974f2dc4710db1
+"nodemailer@npm:6.9.12":
+  version: 6.9.12
+  resolution: "nodemailer@npm:6.9.12"
+  checksum: 10c0/2c5ff1f064a264e008ca27f66db0dbf25c44bc38178e5ddb9a05bd7b5517bfa3c0e018845b87256df56b554ed6c3720380f3735e9029cf9f7c830e9fdab4189a
   languageName: node
   linkType: hard
 
