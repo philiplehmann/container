@@ -82,7 +82,7 @@
           "arm"
         ],
         "tag": "philiplehmann/poppler-server:test",
-        "file": "apps/poppler-server/Dockerfile"
+        "file": "apps/poppler/Dockerfile"
       }
     },
     "docker-push": {
@@ -96,14 +96,14 @@
           "philiplehmann/poppler-server:latest",
           "philiplehmann/poppler-server:22.12.0"
         ],
-        "file": "apps/poppler-server/Dockerfile"
+        "file": "apps/poppler/Dockerfile"
       }
     },
     "docker-run": {
       "executor": "@container/executors:docker-run",
       "options": {
         "image": "philiplehmann/poppler-server:run",
-        "file": "apps/poppler-server/Dockerfile",
+        "file": "apps/poppler/Dockerfile",
         "port": [
           "3000"
         ]
