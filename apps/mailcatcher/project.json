@@ -16,27 +16,45 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm-arm",
-        "docker-rm-amd",
-        "docker-test-arm",
-        "docker-test-amd"
+        "docker-test"
       ],
       "options": {}
     },
-    "docker-rm-arm": {
-      "command": "docker image rm philiplehmann/mailcatcher:test-arm || exit 0"
-    },
-    "docker-rm-amd": {
-      "command": "docker image rm philiplehmann/mailcatcher:test-amd || exit 0"
-    },
-    "docker-test-arm": {
-      "command": "docker buildx build -f apps/mailcatcher/Dockerfile --load --platform linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/mailcatcher:test-arm ."
-    },
-    "docker-test-amd": {
-      "command": "docker buildx build -f apps/mailcatcher/Dockerfile --load --platform linux/amd64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/mailcatcher:test-amd ."
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/mailcatcher:test",
+        "file": "apps/mailcatcher/Dockerfile"
+      }
     },
     "docker-push": {
-      "command": "docker buildx build -f apps/mailcatcher/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/mailcatcher:latest --tag philiplehmann/mailcatcher:0.9.0 ."
+      "executor": "@container/executors:docker-build",
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/mailcatcher:latest",
+          "philiplehmann/mailcatcher:0.9.0"
+        ],
+        "file": "apps/mailcatcher/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "options": {
+        "image": "philiplehmann/mailcatcher:run",
+        "file": "apps/mailcatcher/Dockerfile",
+        "port": [
+          "1025",
+          "1080"
+        ]
+      }
     }
   },
   "tags": []

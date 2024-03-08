@@ -16,27 +16,45 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm-arm",
-        "docker-rm-amd",
-        "docker-test-arm",
-        "docker-test-amd"
+        "docker-test"
       ],
       "options": {}
     },
-    "docker-rm-arm": {
-      "command": "docker image rm philiplehmann/mailhog:test-arm || exit 0"
-    },
-    "docker-rm-amd": {
-      "command": "docker image rm philiplehmann/mailhog:test-amd || exit 0"
-    },
-    "docker-test-arm": {
-      "command": "docker buildx build -f apps/mailhog/Dockerfile --load --platform linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/mailhog:test-arm ."
-    },
-    "docker-test-amd": {
-      "command": "docker buildx build -f apps/mailhog/Dockerfile --load --platform linux/amd64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/mailhog:test-amd ."
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/mailhog:test",
+        "file": "apps/mailhog/Dockerfile"
+      }
     },
     "docker-push": {
-      "command": "docker buildx build -f apps/mailhog/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/mailhog:latest --tag philiplehmann/mailhog:v1.0.1 ."
+      "executor": "@container/executors:docker-build",
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/mailhog:latest",
+          "philiplehmann/mailhog:v1.0.1"
+        ],
+        "file": "apps/mailhog/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "options": {
+        "image": "philiplehmann/mailhog:run",
+        "file": "apps/mailhog/Dockerfile",
+        "port": [
+          "1025",
+          "8025"
+        ]
+      }
     }
   },
   "tags": []
