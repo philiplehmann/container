@@ -70,12 +70,6 @@ jobs:
         shell: bash
         run: yarn install
 
-      - name: Cache Docker Layers
-        uses: actions/cache@v4
-        with:
-          path: .docker
-          key: ${{ runner.os }}-docker-layers
-
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
@@ -116,12 +110,6 @@ jobs:
       - name: install dependencies
         shell: bash
         run: yarn install
-
-      - name: Cache Docker Layers
-        uses: actions/cache@v4
-        with:
-          path: .docker
-          key: ${{ runner.os }}-docker-layers
 
       - name: Build & Push Docker Image
         run: yarn nx run-many --target docker-push
