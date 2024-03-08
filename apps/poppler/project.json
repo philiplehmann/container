@@ -87,19 +87,19 @@
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/poppler-server-arm,mode=max --cache-from type=local,src=.docker/poppler-server-arm --tag philiplehmann/poppler-server:test-arm ."
+      "command": "docker buildx build -f apps/poppler/Dockerfile --load --platform linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/poppler-server:test-arm ."
     },
     "docker-test-amd": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/poppler-server-amd,mode=max --cache-from type=local,src=.docker/poppler-server-amd --tag philiplehmann/poppler-server:test-amd ."
+      "command": "docker buildx build -f apps/poppler/Dockerfile --load --platform linux/amd64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/poppler-server:test-amd ."
     },
     "docker-push": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/poppler-server,mode=max --cache-from type=local,src=.docker/poppler-server --tag philiplehmann/poppler-server:latest --tag philiplehmann/poppler-server:22.12.0 ."
+      "command": "docker buildx build -f apps/poppler/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/poppler-server:latest --tag philiplehmann/poppler-server:22.12.0 ."
     }
   },
   "tags": []

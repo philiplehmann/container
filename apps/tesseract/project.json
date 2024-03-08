@@ -86,19 +86,19 @@
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/tesseract-arm,mode=max --cache-from type=local,src=.docker/tesseract-arm --tag philiplehmann/tesseract:test-arm ."
+      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --platform linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/tesseract:test-arm ."
     },
     "docker-test-amd": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/tesseract-amd,mode=max --cache-from type=local,src=.docker/tesseract-amd --tag philiplehmann/tesseract:test-amd ."
+      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --platform linux/amd64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/tesseract:test-amd ."
     },
     "docker-push": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/tesseract/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/tesseract,mode=max --cache-from type=local,src=.docker/tesseract --tag philiplehmann/tesseract:latest --tag philiplehmann/tesseract:5.3.0 ."
+      "command": "docker buildx build -f apps/tesseract/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/tesseract:latest --tag philiplehmann/tesseract:5.3.0 ."
     }
   },
   "tags": []

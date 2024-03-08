@@ -86,19 +86,19 @@
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/unoserver-arm,mode=max --cache-from type=local,src=.docker/unoserver-arm --tag philiplehmann/unoserver:test-arm ."
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/unoserver:test-arm ."
     },
     "docker-test-amd": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/unoserver-amd,mode=max --cache-from type=local,src=.docker/unoserver-amd --tag philiplehmann/unoserver:test-amd ."
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/amd64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/unoserver:test-amd ."
     },
     "docker-push": {
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/unoserver,mode=max --cache-from type=local,src=.docker/unoserver --tag philiplehmann/unoserver:latest --tag philiplehmann/unoserver:2.0.1 ."
+      "command": "docker buildx build -f apps/unoserver/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/unoserver:latest --tag philiplehmann/unoserver:2.0.1 ."
     }
   },
   "tags": []

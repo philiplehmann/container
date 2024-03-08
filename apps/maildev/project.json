@@ -30,13 +30,13 @@
       "command": "docker image rm philiplehmann/maildev:test-amd || exit 0"
     },
     "docker-test-arm": {
-      "command": "docker buildx build -f apps/maildev/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/maildev-arm,mode=max --cache-from type=local,src=.docker/maildev-arm --tag philiplehmann/maildev:test-arm ."
+      "command": "docker buildx build -f apps/maildev/Dockerfile --load --platform linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/maildev:test-arm ."
     },
     "docker-test-amd": {
-      "command": "docker buildx build -f apps/maildev/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/maildev-amd,mode=max --cache-from type=local,src=.docker/maildev-amd --tag philiplehmann/maildev:test-amd ."
+      "command": "docker buildx build -f apps/maildev/Dockerfile --load --platform linux/amd64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/maildev:test-amd ."
     },
     "docker-push": {
-      "command": "docker buildx build -f apps/maildev/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/maildev,mode=max --cache-from type=local,src=.docker/maildev --tag philiplehmann/maildev:latest --tag philiplehmann/maildev:v2.1.0 ."
+      "command": "docker buildx build -f apps/maildev/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=gha,mode=max --cache-from type=gha --tag philiplehmann/maildev:latest --tag philiplehmann/maildev:v2.1.0 ."
     }
   },
   "tags": []
