@@ -75,6 +75,9 @@
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "platforms": [
           "amd",
@@ -86,6 +89,9 @@
     },
     "docker-push": {
       "executor": "@container/executors:docker-build",
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "platforms": [
           "amd",
@@ -100,6 +106,9 @@
     },
     "docker-run": {
       "executor": "@container/executors:docker-run",
+      "dependsOn": [
+        "build"
+      ],
       "options": {
         "image": "philiplehmann/tesseract:run",
         "file": "apps/tesseract/Dockerfile",
