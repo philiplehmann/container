@@ -41,6 +41,9 @@ jobs:
 
       - name: lint
         run: yarn nx affected --target lint
+        env:
+          NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
+          NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
 
   test:
     runs-on: ubuntu-latest
@@ -67,17 +70,14 @@ jobs:
         shell: bash
         run: yarn install
 
-      - name: Cache Docker Layers
-        uses: actions/cache@v4
-        with:
-          path: .docker
-          key: ${{ runner.os }}-docker-layers
-
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
       - name: test
         run: yarn nx affected --target test --parallel 1
+        env:
+          NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
+          NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
 
   build:
     runs-on: ubuntu-latest
@@ -111,11 +111,8 @@ jobs:
         shell: bash
         run: yarn install
 
-      - name: Cache Docker Layers
-        uses: actions/cache@v4
-        with:
-          path: .docker
-          key: ${{ runner.os }}-docker-layers
-
       - name: Build & Push Docker Image
         run: yarn nx run-many --target docker-push
+        env:
+          NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
+          NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}

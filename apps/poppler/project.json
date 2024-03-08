@@ -70,36 +70,53 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm-arm",
-        "docker-rm-amd",
-        "docker-test-arm",
-        "docker-test-amd"
+        "docker-test"
       ],
       "options": {}
     },
-    "docker-rm-arm": {
-      "command": "docker image rm philiplehmann/poppler-server:test-arm || exit 0"
-    },
-    "docker-rm-amd": {
-      "command": "docker image rm philiplehmann/poppler-server:test-amd || exit 0"
-    },
-    "docker-test-arm": {
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/poppler-server-arm,mode=max --cache-from type=local,src=.docker/poppler-server-arm --tag philiplehmann/poppler-server:test-arm ."
-    },
-    "docker-test-amd": {
-      "dependsOn": [
-        "build"
-      ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/poppler-server-amd,mode=max --cache-from type=local,src=.docker/poppler-server-amd --tag philiplehmann/poppler-server:test-amd ."
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/poppler-server:test",
+        "file": "apps/poppler/Dockerfile"
+      }
     },
     "docker-push": {
+      "executor": "@container/executors:docker-build",
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/poppler/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/poppler-server,mode=max --cache-from type=local,src=.docker/poppler-server --tag philiplehmann/poppler-server:latest --tag philiplehmann/poppler-server:22.12.0 ."
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/poppler-server:latest",
+          "philiplehmann/poppler-server:22.12.0"
+        ],
+        "file": "apps/poppler/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "image": "philiplehmann/poppler-server:run",
+        "file": "apps/poppler/Dockerfile",
+        "port": [
+          "3000"
+        ]
+      }
     }
   },
   "tags": []

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "DockerTest executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "tag": {
+      "type": "string"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "file": {
+      "type": "string"
+    }
+  },
+  "required": []
+}

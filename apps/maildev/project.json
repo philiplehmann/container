@@ -1,0 +1,61 @@
+{
+  "name": "maildev",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/maildev/src",
+  "projectType": "application",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-test"
+      ],
+      "options": {}
+    },
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/maildev:test",
+        "file": "apps/maildev/Dockerfile"
+      }
+    },
+    "docker-push": {
+      "executor": "@container/executors:docker-build",
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/maildev:latest",
+          "philiplehmann/maildev:v2.1.0"
+        ],
+        "file": "apps/maildev/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "options": {
+        "image": "philiplehmann/maildev:run",
+        "file": "apps/maildev/Dockerfile",
+        "port": [
+          "1025",
+          "1080"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

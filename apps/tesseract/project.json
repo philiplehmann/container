@@ -69,36 +69,53 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm-arm",
-        "docker-rm-amd",
-        "docker-test-arm",
-        "docker-test-amd"
+        "docker-test"
       ],
       "options": {}
     },
-    "docker-rm-arm": {
-      "command": "docker image rm philiplehmann/tesseract:test-arm || exit 0"
-    },
-    "docker-rm-amd": {
-      "command": "docker image rm philiplehmann/tesseract:test-amd || exit 0"
-    },
-    "docker-test-arm": {
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/tesseract-arm,mode=max --cache-from type=local,src=.docker/tesseract-arm --tag philiplehmann/tesseract:test-arm ."
-    },
-    "docker-test-amd": {
-      "dependsOn": [
-        "build"
-      ],
-      "command": "docker buildx build -f apps/tesseract/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/tesseract-amd,mode=max --cache-from type=local,src=.docker/tesseract-amd --tag philiplehmann/tesseract:test-amd ."
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/tesseract:test",
+        "file": "apps/tesseract/Dockerfile"
+      }
     },
     "docker-push": {
+      "executor": "@container/executors:docker-build",
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/tesseract/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/tesseract,mode=max --cache-from type=local,src=.docker/tesseract --tag philiplehmann/tesseract:latest --tag philiplehmann/tesseract:5.3.0 ."
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/tesseract:latest",
+          "philiplehmann/tesseract:5.3.0"
+        ],
+        "file": "apps/tesseract/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "image": "philiplehmann/tesseract:run",
+        "file": "apps/tesseract/Dockerfile",
+        "port": [
+          "3000"
+        ]
+      }
     }
   },
   "tags": []

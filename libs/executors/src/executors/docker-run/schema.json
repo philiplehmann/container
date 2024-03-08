@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "DockerRun executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "image": {
+      "type": "string"
+    },
+    "file": {
+      "type": "string"
+    },
+    "port": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": []
+}

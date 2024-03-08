@@ -1,0 +1,19 @@
+{
+  "executors": {
+    "docker-run": {
+      "implementation": "./src/executors/docker-run/executor",
+      "schema": "./src/executors/docker-run/schema.json",
+      "description": "docker-run executor"
+    },
+    "docker-build": {
+      "implementation": "./src/executors/docker-build/executor",
+      "schema": "./src/executors/docker-build/schema.json",
+      "description": "docker-build executor"
+    },
+    "docker-test": {
+      "implementation": "./src/executors/docker-test/executor",
+      "schema": "./src/executors/docker-test/schema.json",
+      "description": "docker-test executor"
+    }
+  }
+}

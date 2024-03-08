@@ -10,7 +10,7 @@ ENV HOST=0.0.0.0
 ENV PORT=3000
 
 RUN apt-get update; \
-    apt-get install --no-install-recommends tesseract-ocr=5.3.0-2 tesseract-ocr-deu=1:4.1.0-2 tesseract-ocr-fra=1:4.1.0-2 tesseract-ocr-eng=1:4.1.0-2 imagemagick -y;
+    apt-get install --no-install-recommends --yes tesseract-ocr=5.3.0-2 tesseract-ocr-deu=1:4.1.0-2 tesseract-ocr-fra=1:4.1.0-2 tesseract-ocr-eng=1:4.1.0-2 imagemagick;
 
 WORKDIR /app
 

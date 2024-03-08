@@ -69,36 +69,53 @@
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
-        "docker-rm-arm",
-        "docker-rm-amd",
-        "docker-test-arm",
-        "docker-test-amd"
+        "docker-test"
       ],
       "options": {}
     },
-    "docker-rm-arm": {
-      "command": "docker image rm philiplehmann/unoserver:test-arm || exit 0"
-    },
-    "docker-rm-amd": {
-      "command": "docker image rm philiplehmann/unoserver:test-amd || exit 0"
-    },
-    "docker-test-arm": {
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/arm64 --cache-to type=local,dest=.docker/unoserver-arm,mode=max --cache-from type=local,src=.docker/unoserver-arm --tag philiplehmann/unoserver:test-arm ."
-    },
-    "docker-test-amd": {
-      "dependsOn": [
-        "build"
-      ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --load --platform linux/amd64 --cache-to type=local,dest=.docker/unoserver-amd,mode=max --cache-from type=local,src=.docker/unoserver-amd --tag philiplehmann/unoserver:test-amd ."
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/unoserver:test",
+        "file": "apps/unoserver/Dockerfile"
+      }
     },
     "docker-push": {
+      "executor": "@container/executors:docker-build",
       "dependsOn": [
         "build"
       ],
-      "command": "docker buildx build -f apps/unoserver/Dockerfile --push --platform linux/amd64,linux/arm64 --cache-to type=local,dest=.docker/unoserver,mode=max --cache-from type=local,src=.docker/unoserver --tag philiplehmann/unoserver:latest --tag philiplehmann/unoserver:2.0.1 ."
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/unoserver:latest",
+          "philiplehmann/unoserver:2.0.1"
+        ],
+        "file": "apps/unoserver/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "image": "philiplehmann/unoserver:run",
+        "file": "apps/unoserver/Dockerfile",
+        "port": [
+          "3000"
+        ]
+      }
     }
   },
   "tags": []

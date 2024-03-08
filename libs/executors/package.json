@@ -1,0 +1,13 @@
+{
+  "name": "@container/executors",
+  "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@nx/vite": "18.0.7",
+    "vite": "5.1.5"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "executors": "./executors.json"
+}

@@ -2,22 +2,71 @@
 
 Monorepo containing multiple images for wrapped binaries or custom builds
 
-## Start the app
+## Wrapper Apps
 
-most apps need binary dependencies and can be served via docker with `docker-run`
+### poppler wrapper
 
-```
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/poppler/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/poppler-server)
+
+```bash
 yarn nx docker-run poppler
+```
+
+### tesseract wrapper
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/tesseract/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/tesseract)
+
+```bash
 yarn nx docker-run tesseract
+```
+
+### tesseract wrapper
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/tesseract/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/tesseract)
+
+```bash
+yarn nx docker-run tesseract
+```
+
+### unoserver wrapper
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/unoserver/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/unoserver)
+
+```bash
 yarn nx docker-run unoserver
 ```
 
-use `serve` to really run it locally but you have to install dependencies yourself
+## Mailboxes Apps
 
+### MailCatcher (Ruby)
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/mailcatcher/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/mailcatcher)
+
+```bash
+yarn nx docker-run mailcatcher
 ```
-yarn nx serve poppler
-yarn nx serve tesseract
-yarn nx serve unoserver
+
+### MailDev (Node)
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/maildev/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/maildev)
+
+```bash
+yarn nx docker-run maildev
+```
+
+### MailHog (Go)
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/mailhog/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/mailhog)
+
+```bash
+yarn nx docker-run mailhog
 ```
 
 ## Lint
