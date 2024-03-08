@@ -6,7 +6,7 @@ FROM ruby:3.2-slim-bullseye
 
 # Install MailHog:
 RUN apt-get update \
-  && apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev \
+  && apt-get install --yes build-essential pkg-config sqlite3 libsqlite3-dev \
   && gem install mailcatcher --version 0.9.0 --no-document \
   && apt-get remove --yes build-essential pkg-config \
   && apt-get autoremove --yes
