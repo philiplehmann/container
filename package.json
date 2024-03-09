@@ -4,14 +4,14 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@nx/esbuild": "18.0.7",
-    "@nx/eslint": "18.0.7",
-    "@nx/eslint-plugin": "18.0.7",
-    "@nx/js": "18.0.7",
-    "@nx/node": "18.0.7",
-    "@nx/plugin": "18.0.7",
-    "@nx/vite": "18.0.7",
-    "@nx/workspace": "18.0.7",
+    "@nx/esbuild": "18.0.8",
+    "@nx/eslint": "18.0.8",
+    "@nx/eslint-plugin": "18.0.8",
+    "@nx/js": "18.0.8",
+    "@nx/node": "18.0.8",
+    "@nx/plugin": "18.0.8",
+    "@nx/vite": "18.0.8",
+    "@nx/workspace": "18.0.8",
     "@swc-node/register": "1.9.0",
     "@swc/cli": "0.3.10",
     "@swc/core": "1.4.6",
@@ -27,7 +27,7 @@
     "eslint-config-prettier": "9.1.0",
     "jsdom": "^24.0.0",
     "nodemailer": "6.9.12",
-    "nx": "18.0.7",
+    "nx": "18.0.8",
     "nx-remotecache-minio": "18.0.0",
     "prettier": "3.2.5",
     "testcontainers": "10.7.2",
@@ -37,7 +37,7 @@
   },
   "packageManager": "yarn@4.1.1",
   "dependencies": {
-    "@nx/devkit": "18.0.7",
+    "@nx/devkit": "18.0.8",
     "axios": "1.6.7",
     "tslib": "2.6.2"
   },
@@ -46,3 +46,4 @@
     "yarn": "4.1.1"
   }
 }
+
