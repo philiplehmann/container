@@ -1459,7 +1459,7 @@ __metadata:
     "@swc/cli": "npm:0.3.10"
     "@swc/core": "npm:1.4.6"
     "@swc/helpers": "npm:0.5.6"
-    "@types/node": "npm:20.11.25"
+    "@types/node": "npm:20.11.26"
     "@types/nodemailer": "npm:^6.4.14"
     "@typescript-eslint/eslint-plugin": "npm:7.1.1"
     "@typescript-eslint/parser": "npm:7.1.1"
@@ -3134,12 +3134,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:20.11.25":
+"@types/node@npm:*":
   version: 20.11.25
   resolution: "@types/node@npm:20.11.25"
   dependencies:
     undici-types: "npm:~5.26.4"
   checksum: 10c0/3a65a0469309d503e572a3198d81c9248876236b1bcc0c9943e995cfa536df7ce9a9302638258984877420d1613167a8a82dbfb3a92197319fb79ebebf9abc83
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:20.11.26":
+  version: 20.11.26
+  resolution: "@types/node@npm:20.11.26"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/2df81e4f109588c4c490f2c7d616a06d2b3b9298f217468134b80711af810c9a6017a59beb3e6b1c596eb9b6c5a39d33403b99179acb89006badfbc55f2468bb
   languageName: node
   linkType: hard
 
