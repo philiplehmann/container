@@ -15,20 +15,20 @@ function promiseSpawn(command: string, args: string[]) {
 	});
 }
 
+export function dockerImageSave(image: string, file: string) {
+	return promiseSpawn("docker", ["image", "save", "--output", file, image]);
+}
+
+export function dockerImageLoad(file: string) {
+	return promiseSpawn("docker", ["image", "load", "--input", file]);
+}
+
 export function dockerImageRemove(image: string) {
-	return new Promise<void>((resolve) => {
-		const docker = spawn("docker", ["image", "rm", image], {
-			stdio: "inherit",
-		});
-		docker.on("exit", (code) => {
-			if (code === 0) {
-				console.log(`Image ${image} removed`);
-				return resolve();
-			}
-			console.log(`Image ${image} not found or could not be removed`);
-			return resolve();
-		});
-	});
+	try {
+		return promiseSpawn("docker", ["image", "rm", image]);
+	} catch (error) {
+		console.log(`Image ${image} not found or could not be removed`);
+	}
 }
 
 export async function dockerBuildxBuild({
@@ -100,45 +100,28 @@ const isDockerPlatform = (platform: unknown): platform is DockerPlatform => {
 	return Object.values<unknown>(archMapping).includes(platform);
 };
 
+export function dockerArch(): DockerPlatform {
+	const dockerArch = archMapping[arch()];
+	if (!isDockerPlatform(dockerArch)) throw new Error("Unsupported platform");
+	return dockerArch;
+}
+
 export async function dockerRun({
 	image,
-	file,
 	port,
 }: {
 	image: string;
-	file: string;
 	port: string[] | string;
 }) {
-	const dockerArch = archMapping[arch()];
-	if (!isDockerPlatform(dockerArch)) throw new Error("Unsupported platform");
-	await dockerImageRemove(image);
-	await dockerBuildxBuild({
-		tags: [image],
-		file,
-		output: "load",
-		platforms: [dockerArch],
-	});
 	const ports = Array.isArray(port) ? port : [port];
-	return new Promise<void>((resolve, reject) => {
-		const docker = spawn(
-			"docker",
-			[
-				"run",
-				"--rm",
-				"-it",
-				...ports.flatMap((port) => [
-					"--publish",
-					port.includes(":") ? port : `${port}:${port}`,
-				]),
-				`${image}`,
-			],
-			{ stdio: "inherit" },
-		);
-		docker.on("exit", (code) => {
-			if (code === 0) {
-				return resolve();
-			}
-			return reject(new Error(`Container ${image} run failed`));
-		});
-	});
+	return promiseSpawn("docker", [
+		"run",
+		"--rm",
+		"-it",
+		...ports.flatMap((port) => [
+			"--publish",
+			port.includes(":") ? port : `${port}:${port}`,
+		]),
+		`${image}`,
+	]);
 }

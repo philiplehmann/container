@@ -76,10 +76,14 @@
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
+      "outputs": [
+        "{projectRoot}/dist/images/poppler"
+      ],
       "dependsOn": [
         "build"
       ],
       "options": {
+        "outputPath": "dist/images/poppler",
         "platforms": [
           "amd",
           "arm"

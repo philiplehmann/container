@@ -46,6 +46,15 @@
         "production",
         "^production"
       ]
+    },
+    "@container/executors:docker-test": {
+      "cache": true,
+      "outputs": [
+        "{projectRoot}/dist/images"
+      ],
+      "dependsOn": [
+        "^build"
+      ]
     }
   },
   "namedInputs": {
@@ -82,7 +91,7 @@
           "build",
           "test",
           "lint",
-          "e2e"
+          "docker-test"
         ]
       }
     }

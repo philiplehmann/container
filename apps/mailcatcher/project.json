@@ -22,7 +22,11 @@
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
+      "outputs": [
+        "{projectRoot}/dist/images/mailcatcher"
+      ],
       "options": {
+        "outputPath": "dist/images/mailcatcher",
         "platforms": [
           "amd",
           "arm"

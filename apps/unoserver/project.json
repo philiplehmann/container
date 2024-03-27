@@ -75,10 +75,14 @@
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
+      "outputs": [
+        "{projectRoot}/dist/images/unoserver"
+      ],
       "dependsOn": [
         "build"
       ],
       "options": {
+        "outputPath": "dist/images/unoserver",
         "platforms": [
           "amd",
           "arm"

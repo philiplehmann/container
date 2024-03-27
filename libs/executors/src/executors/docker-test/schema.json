@@ -16,6 +16,9 @@
     },
     "file": {
       "type": "string"
+    },
+    "outputPath": {
+      "type": "string"
     }
   },
   "required": []

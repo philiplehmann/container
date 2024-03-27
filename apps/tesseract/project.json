@@ -75,10 +75,14 @@
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
+      "outputs": [
+        "{projectRoot}/dist/images/tesseract"
+      ],
       "dependsOn": [
         "build"
       ],
       "options": {
+        "outputPath": "dist/images/tesseract",
         "platforms": [
           "amd",
           "arm"

@@ -22,7 +22,11 @@
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
+      "outputs": [
+        "{projectRoot}/dist/images/maildev"
+      ],
       "options": {
+        "outputPath": "dist/images/maildev",
         "platforms": [
           "amd",
           "arm"
