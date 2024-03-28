@@ -1458,7 +1458,7 @@ __metadata:
     "@swc-node/register": "npm:1.9.0"
     "@swc/cli": "npm:0.3.10"
     "@swc/core": "npm:1.4.11"
-    "@swc/helpers": "npm:0.5.7"
+    "@swc/helpers": "npm:0.5.8"
     "@types/node": "npm:20.11.30"
     "@types/nodemailer": "npm:^6.4.14"
     "@typescript-eslint/eslint-plugin": "npm:7.4.0"
@@ -3029,12 +3029,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/helpers@npm:0.5.7":
-  version: 0.5.7
-  resolution: "@swc/helpers@npm:0.5.7"
+"@swc/helpers@npm:0.5.8":
+  version: 0.5.8
+  resolution: "@swc/helpers@npm:0.5.8"
   dependencies:
     tslib: "npm:^2.4.0"
-  checksum: 10c0/1f52e76668e12b5b991b9fc9e74e433bad671406812473c1639f79e4f46e72c85d37397adabaf9a8bbac54386ac0c887f067ceb8aaf51bcb99de697831eb4921
+  checksum: 10c0/53a52b3654edb1b22ab317feb4ab7fa805eb368082530d2835647e5d0cc497f5c3aa8e16d568df6eee301982aac532674345acbaaa45354ffb58043768d4db36
   languageName: node
   linkType: hard
 
