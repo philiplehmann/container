@@ -2,7 +2,7 @@
 # maildev Dockerfile
 #
 
-FROM bitnami/node:20.12.1
+FROM bitnami/node:20.12.2
 
 WORKDIR /home/maildev
 
