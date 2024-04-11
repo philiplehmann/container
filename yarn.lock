@@ -1474,7 +1474,7 @@ __metadata:
     nx: "npm:18.2.4"
     nx-remotecache-minio: "npm:18.0.0"
     prettier: "npm:3.2.5"
-    testcontainers: "npm:10.8.1"
+    testcontainers: "npm:10.8.2"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.4"
     vite: "npm:5.2.8"
@@ -9505,9 +9505,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.8.1":
-  version: 10.8.1
-  resolution: "testcontainers@npm:10.8.1"
+"testcontainers@npm:10.8.2":
+  version: 10.8.2
+  resolution: "testcontainers@npm:10.8.2"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.24"
@@ -9524,7 +9524,7 @@ __metadata:
     ssh-remote-port-forward: "npm:^1.0.4"
     tar-fs: "npm:^3.0.5"
     tmp: "npm:^0.2.1"
-  checksum: 10c0/ef135cfb4ca3639b6573e3f9806a4fba01167d5f867a5fbf4b623d4ffa69a7a830883718d1414463798c7ff6a59ac9e1e99f4a15b7dff79f6956759d28917428
+  checksum: 10c0/ce63e305d8c4ccfc58ae022f83f8d31e677e248df1dd88b9be47e653c6e8162dc0c11a13d100f646e37a4d093f92795989d55f71aea727b4956a077fa02a4a25
   languageName: node
   linkType: hard
 

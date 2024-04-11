@@ -30,7 +30,7 @@
     "nx": "18.2.4",
     "nx-remotecache-minio": "18.0.0",
     "prettier": "3.2.5",
-    "testcontainers": "10.8.1",
+    "testcontainers": "10.8.2",
     "typescript": "5.4.4",
     "vite": "5.2.8",
     "vitest": "1.5.0"
