@@ -1,9 +1,26 @@
-import { dockerRun } from "../../docker";
+import {
+	dockerArch,
+	dockerBuildxBuild,
+	dockerImageRemove,
+	dockerRun,
+} from "../../docker";
 import { DockerRunExecutorSchema } from "./schema";
 
-export default async function runExecutor(options: DockerRunExecutorSchema) {
+export default async function runExecutor({
+	image,
+	file,
+	port,
+}: DockerRunExecutorSchema) {
 	try {
-		await dockerRun(options);
+		const arch = dockerArch();
+		await dockerImageRemove(image);
+		await dockerBuildxBuild({
+			tags: [image],
+			file,
+			output: "load",
+			platforms: [arch],
+		});
+		await dockerRun({ image, port });
 		return {
 			success: true,
 		};
