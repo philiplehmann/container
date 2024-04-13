@@ -32,7 +32,7 @@ describe('http-route', () => {
         ),
       ).listen(0, () => {
         const address = httpServer.address();
-        if (typeof address === 'object') {
+        if (address && typeof address === 'object') {
           console.log('start poppler server on ', address.port);
           port = address.port;
           return resolve();

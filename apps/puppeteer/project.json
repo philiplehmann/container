@@ -1,0 +1,125 @@
+{
+  "name": "puppeteer",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/puppeteer/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/puppeteer",
+        "format": [
+          "cjs"
+        ],
+        "bundle": false,
+        "main": "apps/puppeteer/src/main.ts",
+        "tsConfig": "apps/puppeteer/tsconfig.app.json",
+        "assets": [
+          "apps/puppeteer/src/assets"
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "puppeteer:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "puppeteer:build:development"
+        },
+        "production": {
+          "buildTarget": "puppeteer:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-test"
+      ],
+      "options": {}
+    },
+    "docker-test": {
+      "executor": "@container/executors:docker-test",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tag": "philiplehmann/puppeteer:test",
+        "file": "apps/puppeteer/Dockerfile"
+      }
+    },
+    "docker-push": {
+      "executor": "@container/executors:docker-build",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/puppeteer:latest",
+          "philiplehmann/puppeteer:22.6.4",
+          "philiplehmann/puppeteer:22.6",
+          "philiplehmann/puppeteer:22"
+        ],
+        "file": "apps/puppeteer/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/executors:docker-run",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "image": "philiplehmann/puppeteer:run",
+        "file": "apps/puppeteer/Dockerfile",
+        "port": [
+          "3000"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

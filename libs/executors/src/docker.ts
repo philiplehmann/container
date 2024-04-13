@@ -46,6 +46,9 @@ export async function dockerBuildxBuild({
   const builderName = `builder-${platforms.join('-')}-${randomBytes(10).toString('hex')}`;
   try {
     await promiseSpawn('docker', ['buildx', 'create', '--name', builderName, '--platform', 'linux/amd64,linux/arm64']);
+    const [registry, tag] = tags[0].split(':');
+
+    const cacheTag = [registry, tag.startsWith('test-') ? `build-cache-${tag}` : 'build-cache'].join(':');
     await new Promise<void>((resolve, reject) => {
       const docker = spawn(
         'docker',
@@ -61,10 +64,10 @@ export async function dockerBuildxBuild({
           `--${output}`,
           '--platform',
           platforms.map((platform) => `linux/${platform}64`).join(','),
-          '--cache-to',
-          'type=gha,mode=max',
           '--cache-from',
-          'type=gha',
+          `type=registry,ref=${cacheTag}`,
+          '--cache-to',
+          `type=registry,ref=${cacheTag},mode=max`,
           ...tags.flatMap((tag) => ['--tag', tag]),
           '.',
         ],
@@ -101,7 +104,11 @@ export async function dockerRun({
   file: string;
   port: string[] | string;
 }) {
-  const dockerArch = archMapping[arch()];
+  const myArch = arch();
+  if (myArch !== 'x64' && myArch !== 'arm64') {
+    throw new Error('Unsupported platform');
+  }
+  const dockerArch = archMapping[myArch];
   if (!isDockerPlatform(dockerArch)) throw new Error('Unsupported platform');
   await dockerImageRemove(image);
   await dockerBuildxBuild({
