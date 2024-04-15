@@ -1,16 +1,16 @@
-import { DockerTestExecutorSchema } from "./schema";
-import executor from "./executor";
-import { describe, it, expect } from "vitest";
+import { DockerTestExecutorSchema } from './schema';
+import executor from './executor';
+import { describe, it, expect } from 'vitest';
 
 const options: DockerTestExecutorSchema = {
-	platforms: ["amd", "arm"],
-	tag: "https://ghcr.io/philiplehmann/container/build:test",
-	file: "Dockerfile",
+  platforms: ['amd', 'arm'],
+  tag: 'https://ghcr.io/philiplehmann/container/build:test',
+  file: 'Dockerfile',
 };
 
-describe.skip("DockerTest Executor", () => {
-	it("can run", async () => {
-		const output = await executor(options);
-		expect(output.success).toBe(true);
-	});
+describe.skip('DockerTest Executor', () => {
+  it('can run', async () => {
+    const output = await executor(options);
+    expect(output.success).toBe(true);
+  });
 });

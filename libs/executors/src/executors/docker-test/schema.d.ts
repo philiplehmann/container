@@ -1,7 +1,7 @@
-import { DockerPlatform } from "../../docker";
+import { DockerPlatform } from '../../docker';
 
 export interface DockerTestExecutorSchema {
-	platforms: DockerPlatform[];
-	tag: string;
-	file: string;
+  platforms: DockerPlatform[];
+  tag: string;
+  file: string;
 }

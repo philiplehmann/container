@@ -6,9 +6,7 @@
   "targets": {
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     }
   },
   "tags": []

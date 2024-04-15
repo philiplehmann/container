@@ -4,8 +4,12 @@
     "enabled": true
   },
   "files": {
-    "include": ["**/*.ts", "**/*.tsx", "**/*.json"],
-    "ignore": ["node_modules/**/*", "dist", "coverage", ".nx/cache"]
+    "ignore": [
+      "node_modules/**/*",
+      "dist",
+      "coverage",
+      ".nx/cache"
+    ]
   },
   "linter": {
     "enabled": true,
@@ -20,8 +24,12 @@
     "lineWidth": 120
   },
   "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
     "formatter": {
-      "quoteStyle": "single"
+      "quoteStyle": "single",
+      "trailingComma": "all"
     }
   }
 }
