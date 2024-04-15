@@ -75,6 +75,41 @@ describe('puppeteer', () => {
           '{"issues":[{"code":"invalid_union","unionErrors":[{"issues":[{"code":"invalid_type","expected":"string","received":"undefined","path":["url"],"message":"Required"}],"name":"ZodError"},{"issues":[{"code":"invalid_type","expected":"string","received":"undefined","path":["html"],"message":"Required"}],"name":"ZodError"}],"path":[],"message":"Invalid input"}],"name":"ZodError"}',
         );
       });
+
+      it('should convert url to pdf with all properties', async () => {
+        const [response, text] = await testRequest({
+          method: 'POST',
+          port,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: 'https://google.com',
+            scale: 1,
+            displayHeaderFooter: true,
+            headerTemplate: 'header',
+            footerTemplate: 'footer',
+            printBackground: true,
+            landscape: true,
+            pageRanges: '1-2',
+            format: 'A4',
+            width: 100,
+            height: 100,
+            preferCSSPageSize: true,
+            margin: {
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 10,
+            },
+            omitBackground: true,
+            tagged: true,
+            outline: true,
+            timeout: 1000,
+          }),
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(text.substring(0, 5)).toBe('%PDF-');
+      });
     });
   });
 });

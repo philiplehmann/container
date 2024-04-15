@@ -4,7 +4,6 @@ import { arch } from 'node:os';
 export type DockerPlatform = 'amd' | 'arm';
 
 export function promiseSpawn(command: string, args: string[], options?: Omit<SpawnOptions, 'stdio'>) {
-  console.log('promiseSpawn', command, args, options);
   return new Promise<void>((resolve, reject) => {
     const docker = spawn(command, args, { ...options, stdio: 'inherit' });
     docker.on('exit', (code) => {

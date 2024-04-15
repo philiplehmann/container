@@ -6,7 +6,12 @@ const runExecutor: Executor<BiomejsExecutorSchema> = async (
   { fix, changed, 'log-level': logLevel, verbose },
   context,
 ) => {
-  const projectRoot = context.projectsConfigurations.projects[context.projectName].root;
+  const projectRoot = context.projectName && context.projectsConfigurations?.projects[context.projectName].root;
+
+  if (!projectRoot) {
+    throw new Error('Project root not found');
+  }
+
   const args: string[] = [];
   if (fix) {
     args.push('format', '--write');
