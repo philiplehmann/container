@@ -6,22 +6,16 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/poppler",
-        "format": [
-          "cjs"
-        ],
+        "format": ["cjs"],
         "bundle": false,
         "main": "apps/poppler/src/main.ts",
         "tsConfig": "apps/poppler/tsconfig.app.json",
-        "assets": [
-          "apps/poppler/src/assets"
-        ],
+        "assets": ["apps/poppler/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -60,62 +54,39 @@
     },
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-test"],
       "options": {}
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd",
-          "arm"
-        ],
+        "platforms": ["amd", "arm"],
         "tag": "philiplehmann/poppler-server:test",
         "file": "apps/poppler/Dockerfile"
       }
     },
     "docker-push": {
       "executor": "@container/executors:docker-build",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd",
-          "arm"
-        ],
-        "tags": [
-          "philiplehmann/poppler-server:latest",
-          "philiplehmann/poppler-server:22.12.0"
-        ],
+        "platforms": ["amd", "arm"],
+        "tags": ["philiplehmann/poppler-server:latest", "philiplehmann/poppler-server:22.12.0"],
         "file": "apps/poppler/Dockerfile"
       }
     },
     "docker-run": {
       "executor": "@container/executors:docker-run",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/poppler-server:run",
         "file": "apps/poppler/Dockerfile",
-        "port": [
-          "3000"
-        ]
+        "port": ["3000"]
       }
     }
   },

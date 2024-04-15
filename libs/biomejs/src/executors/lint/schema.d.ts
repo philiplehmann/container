@@ -1,9 +1,8 @@
-import { DockerPlatform } from "../../docker";
+import { DockerPlatform } from '../../docker';
 
 export interface BiomejsExecutorSchema {
-	apply?: boolean;
-	verbose?: boolean;
-	"apply-unsafe"?: boolean;
-	changed?: boolean;
-	"log-level"?: "none" | "debug" | "info" | "warn" | "error";
+  fix?: boolean;
+  verbose?: boolean;
+  changed?: boolean;
+  'log-level'?: 'none' | 'debug' | 'info' | 'warn' | 'error';
 }

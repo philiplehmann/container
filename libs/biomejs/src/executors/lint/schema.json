@@ -5,15 +5,10 @@
   "description": "",
   "type": "object",
   "properties": {
-    "apply": {
+    "fix": {
       "type": "boolean",
       "required": false,
-      "description": "Apply safe fixes, formatting and import sorting"
-    },
-    "apply-unsafe": {
-      "type": "boolean",
-      "required": false,
-      "description": "Apply safe fixes and unsafe fixes, formatting and import sorting"
+      "description": "format files"
     },
     "changed": {
       "type": "boolean",

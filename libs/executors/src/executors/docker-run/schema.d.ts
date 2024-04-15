@@ -1,5 +1,5 @@
 export interface DockerRunExecutorSchema {
-	image: string;
-	file: string;
-	port: string[] | string;
+  image: string;
+  file: string;
+  port: string[] | string;
 }
