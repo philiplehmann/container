@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "Biomejs executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "apply": {
+      "type": "boolean",
+      "required": false,
+      "description": "Apply safe fixes, formatting and import sorting"
+    },
+    "apply-unsafe": {
+      "type": "boolean",
+      "required": false,
+      "description": "Apply safe fixes and unsafe fixes, formatting and import sorting"
+    },
+    "changed": {
+      "type": "boolean",
+      "required": false,
+      "description": "When set to true, only the files that have been changed compared to your defaultBranch configuration will be linted."
+    },
+    "log-level": {
+      "type": "string",
+      "enum": [
+        "none",
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "required": false,
+      "description": "The level of logging. In order, from the most verbose to the least verbose: debug, info, warn, error."
+    }
+  },
+  "required": []
+}

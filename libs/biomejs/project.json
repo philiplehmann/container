@@ -1,0 +1,50 @@
+{
+  "name": "biomejs",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/biomejs/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/biomejs",
+        "main": "libs/biomejs/src/index.ts",
+        "tsConfig": "libs/biomejs/tsconfig.lib.json",
+        "assets": [
+          "libs/biomejs/*.md",
+          {
+            "input": "./libs/biomejs/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/biomejs/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/biomejs",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/biomejs",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {}
+    }
+  },
+  "tags": []
+}

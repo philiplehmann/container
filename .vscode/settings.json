@@ -1,5 +1,1 @@
-{
-  "eslint.validate": [
-    "json"
-  ]
-}
+{ "editor.defaultFormatter": "biomejs.biome" }

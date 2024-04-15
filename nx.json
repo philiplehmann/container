@@ -18,13 +18,11 @@
         "^production"
       ]
     },
-    "@nx/eslint:lint": {
+    "@container/biomejs:lint": {
       "cache": true,
       "inputs": [
         "default",
-        "{workspaceRoot}/.eslintrc.json",
-        "{workspaceRoot}/.eslintignore",
-        "{workspaceRoot}/eslint.config.js"
+        "{workspaceRoot}/biome.jsonc"
       ]
     },
     "@nx/esbuild:esbuild": {
@@ -59,19 +57,10 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s",
-      "!{projectRoot}/.eslintrc.json",
-      "!{projectRoot}/eslint.config.js"
+      "!{projectRoot}/biome.jsonc"
     ],
     "sharedGlobals": []
   },
-  "plugins": [
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    }
-  ],
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx-remotecache-minio",
