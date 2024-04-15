@@ -1,11 +1,12 @@
 import { DockerBuildExecutorSchema } from "./schema";
 import { dockerBuildxBuild } from "../../docker";
+import { Executor } from "@nx/devkit";
 
-export default async function runExecutor({
+const runExecutor: Executor<DockerBuildExecutorSchema> = async ({
 	file,
 	tags,
 	platforms,
-}: DockerBuildExecutorSchema) {
+}) => {
 	try {
 		await dockerBuildxBuild({
 			platforms: platforms,
@@ -22,4 +23,6 @@ export default async function runExecutor({
 			success: false,
 		};
 	}
-}
+};
+
+export default runExecutor;

@@ -1,16 +1,11 @@
 import { promiseSpawn } from "@container/executors";
 import { BiomejsExecutorSchema } from "./schema";
-import { ExecutorContext } from "@nx/devkit";
+import { Executor } from "@nx/devkit";
 
-export default async function runExecutor(
-	{
-		apply,
-		"apply-unsafe": applyUnsafe,
-		changed,
-		"log-level": logLevel,
-	}: BiomejsExecutorSchema,
-	context: ExecutorContext,
-) {
+const runExecutor: Executor<BiomejsExecutorSchema> = async (
+	{ apply, "apply-unsafe": applyUnsafe, changed, "log-level": logLevel },
+	context,
+) => {
 	const projectRoot =
 		context.projectsConfigurations.projects[context.projectName].root;
 	const args: string[] = [];
@@ -28,7 +23,15 @@ export default async function runExecutor(
 		args.push("--log-level", logLevel);
 	}
 
-	await promiseSpawn("yarn", ["biome", "lint", ...args, "."], {
-		cwd: projectRoot,
-	});
-}
+	try {
+		await promiseSpawn("yarn", ["biome", "lint", ...args, "."], {
+			cwd: projectRoot,
+		});
+		return { success: false };
+	} catch (error) {
+		console.error(error);
+		return { success: false };
+	}
+};
+
+export default runExecutor;
