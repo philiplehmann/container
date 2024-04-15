@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
+    "@nx/esbuild": "^18.2.4",
     "@nx/js": "18.2.4",
     "@nx/node": "18.2.4",
     "@nx/plugin": "18.2.4",
