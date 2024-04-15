@@ -37,7 +37,7 @@ const runExecutor: Executor<BiomejsExecutorSchema> = async (
 		await promiseSpawn("yarn", ["biome", "lint", ...args, "."], {
 			cwd: projectRoot,
 		});
-		return { success: false };
+		return { success: true };
 	} catch (error) {
 		console.error(error);
 		return { success: false };
