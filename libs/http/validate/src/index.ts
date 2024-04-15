@@ -1,1 +1,1 @@
-export * from "./lib/http-validate";
+export * from './lib/http-validate';

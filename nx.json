@@ -22,7 +22,7 @@
       "cache": true,
       "inputs": [
         "default",
-        "{workspaceRoot}/biome.jsonc"
+        "{workspaceRoot}/biome.json"
       ]
     },
     "@nx/esbuild:esbuild": {
@@ -57,7 +57,7 @@
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s",
-      "!{projectRoot}/biome.jsonc"
+      "!{projectRoot}/biome.json"
     ],
     "sharedGlobals": []
   },
