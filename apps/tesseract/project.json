@@ -58,7 +58,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
+      "executor": "@container/biomejs:lint",
       "outputs": [
         "{options.outputFile}"
       ]

@@ -1,11 +1,15 @@
-import { spawn } from "node:child_process";
+import { spawn, type SpawnOptions } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { arch } from "node:os";
 export type DockerPlatform = "amd" | "arm";
 
-function promiseSpawn(command: string, args: string[]) {
+export function promiseSpawn(
+	command: string,
+	args: string[],
+	options?: Omit<SpawnOptions, "stdio">,
+) {
 	return new Promise<void>((resolve, reject) => {
-		const docker = spawn(command, args, { stdio: "inherit" });
+		const docker = spawn(command, args, { ...options, stdio: "inherit" });
 		docker.on("exit", (code) => {
 			if (code === 0) {
 				return resolve();
