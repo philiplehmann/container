@@ -1,4 +1,4 @@
-import { Readable } from 'node:stream';
+import type { Readable } from 'node:stream';
 
 export const readableToBuffer = async (readable: Readable): Promise<Buffer> => {
   const buffers: Uint8Array[] = [];

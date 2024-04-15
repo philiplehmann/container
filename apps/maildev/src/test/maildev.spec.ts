@@ -1,4 +1,4 @@
-import { GenericContainer, StartedTestContainer } from "testcontainers";
+import { GenericContainer, type StartedTestContainer } from "testcontainers";
 import { testRequest } from "@container/test/request";
 import { describe, beforeAll, afterAll, it, expect } from "vitest";
 import { createTransport, type Transporter } from "nodemailer";
