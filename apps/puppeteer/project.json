@@ -6,22 +6,16 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/puppeteer",
-        "format": [
-          "cjs"
-        ],
+        "format": ["cjs"],
         "bundle": false,
         "main": "apps/puppeteer/src/main.ts",
         "tsConfig": "apps/puppeteer/tsconfig.app.json",
-        "assets": [
-          "apps/puppeteer/src/assets"
-        ],
+        "assets": ["apps/puppeteer/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -59,45 +53,29 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "executor": "@container/biomejs:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-test"],
       "options": {}
     },
     "docker-test": {
       "executor": "@container/executors:docker-test",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd",
-          "arm"
-        ],
+        "platforms": ["amd", "arm"],
         "tag": "philiplehmann/puppeteer:test",
         "file": "apps/puppeteer/Dockerfile"
       }
     },
     "docker-push": {
       "executor": "@container/executors:docker-build",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd",
-          "arm"
-        ],
+        "platforms": ["amd", "arm"],
         "tags": [
           "philiplehmann/puppeteer:latest",
           "philiplehmann/puppeteer:22.6.4",
@@ -109,15 +87,11 @@
     },
     "docker-run": {
       "executor": "@container/executors:docker-run",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/puppeteer:run",
         "file": "apps/puppeteer/Dockerfile",
-        "port": [
-          "3000"
-        ]
+        "port": ["3000"]
       }
     }
   },
