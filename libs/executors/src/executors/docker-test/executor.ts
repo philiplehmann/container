@@ -1,11 +1,12 @@
 import { DockerTestExecutorSchema } from "./schema";
 import { dockerBuildxBuild, dockerImageRemove } from "../../docker";
+import { Executor } from "@nx/devkit";
 
-export default async function runExecutor({
+const runExecutor: Executor<DockerTestExecutorSchema> = async ({
 	file,
 	tag,
 	platforms,
-}: DockerTestExecutorSchema) {
+}) => {
 	const promises = await Promise.allSettled(
 		platforms.map(async (platform) => {
 			const tagWithPlatform = `${tag}-${platform}`;
@@ -26,4 +27,6 @@ export default async function runExecutor({
 	return {
 		success: true,
 	};
-}
+};
+
+export default runExecutor;

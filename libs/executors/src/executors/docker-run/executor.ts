@@ -1,7 +1,8 @@
+import { Executor } from "@nx/devkit";
 import { dockerRun } from "../../docker";
 import { DockerRunExecutorSchema } from "./schema";
 
-export default async function runExecutor(options: DockerRunExecutorSchema) {
+const runExecutor: Executor<DockerRunExecutorSchema> = async (options) => {
 	try {
 		await dockerRun(options);
 		return {
@@ -13,4 +14,6 @@ export default async function runExecutor(options: DockerRunExecutorSchema) {
 			success: false,
 		};
 	}
-}
+};
+
+export default runExecutor;
