@@ -1539,6 +1539,7 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:1.6.4"
     "@nx/devkit": "npm:18.2.4"
+    "@nx/esbuild": "npm:^18.2.4"
     "@nx/js": "npm:18.2.4"
     "@nx/node": "npm:18.2.4"
     "@nx/plugin": "npm:18.2.4"
@@ -2313,6 +2314,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/esbuild@npm:18.2.4":
+  version: 18.2.4
+  resolution: "@nrwl/esbuild@npm:18.2.4"
+  dependencies:
+    "@nx/esbuild": "npm:18.2.4"
+  checksum: 10c0/3b6b496110684f4e71ec2a2c70a57813c80e1fd969eb6ee49f9d43c034415e8faa599ab6dd2117c762c8525173a765f5c51241c8d5f4143abd0a953703840296
+  languageName: node
+  linkType: hard
+
 "@nrwl/jest@npm:18.2.4":
   version: 18.2.4
   resolution: "@nrwl/jest@npm:18.2.4"
@@ -2394,6 +2404,27 @@ __metadata:
   peerDependencies:
     nx: ">= 16 <= 18"
   checksum: 10c0/e3493eb919cf0e1ffcafc2a0c332e1870cb1a808416971a6778fd3081459775b128e7cdf6fc7dd6b5ec7bb56e46b99d687a713489cb1bd485d6cbaf0280bf4c6
+  languageName: node
+  linkType: hard
+
+"@nx/esbuild@npm:18.2.4, @nx/esbuild@npm:^18.2.4":
+  version: 18.2.4
+  resolution: "@nx/esbuild@npm:18.2.4"
+  dependencies:
+    "@nrwl/esbuild": "npm:18.2.4"
+    "@nx/devkit": "npm:18.2.4"
+    "@nx/js": "npm:18.2.4"
+    chalk: "npm:^4.1.0"
+    fast-glob: "npm:3.2.7"
+    fs-extra: "npm:^11.1.0"
+    tsconfig-paths: "npm:^4.1.2"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    esbuild: ~0.19.2
+  peerDependenciesMeta:
+    esbuild:
+      optional: true
+  checksum: 10c0/fbda3f4054673d49668ead5b4f53f242df0309e36ca9fe4cc035178df2b44b0180b7136c6f94a35538c04cdc94a500f36bac8db41300119dce46e8e4c1b7b28c
   languageName: node
   linkType: hard
 
