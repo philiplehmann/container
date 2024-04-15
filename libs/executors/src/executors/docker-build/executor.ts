@@ -1,6 +1,6 @@
-import { DockerBuildExecutorSchema } from './schema';
+import type { DockerBuildExecutorSchema } from './schema';
 import { dockerBuildxBuild } from '../../docker';
-import { Executor } from '@nx/devkit';
+import type { Executor } from '@nx/devkit';
 
 const runExecutor: Executor<DockerBuildExecutorSchema> = async ({ file, tags, platforms }) => {
   try {

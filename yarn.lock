@@ -1559,7 +1559,7 @@ __metadata:
     nodemailer: "npm:6.9.13"
     nx: "npm:18.3.2"
     nx-remotecache-minio: "npm:18.0.0"
-    puppeteer: "npm:^22.6.4"
+    puppeteer: "npm:22.6.4"
     testcontainers: "npm:10.8.2"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
@@ -8481,7 +8481,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^22.6.4":
+"puppeteer@npm:22.6.4":
   version: 22.6.4
   resolution: "puppeteer@npm:22.6.4"
   dependencies:

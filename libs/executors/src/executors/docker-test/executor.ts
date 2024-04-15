@@ -1,6 +1,6 @@
-import { DockerTestExecutorSchema } from './schema';
+import type { DockerTestExecutorSchema } from './schema';
 import { dockerBuildxBuild, dockerImageRemove } from '../../docker';
-import { Executor } from '@nx/devkit';
+import type { Executor } from '@nx/devkit';
 
 const runExecutor: Executor<DockerTestExecutorSchema> = async ({ file, tag, platforms }) => {
   const promises = await Promise.allSettled(
