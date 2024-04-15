@@ -3,7 +3,13 @@ import { BiomejsExecutorSchema } from "./schema";
 import { Executor } from "@nx/devkit";
 
 const runExecutor: Executor<BiomejsExecutorSchema> = async (
-	{ apply, "apply-unsafe": applyUnsafe, changed, "log-level": logLevel },
+	{
+		apply,
+		"apply-unsafe": applyUnsafe,
+		changed,
+		"log-level": logLevel,
+		verbose,
+	},
 	context,
 ) => {
 	const projectRoot =
@@ -17,6 +23,10 @@ const runExecutor: Executor<BiomejsExecutorSchema> = async (
 
 	if (changed) {
 		args.push("--changed");
+	}
+
+	if (verbose) {
+		args.push("--verbose");
 	}
 
 	if (logLevel) {
