@@ -1,5 +1,5 @@
-import { ChildProcessWithoutNullStreams } from "node:child_process";
-import { IncomingMessage } from "node:http";
+import type { ChildProcessWithoutNullStreams } from "node:child_process";
+import type { IncomingMessage } from "node:http";
 import type { Response } from "@container/http/route";
 
 export function streamHttpBinary(

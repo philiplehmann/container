@@ -1,5 +1,5 @@
 import { get, post, put, patch, del, routes } from "./http-route";
-import { Server, createServer } from "node:http";
+import { type Server, createServer } from "node:http";
 import { describe, beforeAll, afterAll, it, expect } from "vitest";
 
 describe("http-route", () => {
