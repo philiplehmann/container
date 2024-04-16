@@ -26,7 +26,7 @@
     "nx-remotecache-minio": "18.0.0",
     "testcontainers": "10.8.2",
     "typescript": "5.4.5",
-    "vite": "5.2.8",
+    "vite": "5.2.9",
     "vitest": "1.5.0"
   },
   "packageManager": "yarn@4.1.1",
