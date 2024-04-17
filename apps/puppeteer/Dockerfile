@@ -13,12 +13,13 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libgbm1 libasound2 libpangocairo-1.0-0 libxss1 libgtk-3-0 \
-                       wget gnupg \
-                       fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
-                       libgtk2.0-0 libdrm2 libxkbcommon0 \
-                       chromium=123.0.6312.122-1~deb12u1
+    apt-get upgrade --yes && \
+    apt-get install --no-install-recommends --yes \
+                    libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libgbm1 libasound2 \
+                    libpangocairo-1.0-0 libxss1 libgtk-3-0 libgtk2.0-0 libdrm2 libxkbcommon0 \
+                    wget gnupg \
+                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
+                    chromium=123.0.6312.122-1~deb12u1
 
 WORKDIR /app
 
