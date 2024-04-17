@@ -4,7 +4,7 @@ import { describe, beforeAll, afterAll, it, expect } from 'vitest';
 
 const containerPort = 5000;
 
-describe('puppeteer', { timeout: 180_000 }, () => {
+describe('puppeteer', { timeout: 120_000 }, () => {
   ['amd', 'arm'].map((arch) => {
     describe(`arch: ${arch}`, () => {
       let container: StartedTestContainer;
