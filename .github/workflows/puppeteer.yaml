@@ -1,0 +1,46 @@
+name: puppeteer
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  puppeteer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 100
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: package.json
+          cache: yarn
+
+      - name: Docker Setup
+        uses: ./.github/actions/setup-docker
+        with:
+          docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
+          docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: corepack enable
+        shell: bash
+        run: corepack enable
+
+      - name: install dependencies
+        shell: bash
+        run: yarn install
+
+      - name: setup nx shas
+        uses: nrwl/nx-set-shas@v4
+
+      - name: test
+        run: yarn nx run puppeteer:test --skip-nx-cache
