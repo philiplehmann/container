@@ -18,6 +18,7 @@ describe('tesseract', () => {
         container = await new GenericContainer(`philiplehmann/tesseract:test-${arch}`)
           .withEnvironment({ PORT: String(containerPort) })
           .withExposedPorts(containerPort)
+          .withLogConsumer((stream) => stream.pipe(process.stdout))
           .start();
 
         port = container.getMappedPort(containerPort);
