@@ -14,6 +14,7 @@ describe('puppeteer', { timeout: 180_000 }, () => {
         container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
           .withEnvironment({ PORT: String(containerPort) })
           .withExposedPorts(containerPort)
+          .withLogConsumer((stream) => stream.pipe(process.stdout))
           .start();
 
         port = container.getMappedPort(containerPort);
