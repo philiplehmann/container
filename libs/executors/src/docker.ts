@@ -98,23 +98,27 @@ export async function dockerRun({
   image,
   file,
   port,
+  platform,
 }: {
   image: string;
   file: string;
   port: string[] | string;
+  platform?: 'arm' | 'amd';
 }) {
-  const myArch = arch();
-  if (myArch !== 'x64' && myArch !== 'arm64') {
-    throw new Error('Unsupported platform');
+  if (!platform) {
+    const myArch = arch();
+    if (myArch !== 'x64' && myArch !== 'arm64') {
+      throw new Error('Unsupported platform');
+    }
+    platform = archMapping[myArch];
   }
-  const dockerArch = archMapping[myArch];
-  if (!isDockerPlatform(dockerArch)) throw new Error('Unsupported platform');
+  if (!isDockerPlatform(platform)) throw new Error('Unsupported platform');
   await dockerImageRemove(image);
   await dockerBuildxBuild({
     tags: [image],
     file,
     output: 'load',
-    platforms: [dockerArch],
+    platforms: [platform],
   });
   const ports = Array.isArray(port) ? port : [port];
   return new Promise<void>((resolve, reject) => {
@@ -124,6 +128,8 @@ export async function dockerRun({
         'run',
         '--rm',
         '-it',
+        '--platform',
+        `linux/${platform}64`,
         ...ports.flatMap((port) => ['--publish', port.includes(':') ? port : `${port}:${port}`]),
         `${image}`,
       ],

@@ -16,6 +16,14 @@
       "items": {
         "type": "string"
       }
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "arm",
+        "amd"
+      ],
+      "required": false
     }
   },
   "required": []
