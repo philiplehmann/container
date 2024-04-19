@@ -9,6 +9,8 @@ FROM node:lts-bookworm-slim
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
+LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+
 RUN apt-get update; \
     apt-get install --no-install-recommends --yes \
                     tesseract-ocr=5.3.0-2 \

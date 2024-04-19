@@ -6,6 +6,8 @@
 # Run the container with `docker run -p 3000:3000 -t poppler`.
 FROM node:lts-bookworm-slim
 
+LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+
 RUN apt-get update; \
     apt-get install --no-install-recommends --yes poppler-utils=22.12.0-2+b1;
 
