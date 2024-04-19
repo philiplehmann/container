@@ -40,6 +40,15 @@ yarn nx docker-run tesseract
 yarn nx docker-run unoserver
 ```
 
+### puppeteer wrapper
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/puppeteer/README.md)
+- [docker](https://hub.docker.com/repository/docker/philiplehmann/puppeteer)
+
+```bash
+yarn nx docker-run unoserver
+```
+
 ## Mailboxes Apps
 
 ### MailCatcher (Ruby)
