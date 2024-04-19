@@ -4,6 +4,8 @@
 
 FROM ruby:3.2-bullseye as bundler
 
+LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+
 # Install MailCatcher:
 RUN apt-get update; \
     apt-get upgrade --yes; \

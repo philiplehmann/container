@@ -12,6 +12,8 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
+LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+
 RUN apt-get update && \
     apt-get upgrade --yes && \
     apt-get install --no-install-recommends --yes \

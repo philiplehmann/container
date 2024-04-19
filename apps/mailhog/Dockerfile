@@ -4,6 +4,8 @@
 
 FROM golang:1.22-bookworm as builder
 
+LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+
 # Install MailHog:
 RUN apt-get update \
   && apt-get install --no-install-recommends --yes build-essential git \
