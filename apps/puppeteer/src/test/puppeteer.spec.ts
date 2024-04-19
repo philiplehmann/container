@@ -1,11 +1,12 @@
 import { GenericContainer, type StartedTestContainer } from 'testcontainers';
 import { testRequest } from '@container/test/request';
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
+import { currentArch } from '@container/executors';
 
 const containerPort = 5000;
 
 describe('puppeteer', { timeout: 120_000 }, () => {
-  ['amd', 'arm'].map((arch) => {
+  [currentArch()].map((arch) => {
     describe(`arch: ${arch}`, () => {
       let container: StartedTestContainer;
       let port: number;

@@ -90,6 +90,14 @@ const archMapping = {
   arm64: 'arm',
 } as const;
 
+export const currentArch = () => {
+  const myArch = arch();
+  if (myArch !== 'x64' && myArch !== 'arm64') {
+    throw new Error('Unsupported platform');
+  }
+  return archMapping[myArch];
+};
+
 const isDockerPlatform = (platform: unknown): platform is DockerPlatform => {
   return Object.values<unknown>(archMapping).includes(platform);
 };
@@ -106,11 +114,7 @@ export async function dockerRun({
   platform?: 'arm' | 'amd';
 }) {
   if (!platform) {
-    const myArch = arch();
-    if (myArch !== 'x64' && myArch !== 'arm64') {
-      throw new Error('Unsupported platform');
-    }
-    platform = archMapping[myArch];
+    platform = currentArch();
   }
   if (!isDockerPlatform(platform)) throw new Error('Unsupported platform');
   await dockerImageRemove(image);
