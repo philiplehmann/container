@@ -6,36 +6,54 @@
   "targets": {
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "dependsOn": ["docker-test"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-test"
+      ],
       "options": {}
     },
     "docker-test": {
-      "executor": "@container/executors:docker-test",
+      "executor": "@container/docker:test",
       "options": {
-        "platforms": ["amd", "arm"],
+        "platforms": [
+          "amd",
+          "arm"
+        ],
         "tag": "philiplehmann/mailcatcher:test",
         "file": "apps/mailcatcher/Dockerfile"
       }
     },
     "docker-push": {
-      "executor": "@container/executors:docker-build",
+      "executor": "@container/docker:build",
       "options": {
-        "platforms": ["amd", "arm"],
-        "tags": ["philiplehmann/mailcatcher:latest", "philiplehmann/mailcatcher:0.9.0"],
+        "platforms": [
+          "amd",
+          "arm"
+        ],
+        "tags": [
+          "philiplehmann/mailcatcher:latest",
+          "philiplehmann/mailcatcher:0.9.0"
+        ],
         "file": "apps/mailcatcher/Dockerfile"
       }
     },
     "docker-run": {
-      "executor": "@container/executors:docker-run",
+      "executor": "@container/docker:run",
       "options": {
         "image": "philiplehmann/mailcatcher:run",
         "file": "apps/mailcatcher/Dockerfile",
-        "port": ["1025", "1080"]
+        "port": [
+          "1025",
+          "1080"
+        ]
       }
     }
   },
