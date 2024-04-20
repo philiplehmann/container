@@ -33,7 +33,7 @@
   "dependencies": {
     "@nx/devkit": "18.3.3",
     "axios": "1.6.8",
-    "puppeteer": "22.6.4",
+    "puppeteer": "22.6.5",
     "tslib": "2.6.2",
     "zod": "^3.22.4"
   },
