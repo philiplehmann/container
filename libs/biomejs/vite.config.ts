@@ -1,32 +1,30 @@
 /// <reference types='vitest' />
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
 
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
-	root: __dirname,
-	cacheDir: "../../node_modules/.vite/libs/executors",
+  root: __dirname,
+  cacheDir: '../../node_modules/.vite/libs/executors',
 
-	plugins: [nxViteTsPaths()],
+  plugins: [nxViteTsPaths()],
 
-	// Uncomment this if you are using workers.
-	// worker: {
-	//  plugins: [ nxViteTsPaths() ],
-	// },
+  // Uncomment this if you are using workers.
+  // worker: {
+  //  plugins: [ nxViteTsPaths() ],
+  // },
 
-	test: {
-		globals: true,
-		cache: {
-			dir: "../../node_modules/.vitest",
-		},
-		environment: "jsdom",
-		include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-		testTimeout: 60_000,
+  test: {
+    globals: true,
+    cacheDir: '../../node_modules/.vitest',
+    environment: 'jsdom',
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    testTimeout: 60_000,
 
-		reporters: ["default"],
-		coverage: {
-			reportsDirectory: "../../coverage/libs/executors",
-			provider: "v8",
-		},
-	},
+    reporters: ['default'],
+    coverage: {
+      reportsDirectory: '../../coverage/libs/executors',
+      provider: 'v8',
+    },
+  },
 });
