@@ -1,10 +1,14 @@
 import { spawn, type SpawnOptions } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import { arch } from 'node:os';
+import { config } from 'dotenv';
+import { dirname, resolve as pathResolve } from 'node:path';
+
 export type DockerPlatform = 'amd' | 'arm';
 
 export function promiseSpawn(command: string, args: string[], options?: Omit<SpawnOptions, 'stdio'>) {
   return new Promise<void>((resolve, reject) => {
+    console.info('spawn:', command, ...args);
     const docker = spawn(command, args, { ...options, stdio: 'inherit' });
     docker.on('exit', (code) => {
       if (code === 0) {
@@ -15,11 +19,22 @@ export function promiseSpawn(command: string, args: string[], options?: Omit<Spa
   });
 }
 
+export function dockerSpawn(args: string[], options?: Omit<SpawnOptions, 'stdio'>) {
+  console.info('spawn:', 'docker', ...args);
+  return spawn('docker', args, { ...options, stdio: 'inherit' });
+}
+
+export function envForDockerFile(file: string) {
+  const { error, parsed } = config({ path: pathResolve(dirname(file), '.env.docker'), processEnv: {} });
+  if (error) {
+    throw error;
+  }
+  return parsed ?? {};
+}
+
 export function dockerImageRemove(image: string) {
   return new Promise<void>((resolve) => {
-    const docker = spawn('docker', ['image', 'rm', image], {
-      stdio: 'inherit',
-    });
+    const docker = dockerSpawn(['image', 'rm', image]);
     docker.on('exit', (code) => {
       if (code === 0) {
         console.log(`Image ${image} removed`);
@@ -49,29 +64,27 @@ export async function dockerBuildxBuild({
 
     const cacheTag = [registry, tag.startsWith('test-') ? `build-cache-${tag}` : 'build-cache'].join(':');
     await new Promise<void>((resolve, reject) => {
-      const docker = spawn(
-        'docker',
-        [
-          'buildx',
-          'build',
-          '--progress',
-          'plain',
-          '--builder',
-          builderName,
-          '--file',
-          file,
-          `--${output}`,
-          '--platform',
-          platforms.map((platform) => `linux/${platform}64`).join(','),
-          '--cache-from',
-          `type=registry,ref=${cacheTag}`,
-          '--cache-to',
-          `type=registry,ref=${cacheTag},mode=max`,
-          ...tags.flatMap((tag) => ['--tag', tag]),
-          '.',
-        ],
-        { stdio: 'inherit' },
-      );
+      const processEnv = envForDockerFile(file);
+      const docker = dockerSpawn([
+        'buildx',
+        'build',
+        '--progress',
+        'plain',
+        '--builder',
+        builderName,
+        '--file',
+        file,
+        `--${output}`,
+        '--platform',
+        platforms.map((platform) => `linux/${platform}64`).join(','),
+        '--cache-from',
+        `type=registry,ref=${cacheTag}`,
+        '--cache-to',
+        `type=registry,ref=${cacheTag},mode=max`,
+        ...tags.flatMap((tag) => ['--tag', tag]),
+        ...Object.entries(processEnv).flatMap(([key, value]) => ['--build-arg', `${key}=${value}`]),
+        '.',
+      ]);
       docker.on('exit', (code) => {
         if (code === 0) {
           console.log(`Image ${tags.join(',')} build and ${output}`);
@@ -126,19 +139,15 @@ export async function dockerRun({
   });
   const ports = Array.isArray(port) ? port : [port];
   return new Promise<void>((resolve, reject) => {
-    const docker = spawn(
-      'docker',
-      [
-        'run',
-        '--rm',
-        '-it',
-        '--platform',
-        `linux/${platform}64`,
-        ...ports.flatMap((port) => ['--publish', port.includes(':') ? port : `${port}:${port}`]),
-        `${image}`,
-      ],
-      { stdio: 'inherit' },
-    );
+    const docker = dockerSpawn([
+      'run',
+      '--rm',
+      '-it',
+      '--platform',
+      `linux/${platform}64`,
+      ...ports.flatMap((port) => ['--publish', port.includes(':') ? port : `${port}:${port}`]),
+      `${image}`,
+    ]);
     docker.on('exit', (code) => {
       if (code === 0) {
         return resolve();

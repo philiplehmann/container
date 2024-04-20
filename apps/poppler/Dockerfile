@@ -8,8 +8,10 @@ FROM node:lts-bookworm-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
+ARG POPPLER_VERSION
+
 RUN apt-get update; \
-    apt-get install --no-install-recommends --yes poppler-utils=22.12.0-2+b1;
+    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION};
 
 WORKDIR /app
 

@@ -9,14 +9,17 @@ FROM node:lts-bookworm-slim
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
+ARG TESSERACT_VERSION
+ARG TESSERACT_LOCALE_VERSION
+
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
 RUN apt-get update; \
     apt-get install --no-install-recommends --yes \
-                    tesseract-ocr=5.3.0-2 \
-                    tesseract-ocr-deu=1:4.1.0-2 \
-                    tesseract-ocr-fra=1:4.1.0-2 \
-                    tesseract-ocr-eng=1:4.1.0-2 \
+                    tesseract-ocr=${TESSERACT_VERSION} \
+                    tesseract-ocr-deu=${TESSERACT_LOCALE_VERSION} \
+                    tesseract-ocr-fra=${TESSERACT_LOCALE_VERSION} \
+                    tesseract-ocr-eng=${TESSERACT_LOCALE_VERSION} \
                     imagemagick
 
 WORKDIR /app

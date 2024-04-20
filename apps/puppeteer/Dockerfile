@@ -7,10 +7,10 @@
 FROM node:lts-bookworm-slim
 
 ENV NODE_ENV=production
-
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
+ARG CHROMIUM_VERSION
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -21,7 +21,7 @@ RUN apt-get update && \
                     libpangocairo-1.0-0 libxss1 libgtk-3-0 libgtk2.0-0 libdrm2 libxkbcommon0 \
                     wget gnupg \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
-                    chromium=123.0.6312.122-1~deb12u1
+                    chromium=${CHROMIUM_VERSION}
 
 WORKDIR /app
 
