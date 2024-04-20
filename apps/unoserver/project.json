@@ -98,8 +98,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/unoserver:latest",
-          "philiplehmann/unoserver:2.0.1"
+          "philiplehmann/unoserver:auto"
         ],
         "file": "apps/unoserver/Dockerfile"
       }

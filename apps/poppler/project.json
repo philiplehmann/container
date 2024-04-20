@@ -99,8 +99,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/poppler-server:latest",
-          "philiplehmann/poppler-server:22.12.0"
+          "philiplehmann/poppler-server:auto"
         ],
         "file": "apps/poppler/Dockerfile"
       }

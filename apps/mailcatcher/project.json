@@ -39,8 +39,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/mailcatcher:latest",
-          "philiplehmann/mailcatcher:0.9.0"
+          "philiplehmann/mailcatcher:auto"
         ],
         "file": "apps/mailcatcher/Dockerfile"
       }

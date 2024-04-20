@@ -98,8 +98,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/tesseract:latest",
-          "philiplehmann/tesseract:5.3.0"
+          "philiplehmann/tesseract:auto"
         ],
         "file": "apps/tesseract/Dockerfile"
       }

@@ -39,8 +39,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/maildev:latest",
-          "philiplehmann/maildev:v2.1.0"
+          "philiplehmann/maildev:auto"
         ],
         "file": "apps/maildev/Dockerfile"
       }

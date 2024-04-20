@@ -39,8 +39,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/mailhog:latest",
-          "philiplehmann/mailhog:v1.0.1"
+          "philiplehmann/mailhog:push"
         ],
         "file": "apps/mailhog/Dockerfile"
       }
