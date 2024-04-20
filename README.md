@@ -46,7 +46,7 @@ yarn nx docker-run unoserver
 - [docker](https://hub.docker.com/repository/docker/philiplehmann/puppeteer)
 
 ```bash
-yarn nx docker-run unoserver
+yarn nx docker-run puppeteer
 ```
 
 ## Mailboxes Apps
