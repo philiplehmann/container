@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {
     "@biomejs/biome": "1.7.0",
+    "@nx/devkit": "18.3.3",
     "@nx/esbuild": "^18.2.4",
     "@nx/js": "18.3.3",
     "@nx/node": "18.3.3",
@@ -25,16 +26,15 @@
     "nx": "18.3.3",
     "nx-remotecache-minio": "18.0.0",
     "testcontainers": "10.8.2",
+    "tslib": "2.6.2",
     "typescript": "5.4.5",
     "vite": "5.2.9",
     "vitest": "1.5.0"
   },
   "packageManager": "yarn@4.1.1",
   "dependencies": {
-    "@nx/devkit": "18.3.3",
     "axios": "1.6.8",
     "puppeteer": "22.6.5",
-    "tslib": "2.6.2",
     "zod": "^3.22.4"
   },
   "engines": {

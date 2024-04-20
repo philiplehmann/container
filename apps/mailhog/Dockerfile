@@ -6,12 +6,14 @@ FROM golang:1.22-bookworm as builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
+ARG MAILHOG_VERSION
+
 # Install MailHog:
 RUN apt-get update \
   && apt-get install --no-install-recommends --yes build-essential git \
   && mkdir -p /root/gocode \
   && export GOPATH=/root/gocode \
-  && go install github.com/mailhog/MailHog@v1.0.1
+  && go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
 FROM debian:stable-slim
 RUN apt-get update && apt-get upgrade --yes

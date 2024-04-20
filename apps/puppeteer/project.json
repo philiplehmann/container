@@ -99,10 +99,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/puppeteer:latest",
-          "philiplehmann/puppeteer:22.6.5",
-          "philiplehmann/puppeteer:22.6",
-          "philiplehmann/puppeteer:22"
+          "philiplehmann/puppeteer:auto"
         ],
         "file": "apps/puppeteer/Dockerfile"
       }

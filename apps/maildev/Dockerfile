@@ -6,9 +6,11 @@ FROM bitnami/node:20.12.2
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
+ARG MAILDEV_VERSION
+
 WORKDIR /home/maildev
 
-RUN npm install --global --yes maildev@v2.1.0
+RUN npm install --global --yes maildev@${MAILDEV_VERSION}
 
 RUN useradd -ms /bin/bash maildev
 

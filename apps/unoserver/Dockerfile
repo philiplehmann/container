@@ -6,15 +6,24 @@
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
 FROM node:lts-bookworm
 
+ARG UNOSERVER_VERSION
+ARG UNOCONF_VERSION
+ARG LIBREOFFICE_VERSION
+
 WORKDIR /app
 
 RUN apt-get update; \
     apt-get install --no-install-recommends --yes \
-                    python3-full python3-pip virtualenv unoconv \
-                    libreoffice-java-common libreoffice-writer libreoffice-calc \
-                    libreoffice-impress libreoffice-draw default-jre; \
+                    python3-full python3-pip virtualenv \
+                    unoconv:${UNOCONF_VERSION} \
+                    libreoffice-java-common=${LIBREOFFICE_VERSION} \
+                    libreoffice-writer=${LIBREOFFICE_VERSION} \
+                    libreoffice-calc=${LIBREOFFICE_VERSION} \
+                    libreoffice-impress=${LIBREOFFICE_VERSION} \
+                    libreoffice-draw=${LIBREOFFICE_VERSION} \
+                    default-jre=2:1.17-74; \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv; \
-    virtenv/bin/pip install unoserver==2.0.1; \
+    virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}; \
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
