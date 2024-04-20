@@ -1,4 +1,4 @@
-import { promiseSpawn } from '@container/executors';
+import { promiseSpawn } from '@container/docker';
 import type { BiomejsExecutorSchema } from './schema';
 import type { Executor } from '@nx/devkit';
 

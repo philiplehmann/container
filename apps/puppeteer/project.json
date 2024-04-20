@@ -75,7 +75,7 @@
       "options": {}
     },
     "docker-test": {
-      "executor": "@container/executors:docker-test",
+      "executor": "@container/docker:test",
       "dependsOn": [
         "build"
       ],
@@ -89,7 +89,7 @@
       }
     },
     "docker-push": {
-      "executor": "@container/executors:docker-build",
+      "executor": "@container/docker:build",
       "dependsOn": [
         "build"
       ],
@@ -108,7 +108,7 @@
       }
     },
     "docker-run": {
-      "executor": "@container/executors:docker-run",
+      "executor": "@container/docker:run",
       "dependsOn": [
         "build"
       ],

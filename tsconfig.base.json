@@ -17,7 +17,7 @@
     "strict": true,
     "paths": {
       "@container/biomejs": ["libs/biomejs/src/index.ts"],
-      "@container/executors": ["libs/executors/src/index.ts"],
+      "@container/docker": ["libs/docker/src/index.ts"],
       "@container/http/body": ["libs/http/body/src/index.ts"],
       "@container/http/error": ["libs/http/error/src/index.ts"],
       "@container/http/route": ["libs/http/route/src/index.ts"],

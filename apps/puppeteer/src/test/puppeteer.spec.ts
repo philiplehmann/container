@@ -1,7 +1,7 @@
 import { GenericContainer, type StartedTestContainer } from 'testcontainers';
 import { testRequest } from '@container/test/request';
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import { currentArch } from '@container/executors';
+import { currentArch } from '@container/docker';
 
 const containerPort = 5000;
 
