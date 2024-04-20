@@ -15,7 +15,7 @@ WORKDIR /app
 RUN apt-get update; \
     apt-get install --no-install-recommends --yes \
                     python3-full python3-pip virtualenv \
-                    unoconv:${UNOCONF_VERSION} \
+                    unoconv=${UNOCONF_VERSION} \
                     libreoffice-java-common=${LIBREOFFICE_VERSION} \
                     libreoffice-writer=${LIBREOFFICE_VERSION} \
                     libreoffice-calc=${LIBREOFFICE_VERSION} \
