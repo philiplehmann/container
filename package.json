@@ -25,7 +25,7 @@
     "nodemailer": "6.9.13",
     "nx": "18.3.4",
     "nx-remotecache-minio": "18.0.0",
-    "testcontainers": "10.8.2",
+    "testcontainers": "10.9.0",
     "tslib": "2.6.2",
     "typescript": "5.4.5",
     "vite": "5.2.10",
