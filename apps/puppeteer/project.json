@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/puppeteer/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
@@ -64,7 +65,7 @@
         "{options.outputFile}"
       ]
     },
-    "test": {
+    "vitest": {
       "executor": "@nx/vite:test",
       "outputs": [
         "{workspaceRoot}/coverage/{projectRoot}"
@@ -73,6 +74,22 @@
         "docker-test"
       ],
       "options": {}
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-test"
+      ],
+      "options": {}
+    },
+    "test": {
+      "dependsOn": [
+        "e2e",
+        "vitest"
+      ]
     },
     "docker-test": {
       "executor": "@container/docker:test",
@@ -117,6 +134,5 @@
         ]
       }
     }
-  },
-  "tags": []
+  }
 }

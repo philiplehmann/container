@@ -1,3 +1,7 @@
 {
-  "recommendations": ["biomejs.biome", "kingwl.vscode-vitest-runner"]
+  "recommendations": [
+    "biomejs.biome",
+    "kingwl.vscode-vitest-runner",
+    "ms-playwright.playwright"
+  ]
 }
