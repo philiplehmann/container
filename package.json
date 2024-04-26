@@ -18,8 +18,8 @@
     "@swc/helpers": "0.5.11",
     "@types/node": "20.12.7",
     "@types/nodemailer": "^6.4.14",
-    "@vitest/coverage-v8": "1.5.1",
-    "@vitest/ui": "1.5.1",
+    "@vitest/coverage-v8": "1.5.2",
+    "@vitest/ui": "1.5.2",
     "esbuild": "0.20.2",
     "jsdom": "^24.0.0",
     "nodemailer": "6.9.13",
@@ -29,7 +29,7 @@
     "tslib": "2.6.2",
     "typescript": "5.4.5",
     "vite": "5.2.10",
-    "vitest": "1.5.1"
+    "vitest": "1.5.2"
   },
   "packageManager": "yarn@4.1.1",
   "dependencies": {
