@@ -83,7 +83,11 @@
       "dependsOn": [
         "docker-test"
       ],
-      "options": {}
+      "options": {
+        "testFiles": [
+          "apps/puppeteer/src/e2e/*.spec.ts"
+        ]
+      }
     },
     "test": {
       "dependsOn": [

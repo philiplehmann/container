@@ -27,6 +27,7 @@ const server = createServer(
           };
           if (typeof url === 'string') {
             await page.goto(url);
+            await page.waitForNetworkIdle({ idleTime: 1_000, timeout: 5_000 });
           } else if (typeof html === 'string') {
             await page.setContent(html);
           } else {
