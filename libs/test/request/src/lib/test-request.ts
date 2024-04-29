@@ -3,19 +3,18 @@ import { createReadStream } from 'node:fs';
 import { readableToBuffer } from './readable-to-buffer';
 import { Readable } from 'node:stream';
 
-export const testRequest = async ({
+export const streamRequest = async ({
   file,
   body,
   ...requestParams
 }: RequestOptions & {
   file?: string;
   body?: string;
-}): Promise<[IncomingMessage, string]> => {
+}): Promise<IncomingMessage> => {
   return new Promise((resolve, reject) => {
     const req = request({ host: 'localhost', pathname: '/', ...requestParams }, async (response) => {
       try {
-        const text = (await readableToBuffer(response)).toString();
-        resolve([response, text]);
+        resolve(response);
       } catch (e) {
         reject(e);
       }
@@ -28,4 +27,17 @@ export const testRequest = async ({
       req.end();
     }
   });
+};
+
+export const testRequest = async ({
+  file,
+  body,
+  ...requestParams
+}: RequestOptions & {
+  file?: string;
+  body?: string;
+}): Promise<[IncomingMessage, string]> => {
+  const response = await streamRequest({ file, body, ...requestParams });
+  const text = (await readableToBuffer(response)).toString();
+  return [response, text];
 };

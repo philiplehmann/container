@@ -1,4 +1,4 @@
-import { DockerBuildExecutorSchema } from './schema';
+import type { DockerBuildExecutorSchema } from './schema';
 import executor from './executor';
 import { describe, it, expect } from 'vitest';
 
