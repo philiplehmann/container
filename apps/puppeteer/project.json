@@ -86,7 +86,8 @@
       "options": {
         "testFiles": [
           "apps/puppeteer/src/e2e/*.spec.ts"
-        ]
+        ],
+        "browser": "chromium"
       }
     },
     "test": {
