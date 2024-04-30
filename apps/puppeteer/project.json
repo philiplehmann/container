@@ -90,10 +90,12 @@
       }
     },
     "test": {
+      "executor": "@container/group:empty",
       "dependsOn": [
         "e2e",
         "vitest"
-      ]
+      ],
+      "options": {}
     },
     "docker-test": {
       "executor": "@container/docker:test",

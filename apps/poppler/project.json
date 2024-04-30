@@ -64,13 +64,20 @@
         "{options.outputFile}"
       ]
     },
-    "test": {
+    "vitest": {
       "executor": "@nx/vite:test",
       "outputs": [
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
         "docker-test"
+      ],
+      "options": {}
+    },
+    "test": {
+      "executor": "@container/group:empty",
+      "dependsOn": [
+        "vitest"
       ],
       "options": {}
     },
