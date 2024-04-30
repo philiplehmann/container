@@ -1,7 +1,7 @@
-import type { groupEmptyExecutorSchema } from './schema';
+import type { GroupEmptyExecutorSchema } from './schema';
 import type { Executor } from '@nx/devkit';
 
-const runExecutor: Executor<groupEmptyExecutorSchema> = async () => {
+const runExecutor: Executor<GroupEmptyExecutorSchema> = async () => {
   return {
     success: true,
   };

@@ -1,3 +1,3 @@
 import { groupPlatform } from '../../group';
 
-export type groupEmptyExecutorSchema = Record<string, never>;
+export type GroupEmptyExecutorSchema = Record<string, never>;
