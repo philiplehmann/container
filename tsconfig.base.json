@@ -10,43 +10,22 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@container/biomejs": [
-        "libs/biomejs/src/index.ts"
-      ],
-      "@container/docker": [
-        "libs/docker/src/index.ts"
-      ],
-      "@container/http/body": [
-        "libs/http/body/src/index.ts"
-      ],
-      "@container/http/error": [
-        "libs/http/error/src/index.ts"
-      ],
-      "@container/http/route": [
-        "libs/http/route/src/index.ts"
-      ],
-      "@container/http/validate": [
-        "libs/http/validate/src/index.ts"
-      ],
-      "@container/stream/http-binary": [
-        "libs/stream/http-binary/src/index.ts"
-      ],
-      "@container/test/request": [
-        "libs/test/request/src/index.ts"
-      ]
+      "@container/biomejs": ["libs/biomejs/src/index.ts"],
+      "@container/docker": ["libs/docker/src/index.ts"],
+      "@container/group": ["libs/group/src/index.ts"],
+      "@container/http/body": ["libs/http/body/src/index.ts"],
+      "@container/http/error": ["libs/http/error/src/index.ts"],
+      "@container/http/route": ["libs/http/route/src/index.ts"],
+      "@container/http/validate": ["libs/http/validate/src/index.ts"],
+      "@container/stream/http-binary": ["libs/stream/http-binary/src/index.ts"],
+      "@container/test/request": ["libs/test/request/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

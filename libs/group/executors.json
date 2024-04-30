@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "empty": {
+      "implementation": "./src/executors/empty/executor",
+      "schema": "./src/executors/empty/schema.json",
+      "description": "do nothing"
+    }
+  }
+}
