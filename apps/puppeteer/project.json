@@ -75,19 +75,25 @@
       ],
       "options": {}
     },
+    "e2e-install": {
+      "executor": "@container/group:chromium-install",
+      "options": {}
+    },
     "e2e": {
       "executor": "@nx/playwright:playwright",
       "outputs": [
         "{workspaceRoot}/coverage/{projectRoot}"
       ],
       "dependsOn": [
+        "e2e-install",
         "docker-test"
       ],
       "options": {
         "testFiles": [
-          "apps/puppeteer/src/e2e/*.spec.ts"
+          "src/e2e/snapshot.spec.ts"
         ],
-        "browser": "chromium"
+        "browser": "chromium",
+        "skipInstall": true
       }
     },
     "test": {

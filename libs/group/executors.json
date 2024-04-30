@@ -4,6 +4,11 @@
       "implementation": "./src/executors/empty/executor",
       "schema": "./src/executors/empty/schema.json",
       "description": "do nothing"
+    },
+    "chromium-install": {
+      "implementation": "./src/executors/chromium-install/executor",
+      "schema": "./src/executors/chromium-install/schema.json",
+      "description": "playwright install chromium"
     }
   }
 }
