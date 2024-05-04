@@ -115,7 +115,7 @@ jobs:
         run: yarn install
 
       - name: Build & Push Docker Image
-        run: yarn nx run-many --target docker-push
+        run: yarn nx affected --target docker-push
         env:
           NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
           NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
