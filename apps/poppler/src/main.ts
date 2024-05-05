@@ -8,14 +8,14 @@ const PORT = process.env.PORT || '3000';
 
 const server = createServer(
   routes(
-    post('/pdf-to-text', async (req, res) => {
+    post({ path: '/pdf-to-text' }, async (req, res) => {
       res.setHeader('Content-Type', 'plain/text');
 
       const pdfToText = spawn('pdftotext', ['-', '-']);
       streamHttpBinary(req, res, pdfToText);
     }),
 
-    post('/pdf-to-html', async (req, res) => {
+    post({ path: '/pdf-to-html' }, async (req, res) => {
       res.setHeader('Content-Type', 'plain/html');
 
       const pdfToHtml = spawn('pdftohtml', ['-stdout', '-noframes', '-', '-']);

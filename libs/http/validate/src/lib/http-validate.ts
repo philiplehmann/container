@@ -8,13 +8,39 @@ export type Response = ServerResponse<IncomingMessage> & {
 };
 type Next<S extends ZodSchema> = (req: IncomingMessage, res: Response, body: S['_output']) => Promise<void> | void;
 
-export const validate =
-  <S extends ZodSchema>(schema: S, next: Next<S>) =>
-  async (req: IncomingMessage, res: Response) => {
+export function validate<S extends ZodSchema>(
+  schema: S,
+): (req: IncomingMessage, res: Response) => Promise<S['_output']>;
+export function validate<S extends ZodSchema>(
+  schema: S,
+  next: Next<S>,
+): (req: IncomingMessage, res: Response) => Promise<void>;
+export function validate<S extends ZodSchema>(schema: S, next?: Next<S>) {
+  return async (req: IncomingMessage, res: Response) => {
     const data = await requestToJson(req);
     const body = schema.safeParse(data);
     if (body.success) {
-      return next(req, res, body.data);
+      return next ? next(req, res, body.data) : body.data;
     }
     throw new BadRequest(JSON.stringify(body.error));
   };
+}
+
+export function validateSearchParams<S extends ZodSchema>(
+  schema: S,
+): (req: IncomingMessage, res: Response) => Promise<S['_output']>;
+export function validateSearchParams<S extends ZodSchema>(
+  schema: S,
+  next: Next<S>,
+): (req: IncomingMessage, res: Response) => Promise<void>;
+export function validateSearchParams<S extends ZodSchema>(schema: S, next?: Next<S>) {
+  return async (req: IncomingMessage, res: Response) => {
+    const url = new URL(req.url || '', `http://${req.headers.host}`);
+    const params = Object.fromEntries(url.searchParams);
+    const validated = schema.safeParse(params);
+    if (validated.success) {
+      return next ? next(req, res, params) : params;
+    }
+    throw new BadRequest(JSON.stringify(params));
+  };
+}

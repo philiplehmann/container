@@ -3,18 +3,24 @@ import { createServer } from 'node:http';
 
 import { routes, post } from '@container/http/route';
 import { streamHttpBinary } from '@container/stream/http-binary';
+import { schema } from './schema';
 
 const PORT = process.env.PORT || '3000';
 
 const unoserver = spawn('unoserver', { stdio: 'inherit' });
 
+const mimeType = Object.freeze({
+  pdf: 'application/pdf',
+  png: 'image/png',
+  jpeg: 'image/jpeg',
+} as const);
+
 const server = createServer(
   routes(
-    post('/convert', async (req, res) => {
+    post({ path: '/convert', query: schema }, async (req, res, { query: { convertTo = 'pdf' } }) => {
       // unoconvert [-h] [--convert-to CONVERT_TO] [--filter FILTER_NAME] [--interface INTERFACE] [--port PORT] infile outfile
-      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Type', mimeType[convertTo]);
 
-      const convertTo = 'pdf';
       const unoconvert = spawn('unoconvert', ['--convert-to', convertTo, '-', '-']);
       streamHttpBinary(req, res, unoconvert);
     }),

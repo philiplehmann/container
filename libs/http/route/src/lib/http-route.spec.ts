@@ -9,23 +9,23 @@ describe('http-route', () => {
     return new Promise<void>((resolve, reject) => {
       httpServer = createServer(
         routes(
-          get('/get', async (req, res) => {
+          get({ path: '/get' }, async (req, res) => {
             await res.write('get');
             await res.end();
           }),
-          post('/post', async (req, res) => {
+          post({ path: '/post' }, async (req, res) => {
             await res.write('post');
             await res.end();
           }),
-          put('/put', async (req, res) => {
+          put({ path: '/put' }, async (req, res) => {
             await res.write('put');
             await res.end();
           }),
-          patch('/patch', async (req, res) => {
+          patch({ path: '/patch' }, async (req, res) => {
             await res.write('patch');
             await res.end();
           }),
-          del('/delete', async (req, res) => {
+          del({ path: '/delete' }, async (req, res) => {
             await res.write('delete');
             await res.end();
           }),
@@ -45,44 +45,88 @@ describe('http-route', () => {
   afterAll(() => {
     httpServer.close();
   });
-
-  it('get', async () => {
-    const response = await fetch(`http://localhost:${port}/get`, {
-      method: 'GET',
+  describe('get', () => {
+    it('200', async () => {
+      const response = await fetch(`http://localhost:${port}/get`, {
+        method: 'GET',
+      });
+      const content = await response.text();
+      expect(content).toEqual('get');
     });
-    const content = await response.text();
-    expect(content).toEqual('get');
+
+    it('404', async () => {
+      const response = await fetch(`http://localhost:${port}/other`, {
+        method: 'GET',
+      });
+      expect(response.status).toEqual(404);
+    });
   });
 
-  it('post', async () => {
-    const response = await fetch(`http://localhost:${port}/post`, {
-      method: 'POST',
+  describe('post', () => {
+    it('200', async () => {
+      const response = await fetch(`http://localhost:${port}/post`, {
+        method: 'POST',
+      });
+      const content = await response.text();
+      expect(content).toEqual('post');
     });
-    const content = await response.text();
-    expect(content).toEqual('post');
+
+    it('404', async () => {
+      const response = await fetch(`http://localhost:${port}/other`, {
+        method: 'POST',
+      });
+      expect(response.status).toEqual(404);
+    });
   });
 
-  it('put', async () => {
-    const response = await fetch(`http://localhost:${port}/put`, {
-      method: 'PUT',
+  describe('put', () => {
+    it('200', async () => {
+      const response = await fetch(`http://localhost:${port}/put`, {
+        method: 'PUT',
+      });
+      const content = await response.text();
+      expect(content).toEqual('put');
     });
-    const content = await response.text();
-    expect(content).toEqual('put');
+
+    it('404', async () => {
+      const response = await fetch(`http://localhost:${port}/other`, {
+        method: 'PUT',
+      });
+      expect(response.status).toEqual(404);
+    });
   });
 
-  it('patch', async () => {
-    const response = await fetch(`http://localhost:${port}/patch`, {
-      method: 'PATCH',
+  describe('patch', () => {
+    it('200', async () => {
+      const response = await fetch(`http://localhost:${port}/patch`, {
+        method: 'PATCH',
+      });
+      const content = await response.text();
+      expect(content).toEqual('patch');
     });
-    const content = await response.text();
-    expect(content).toEqual('patch');
+
+    it('404', async () => {
+      const response = await fetch(`http://localhost:${port}/other`, {
+        method: 'PATCH',
+      });
+      expect(response.status).toEqual(404);
+    });
   });
 
-  it('delete', async () => {
-    const response = await fetch(`http://localhost:${port}/delete`, {
-      method: 'DELETE',
+  describe('delete', () => {
+    it('200', async () => {
+      const response = await fetch(`http://localhost:${port}/delete`, {
+        method: 'DELETE',
+      });
+      const content = await response.text();
+      expect(content).toEqual('delete');
     });
-    const content = await response.text();
-    expect(content).toEqual('delete');
+
+    it('404', async () => {
+      const response = await fetch(`http://localhost:${port}/other`, {
+        method: 'DELETE',
+      });
+      expect(response.status).toEqual(404);
+    });
   });
 });
