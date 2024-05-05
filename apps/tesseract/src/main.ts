@@ -8,7 +8,7 @@ const PORT = process.env.PORT || '3000';
 
 const server = createServer(
   routes(
-    post('/image-to-text', async (req, res) => {
+    post({ path: '/image-to-text' }, async (req, res) => {
       const imageToText = spawn('tesseract', ['-', '-']);
       streamHttpBinary(req, res, imageToText);
     }),
