@@ -30,7 +30,7 @@ describe('unoserver', () => {
         await container.stop();
       });
 
-      it('should convert docx to pdf', async () => {
+      it('should convert docx to pdf per default', async () => {
         const file = resolve(__dirname, 'assets/dummy.docx');
         const [response, text] = await testRequest({
           method: 'POST',
@@ -45,6 +45,57 @@ describe('unoserver', () => {
 
         expect(response.statusCode).toBe(200);
         expect(text.substring(0, 5)).toBe('%PDF-');
+      });
+
+      it('should convert docx to pdf with convertTo', async () => {
+        const file = resolve(__dirname, 'assets/dummy.docx');
+        const [response, text] = await testRequest({
+          method: 'POST',
+          host: 'localhost',
+          port,
+          path: '/convert?convertTo=pdf',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          file,
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(text.substring(0, 5)).toBe('%PDF-');
+      });
+
+      it('should convert docx to png with convertTo', async () => {
+        const file = resolve(__dirname, 'assets/dummy.docx');
+        const [response, text] = await testRequest({
+          method: 'POST',
+          host: 'localhost',
+          port,
+          path: '/convert?convertTo=png',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          file,
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.headers['content-type']).toBe('image/png');
+      });
+
+      it('should convert docx to jpeg with convertTo', async () => {
+        const file = resolve(__dirname, 'assets/dummy.docx');
+        const [response, text] = await testRequest({
+          method: 'POST',
+          host: 'localhost',
+          port,
+          path: '/convert?convertTo=jpeg',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          file,
+        });
+
+        expect(response.statusCode).toBe(200);
+        expect(response.headers['content-type']).toBe('image/jpeg');
       });
     });
   });
