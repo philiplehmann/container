@@ -28,7 +28,6 @@ let port: number;
     await container.stop();
   });
 
-  let numberOfPages = 0;
   let filePath = '';
   let outputPaths: string[] = [];
 
