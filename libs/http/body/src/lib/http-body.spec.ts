@@ -6,7 +6,7 @@ import { post } from '@container/http/route';
 
 const createTestServer = async (callback: (req: IncomingMessage) => Promise<void>): Promise<number> => {
   const httpServer = createServer(
-    post('/', async (req, res) => {
+    post({ path: '/' }, async (req, res) => {
       await callback(req);
       res.end();
       httpServer.close();
