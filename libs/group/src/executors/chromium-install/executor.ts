@@ -5,7 +5,7 @@ import type { Executor } from '@nx/devkit';
 const runExecutor: Executor<ChromiumInstallExecutorSchema> = async () => {
   if (process.env.RUNNER_OS === 'Linux') {
     try {
-      await promiseSpawn('sudo', ['apt-get', 'install', 'ghostscript']);
+      await promiseSpawn('sudo', ['apt-get', 'install', 'ghostscript', '--yes', '--no-install-recommends']);
       await promiseSpawn('sudo',
         ['sed', '-i', 's/$SRC/$RPL/', '/etc/ImageMagick-6/policy.xml'],
         {

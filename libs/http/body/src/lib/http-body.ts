@@ -1,7 +1,7 @@
 import type { IncomingMessage } from 'node:http';
 import { BadRequest } from '@container/http/error';
 import { z } from 'zod';
-import { Readable } from 'node:stream';
+import type { Readable } from 'node:stream';
 
 const applicationJSON = z.object({
   'content-type': z.literal('application/json'),
