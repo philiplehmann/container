@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/schema",
   "version": 2,
-  "title": "group empty executor",
+  "title": "helper empty executor",
   "description": "",
   "type": "object",
   "properties": {},

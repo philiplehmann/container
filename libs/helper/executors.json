@@ -1,0 +1,14 @@
+{
+  "executors": {
+    "empty": {
+      "implementation": "./src/executors/empty/executor",
+      "schema": "./src/executors/empty/schema.json",
+      "description": "do nothing"
+    },
+    "e2e-install": {
+      "implementation": "./src/executors/e2e-install/executor",
+      "schema": "./src/executors/e2e-install/schema.json",
+      "description": "playwright install chromium, install ghostscript, configure imagemagick"
+    }
+  }
+}

@@ -21,7 +21,7 @@
       "options": {}
     },
     "test": {
-      "executor": "@container/group:empty",
+      "executor": "@container/helper:empty",
       "dependsOn": [
         "vitest"
       ],

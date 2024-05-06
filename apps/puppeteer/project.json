@@ -76,7 +76,7 @@
       "options": {}
     },
     "e2e-install": {
-      "executor": "@container/group:chromium-install",
+      "executor": "@container/helper:e2e-install",
       "options": {}
     },
     "e2e": {
@@ -97,7 +97,7 @@
       }
     },
     "test": {
-      "executor": "@container/group:empty",
+      "executor": "@container/helper:empty",
       "dependsOn": [
         "e2e",
         "vitest"

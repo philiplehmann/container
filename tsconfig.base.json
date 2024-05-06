@@ -18,7 +18,7 @@
     "paths": {
       "@container/biomejs": ["libs/biomejs/src/index.ts"],
       "@container/docker": ["libs/docker/src/index.ts"],
-      "@container/group": ["libs/group/src/index.ts"],
+      "@container/helper": ["libs/helper/src/index.ts"],
       "@container/http/body": ["libs/http/body/src/index.ts"],
       "@container/http/error": ["libs/http/error/src/index.ts"],
       "@container/http/route": ["libs/http/route/src/index.ts"],
