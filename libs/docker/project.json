@@ -37,13 +37,6 @@
           }
         ]
       }
-    },
-    "test": {
-      "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "options": {}
     }
   },
   "tags": []
