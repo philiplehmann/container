@@ -12,8 +12,6 @@ const runExecutor: Executor<E2EInstallExecutorSchema> = async () => {
         's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/',
         '/etc/ImageMagick-6/policy.xml',
       ]);
-      await promiseSpawn('convert', ['--version']);
-      await promiseSpawn('sudo', ['cat', '/etc/ImageMagick-6/policy.xml']);
     } catch (error) {
       console.error('could not install ghostscript and imagemagick', error);
       return {
