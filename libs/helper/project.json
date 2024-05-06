@@ -1,7 +1,7 @@
 {
-  "name": "group",
+  "name": "helper",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/group/src",
+  "sourceRoot": "libs/helper/src",
   "projectType": "library",
   "targets": {
     "build": {
@@ -10,28 +10,28 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/group",
-        "main": "libs/group/src/index.ts",
-        "tsConfig": "libs/group/tsconfig.lib.json",
+        "outputPath": "dist/libs/helper",
+        "main": "libs/helper/src/index.ts",
+        "tsConfig": "libs/helper/tsconfig.lib.json",
         "assets": [
-          "libs/group/*.md",
+          "libs/helper/*.md",
           {
-            "input": "./libs/group/src",
+            "input": "./libs/helper/src",
             "glob": "**/!(*.ts)",
             "output": "./src"
           },
           {
-            "input": "./libs/group/src",
+            "input": "./libs/helper/src",
             "glob": "**/*.d.ts",
             "output": "./src"
           },
           {
-            "input": "./libs/group",
+            "input": "./libs/helper",
             "glob": "generators.json",
             "output": "."
           },
           {
-            "input": "./libs/group",
+            "input": "./libs/helper",
             "glob": "executors.json",
             "output": "."
           }

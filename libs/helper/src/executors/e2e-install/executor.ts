@@ -1,8 +1,8 @@
 import { promiseSpawn } from '@container/docker';
-import type { ChromiumInstallExecutorSchema } from './schema';
+import type { E2EInstallExecutorSchema } from './schema';
 import type { Executor } from '@nx/devkit';
 
-const runExecutor: Executor<ChromiumInstallExecutorSchema> = async () => {
+const runExecutor: Executor<E2EInstallExecutorSchema> = async () => {
   if (process.env.RUNNER_OS === 'Linux') {
     try {
       await promiseSpawn('sudo', ['apt-get', 'install', 'ghostscript', '--yes', '--no-install-recommends']);

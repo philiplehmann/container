@@ -9,7 +9,7 @@ import { validate } from './http-validate';
 const createTestServer = async (schema: ZodSchema): Promise<number> => {
   const httpServer = createServer(
     post(
-      '/',
+      { path: '/' },
       validate(schema, async (req, res) => {
         res.statusCode = 200;
         res.end();
