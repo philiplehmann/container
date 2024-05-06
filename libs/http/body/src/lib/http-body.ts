@@ -2,33 +2,34 @@ import type { IncomingMessage } from 'node:http';
 import { BadRequest } from '@container/http/error';
 import { z } from 'zod';
 import type { Readable } from 'node:stream';
+import type { ReadStream } from 'node:fs';
 
 const applicationJSON = z.object({
   'content-type': z.literal('application/json'),
 });
 
-export const streamToBuffer = async (req: Readable): Promise<Buffer> => {
+export async function streamToBuffer(stream: Readable | ReadStream): Promise<Buffer>{
   const bodyParts: Buffer[] = [];
-  for await (const chunk of req) {
+  for await (const chunk of stream) {
     bodyParts.push(chunk);
   }
   return Buffer.concat(bodyParts);
 }
 
-export const requestToBuffer = async (req: IncomingMessage): Promise<Buffer> => {
+export async function requestToBuffer(req: IncomingMessage): Promise<Buffer> {
   return streamToBuffer(req);
 };
 
-export const streamToText = async (req: Readable): Promise<string> => {
+export async function streamToText(req: Readable | ReadStream): Promise<string> {
   const buffer = await streamToBuffer(req);
   return buffer.toString('utf-8');
 };
 
-export const requestToText = async (req: IncomingMessage): Promise<string> => {
+export async function requestToText(req: IncomingMessage): Promise<string> {
   return streamToText(req);
 };
 
-export const streamToJson = async <T = unknown>(req: Readable): Promise<T> => {
+export async function streamToJson<T = unknown>(req: Readable | ReadStream): Promise<T> {
   try {
     const body = await streamToText(req);
     return JSON.parse(body);
@@ -43,7 +44,7 @@ export const streamToJson = async <T = unknown>(req: Readable): Promise<T> => {
   }
 }
 
-export const requestToJson = async <T = unknown>(req: IncomingMessage): Promise<T> => {
+export async function requestToJson<T = unknown>(req: IncomingMessage): Promise<T> {
   const test = applicationJSON.safeParse(req.headers);
   if (test.success === false) {
     throw new BadRequest(JSON.stringify(test.error));

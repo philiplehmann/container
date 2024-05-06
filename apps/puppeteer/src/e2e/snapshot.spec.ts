@@ -6,7 +6,6 @@ import { readdir, unlink } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { streamToBuffer } from '@container/http/body';
-import { Readable } from 'node:stream';
 
 const containerPort = 5000;
 
@@ -67,7 +66,7 @@ let port: number;
 
   test('test pdf visually', async ({ page }) => {
     await Promise.all(outputPaths.map(async (imagePath, index) => {
-      const buffer = await streamToBuffer(Readable.from(createReadStream(imagePath)));
+      const buffer = await streamToBuffer(createReadStream(imagePath));
       expect(buffer).toMatchSnapshot({ name: `page-${index}.png`, maxDiffPixelRatio: 0.02 });
     }));
   });
