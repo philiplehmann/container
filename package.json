@@ -6,10 +6,10 @@
   "devDependencies": {
     "@biomejs/biome": "1.7.2",
     "@nx/devkit": "19.0.0",
-    "@nx/esbuild": "^19.0.0",
+    "@nx/esbuild": "19.0.0",
     "@nx/js": "19.0.0",
     "@nx/node": "19.0.0",
-    "@nx/playwright": "^19.0.0",
+    "@nx/playwright": "19.0.0",
     "@nx/plugin": "19.0.0",
     "@nx/vite": "19.0.0",
     "@nx/workspace": "19.0.0",

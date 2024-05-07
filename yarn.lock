@@ -1539,10 +1539,10 @@ __metadata:
   dependencies:
     "@biomejs/biome": "npm:1.7.2"
     "@nx/devkit": "npm:19.0.0"
-    "@nx/esbuild": "npm:^19.0.0"
+    "@nx/esbuild": "npm:19.0.0"
     "@nx/js": "npm:19.0.0"
     "@nx/node": "npm:19.0.0"
-    "@nx/playwright": "npm:^19.0.0"
+    "@nx/playwright": "npm:19.0.0"
     "@nx/plugin": "npm:19.0.0"
     "@nx/vite": "npm:19.0.0"
     "@nx/workspace": "npm:19.0.0"
@@ -2413,7 +2413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/esbuild@npm:19.0.0, @nx/esbuild@npm:^19.0.0":
+"@nx/esbuild@npm:19.0.0":
   version: 19.0.0
   resolution: "@nx/esbuild@npm:19.0.0"
   dependencies:
@@ -2611,7 +2611,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/playwright@npm:^19.0.0":
+"@nx/playwright@npm:19.0.0":
   version: 19.0.0
   resolution: "@nx/playwright@npm:19.0.0"
   dependencies:
