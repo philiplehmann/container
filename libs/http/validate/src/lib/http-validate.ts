@@ -1,16 +1,14 @@
 import { requestToJson } from '@container/http/body';
 import { BadRequest } from '@container/http/error';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import type { ZodSchema } from 'zod';
+import type { ZodSchema, TypeOf } from 'zod';
 
 export type Response = ServerResponse<IncomingMessage> & {
   req: IncomingMessage;
 };
-type Next<S extends ZodSchema> = (req: IncomingMessage, res: Response, body: S['_output']) => Promise<void> | void;
+type Next<S extends ZodSchema> = (req: IncomingMessage, res: Response, body: TypeOf<S>) => Promise<void> | void;
 
-export function validate<S extends ZodSchema>(
-  schema: S,
-): (req: IncomingMessage, res: Response) => Promise<S['_output']>;
+export function validate<S extends ZodSchema>(schema: S): (req: IncomingMessage, res: Response) => Promise<TypeOf<S>>;
 export function validate<S extends ZodSchema>(
   schema: S,
   next: Next<S>,
@@ -28,7 +26,7 @@ export function validate<S extends ZodSchema>(schema: S, next?: Next<S>) {
 
 export function validateSearchParams<S extends ZodSchema>(
   schema: S,
-): (req: IncomingMessage, res: Response) => Promise<S['_output']>;
+): (req: IncomingMessage, res: Response) => Promise<TypeOf<S>>;
 export function validateSearchParams<S extends ZodSchema>(
   schema: S,
   next: Next<S>,
