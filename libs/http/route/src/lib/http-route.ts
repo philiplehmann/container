@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import { HttpError } from '@container/http/error';
-import type { ZodSchema } from 'zod';
+import type { TypeOf, ZodSchema } from 'zod';
 import { validate, validateSearchParams } from '@container/http/validate';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -15,8 +15,8 @@ type Next<
   req: IncomingMessage,
   res: Response,
   data: {
-    body: BodySchema extends ZodSchema ? BodySchema['_output'] : undefined;
-    query: QuerySchema extends ZodSchema ? QuerySchema['_output'] : undefined;
+    body: BodySchema extends ZodSchema ? TypeOf<BodySchema> : undefined;
+    query: QuerySchema extends ZodSchema ? TypeOf<QuerySchema> : undefined;
   },
 ) => Promise<void> | void;
 
@@ -31,9 +31,9 @@ export const route =
       try {
         const validSearchParams = (
           query ? await validateSearchParams(query)(req, res) : undefined
-        ) as QuerySchema extends ZodSchema ? QuerySchema['_output'] : undefined;
+        ) as QuerySchema extends ZodSchema ? TypeOf<QuerySchema> : undefined;
         const validBody = (body ? await validate(body)(req, res) : undefined) as BodySchema extends ZodSchema
-          ? BodySchema['_output']
+          ? TypeOf<BodySchema>
           : undefined;
         return await next(req, res, { body: validBody, query: validSearchParams });
       } catch (error) {
