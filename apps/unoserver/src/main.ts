@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
-import { createServer } from 'node:http';
+import { createServer, IncomingMessage } from 'node:http';
 
-import { routes, post } from '@container/http/route';
+import { routes, post, get, healthEndpoints } from '@container/http/route';
 import { streamHttpBinary } from '@container/stream/http-binary';
 import { schema } from './schema';
 
@@ -24,6 +24,7 @@ const server = createServer(
       const unoconvert = spawn('unoconvert', ['--convert-to', convertTo, '-', '-']);
       streamHttpBinary(req, res, unoconvert);
     }),
+    ...healthEndpoints,
   ),
 ).listen(PORT, () => {
   console.log('start unoserver server on ', PORT);
