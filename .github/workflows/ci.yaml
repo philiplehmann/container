@@ -16,6 +16,9 @@ permissions:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      actions: "read"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -47,6 +50,9 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      actions: "read"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -84,6 +90,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      actions: "read"
     if: github.ref == 'refs/heads/main'
     needs:
       - lint
