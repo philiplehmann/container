@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import puppeteer from 'puppeteer';
-import { routes, post } from '@container/http/route';
+import { routes, post, healthEndpoints } from '@container/http/route';
 import { schema } from './schema';
 
 const PORT = process.env.PORT || '3000';
@@ -38,6 +38,7 @@ const server = createServer(
         await browser.close();
       }
     }),
+    ...healthEndpoints,
   ),
 ).listen(PORT, () => {
   console.log('start puppeteer server on ', PORT);

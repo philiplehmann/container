@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 
-import { routes, post } from '@container/http/route';
+import { routes, post, healthEndpoints } from '@container/http/route';
 import { streamHttpBinary } from '@container/stream/http-binary';
 
 const PORT = process.env.PORT || '3000';
@@ -21,6 +21,7 @@ const server = createServer(
       const pdfToHtml = spawn('pdftohtml', ['-stdout', '-noframes', '-', '-']);
       streamHttpBinary(req, res, pdfToHtml);
     }),
+    ...healthEndpoints,
   ),
 ).listen(PORT, () => {
   console.log('start poppler server on ', PORT);

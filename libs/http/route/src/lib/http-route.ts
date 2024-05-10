@@ -58,56 +58,91 @@ export const route =
   };
 
 export const get = <QuerySchema extends ZodSchema | undefined = undefined>(
-  params: {
-    path: string;
-    query?: QuerySchema;
-  },
+  params:
+    | {
+        path: string;
+        query?: QuerySchema;
+      }
+    | string,
   next: Next<undefined, QuerySchema>,
-) => route({ method: 'GET', ...params }, next);
+) => {
+  if (typeof params === 'string') {
+    return route({ method: 'GET', path: params }, next);
+  }
+  return route({ method: 'GET', ...params }, next);
+};
 
 export const post = <
   BodySchema extends ZodSchema | undefined = undefined,
   QuerySchema extends ZodSchema | undefined = undefined,
 >(
-  params: {
-    path: string;
-    body?: BodySchema;
-    query?: QuerySchema;
-  },
+  params:
+    | {
+        path: string;
+        body?: BodySchema;
+        query?: QuerySchema;
+      }
+    | string,
   next: Next<BodySchema, QuerySchema>,
-) => route({ method: 'POST', ...params }, next);
+) => {
+  if (typeof params === 'string') {
+    return route({ method: 'POST', path: params }, next);
+  }
+  return route({ method: 'POST', ...params }, next);
+};
 
 export const put = <
   BodySchema extends ZodSchema | undefined = undefined,
   QuerySchema extends ZodSchema | undefined = undefined,
 >(
-  params: {
-    path: string;
-    body?: BodySchema;
-    query?: QuerySchema;
-  },
+  params:
+    | {
+        path: string;
+        body?: BodySchema;
+        query?: QuerySchema;
+      }
+    | string,
   next: Next<BodySchema, QuerySchema>,
-) => route({ method: 'PUT', ...params }, next);
+) => {
+  if (typeof params === 'string') {
+    return route({ method: 'PUT', path: params }, next);
+  }
+  return route({ method: 'PUT', ...params }, next);
+};
 
 export const patch = <
   BodySchema extends ZodSchema | undefined = undefined,
   QuerySchema extends ZodSchema | undefined = undefined,
 >(
-  params: {
-    path: string;
-    body?: BodySchema;
-    query?: QuerySchema;
-  },
+  params:
+    | {
+        path: string;
+        body?: BodySchema;
+        query?: QuerySchema;
+      }
+    | string,
   next: Next<BodySchema, QuerySchema>,
-) => route({ method: 'PATCH', ...params }, next);
+) => {
+  if (typeof params === 'string') {
+    return route({ method: 'PATCH', path: params }, next);
+  }
+  return route({ method: 'PATCH', ...params }, next);
+};
 
 export const del = <QuerySchema extends ZodSchema | undefined = undefined>(
-  params: {
-    path: string;
-    query?: QuerySchema;
-  },
+  params:
+    | {
+        path: string;
+        query?: QuerySchema;
+      }
+    | string,
   next: Next<undefined, QuerySchema>,
-) => route({ method: 'DELETE', ...params }, next);
+) => {
+  if (typeof params === 'string') {
+    return route({ method: 'DELETE', path: params }, next);
+  }
+  return route({ method: 'DELETE', ...params }, next);
+};
 
 export const routes =
   (...routes: ReturnType<typeof route>[]) =>
