@@ -21,6 +21,8 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     testTimeout: 60_000,
 
+    pool: 'forks',
+
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../coverage/libs/http/route',

@@ -13,13 +13,13 @@
     "@nx/plugin": "19.0.4",
     "@nx/vite": "19.0.4",
     "@nx/workspace": "19.0.4",
-    "@playwright/test": "^1.36.0",
+    "@playwright/test": "^1.44.0",
     "@swc-node/register": "1.9.1",
     "@swc/cli": "0.3.12",
     "@swc/core": "1.5.7",
     "@swc/helpers": "0.5.11",
     "@types/node": "20.12.12",
-    "@types/nodemailer": "^6.4.14",
+    "@types/nodemailer": "^6.4.15",
     "@vitest/coverage-v8": "1.6.0",
     "@vitest/ui": "1.6.0",
     "esbuild": "0.21.3",
@@ -27,7 +27,7 @@
     "nodemailer": "6.9.13",
     "nx": "19.0.4",
     "nx-remotecache-minio": "19.0.0",
-    "playwright": "^1.43.1",
+    "playwright": "^1.44.0",
     "testcontainers": "10.9.0",
     "tslib": "2.6.2",
     "typescript": "5.4.5",
@@ -36,9 +36,8 @@
   },
   "packageManager": "yarn@4.2.2",
   "dependencies": {
-    "axios": "1.7.0",
     "puppeteer": "22.9.0",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "engines": {
     "node": "20.13.1",

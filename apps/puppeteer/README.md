@@ -15,6 +15,15 @@ curl -X POST \
   'http://localhost:3000/'
 ```
 
+or
+
+```
+curl -X POST \
+  -H 'content-type: application/json' \
+  --data '{"url":"https://google.com"}' \
+  'http://localhost:3000/pdf'
+```
+
 ## Convert html to pdf
 
 ```
@@ -22,6 +31,34 @@ curl -X POST \
   -H 'content-type: application/json' \
   --data '{"html":"<h1>title</h1>"}' \
   'http://localhost:3000/'
+```
+
+or
+
+```
+curl -X POST \
+  -H 'content-type: application/json' \
+  --data '{"html":"<h1>title</h1>"}' \
+  'http://localhost:3000/pdf'
+```
+
+## Convert url to image
+
+```
+curl -X POST \
+  -H 'content-type: application/json' \
+  --data '{"url":"https://google.com"}' \
+  'http://localhost:3000/image'
+```
+
+
+## Convert html to image
+
+```
+curl -X POST \
+  -H 'content-type: application/json' \
+  --data '{"html":"<h1>title</h1>"}' \
+  'http://localhost:3000/image'
 ```
 
 ## Props
