@@ -1546,29 +1546,28 @@ __metadata:
     "@nx/plugin": "npm:19.0.4"
     "@nx/vite": "npm:19.0.4"
     "@nx/workspace": "npm:19.0.4"
-    "@playwright/test": "npm:^1.36.0"
+    "@playwright/test": "npm:^1.44.0"
     "@swc-node/register": "npm:1.9.1"
     "@swc/cli": "npm:0.3.12"
     "@swc/core": "npm:1.5.7"
     "@swc/helpers": "npm:0.5.11"
     "@types/node": "npm:20.12.12"
-    "@types/nodemailer": "npm:^6.4.14"
+    "@types/nodemailer": "npm:^6.4.15"
     "@vitest/coverage-v8": "npm:1.6.0"
     "@vitest/ui": "npm:1.6.0"
-    axios: "npm:1.7.0"
     esbuild: "npm:0.21.3"
     jsdom: "npm:^24.0.0"
     nodemailer: "npm:6.9.13"
     nx: "npm:19.0.4"
     nx-remotecache-minio: "npm:19.0.0"
-    playwright: "npm:^1.43.1"
+    playwright: "npm:^1.44.0"
     puppeteer: "npm:22.9.0"
     testcontainers: "npm:10.9.0"
     tslib: "npm:2.6.2"
     typescript: "npm:5.4.5"
     vite: "npm:5.2.11"
     vitest: "npm:1.6.0"
-    zod: "npm:^3.22.4"
+    zod: "npm:^3.23.8"
   languageName: unknown
   linkType: soft
 
@@ -2857,7 +2856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:^1.36.0":
+"@playwright/test@npm:^1.44.0":
   version: 1.44.0
   resolution: "@playwright/test@npm:1.44.0"
   dependencies:
@@ -3529,7 +3528,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nodemailer@npm:^6.4.14":
+"@types/nodemailer@npm:^6.4.15":
   version: 6.4.15
   resolution: "@types/nodemailer@npm:6.4.15"
   dependencies:
@@ -4037,7 +4036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.7.0":
+"axios@npm:^1.6.0":
   version: 1.7.0
   resolution: "axios@npm:1.7.0"
   dependencies:
@@ -4045,17 +4044,6 @@ __metadata:
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10c0/340ea17372f532c35b0713314b3454611a14fa9ed5ac31b6b84791e05231e878e72ea8d8b8cf780c00285052eea33549afa8fede495d9ee38248a2dac16492ee
-  languageName: node
-  linkType: hard
-
-"axios@npm:^1.6.0":
-  version: 1.6.7
-  resolution: "axios@npm:1.6.7"
-  dependencies:
-    follow-redirects: "npm:^1.15.4"
-    form-data: "npm:^4.0.0"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/131bf8e62eee48ca4bd84e6101f211961bf6a21a33b95e5dfb3983d5a2fe50d9fffde0b57668d7ce6f65063d3dc10f2212cbcb554f75cfca99da1c73b210358d
   languageName: node
   linkType: hard
 
@@ -6047,16 +6035,6 @@ __metadata:
   version: 3.3.1
   resolution: "flatted@npm:3.3.1"
   checksum: 10c0/324166b125ee07d4ca9bcf3a5f98d915d5db4f39d711fba640a3178b959919aae1f7cfd8aabcfef5826ed8aa8a2aa14cc85b2d7d18ff638ddf4ae3df39573eaf
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.15.4":
-  version: 1.15.5
-  resolution: "follow-redirects@npm:1.15.5"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: 10c0/418d71688ceaf109dfd6f85f747a0c75de30afe43a294caa211def77f02ef19865b547dfb73fde82b751e1cc507c06c754120b848fe5a7400b0a669766df7615
   languageName: node
   linkType: hard
 
@@ -8626,7 +8604,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright@npm:1.44.0, playwright@npm:^1.43.1":
+"playwright@npm:1.44.0, playwright@npm:^1.44.0":
   version: 1.44.0
   resolution: "playwright@npm:1.44.0"
   dependencies:
@@ -10856,7 +10834,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.4":
+"zod@npm:^3.23.8":
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 10c0/8f14c87d6b1b53c944c25ce7a28616896319d95bc46a9660fe441adc0ed0a81253b02b5abdaeffedbeb23bdd25a0bf1c29d2c12dd919aef6447652dd295e3e69

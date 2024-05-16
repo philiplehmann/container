@@ -24,7 +24,8 @@
       "@container/http/route": ["libs/http/route/src/index.ts"],
       "@container/http/validate": ["libs/http/validate/src/index.ts"],
       "@container/stream/http-binary": ["libs/stream/http-binary/src/index.ts"],
-      "@container/test/request": ["libs/test/request/src/index.ts"]
+      "@container/test/request": ["libs/test/request/src/index.ts"],
+      "@container/test/server": ["libs/test/server/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

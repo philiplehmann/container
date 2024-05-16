@@ -1,16 +1,13 @@
-import { get } from './http-route';
+import { get } from './get';
 
 export const healthEndpoints = [
-  get('/health', (_, res) => {
-    res.write('ok');
-    res.end();
+  get('/health', () => {
+    return { statusCode: 200, body: 'ok' };
   }),
-  get('/health/liveness', (_, res) => {
-    res.write('ok');
-    res.end();
+  get('/health/liveness', () => {
+    return { statusCode: 200, body: 'ok' };
   }),
-  get('/health/readiness', (_, res) => {
-    res.write('ok');
-    res.end();
+  get('/health/readiness', () => {
+    return { statusCode: 200, body: 'ok' };
   }),
 ];
