@@ -7,7 +7,7 @@ Monorepo containing multiple images for wrapped binaries or custom builds
 ### poppler wrapper
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/poppler/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/poppler-server)
+- [docker](https://hub.docker.com/r/philiplehmann/poppler-server)
 
 ```bash
 yarn nx docker-run poppler
@@ -16,7 +16,7 @@ yarn nx docker-run poppler
 ### tesseract wrapper
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/tesseract/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/tesseract)
+- [docker](https://hub.docker.com/r/philiplehmann/tesseract)
 
 ```bash
 yarn nx docker-run tesseract
@@ -25,7 +25,7 @@ yarn nx docker-run tesseract
 ### tesseract wrapper
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/tesseract/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/tesseract)
+- [docker](https://hub.docker.com/r/philiplehmann/tesseract)
 
 ```bash
 yarn nx docker-run tesseract
@@ -34,7 +34,7 @@ yarn nx docker-run tesseract
 ### unoserver wrapper
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/unoserver/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/unoserver)
+- [docker](https://hub.docker.com/r/philiplehmann/unoserver)
 
 ```bash
 yarn nx docker-run unoserver
@@ -43,7 +43,7 @@ yarn nx docker-run unoserver
 ### puppeteer wrapper
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/puppeteer/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/puppeteer)
+- [docker](https://hub.docker.com/r/philiplehmann/puppeteer)
 
 ```bash
 yarn nx docker-run puppeteer
@@ -54,7 +54,7 @@ yarn nx docker-run puppeteer
 ### MailCatcher (Ruby)
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/mailcatcher/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/mailcatcher)
+- [docker](https://hub.docker.com/r/philiplehmann/mailcatcher)
 
 ```bash
 yarn nx docker-run mailcatcher
@@ -63,7 +63,7 @@ yarn nx docker-run mailcatcher
 ### MailDev (Node)
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/maildev/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/maildev)
+- [docker](https://hub.docker.com/r/philiplehmann/maildev)
 
 ```bash
 yarn nx docker-run maildev
@@ -72,7 +72,7 @@ yarn nx docker-run maildev
 ### MailHog (Go)
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/mailhog/README.md)
-- [docker](https://hub.docker.com/repository/docker/philiplehmann/mailhog)
+- [docker](https://hub.docker.com/r/philiplehmann/mailhog)
 
 ```bash
 yarn nx docker-run mailhog
