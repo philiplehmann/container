@@ -22,15 +22,6 @@ yarn nx docker-run poppler
 yarn nx docker-run tesseract
 ```
 
-### tesseract wrapper
-
-- [doc](https://github.com/philiplehmann/container/blob/main/apps/tesseract/README.md)
-- [docker](https://hub.docker.com/r/philiplehmann/tesseract)
-
-```bash
-yarn nx docker-run tesseract
-```
-
 ### unoserver wrapper
 
 - [doc](https://github.com/philiplehmann/container/blob/main/apps/unoserver/README.md)
