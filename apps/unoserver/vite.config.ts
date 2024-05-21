@@ -22,6 +22,12 @@ export default defineConfig({
     testTimeout: 60_000,
     hookTimeout: 60_000,
 
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
+
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../coverage/apps/unoserver',
