@@ -1,30 +1,19 @@
 import { get } from './get';
-import { routes } from './routes';
-import type { Server } from 'node:http';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import { testServer } from '@container/test/server';
+import { describe, it, expect } from 'vitest';
+import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
   describe('object config', async () => {
-    let httpServer: Server;
-    let port: number;
-    beforeAll(async () => {
-      [httpServer, port] = await testServer(
-        routes(
-          get({ path: '/get' }, async ({ res }) => {
-            await res.write('get');
-            await res.end();
-          }),
-        ),
-      );
-    });
+    const server = useTestServer(
+      get({ path: '/get' }, async ({ res }) => {
+        await res.write('get');
+        await res.end();
+      }),
+    );
 
-    afterAll(() => {
-      httpServer.close();
-    });
     describe('get', () => {
       it('200', async () => {
-        const response = await fetch(`http://localhost:${port}/get`, {
+        const response = await server.request('/get', {
           method: 'GET',
         });
         const content = await response.text();
@@ -32,7 +21,7 @@ describe('http-route', () => {
       });
 
       it('404', async () => {
-        const response = await fetch(`http://localhost:${port}/other`, {
+        const response = await server.request('/other', {
           method: 'GET',
         });
         expect(response.status).toEqual(404);

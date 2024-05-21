@@ -1,30 +1,18 @@
 import { del } from './del';
-import { routes } from './routes';
-import type { Server } from 'node:http';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import { testServer } from '@container/test/server';
+import { describe, it, expect } from 'vitest';
+import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
   describe('string path config return', async () => {
-    let httpServer: Server;
-    let port: number;
-    beforeAll(async () => {
-      [httpServer, port] = await testServer(
-        routes(
-          del({ path: '/delete' }, async () => {
-            return { statusCode: 200, body: 'delete' };
-          }),
-        ),
-      );
-    });
-
-    afterAll(() => {
-      httpServer.close();
-    });
+    const server = useTestServer(
+      del({ path: '/delete' }, async () => {
+        return { statusCode: 200, body: 'delete' };
+      }),
+    );
 
     describe('delete', () => {
       it('200', async () => {
-        const response = await fetch(`http://localhost:${port}/delete`, {
+        const response = await server.request('/delete', {
           method: 'DELETE',
         });
         expect(response.status).toEqual(200);
@@ -33,7 +21,7 @@ describe('http-route', () => {
       });
 
       it('404', async () => {
-        const response = await fetch(`http://localhost:${port}/other`, {
+        const response = await server.request('/other', {
           method: 'DELETE',
         });
         expect(response.status).toEqual(404);
