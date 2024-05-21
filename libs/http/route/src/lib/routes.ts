@@ -15,13 +15,13 @@ export function routes(
   ...args: unknown[]
 ): (req: IncomingMessage, res: Response, prefix?: (string | RegExp)[]) => Promise<void> {
   const { routes, options } = (() => {
-    if (typeof args[0] === 'function') {
-      return { routes: args as ReturnType<typeof route>[], options: {} };
+    if (typeof args[0] === 'object') {
+      return {
+        routes: args.slice(1) as ReturnType<typeof route>[],
+        options: args[0] as { prefix?: string | RegExp[]; path?: string | RegExp },
+      };
     }
-    return {
-      routes: args.slice(1) as ReturnType<typeof route>[],
-      options: args[0] as { prefix?: string | RegExp[]; path?: string | RegExp },
-    };
+    return { routes: args as ReturnType<typeof route>[], options: {} };
   })();
   const { path = '/' } = options;
   const pathParts = (typeof path === 'string' ? path.split('/') : [path]).filter(Boolean);

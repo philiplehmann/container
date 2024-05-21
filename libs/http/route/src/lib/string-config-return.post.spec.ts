@@ -1,29 +1,17 @@
 import { post } from './post';
-import { routes } from './routes';
-import type { Server } from 'node:http';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import { testServer } from '@container/test/server';
+import { describe, it, expect } from 'vitest';
+import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
   describe('string path config return', async () => {
-    let httpServer: Server;
-    let port: number;
-    beforeAll(async () => {
-      [httpServer, port] = await testServer(
-        routes(
-          post({ path: '/post' }, async () => {
-            return { statusCode: 200, body: 'post' };
-          }),
-        ),
-      );
-    });
-
-    afterAll(() => {
-      httpServer.close();
-    });
+    const server = useTestServer(
+      post({ path: '/post' }, async () => {
+        return { statusCode: 200, body: 'post' };
+      }),
+    );
     describe('post', () => {
       it('200', async () => {
-        const response = await fetch(`http://localhost:${port}/post`, {
+        const response = await server.request('/post', {
           method: 'POST',
         });
         const content = await response.text();
@@ -31,7 +19,7 @@ describe('http-route', () => {
       });
 
       it('404', async () => {
-        const response = await fetch(`http://localhost:${port}/other`, {
+        const response = await server.request('/other', {
           method: 'POST',
         });
         expect(response.status).toEqual(404);
