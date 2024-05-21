@@ -21,6 +21,12 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     testTimeout: 60_000,
 
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+    },
+
     reporters: ['default'],
     coverage: {
       reportsDirectory: '../../coverage/apps/poppler',
