@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { ReadStream } from 'node:fs';
 import type { Readable } from 'node:stream';
+import type { Prefix } from './route';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
@@ -19,8 +20,14 @@ export interface ReqRes {
   res: Response;
 }
 
-export type NextMiddlware<Input extends ReqRes, Output extends ReqRes> = (data: Input) => Promise<Output>;
+export type NextMiddlware<Input extends Prefix<ReqRes>, Output extends Prefix<ReqRes>> = (
+  data: Input,
+) => Promise<Output>;
 
-export type Next<Input extends ReqRes> = (data: Input) => Promise<void> | Promise<NextResponse> | NextResponse | void;
+export type Next<Input extends Prefix<ReqRes>> = (
+  data: Input,
+) => Promise<void> | Promise<NextResponse> | NextResponse | void;
 
-export type NextPromise<Input extends ReqRes> = (data: Input) => Promise<void> | Promise<NextResponse | undefined>;
+export type NextPromise<Input extends Prefix<ReqRes>> = (
+  data: Input,
+) => Promise<void> | Promise<NextResponse | undefined>;

@@ -1,4 +1,4 @@
-import { get } from './get';
+import { get } from './method/get';
 
 export const healthEndpoints = [
   get('/health', () => {

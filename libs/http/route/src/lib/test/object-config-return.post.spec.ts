@@ -1,13 +1,12 @@
-import { post } from './post';
+import { post } from '../method/post';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('object config', async () => {
+  describe('object config return', async () => {
     const server = useTestServer(
-      post({ path: '/post' }, async ({ res }) => {
-        await res.write('post');
-        await res.end();
+      post({ path: '/post' }, async () => {
+        return { statusCode: 200, body: 'post' };
       }),
     );
 

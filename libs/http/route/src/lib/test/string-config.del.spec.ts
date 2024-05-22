@@ -1,12 +1,14 @@
-import { del } from './del';
+import { del } from '../method/del';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('string path config return', async () => {
+  describe('string path config', async () => {
     const server = useTestServer(
-      del({ path: '/delete' }, async () => {
-        return { statusCode: 200, body: 'delete' };
+      del('/delete', async ({ res }) => {
+        res.statusCode = 200;
+        res.write('delete');
+        res.end();
       }),
     );
 

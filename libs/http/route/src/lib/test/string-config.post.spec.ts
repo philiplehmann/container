@@ -1,30 +1,28 @@
-import { del } from './del';
+import { post } from '../method/post';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
   describe('string path config', async () => {
     const server = useTestServer(
-      del('/delete', async ({ res }) => {
-        res.statusCode = 200;
-        res.write('delete');
-        res.end();
+      post('/post', async ({ res }) => {
+        await res.write('post');
+        await res.end();
       }),
     );
 
-    describe('delete', () => {
+    describe('post', () => {
       it('200', async () => {
-        const response = await server.request('/delete', {
-          method: 'DELETE',
+        const response = await server.request('/post', {
+          method: 'POST',
         });
-        expect(response.status).toEqual(200);
         const content = await response.text();
-        expect(content).toEqual('delete');
+        expect(content).toEqual('post');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
-          method: 'DELETE',
+          method: 'POST',
         });
         expect(response.status).toEqual(404);
       });

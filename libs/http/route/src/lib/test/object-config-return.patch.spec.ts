@@ -1,28 +1,27 @@
-import { put } from './put';
+import { patch } from '../method/patch';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('object config', async () => {
+  describe('object config return', async () => {
     const server = useTestServer(
-      put({ path: '/put' }, async ({ res }) => {
-        await res.write('put');
-        await res.end();
+      patch({ path: '/patch' }, async () => {
+        return { statusCode: 200, body: 'patch' };
       }),
     );
 
-    describe('put', () => {
+    describe('patch', () => {
       it('200', async () => {
-        const response = await server.request('/put', {
-          method: 'PUT',
+        const response = await server.request('/patch', {
+          method: 'PATCH',
         });
         const content = await response.text();
-        expect(content).toEqual('put');
+        expect(content).toEqual('patch');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
-          method: 'PUT',
+          method: 'PATCH',
         });
         expect(response.status).toEqual(404);
       });

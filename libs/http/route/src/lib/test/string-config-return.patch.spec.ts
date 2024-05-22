@@ -1,28 +1,27 @@
-import { del } from './del';
+import { patch } from '../method/patch';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('object config return', async () => {
+  describe('string path config return', async () => {
     const server = useTestServer(
-      del({ path: '/delete' }, async () => {
-        return { statusCode: 200, body: 'delete' };
+      patch({ path: '/patch' }, async () => {
+        return { statusCode: 200, body: 'patch' };
       }),
     );
 
-    describe('delete', () => {
+    describe('patch', () => {
       it('200', async () => {
-        const response = await server.request('/delete', {
-          method: 'DELETE',
+        const response = await server.request('/patch', {
+          method: 'PATCH',
         });
-        expect(response.status).toEqual(200);
         const content = await response.text();
-        expect(content).toEqual('delete');
+        expect(content).toEqual('patch');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
-          method: 'DELETE',
+          method: 'PATCH',
         });
         expect(response.status).toEqual(404);
       });

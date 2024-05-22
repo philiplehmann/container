@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
-import { createServer, IncomingMessage } from 'node:http';
+import { createServer } from 'node:http';
 
-import { routes, post, get, healthEndpoints } from '@container/http/route';
+import { post, healthEndpoints, connect } from '@container/http/route';
 import { streamHttpBinary } from '@container/stream/http-binary';
 import { schema } from './schema';
 import { middlewareQuery } from '@container/http/validate';
@@ -17,7 +17,7 @@ const mimeType = Object.freeze({
 } as const);
 
 const server = createServer(
-  routes(
+  connect(
     post('/convert', middlewareQuery(schema), async ({ req, res, query: { convertTo = 'pdf' } }) => {
       // unoconvert [-h] [--convert-to CONVERT_TO] [--filter FILTER_NAME] [--interface INTERFACE] [--port PORT] infile outfile
       res.setHeader('Content-Type', mimeType[convertTo]);

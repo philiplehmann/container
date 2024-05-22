@@ -1,7 +1,7 @@
 import type { Server } from 'node:http';
 import { beforeAll, afterAll } from 'vitest';
 import { testServer } from './test-server';
-import { routes } from '@container/http/route';
+import { connect, type routes } from '@container/http/route';
 
 export class TestServer {
   private server?: Server;
@@ -31,7 +31,7 @@ export class TestServer {
 
   public async start(...testRoutes: Parameters<typeof routes>) {
     try {
-      const [httpServer] = await testServer(routes(...testRoutes));
+      const [httpServer] = await testServer(connect(...testRoutes));
       this.httpServer = httpServer;
     } catch (error) {
       console.error(error);
