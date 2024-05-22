@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { routes, post, healthEndpoints } from '@container/http/route';
+import { connect, post, healthEndpoints, routes } from '@container/http/route';
 import { schema } from './schema';
 import { bodyToPdf } from './bodyToPdf';
 import { bodyToImage } from './bodyToImage';
@@ -8,7 +8,7 @@ import { middlewareBody } from '@container/http/validate';
 const PORT = process.env.PORT || '3000';
 
 const server = createServer(
-  routes(
+  connect(
     post('/', middlewareBody(schema), async ({ body }) => {
       return bodyToPdf(body);
     }),

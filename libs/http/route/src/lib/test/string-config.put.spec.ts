@@ -1,26 +1,28 @@
-import { post } from './post';
+import { put } from '../method/put';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('string path config return', async () => {
+  describe('string path config', async () => {
     const server = useTestServer(
-      post({ path: '/post' }, async () => {
-        return { statusCode: 200, body: 'post' };
+      put('/put', async ({ res }) => {
+        await res.write('put');
+        await res.end();
       }),
     );
-    describe('post', () => {
+
+    describe('put', () => {
       it('200', async () => {
-        const response = await server.request('/post', {
-          method: 'POST',
+        const response = await server.request('/put', {
+          method: 'PUT',
         });
         const content = await response.text();
-        expect(content).toEqual('post');
+        expect(content).toEqual('put');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
-          method: 'POST',
+          method: 'PUT',
         });
         expect(response.status).toEqual(404);
       });

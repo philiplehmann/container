@@ -1,38 +1,38 @@
-import type { Next, ReqRes } from './http-route';
-import { type Middleware, route, type RouteOutput } from './route';
+import type { Next, ReqRes } from '../http-route';
+import { type Middleware, type Prefix, route, type RouteOutput } from '../route';
 
-export function del<MI1 extends ReqRes>(
+export function del<MI1 extends Prefix<ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
   ...middleware: [Next<MI1>]
-): RouteOutput;
-export function del<MI1 extends ReqRes, MO1 extends ReqRes>(
+): RouteOutput<MI1>;
+export function del<MI1 extends Prefix<ReqRes>, MO1 extends Prefix<ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
   ...middleware: [Middleware<MI1, MO1>, Next<MO1>]
-): RouteOutput;
-export function del<MI1 extends ReqRes, MO1 extends ReqRes, MO2 extends ReqRes>(
+): RouteOutput<MI1>;
+export function del<MI1 extends Prefix<ReqRes>, MO1 extends Prefix<ReqRes>, MO2 extends Prefix<ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
   ...middleware: [Middleware<MI1, MO1>, Middleware<MO1, MO2>, Next<MO2>]
-): RouteOutput;
-export function del(
+): RouteOutput<MI1>;
+export function del<MI1 extends Prefix<ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
   ...middleware: unknown[]
-): RouteOutput {
+): RouteOutput<MI1> {
   if (typeof params === 'string') {
     // @ts-expect-error
     return route({ method: 'DELETE', path: params }, ...middleware);

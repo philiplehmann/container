@@ -1,11 +1,11 @@
-import { put } from './put';
+import { put } from '../method/put';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('string path config', async () => {
+  describe('object config', async () => {
     const server = useTestServer(
-      put('/put', async ({ res }) => {
+      put({ path: '/put' }, async ({ res }) => {
         await res.write('put');
         await res.end();
       }),

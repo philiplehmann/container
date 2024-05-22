@@ -1,9 +1,9 @@
-import { put } from './put';
+import { put } from '../method/put';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
-  describe('string path config return', async () => {
+  describe('object config return', async () => {
     const server = useTestServer(
       put({ path: '/put' }, async () => {
         return { statusCode: 200, body: 'put' };
