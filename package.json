@@ -36,7 +36,7 @@
   },
   "packageManager": "yarn@4.2.2",
   "dependencies": {
-    "puppeteer": "22.9.0",
+    "puppeteer": "22.10.0",
     "zod": "^3.23.8"
   },
   "engines": {
