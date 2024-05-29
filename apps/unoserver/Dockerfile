@@ -7,20 +7,17 @@
 FROM node:lts-bookworm
 
 ARG UNOSERVER_VERSION
-ARG UNOCONF_VERSION
-ARG LIBREOFFICE_VERSION
 
 WORKDIR /app
 
 RUN apt-get update; \
     apt-get install --no-install-recommends --yes \
-                    python3-full python3-pip virtualenv \
-                    unoconv=${UNOCONF_VERSION} \
-                    libreoffice-java-common=${LIBREOFFICE_VERSION} \
-                    libreoffice-writer=${LIBREOFFICE_VERSION} \
-                    libreoffice-calc=${LIBREOFFICE_VERSION} \
-                    libreoffice-impress=${LIBREOFFICE_VERSION} \
-                    libreoffice-draw=${LIBREOFFICE_VERSION} \
+                    python3-full python3-pip python3-uno uno-libs-private virtualenv \
+                    libreoffice-java-common \
+                    libreoffice-writer \
+                    libreoffice-calc \
+                    libreoffice-impress \
+                    libreoffice-draw \
                     default-jre=2:1.17-74; \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv; \
     virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}; \
