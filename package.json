@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@biomejs/biome": "1.7.3",
+    "@biomejs/biome": "1.8.0",
     "@nx/devkit": "19.1.2",
     "@nx/esbuild": "19.1.2",
     "@nx/js": "19.1.2",
