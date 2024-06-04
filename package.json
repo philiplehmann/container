@@ -29,7 +29,7 @@
     "nx-remotecache-minio": "19.0.0",
     "playwright": "^1.44.0",
     "testcontainers": "10.9.0",
-    "tslib": "2.6.2",
+    "tslib": "2.6.3",
     "typescript": "5.4.5",
     "vite": "5.2.12",
     "vitest": "1.6.0"
