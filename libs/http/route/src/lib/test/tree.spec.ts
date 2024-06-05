@@ -1,4 +1,3 @@
-import { del } from '../method/del';
 import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
 import { routes } from '../routes';
@@ -31,6 +30,65 @@ describe('http-route', () => {
         expect(response.status).toEqual(200);
         const content = await response.text();
         expect(content).toEqual('/api/v2');
+      });
+    });
+  });
+
+  describe('create tree with multiple routes and route with regex', async () => {
+    const server = useTestServer(routes({ path: 'api' }, routes({ path: /v\d+/ }, api)));
+
+    describe('index', () => {
+      it('v1', async () => {
+        const response = await server.request('/api/v1', {
+          method: 'GET',
+        });
+        expect(response.status).toEqual(200);
+        const content = await response.text();
+        expect(content).toEqual('/api/v1');
+      });
+
+      it('v2', async () => {
+        const response = await server.request('/api/v2', {
+          method: 'GET',
+        });
+        expect(response.status).toEqual(200);
+        const content = await response.text();
+        expect(content).toEqual('/api/v2');
+      });
+    });
+  });
+
+  describe('create tree with multiple routes and route with regex', async () => {
+    const server = useTestServer(
+      routes({ path: 'api' }, routes({ path: /v\d+/ }, api), routes({ path: /v\d+\/\d+/ }, api)),
+    );
+
+    describe('index', () => {
+      it('v1', async () => {
+        const response = await server.request('/api/v1', {
+          method: 'GET',
+        });
+        expect(response.status).toEqual(200);
+        const content = await response.text();
+        expect(content).toEqual('/api/v1');
+      });
+
+      it('v2', async () => {
+        const response = await server.request('/api/v2', {
+          method: 'GET',
+        });
+        expect(response.status).toEqual(200);
+        const content = await response.text();
+        expect(content).toEqual('/api/v2');
+      });
+
+      it('v2/1', async () => {
+        const response = await server.request('/api/v2/1', {
+          method: 'GET',
+        });
+        expect(response.status).toEqual(200);
+        const content = await response.text();
+        expect(content).toEqual('/api/v2/1');
       });
     });
   });
