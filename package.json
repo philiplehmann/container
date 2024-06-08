@@ -14,7 +14,7 @@
     "@nx/vite": "19.2.2",
     "@nx/workspace": "19.2.2",
     "@playwright/test": "^1.44.0",
-    "@swc-node/register": "1.9.1",
+    "@swc-node/register": "1.9.2",
     "@swc/cli": "0.3.12",
     "@swc/core": "1.5.25",
     "@swc/helpers": "0.5.11",
