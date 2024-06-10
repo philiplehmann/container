@@ -9,9 +9,12 @@ LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 ARG MAILCATCHER_VERSION
 
 # Install MailCatcher:
-RUN apt-get update; \
-    apt-get upgrade --yes; \
-    apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev; \
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
+    apt-get upgrade --yes && \
+    apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev && \
     gem install mailcatcher --version ${MAILCATCHER_VERSION} --no-document
 
 FROM ruby:3.3-slim-bullseye as runner
