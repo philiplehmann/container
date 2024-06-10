@@ -10,8 +10,11 @@ LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
 ARG POPPLER_VERSION
 
-RUN apt-get update; \
-    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION};
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
+    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION}
 
 WORKDIR /app
 

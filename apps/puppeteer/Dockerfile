@@ -12,7 +12,10 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
-RUN apt-get update && \
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
     apt-get upgrade --yes && \
     apt-get install --no-install-recommends --yes \
                     libnss3 libatk1.0-0 libatk-bridge2.0-0 libcups2 libgbm1 libasound2 \

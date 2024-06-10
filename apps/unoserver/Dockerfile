@@ -7,10 +7,14 @@
 FROM node:lts-bookworm
 
 ARG UNOSERVER_VERSION
+ARG JRE_VERSION
 
 WORKDIR /app
 
-RUN apt-get update; \
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
     apt-get install --no-install-recommends --yes \
                     python3-full python3-pip python3-uno uno-libs-private virtualenv \
                     libreoffice-java-common \
@@ -18,11 +22,9 @@ RUN apt-get update; \
                     libreoffice-calc \
                     libreoffice-impress \
                     libreoffice-draw \
-                    default-jre=2:1.17-74; \
-    virtualenv --python=/usr/bin/python3 --system-site-packages virtenv; \
-    virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}; \
-    apt-get clean; \
-    rm -rf /var/lib/apt/lists/*
+                    default-jre=${JRE_VERSION} && \
+    virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
+    virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}
 
 ENV PATH="/app/virtenv/bin:${PATH}"
 

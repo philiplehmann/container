@@ -9,11 +9,14 @@ LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 ARG MAILHOG_VERSION
 
 # Install MailHog:
-RUN apt-get update \
-  && apt-get install --no-install-recommends --yes build-essential git \
-  && mkdir -p /root/gocode \
-  && export GOPATH=/root/gocode \
-  && go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
+    apt-get install --no-install-recommends --yes build-essential git && \
+    mkdir -p /root/gocode && \
+    export GOPATH=/root/gocode && \
+    go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
 FROM debian:stable-slim
 RUN apt-get update && apt-get upgrade --yes
