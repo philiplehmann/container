@@ -34,13 +34,13 @@
     "vite": "5.2.13",
     "vitest": "1.6.0"
   },
-  "packageManager": "yarn@4.2.2",
+  "packageManager": "yarn@4.3.0",
   "dependencies": {
     "puppeteer": "22.10.0",
     "zod": "^3.23.8"
   },
   "engines": {
     "node": "20.14.0",
-    "yarn": "4.2.2"
+    "yarn": "4.3.0"
   }
 }
