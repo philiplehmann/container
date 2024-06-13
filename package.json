@@ -16,7 +16,7 @@
     "@playwright/test": "^1.44.0",
     "@swc-node/register": "1.9.2",
     "@swc/cli": "0.3.12",
-    "@swc/core": "1.5.28",
+    "@swc/core": "1.5.29",
     "@swc/helpers": "0.5.11",
     "@types/node": "20.14.2",
     "@types/nodemailer": "^6.4.15",
