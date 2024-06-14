@@ -2,7 +2,7 @@
   "name": "@container/source",
   "version": "0.0.0",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@biomejs/biome": "1.8.1",
     "@nx/devkit": "19.3.0",
@@ -34,11 +34,11 @@
     "vite": "5.3.1",
     "vitest": "1.6.0"
   },
-  "packageManager": "yarn@4.3.0",
   "dependencies": {
     "puppeteer": "22.11.0",
     "zod": "^3.23.8"
   },
+  "packageManager": "yarn@4.3.0",
   "engines": {
     "node": "20.14.0",
     "yarn": "4.3.0"
