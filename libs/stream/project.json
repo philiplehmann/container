@@ -1,0 +1,15 @@
+{
+  "name": "stream",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/stream/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    }
+  },
+  "tags": []
+}

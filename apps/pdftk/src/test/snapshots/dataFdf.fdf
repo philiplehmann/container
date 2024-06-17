@@ -1,0 +1,70 @@
+%FDF-1.2
+%����
+1 0 obj
+
+<<
+/FDF 
+<<
+/Fields [
+<<
+/T (Check Box1)
+/V /
+>> 
+<<
+/T (Check Box2)
+/V /
+>> 
+<<
+/T (Address)
+/V ()
+>> 
+<<
+/T (Text6)
+/V ()
+>> 
+<<
+/T (Text5)
+/V ()
+>> 
+<<
+/T (Name)
+/V ()
+>> 
+<<
+/T (Group6)
+/V /
+>> 
+<<
+/T (Dropdown3)
+/V (2012)
+>> 
+<<
+/T (Dropdown2)
+/V (Jan)
+>> 
+<<
+/T (Dropdown1)
+/V (1)
+>> 
+<<
+/T (Check Box3)
+/V /
+>> 
+<<
+/T (Button7)
+/V /
+>> 
+<<
+/T (Check Box4)
+/V /
+>>]
+>>
+>>
+endobj
+
+trailer
+
+<<
+/Root 1 0 R
+>>
+%%EOF

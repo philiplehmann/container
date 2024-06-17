@@ -1,7 +1,7 @@
 {
-  "name": "unoserver",
+  "name": "pdftk",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/unoserver/src",
+  "sourceRoot": "apps/pdftk/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -12,15 +12,15 @@
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/apps/unoserver",
+        "outputPath": "dist/apps/pdftk",
         "format": [
           "cjs"
         ],
         "bundle": false,
-        "main": "apps/unoserver/src/main.ts",
-        "tsConfig": "apps/unoserver/tsconfig.app.json",
+        "main": "apps/pdftk/src/main.ts",
+        "tsConfig": "apps/pdftk/tsconfig.app.json",
         "assets": [
-          "apps/unoserver/src/assets"
+          "apps/pdftk/src/assets"
         ],
         "generatePackageJson": true,
         "esbuildOptions": {
@@ -46,14 +46,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "unoserver:build"
+        "buildTarget": "pdftk:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "unoserver:build:development"
+          "buildTarget": "pdftk:build:development"
         },
         "production": {
-          "buildTarget": "unoserver:build:production"
+          "buildTarget": "pdftk:build:production"
         }
       }
     },
@@ -87,11 +87,10 @@
       ],
       "options": {
         "platforms": [
-          "amd",
           "arm"
         ],
-        "tag": "philiplehmann/unoserver:test",
-        "file": "apps/unoserver/Dockerfile"
+        "tag": "philiplehmann/pdftk:test",
+        "file": "apps/pdftk/Dockerfile"
       }
     },
     "docker-push": {
@@ -105,9 +104,9 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/unoserver:auto"
+          "philiplehmann/pdftk:auto"
         ],
-        "file": "apps/unoserver/Dockerfile"
+        "file": "apps/pdftk/Dockerfile"
       }
     },
     "docker-run": {
@@ -116,8 +115,8 @@
         "build"
       ],
       "options": {
-        "image": "philiplehmann/unoserver:run",
-        "file": "apps/unoserver/Dockerfile",
+        "image": "philiplehmann/pdftk:run",
+        "file": "apps/pdftk/Dockerfile",
         "port": [
           "3000"
         ]

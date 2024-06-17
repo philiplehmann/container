@@ -1,16 +1,20 @@
 {
-  "name": "stream-http-binary",
+  "name": "http-multipart-form-data",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/stream/http-binary/src",
+  "sourceRoot": "libs/http/body/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {}
     }
   },
