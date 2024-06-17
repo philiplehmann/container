@@ -1,19 +1,26 @@
-export const pathMatcher = (reqPath: string, path: (string | RegExp)[]): boolean => {
+import type { RoutePathOptions } from './routes';
+
+export const pathMatcher = <T extends string>(
+  reqPath: string,
+  paths: RoutePathOptions<T>[],
+): Record<T, string> | null => {
   let internalPath = reqPath.split('/').filter(Boolean);
 
-  for (const part of path) {
-    if (typeof part === 'string') {
-      if (internalPath[0] !== part) {
-        return false;
+  const params: Record<string, string> = {};
+
+  for (const { path, name } of paths) {
+    if (typeof path === 'string') {
+      if (internalPath[0] !== path) {
+        return null;
       }
-      internalPath = internalPath.slice(1);
     } else {
-      const match = internalPath[0].match(part);
+      const match = internalPath[0].match(path);
       if (!match) {
-        return false;
+        return null;
       }
-      internalPath = internalPath.slice(1);
+      params[name ?? 'missing'] = internalPath[0];
     }
+    internalPath = internalPath.slice(1);
   }
-  return internalPath.length === 0;
+  return params;
 };
