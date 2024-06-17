@@ -38,7 +38,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-.nx/cache
+.nx
 
 # yarn
 .yarn/install-state.gz

@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "esnext",
     "module": "esnext",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
@@ -16,14 +16,18 @@
     "baseUrl": ".",
     "strict": true,
     "paths": {
+      "@container/binary/pdftk": ["libs/binary/pdftk/src/index.ts"],
       "@container/biomejs": ["libs/biomejs/src/index.ts"],
       "@container/docker": ["libs/docker/src/index.ts"],
       "@container/helper": ["libs/helper/src/index.ts"],
       "@container/http/body": ["libs/http/body/src/index.ts"],
       "@container/http/error": ["libs/http/error/src/index.ts"],
+      "@container/http/multipart-form-data": [
+        "libs/http/multipart-form-data/src/index.ts"
+      ],
       "@container/http/route": ["libs/http/route/src/index.ts"],
       "@container/http/validate": ["libs/http/validate/src/index.ts"],
-      "@container/stream/http-binary": ["libs/stream/http-binary/src/index.ts"],
+      "@container/stream": ["libs/stream/src/index.ts"],
       "@container/test/request": ["libs/test/request/src/index.ts"],
       "@container/test/server": ["libs/test/server/src/index.ts"]
     }

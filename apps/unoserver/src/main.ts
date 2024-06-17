@@ -2,7 +2,7 @@ import { spawn } from 'node:child_process';
 import { createServer } from 'node:http';
 
 import { post, healthEndpoints, connect } from '@container/http/route';
-import { streamHttpBinary } from '@container/stream/http-binary';
+import { streamChildProcess } from '@container/stream';
 import { schema } from './schema';
 import { middlewareQuery } from '@container/http/validate';
 
@@ -23,7 +23,7 @@ const server = createServer(
       res.setHeader('Content-Type', mimeType[convertTo]);
 
       const unoconvert = spawn('unoconvert', ['--convert-to', convertTo, '-', '-']);
-      return streamHttpBinary(req, res, unoconvert);
+      return streamChildProcess(req, res, unoconvert);
     }),
     ...healthEndpoints,
   ),

@@ -1,7 +1,7 @@
 import { type IncomingMessage, request, type RequestOptions } from 'node:http';
-import { createReadStream } from 'node:fs';
-import { readableToBuffer } from './readable-to-buffer';
+import { createReadStream, type ReadStream } from 'node:fs';
 import { Readable } from 'node:stream';
+import { streamToString } from '@container/stream';
 
 export const streamRequest = async ({
   file,
@@ -9,7 +9,7 @@ export const streamRequest = async ({
   ...requestParams
 }: RequestOptions & {
   file?: string;
-  body?: string;
+  body?: string | Buffer | Readable | ReadStream;
 }): Promise<IncomingMessage> => {
   return new Promise((resolve, reject) => {
     const req = request({ host: 'localhost', pathname: '/', ...requestParams }, async (response) => {
@@ -21,8 +21,11 @@ export const streamRequest = async ({
     });
     if (file) {
       createReadStream(file).pipe(req, { end: true });
-    } else if (typeof body === 'string') {
-      Readable.from(body).pipe(req, { end: true });
+    } else if (typeof body === 'string' || Buffer.isBuffer(body)) {
+      req.write(body);
+      req.end();
+    } else if (body instanceof Readable) {
+      body.pipe(req, { end: true });
     } else {
       req.end();
     }
@@ -35,9 +38,9 @@ export const testRequest = async ({
   ...requestParams
 }: RequestOptions & {
   file?: string;
-  body?: string;
+  body?: string | Buffer | Readable | ReadStream;
 }): Promise<[IncomingMessage, string]> => {
   const response = await streamRequest({ file, body, ...requestParams });
-  const text = (await readableToBuffer(response)).toString();
+  const text = await streamToString(response);
   return [response, text];
 };

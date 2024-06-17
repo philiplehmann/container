@@ -2,7 +2,6 @@
   "name": "@container/source",
   "version": "0.0.0",
   "license": "MIT",
-  "private": false,
   "devDependencies": {
     "@biomejs/biome": "1.8.2",
     "@nx/devkit": "19.3.0",
