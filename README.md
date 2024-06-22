@@ -40,6 +40,15 @@ yarn nx docker-run unoserver
 yarn nx docker-run puppeteer
 ```
 
+### pdftk wrapper
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/pdftk/README.md)
+- [docker](https://hub.docker.com/r/philiplehmann/pdftk)
+
+```bash
+yarn nx docker-run pdftk
+```
+
 ## Mailboxes Apps
 
 ### MailCatcher (Ruby)
