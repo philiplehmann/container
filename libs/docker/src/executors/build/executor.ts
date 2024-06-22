@@ -42,6 +42,9 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
       case 'unoserver':
         tags = createTags(tags, versionFromEnv(file, 'UNOSERVER_VERSION'));
         break;
+      case 'pdftk':
+        tags = createTags(tags, versionFromEnv(file, 'PDFTK_VERSION'));
+        break;
     }
   }
   try {
