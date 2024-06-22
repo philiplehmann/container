@@ -2,7 +2,7 @@
 # MailHog Dockerfile
 #
 
-FROM golang:1.22-bookworm as builder
+FROM golang:1.22-bookworm AS builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 

@@ -2,7 +2,7 @@
 # MailCatcher Dockerfile
 #
 
-FROM ruby:3.3-bullseye as bundler
+FROM ruby:3.3-bullseye AS bundler
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -17,7 +17,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev && \
     gem install mailcatcher --version ${MAILCATCHER_VERSION} --no-document
 
-FROM ruby:3.3-slim-bullseye as runner
+FROM ruby:3.3-slim-bullseye AS runner
 
 COPY --from=bundler /usr/local/bundle /usr/local/bundle
 
