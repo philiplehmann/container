@@ -1,31 +1,22 @@
-import { spawn } from 'node:child_process';
-import { createServer } from 'node:http';
-
 import { connect, post, healthEndpoints } from '@container/http/route';
-import { streamChildProcess } from '@container/stream';
+import { httpServer } from '@container/http/server';
+import { ConvertTo, pdfTo } from '@container/binary/poppler';
 
 const PORT = process.env.PORT || '3000';
 
-const server = createServer(
+httpServer(
   connect(
     post('/pdf-to-text', async ({ req, res }) => {
       res.setHeader('Content-Type', 'plain/text');
 
-      const pdfToText = spawn('pdftotext', ['-', '-']);
-      return streamChildProcess(req, res, pdfToText);
+      return pdfTo({ input: req, output: res, to: ConvertTo.text });
     }),
     post('/pdf-to-html', async ({ req, res }) => {
       res.setHeader('Content-Type', 'plain/html');
 
-      const pdfToHtml = spawn('pdftohtml', ['-stdout', '-noframes', '-', '-']);
-      return streamChildProcess(req, res, pdfToHtml);
+      return pdfTo({ input: req, output: res, to: ConvertTo.html });
     }),
     ...healthEndpoints,
   ),
-).listen(PORT, () => {
-  console.log('start poppler server on ', PORT);
-});
-
-process.on('SIGINT', () => {
-  server.close();
-});
+  { port: PORT, name: 'poppler' },
+);

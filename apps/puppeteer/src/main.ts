@@ -1,29 +1,25 @@
-import { createServer } from 'node:http';
-import { connect, post, healthEndpoints, routes } from '@container/http/route';
-import { schema } from './schema';
-import { bodyToPdf } from './bodyToPdf';
-import { bodyToImage } from './bodyToImage';
-import { middlewareBody } from '@container/http/validate';
+import { connect, post, healthEndpoints } from '@container/http/route';
+import { middlewareBody, middlewareQuery } from '@container/http/validate';
+import { renderTo, bodySchema, querySchema } from '@container/binary/puppeteer';
+import { httpServer } from '@container/http/server';
 
 const PORT = process.env.PORT || '3000';
 
-const server = createServer(
+httpServer(
   connect(
-    post('/', middlewareBody(schema), async ({ body }) => {
-      return bodyToPdf(body);
+    post('/', middlewareBody(bodySchema), async ({ body }) => {
+      const pdf = await renderTo(body, { type: 'pdf' });
+      return { statusCode: 200, contentType: 'application/pdf', body: pdf };
     }),
-    post('/pdf', middlewareBody(schema), async ({ body }) => {
-      return bodyToPdf(body);
+    post('/pdf', middlewareBody(bodySchema), async ({ body }) => {
+      const pdf = await renderTo(body, { type: 'pdf' });
+      return { statusCode: 200, contentType: 'application/pdf', body: pdf };
     }),
-    post('/image', middlewareBody(schema), async ({ body }) => {
-      return bodyToImage(body);
+    post('/image', middlewareBody(bodySchema), middlewareQuery(querySchema), async ({ body, query }) => {
+      const pdf = await renderTo(body, { type: 'image', imageType: query.type });
+      return { statusCode: 200, contentType: 'application/pdf', body: pdf };
     }),
     ...healthEndpoints,
   ),
-).listen(PORT, () => {
-  console.log('start puppeteer server on ', PORT);
-});
-
-process.on('SIGINT', () => {
-  server.close();
-});
+  { port: PORT, name: 'puppeteer' },
+);

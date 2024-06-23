@@ -1,23 +1,16 @@
-import { spawn } from 'node:child_process';
-import { createServer } from 'node:http';
-
 import { connect, post, healthEndpoints } from '@container/http/route';
-import { streamChildProcess } from '@container/stream';
+import { httpServer } from '@container/http/server';
+import { imageToText } from '@container/binary/tesseract';
 
 const PORT = process.env.PORT || '3000';
 
-const server = createServer(
+httpServer(
   connect(
     post({ path: '/image-to-text' }, async ({ req, res }) => {
-      const imageToText = spawn('tesseract', ['-', '-']);
-      return streamChildProcess(req, res, imageToText);
+      res.setHeader('Content-Type', 'text/plain');
+      imageToText({ input: req, output: res });
     }),
     ...healthEndpoints,
   ),
-).listen(PORT, () => {
-  console.log('start poppler server on ', PORT);
-});
-
-process.on('SIGINT', () => {
-  server.close();
-});
+  { port: PORT, name: 'tesseract' },
+);

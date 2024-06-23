@@ -17,6 +17,10 @@
     "strict": true,
     "paths": {
       "@container/binary/pdftk": ["libs/binary/pdftk/src/index.ts"],
+      "@container/binary/poppler": ["libs/binary/poppler/src/index.ts"],
+      "@container/binary/puppeteer": ["libs/binary/puppeteer/src/index.ts"],
+      "@container/binary/tesseract": ["libs/binary/tesseract/src/index.ts"],
+      "@container/binary/unoserver": ["libs/binary/unoserver/src/index.ts"],
       "@container/biomejs": ["libs/biomejs/src/index.ts"],
       "@container/docker": ["libs/docker/src/index.ts"],
       "@container/helper": ["libs/helper/src/index.ts"],
@@ -26,6 +30,7 @@
         "libs/http/multipart-form-data/src/index.ts"
       ],
       "@container/http/route": ["libs/http/route/src/index.ts"],
+      "@container/http/server": ["libs/http/server/src/index.ts"],
       "@container/http/validate": ["libs/http/validate/src/index.ts"],
       "@container/stream": ["libs/stream/src/index.ts"],
       "@container/test/request": ["libs/test/request/src/index.ts"],

@@ -1,5 +1,3 @@
-import { createServer } from 'node:http';
-
 import { connect, post, healthEndpoints } from '@container/http/route';
 import { middlewareQuery } from '@container/http/validate';
 import {
@@ -15,10 +13,11 @@ import {
   formFillStream,
   formFillSchema,
 } from '@container/binary/pdftk';
+import { httpServer } from '@container/http/server';
 
 const PORT = process.env.PORT || '3000';
 
-const server = createServer(
+httpServer(
   connect(
     post({ path: '/compress' }, async ({ req, res }) => {
       await compressStream({ input: req, output: res });
@@ -66,10 +65,5 @@ const server = createServer(
     }),
     ...healthEndpoints,
   ),
-).listen(PORT, () => {
-  console.log('start poppler server on ', PORT);
-});
-
-process.on('SIGINT', () => {
-  server.close();
-});
+  { port: PORT, name: 'pdftk' },
+);

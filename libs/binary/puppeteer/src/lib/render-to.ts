@@ -1,8 +1,12 @@
 import puppeteer from 'puppeteer';
 import type { TypeOf } from 'zod';
-import type { schema } from './schema';
+import type { bodySchema } from './body-schema';
+import { ScreenshotType } from './screenshot-type';
 
-export const bodyToImage = async (bodySchema: TypeOf<typeof schema>) => {
+export const renderTo = async (
+  schema: TypeOf<typeof bodySchema>,
+  { type, imageType = ScreenshotType.png }: { type: 'pdf' | 'image'; imageType?: ScreenshotType },
+) => {
   const browser = await puppeteer.launch({
     headless: true,
     userDataDir: './chromium-data',
@@ -13,7 +17,7 @@ export const bodyToImage = async (bodySchema: TypeOf<typeof schema>) => {
     const { url, html, ...props } = {
       url: null,
       html: null,
-      ...bodySchema,
+      ...schema,
     };
     if (typeof url === 'string') {
       await page.goto(url);
@@ -24,8 +28,10 @@ export const bodyToImage = async (bodySchema: TypeOf<typeof schema>) => {
       throw new Error('url or html is required');
     }
 
-    const body = await page.screenshot(props);
-    return { statusCode: 200, contentType: 'application/pdf', body };
+    if (type === 'image') return await page.screenshot({ ...props, type: imageType });
+    if (type === 'pdf') return await page.pdf(props);
+
+    throw new Error(`wrong type: ${type}`);
   } finally {
     await browser.close();
   }
