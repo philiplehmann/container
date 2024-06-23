@@ -46,7 +46,7 @@
           "arm"
         ],
         "tags": [
-          "philiplehmann/mailhog:push"
+          "philiplehmann/mailhog:auto"
         ],
         "file": "apps/mailhog/Dockerfile"
       }

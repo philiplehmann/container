@@ -23,7 +23,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     tesseract-ocr-deu=${TESSERACT_LOCALE_VERSION} \
                     tesseract-ocr-fra=${TESSERACT_LOCALE_VERSION} \
                     tesseract-ocr-eng=${TESSERACT_LOCALE_VERSION} \
-                    imagemagick
+                    imagemagick && \
+    apt-get remove git --yes
 
 WORKDIR /app
 

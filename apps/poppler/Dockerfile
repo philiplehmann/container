@@ -14,7 +14,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
-    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION}
+    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION} && \
+    apt-get remove git --yes
 
 WORKDIR /app
 
