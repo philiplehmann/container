@@ -35,7 +35,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     apt-get update && \
     apt-get install --no-install-recommends --yes \
                     default-jre=${JRE_VERSION} && \
-                    mkdir /app/tmp
+                    mkdir /app/tmp && \
+    apt-get remove git --yes
 
 COPY --from=pdftk /pdftk /pdftk
 COPY apps/pdftk/bin/pdftk /bin/pdftk

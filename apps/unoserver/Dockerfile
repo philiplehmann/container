@@ -23,6 +23,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     libreoffice-impress \
                     libreoffice-draw \
                     default-jre=${JRE_VERSION} && \
+    apt-get remove git --yes && \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
     virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}
 
