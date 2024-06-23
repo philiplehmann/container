@@ -1,0 +1,22 @@
+{
+  "name": "http-server",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/http/server/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {}
+    }
+  },
+  "tags": []
+}

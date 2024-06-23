@@ -5,7 +5,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/http/body',
+  cacheDir: '../../node_modules/.vite/libs/http/server',
 
   plugins: [nxViteTsPaths()],
 
@@ -30,7 +30,7 @@ export default defineConfig({
 
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/libs/http/body',
+      reportsDirectory: '../../coverage/libs/http/server',
       provider: 'v8',
     },
   },

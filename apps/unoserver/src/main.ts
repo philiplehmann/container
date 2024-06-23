@@ -1,37 +1,21 @@
-import { spawn } from 'node:child_process';
-import { createServer } from 'node:http';
-
 import { post, healthEndpoints, connect } from '@container/http/route';
-import { streamChildProcess } from '@container/stream';
-import { schema } from './schema';
 import { middlewareQuery } from '@container/http/validate';
+import { unoconvert, unoserver, ConvertToMimeType, schema } from '@container/binary/unoserver';
+import { httpServer } from '@container/http/server';
 
 const PORT = process.env.PORT || '3000';
 
-const unoserver = spawn('unoserver', { stdio: 'inherit' });
+unoserver();
 
-const mimeType = Object.freeze({
-  pdf: 'application/pdf',
-  png: 'image/png',
-  jpeg: 'image/jpeg',
-} as const);
-
-const server = createServer(
+httpServer(
   connect(
-    post('/convert', middlewareQuery(schema), async ({ req, res, query: { convertTo = 'pdf' } }) => {
+    post('/convert', middlewareQuery(schema), async ({ req, res, query: { convertTo } }) => {
       // unoconvert [-h] [--convert-to CONVERT_TO] [--filter FILTER_NAME] [--interface INTERFACE] [--port PORT] infile outfile
-      res.setHeader('Content-Type', mimeType[convertTo]);
+      res.setHeader('Content-Type', ConvertToMimeType[convertTo]);
 
-      const unoconvert = spawn('unoconvert', ['--convert-to', convertTo, '-', '-']);
-      return streamChildProcess(req, res, unoconvert);
+      unoconvert({ input: req, output: res, to: convertTo });
     }),
     ...healthEndpoints,
   ),
-).listen(PORT, () => {
-  console.log('start unoserver server on ', PORT);
-});
-
-process.on('SIGINT', () => {
-  server.close();
-  unoserver.kill();
-});
+  { port: PORT, name: 'unoserver' },
+);

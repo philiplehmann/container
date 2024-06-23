@@ -54,4 +54,7 @@ const optionSchema = z.strictObject({
   timeout: z.number().optional(),
 });
 
-export const schema = z.union([optionSchema.extend({ url: z.string() }), optionSchema.extend({ html: z.string() })]);
+export const bodySchema = z.union([
+  optionSchema.extend({ url: z.string() }),
+  optionSchema.extend({ html: z.string() }),
+]);
