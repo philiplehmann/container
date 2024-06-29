@@ -71,6 +71,8 @@ jobs:
         with:
           docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
+          harbor-username: ${{ secrets.HARBOR_USERNAME }}
+          harbor-password: ${{ secrets.HARBOR_TOKEN }}
 
       - name: corepack enable
         shell: bash
@@ -119,6 +121,8 @@ jobs:
         with:
           docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
+          harbor-username: ${{ secrets.HARBOR_USERNAME }}
+          harbor-password: ${{ secrets.HARBOR_TOKEN }}
 
       - name: corepack enable
         shell: bash

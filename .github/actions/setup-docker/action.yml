@@ -9,6 +9,14 @@ inputs:
     description: 'docker password'
     required: false
     default: ''
+  harbor-username:
+    description: 'harbor username'
+    required: false
+    default: ''
+  harbor-password:
+    description: 'harbor password'
+    required: false
+    default: ''
 runs:
   using: 'composite'
   steps:
@@ -36,3 +44,11 @@ runs:
       with:
         username: ${{ inputs.docker-username }}
         password: ${{ inputs.docker-password }}
+
+    - name: Login to harbor.riwi.dev
+      uses: docker/login-action@v3
+      if: ${{ inputs.harbor-username != '' && inputs.harbor-password != '' }}
+      with:
+        registry: harbor.riwi.dev
+        username: ${{ inputs.harbor-username }}
+        password: ${{ inputs.harbor-password }}
