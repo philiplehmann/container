@@ -17,7 +17,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -43,7 +43,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -56,7 +56,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -69,7 +69,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -82,7 +82,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -95,7 +95,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
@@ -108,7 +108,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           multiple: |
             - match: ([0-9\.]+)-([0-9]+)
-              retention: 6m
+              retention: 1m
             - match: build-cache.*
               retention: 14d
           # dryrun: "true"
