@@ -1,0 +1,114 @@
+name: docker-hub-retention
+
+on:
+  schedule:
+    - cron: "0 2 * * 1"
+  workflow_dispatch:
+
+jobs:
+  dependencies:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: mailcatcher
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/mailcatcher
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: maildev
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/maildev
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: mailhog
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/mailhog
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: pdftk
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/pdftk
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: poppler
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/poppler
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: puppeteer
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/puppeteer
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: tesseract
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/tesseract
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
+
+      - name: unoserver
+        uses: philiplehmann/docker-hub-retention
+        with:
+          repository: philiplehmann/unoserver
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          multiple: |
+            - match: ([0-9\.]+)-([0-9]+)
+              retention: 6m
+            - match: build-cache.*
+              retention: 14d
+          dryrun: "true"
