@@ -10,7 +10,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: mailcatcher
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/mailcatcher
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -20,10 +20,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: maildev
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/maildev
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -33,10 +33,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: mailhog
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/mailhog
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -46,10 +46,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: pdftk
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/pdftk
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -59,10 +59,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: poppler
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/poppler-server
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -72,10 +72,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: puppeteer
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/puppeteer
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -85,10 +85,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: tesseract
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/tesseract
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -98,10 +98,10 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
 
       - name: unoserver
-        uses: philiplehmann/docker-hub-retention@v0.0.4
+        uses: philiplehmann/docker-hub-retention@v0.0.6
         with:
           repository: philiplehmann/unoserver
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -111,4 +111,4 @@ jobs:
               retention: 6m
             - match: build-cache.*
               retention: 14d
-          dryrun: "true"
+          # dryrun: "true"
