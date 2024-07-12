@@ -23,8 +23,8 @@ export default defineConfig({
     hookTimeout: 60_000,
 
     poolOptions: {
-      threads: {
-        singleThread: true,
+      forks: {
+        singleFork: true,
       },
     },
 

@@ -23,8 +23,8 @@ export default defineConfig({
     passWithNoTests: true,
 
     poolOptions: {
-      threads: {
-        singleThread: true,
+      forks: {
+        singleFork: true,
       },
     },
 
