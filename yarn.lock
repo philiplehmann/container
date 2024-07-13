@@ -1540,7 +1540,7 @@ __metadata:
     "@nx/vite": "npm:19.4.3"
     "@nx/workspace": "npm:19.4.3"
     "@playwright/test": "npm:^1.44.0"
-    "@swc-node/register": "npm:1.10.5"
+    "@swc-node/register": "npm:1.10.6"
     "@swc/cli": "npm:0.4.0"
     "@swc/core": "npm:1.6.13"
     "@swc/helpers": "npm:0.5.12"
@@ -3161,9 +3161,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc-node/register@npm:1.10.5":
-  version: 1.10.5
-  resolution: "@swc-node/register@npm:1.10.5"
+"@swc-node/register@npm:1.10.6":
+  version: 1.10.6
+  resolution: "@swc-node/register@npm:1.10.6"
   dependencies:
     "@swc-node/core": "npm:^1.13.2"
     "@swc-node/sourcemap-support": "npm:^0.5.1"
@@ -3175,7 +3175,7 @@ __metadata:
   peerDependencies:
     "@swc/core": ">= 1.4.13"
     typescript: ">= 4.3"
-  checksum: 10c0/f5608da6c9bef20e1d27d027f68466b092050e276655f672ed39930145f99808c0d722914d6b5f0ac6633a9affc915af257db780ac27a2acd04c722f26ee415e
+  checksum: 10c0/9e9a0f2ece211fad5a974fab1afda6c04f7c96245388984f5d9b40aff9ef77c4f45dcb96df6b8cbe3642cd337076400cc207bb0be3d313a82ceac119fa7e0d39
   languageName: node
   linkType: hard
 
