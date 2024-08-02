@@ -37,9 +37,9 @@
     "puppeteer": "22.15.0",
     "zod": "^3.23.8"
   },
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "yarn@4.4.0",
   "engines": {
     "node": "20.16.0",
-    "yarn": "4.3.1"
+    "yarn": "4.4.0"
   }
 }
