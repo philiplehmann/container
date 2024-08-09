@@ -1,38 +1,47 @@
 import type { Next, ReqRes } from '../http-route';
 import { type Middleware, type Prefix, route, type RouteOutput } from '../route';
 
-export function put<MI1 extends Prefix<ReqRes>>(
+export function put<ParamKey extends string, MI1 extends Prefix<ParamKey, ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
-  ...middleware: [Next<MI1>]
-): RouteOutput<MI1>;
-export function put<MI1 extends Prefix<ReqRes>, MO1 extends Prefix<ReqRes>>(
+  ...middleware: [Next<ParamKey, MI1>]
+): RouteOutput<ParamKey, MI1>;
+export function put<
+  ParamKey extends string,
+  MI1 extends Prefix<ParamKey, ReqRes>,
+  MO1 extends Prefix<ParamKey, ReqRes>,
+>(
   params:
     | {
         path: string;
       }
     | string,
-  ...middleware: [Middleware<MI1, MO1>, Next<MO1>]
-): RouteOutput<MI1>;
-export function put<MI1 extends Prefix<ReqRes>, MO1 extends Prefix<ReqRes>, MO2 extends Prefix<ReqRes>>(
+  ...middleware: [Middleware<ParamKey, MI1, MO1>, Next<ParamKey, MO1>]
+): RouteOutput<ParamKey, MI1>;
+export function put<
+  ParamKey extends string,
+  MI1 extends Prefix<ParamKey, ReqRes>,
+  MO1 extends Prefix<ParamKey, ReqRes>,
+  MO2 extends Prefix<ParamKey, ReqRes>,
+>(
   params:
     | {
         path: string;
       }
     | string,
-  ...middleware: [Middleware<MI1, MO1>, Middleware<MO1, MO2>, Next<MO2>]
-): RouteOutput<MI1>;
-export function put<MI1 extends Prefix<ReqRes>>(
+  ...middleware: [Middleware<ParamKey, MI1, MO1>, Middleware<ParamKey, MO1, MO2>, Next<ParamKey, MO2>]
+): RouteOutput<ParamKey, MI1>;
+export function put<ParamKey extends string, MI1 extends Prefix<ParamKey, ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
   ...middleware: unknown[]
-): RouteOutput<MI1> {
+): RouteOutput<ParamKey, MI1> {
   if (typeof params === 'string') {
     // @ts-expect-error
     return route({ method: 'PUT', path: params }, ...middleware);

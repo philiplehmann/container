@@ -1,21 +1,25 @@
 import type { Next, ReqRes } from '../http-route';
 import { type Middleware, type Prefix, route, type RouteOutput } from '../route';
 
-export function del<ParamKey extends string, MI1 extends Prefix<ReqRes>>(
+export function del<ParamKey extends string, MI1 extends Prefix<ParamKey, ReqRes>>(
   params:
     | {
         path: string;
       }
     | string,
-  ...middleware: [Next<MI1>]
-): RouteOutput<MI1>;
-export function del<ParamKey extends string, MI1 extends Prefix<ReqRes>, MO1 extends Prefix<ReqRes>>(
+  ...middleware: [Next<ParamKey, MI1>]
+): RouteOutput<ParamKey, MI1>;
+export function del<
+  ParamKey extends string,
+  MI1 extends Prefix<ParamKey, ReqRes>,
+  MO1 extends Prefix<ParamKey, ReqRes>,
+>(
   params:
     | {
         path: string;
       }
     | string,
-  ...middleware: [Middleware<ParamKey, MI1, MO1>, Next<MO1>]
+  ...middleware: [Middleware<ParamKey, MI1, MO1>, Next<ParamKey, MO1>]
 ): RouteOutput<ParamKey, MI1>;
 export function del<
   ParamKey extends string,
@@ -28,7 +32,7 @@ export function del<
         path: string;
       }
     | string,
-  ...middleware: [Middleware<ParamKey, MI1, MO1>, Middleware<ParamKey, MO1, MO2>, Next<MO2>]
+  ...middleware: [Middleware<ParamKey, MI1, MO1>, Middleware<ParamKey, MO1, MO2>, Next<ParamKey, MO2>]
 ): RouteOutput<ParamKey, MI1>;
 export function del<ParamKey extends string, MI1 extends Prefix<ParamKey, ReqRes>>(
   params:
