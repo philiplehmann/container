@@ -3,26 +3,49 @@ import type { IncomingMessage } from 'node:http';
 import type { ReqRes, Response } from './http-route';
 import type { Prefix, route, RouteOutput } from './route';
 
-export type RoutesOutput = (req: IncomingMessage, res: Response, prefix?: (string | RegExp)[]) => Promise<void>;
+export type RoutesOutput<ParamKey extends string> = (
+  req: IncomingMessage,
+  res: Response,
+  prefix?: RoutePathOptions<ParamKey>[],
+) => Promise<void>;
+export type RoutePathOptions<ParamKey extends string> = { path: string; name?: undefined } | { path: RegExp; name: T };
+// biome-ignore lint/complexity/noBannedTypes:
+export type RoutePathOptionalOptions<ParamKey extends string> = RoutePathOptions<ParamKey> | {};
+export type RoutePrefixOptions<ParamKey extends string> = { prefix?: RoutePathOptions<ParamKey>[] };
+export type RouteOptions<ParamKey extends string> = RoutePathOptions<ParamKey> & RoutePrefixOptions<ParamKey>;
 
-export function connect(options: { path?: string | RegExp }, ...routes: ReturnType<typeof route>[]): RoutesOutput;
-export function connect(...routes: ReturnType<typeof route>[]): RoutesOutput;
-export function connect(...outerArgs: unknown[]): RoutesOutput {
+export const pathOptionsToPathParts = <ParamKey extends string>(
+  options: RoutePathOptionalOptions<ParamKey>,
+): RoutePathOptions<ParamKey>[] => {
+  const { path = '/', name = '' as ParamKey } = { path: undefined, name: null, ...options };
+  return (
+    typeof path === 'string'
+      ? path.split('/').map((part) => ({ path: part }))
+      : [{ path, name: name ?? ('' as ParamKey) }]
+  ).filter(({ path }) => !!path);
+};
+
+export function connect<ParamKey extends string>(
+  options: RoutePathOptions<ParamKey>,
+  ...routes: ReturnType<typeof route>[]
+): RoutesOutput<ParamKey>;
+export function connect<ParamKey extends string>(...routes: ReturnType<typeof route>[]): RoutesOutput<ParamKey>;
+export function connect<ParamKey extends string>(...outerArgs: unknown[]): RoutesOutput<ParamKey> {
   const { routes, options } = (() => {
     if (typeof outerArgs[0] === 'object') {
       return {
         routes: outerArgs.slice(1) as ReturnType<typeof route>[],
-        options: outerArgs[0] as { prefix?: string | RegExp[]; path?: string | RegExp },
+        options: outerArgs[0] as RoutePathOptionalOptions<ParamKey>,
       };
     }
     return { routes: outerArgs as ReturnType<typeof route>[], options: {} };
   })();
-  const { path = '/' } = options;
-  const pathParts = (typeof path === 'string' ? path.split('/') : [path]).filter(Boolean);
+
+  const pathParts = pathOptionsToPathParts(options);
 
   return async (req, res, prefix = []) => {
     const prefixPath = [...prefix, ...pathParts];
-    const all = await Promise.allSettled(routes.map((route) => route({ req, res, prefix: prefixPath })));
+    const all = await Promise.allSettled(routes.map((route) => route({ req, res, prefix: prefixPath, params: {} })));
     if (all.every((result) => result.status === 'rejected' && result.reason instanceof NoRoute)) {
       res.statusCode = 404;
       res.end();
@@ -30,23 +53,27 @@ export function connect(...outerArgs: unknown[]): RoutesOutput {
   };
 }
 
-export function routes<RQ extends Prefix<ReqRes>>(
-  options: { path?: string | RegExp },
+export function routes<ParamKey extends string, RQ extends Prefix<ParamKey, ReqRes>>(
+  options: RoutePathOptionalOptions<ParamKey>,
   ...routes: ReturnType<typeof route>[]
-): RouteOutput<Prefix<RQ>>;
-export function routes<RQ extends Prefix<ReqRes>>(...routes: ReturnType<typeof route>[]): RouteOutput<Prefix<RQ>>;
-export function routes<RQ extends Prefix<ReqRes>>(...outerArgs: unknown[]): RouteOutput<Prefix<RQ>> {
+): RouteOutput<ParamKey, Prefix<ParamKey, RQ>>;
+export function routes<ParamKey extends string, RQ extends Prefix<ParamKey, ReqRes>>(
+  ...routes: ReturnType<typeof route>[]
+): RouteOutput<ParamKey, Prefix<ParamKey, RQ>>;
+export function routes<ParamKey extends string, RQ extends Prefix<ParamKey, ReqRes>>(
+  ...outerArgs: unknown[]
+): RouteOutput<ParamKey, Prefix<ParamKey, RQ>> {
   const { routes, options } = (() => {
     if (typeof outerArgs[0] === 'object') {
       return {
         routes: outerArgs.slice(1) as ReturnType<typeof route>[],
-        options: outerArgs[0] as { prefix?: string | RegExp[]; path?: string | RegExp },
+        options: outerArgs[0] as RouteOptions<ParamKey>,
       };
     }
     return { routes: outerArgs as ReturnType<typeof route>[], options: {} };
   })();
-  const { path = '/' } = options;
-  const pathParts = (typeof path === 'string' ? path.split('/') : [path]).filter(Boolean);
+
+  const pathParts = pathOptionsToPathParts(options);
 
   return async ({ prefix = [], ...params }) => {
     const prefixPath = [...prefix, ...pathParts];
