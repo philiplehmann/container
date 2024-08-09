@@ -2,10 +2,11 @@ import { ReadStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import type { Response, Next, ReqRes } from './http-route';
+import type { Prefix } from './route';
 
-export const routeOutput = async (
+export const routeOutput = async <ParamKey extends string, Input extends Prefix<ParamKey, ReqRes>>(
   res: Response,
-  output: Awaited<ReturnType<Next<ReqRes>>> | ReturnType<Next<ReqRes>>,
+  output: Awaited<ReturnType<Next<ParamKey, Input>>> | ReturnType<Next<ParamKey, Input>>,
 ): Promise<Response | null> => {
   const data = output instanceof Promise ? await output : output;
   if (typeof data === 'object' && data !== null) {

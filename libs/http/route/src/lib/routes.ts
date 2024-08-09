@@ -8,11 +8,13 @@ export type RoutesOutput<ParamKey extends string> = (
   res: Response,
   prefix?: RoutePathOptions<ParamKey>[],
 ) => Promise<void>;
-export type RoutePathOptions<ParamKey extends string> = { path: string; name?: undefined } | { path: RegExp; name: T };
+export type RoutePathOptions<ParamKey extends string> =
+  | { path: string; name?: undefined }
+  | { path: RegExp; name: ParamKey };
 // biome-ignore lint/complexity/noBannedTypes:
 export type RoutePathOptionalOptions<ParamKey extends string> = RoutePathOptions<ParamKey> | {};
 export type RoutePrefixOptions<ParamKey extends string> = { prefix?: RoutePathOptions<ParamKey>[] };
-export type RouteOptions<ParamKey extends string> = RoutePathOptions<ParamKey> & RoutePrefixOptions<ParamKey>;
+export type RoutesOptions<ParamKey extends string> = RoutePathOptions<ParamKey> & RoutePrefixOptions<ParamKey>;
 
 export const pathOptionsToPathParts = <ParamKey extends string>(
   options: RoutePathOptionalOptions<ParamKey>,
@@ -67,7 +69,7 @@ export function routes<ParamKey extends string, RQ extends Prefix<ParamKey, ReqR
     if (typeof outerArgs[0] === 'object') {
       return {
         routes: outerArgs.slice(1) as ReturnType<typeof route>[],
-        options: outerArgs[0] as RouteOptions<ParamKey>,
+        options: outerArgs[0] as RoutesOptions<ParamKey>,
       };
     }
     return { routes: outerArgs as ReturnType<typeof route>[], options: {} };

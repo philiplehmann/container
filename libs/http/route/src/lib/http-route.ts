@@ -29,14 +29,16 @@ export interface ReqRes {
   res: Response;
 }
 
-export type NextMiddlware<Input extends Prefix<ReqRes>, Output extends Prefix<ReqRes>> = (
-  data: Input,
-) => Promise<Output>;
+export type NextMiddlware<
+  ParamKey extends string,
+  Input extends Prefix<ParamKey, ReqRes>,
+  Output extends Prefix<ParamKey, ReqRes>,
+> = (data: Input) => Promise<Output>;
 
-export type Next<Input extends Prefix<ReqRes>> = (
+export type Next<ParamKey extends string, Input extends Prefix<ParamKey, ReqRes>> = (
   data: Input,
 ) => Promise<void> | Promise<NextResponse> | NextResponse | void;
 
-export type NextPromise<Input extends Prefix<ReqRes>> = (
+export type NextPromise<ParamKey extends string, Input extends Prefix<ParamKey, ReqRes>> = (
   data: Input,
 ) => Promise<void> | Promise<NextResponse | undefined>;
