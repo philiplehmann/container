@@ -22,7 +22,7 @@ export type RouteOptions<ParamKey extends string> = { method: HttpMethod } & Rou
 
 export function route<ParamKey extends string, MI1 extends Prefix<ParamKey, ReqRes>>(
   { method, path, name }: RouteOptions<ParamKey>,
-  ...functions: [Next<MI1>]
+  ...functions: [Next<ParamKey, MI1>]
 ): RouteOutput<ParamKey, Prefix<ParamKey, MI1>>;
 export function route<
   ParamKey extends string,
@@ -30,7 +30,7 @@ export function route<
   MO1 extends Prefix<ParamKey, ReqRes>,
 >(
   { method, path, name }: RouteOptions<ParamKey>,
-  ...functions: [Middleware<ParamKey, MI1, MO1>, Next<MO1>]
+  ...functions: [Middleware<ParamKey, MI1, MO1>, Next<ParamKey, MO1>]
 ): RouteOutput<ParamKey, Prefix<ParamKey, MO1>>;
 export function route<
   ParamKey extends string,
@@ -39,7 +39,7 @@ export function route<
   MO2 extends Prefix<ParamKey, ReqRes>,
 >(
   { method, path, name }: RouteOptions<ParamKey>,
-  ...functions: [Middleware<ParamKey, MI1, MO1>, Middleware<ParamKey, MO1, MO2>, Next<MO2>]
+  ...functions: [Middleware<ParamKey, MI1, MO1>, Middleware<ParamKey, MO1, MO2>, Next<ParamKey, MO2>]
 ): RouteOutput<ParamKey, Prefix<ParamKey, MO2>>;
 export function route<ParamKey extends string>(
   { method, path, name }: RouteOptions<ParamKey>,
@@ -57,7 +57,7 @@ export function route<ParamKey extends string>(
           Prefix<ParamKey, ReqRes>,
           Prefix<ParamKey, ReqRes>
         >[];
-        const next = functions.at(-1) as Next<Prefix<ParamKey, ReqRes>>;
+        const next = functions.at(-1) as Next<ParamKey, Prefix<ParamKey, ReqRes>>;
 
         try {
           const params = await middleware.reduce(

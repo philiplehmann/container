@@ -1,5 +1,5 @@
 import { BadRequest } from '@container/http/error';
-import type { Next, NextPromise, ReqRes } from '@container/http/route';
+import type { Next, ReqRes, Prefix } from '@container/http/route';
 import type { ZodSchema, TypeOf } from 'zod';
 
 export function validateQuery<RQ extends ReqRes, QuerySchema extends ZodSchema>(
@@ -16,34 +16,52 @@ export function validateQuery<RQ extends ReqRes, QuerySchema extends ZodSchema>(
   };
 }
 
-export function nextQuery<Input extends ReqRes, Output extends Input, QuerySchema extends ZodSchema>(
-  schema: QuerySchema,
-  next: Next<Output & Record<'query', TypeOf<QuerySchema>>>,
-): Next<Input>;
 export function nextQuery<
-  Input extends ReqRes,
+  ParamKey extends string,
+  Input extends Prefix<ParamKey, ReqRes>,
   Output extends Input,
   QuerySchema extends ZodSchema,
+>(schema: QuerySchema, next: Next<ParamKey, Output & Record<'query', TypeOf<QuerySchema>>>): Next<ParamKey, Input>;
+export function nextQuery<
+  ParamKey extends string,
+  Input extends Prefix<ParamKey, ReqRes>,
+  Output extends Prefix<ParamKey, ReqRes>,
+  QuerySchema extends ZodSchema,
   Key extends string = 'query',
->(schema: QuerySchema, key: Key, next: Next<Output & Record<Key, TypeOf<QuerySchema>>>): Next<Input>;
-export function nextQuery<Input extends ReqRes, Output extends Input, QuerySchema extends ZodSchema>(
-  ...args: unknown[]
-): Next<Input> {
+>(
+  schema: QuerySchema,
+  key: Key,
+  next: Next<ParamKey, Output & Record<Key, TypeOf<QuerySchema>>>,
+): Next<ParamKey, Input>;
+export function nextQuery<
+  ParamKey extends string,
+  Input extends Prefix<ParamKey, ReqRes>,
+  Output extends Input,
+  QuerySchema extends ZodSchema,
+>(...args: unknown[]): Next<ParamKey, Output> {
   const [schema, key, next] = (() => {
     if (args.length === 2) {
-      return [args[0], 'query', args[1]] as [QuerySchema, 'query', Next<Input>];
+      return [args[0], 'query', args[1]] as [QuerySchema, 'query', Next<ParamKey, Input>];
     }
-    return args as [QuerySchema, string, Next<Input>];
+    return args as [QuerySchema, string, Next<ParamKey, Input>];
   })();
 
   return (async (params: Input) => {
     const validQuery = await validateQuery(schema)(params);
     return await next({ ...params, [key]: validQuery });
-  }) as Next<Input>;
+  }) as Next<ParamKey, Output>;
 }
 
 export const middlewareQuery =
-  <QuerySchema extends ZodSchema, RQ extends ReqRes, Key extends string = 'query'>(schema: QuerySchema, key?: Key) =>
+  <
+    ParamKey extends string,
+    QuerySchema extends ZodSchema,
+    RQ extends Prefix<ParamKey, ReqRes>,
+    Key extends string = 'query',
+  >(
+    schema: QuerySchema,
+    key?: Key,
+  ) =>
   async (params: RQ): Promise<RQ & Record<Key, TypeOf<QuerySchema>>> => {
     const validQuery = await validateQuery(schema)(params);
     return { ...params, [key ?? 'query']: validQuery } as RQ & Record<Key, TypeOf<QuerySchema>>;
