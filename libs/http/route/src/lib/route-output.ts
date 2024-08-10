@@ -15,7 +15,7 @@ export const routeOutput = async (
       await finished(data.body.pipe(res, { end: false }));
       return res.end();
     }
-    if (data.body instanceof Buffer) {
+    if (data.body instanceof Buffer || data.body instanceof Uint8Array) {
       res.setHeader('Content-Type', data.contentType ?? 'application/octet-stream');
       res.write(data.body);
       return res.end();
