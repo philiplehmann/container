@@ -7,7 +7,11 @@ export const renderTo = async (
   schema: TypeOf<typeof bodySchema>,
   { type, imageType = ScreenshotType.png }: { type: 'pdf' | 'image'; imageType?: ScreenshotType },
 ) => {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
+    throw new Error('PUPPETEER_EXECUTABLE_PATH is required');
+  }
   const browser = await puppeteer.launch({
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: true,
     userDataDir: './chromium-data',
     args: ['--no-sandbox'],
