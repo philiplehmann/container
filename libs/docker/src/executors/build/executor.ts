@@ -31,7 +31,7 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
         );
         break;
       case 'puppeteer':
-        tags = createTags(tags, versionFromPackageJson('puppeteer', { projectGraph }));
+        tags = createTags(tags, versionFromPackageJson('puppeteer-core', { projectGraph }));
         break;
       case 'tesseract':
         tags = createTags(
