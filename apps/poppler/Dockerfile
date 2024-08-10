@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t poppler`.
-FROM node:lts-bookworm-slim
+FROM node:20.16.0-bookworm-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 

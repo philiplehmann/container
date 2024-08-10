@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
-FROM node:lts-bookworm
+FROM node:20.16.0-bookworm-slim
 
 ARG UNOSERVER_VERSION
 ARG JRE_VERSION
@@ -22,7 +22,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     libreoffice-calc \
                     libreoffice-impress \
                     libreoffice-draw \
-                    default-jre=${JRE_VERSION} && \
+                    default-jre=${JRE_VERSION} \
+                    ^fonts-* && \
     apt-get remove git --yes && \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
     virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}
