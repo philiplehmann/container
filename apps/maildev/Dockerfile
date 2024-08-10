@@ -2,7 +2,7 @@
 # maildev Dockerfile
 #
 
-FROM bitnami/node:20.16.0
+FROM harbor.riwi.dev/hub/bitnami/node:20.16.0
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
