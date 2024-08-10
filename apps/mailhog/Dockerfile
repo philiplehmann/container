@@ -2,7 +2,7 @@
 # MailHog Dockerfile
 #
 
-FROM golang:1.22-bookworm AS builder
+FROM harbor.riwi.dev/hub/golang:1.22-bookworm AS builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -18,7 +18,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     export GOPATH=/root/gocode && \
     go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
-FROM debian:stable-slim
+FROM harbor.riwi.dev/hub/debian:stable-slim
 RUN apt-get update && apt-get upgrade --yes
 RUN useradd -ms /bin/bash -u 1000 mailhog
 
