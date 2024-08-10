@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import type { TypeOf } from 'zod';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
