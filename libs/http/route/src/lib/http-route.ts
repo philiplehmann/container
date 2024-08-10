@@ -7,7 +7,16 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 export type NextResponse = {
   statusCode: number;
-  body?: string | Buffer | ReadStream | Readable | object | undefined | null;
+  body?:
+    | string
+    | Buffer
+    | ReadStream
+    | Readable
+    | Uint8Array
+    | Array<unknown>
+    | Record<string, unknown>
+    | undefined
+    | null;
   contentType?: string;
 };
 

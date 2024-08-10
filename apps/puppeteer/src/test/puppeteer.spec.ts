@@ -6,43 +6,27 @@ import { currentArch } from '@container/docker';
 
 const containerPort = 5000;
 
-const spawnServer = async (app: string, port: number) => {
-  const child = spawn('yarn', ['nx', 'serve', app, `--port=${port}`]);
-
-  return new Promise<ChildProcessWithoutNullStreams>((resolve) => {
-    child.stdout.on('data', (data) => {
-      if (data.toString().includes(`HTTP start 🚀 app server on ${port}`)) {
-        resolve(child);
-      }
-    });
-  });
-};
-
 describe('puppeteer', { timeout: 120_000 }, () => {
   [currentArch()].map((arch) => {
     describe(`arch: ${arch}`, () => {
       let container: StartedTestContainer;
-      let child: ChildProcessWithoutNullStreams;
       let port: number;
 
       beforeAll(async () => {
         if (process.env.TEST_SERVER_RUNNER === 'local') {
-          child = await spawnServer('puppeteer', 5555);
+          port = 3000;
         } else {
           container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
             .withEnvironment({ PORT: String(containerPort) })
             .withExposedPorts(containerPort)
             .withLogConsumer((stream) => stream.pipe(process.stdout))
             .start();
+          port = container.getMappedPort(containerPort);
         }
-
-        port = container.getMappedPort(containerPort);
       });
 
       afterAll(async () => {
-        if (process.env.RUNNER === 'local') {
-          child.kill();
-        } else {
+        if (process.env.TEST_SERVER_RUNNER !== 'local') {
           await container.stop();
         }
       });

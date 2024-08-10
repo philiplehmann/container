@@ -75,6 +75,12 @@
       ],
       "options": {}
     },
+    "vitest-local": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ]
+    },
     "e2e-install": {
       "executor": "@container/helper:e2e-install",
       "options": {}
@@ -96,6 +102,18 @@
         "skipInstall": true
       }
     },
+    "e2e-local": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {
+        "testFiles": [
+          "src/e2e/snapshot.spec.ts"
+        ],
+        "browser": "chromium"
+      }
+    },
     "test": {
       "executor": "@container/helper:empty",
       "dependsOn": [
@@ -103,6 +121,13 @@
         "vitest"
       ],
       "options": {}
+    },
+    "test-local": {
+      "executor": "@container/helper:empty",
+      "dependsOn": [
+        "e2e-local",
+        "vitest-local"
+      ]
     },
     "docker-test": {
       "executor": "@container/docker:test",
