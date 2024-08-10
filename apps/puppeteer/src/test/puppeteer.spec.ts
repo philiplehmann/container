@@ -1,28 +1,50 @@
+import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
 import { GenericContainer, type StartedTestContainer } from 'testcontainers';
-import { testRequest } from '@container/test/request';
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
+import { testRequest } from '@container/test/request';
 import { currentArch } from '@container/docker';
 
 const containerPort = 5000;
+
+const spawnServer = async (app: string, port: number) => {
+  const child = spawn('yarn', ['nx', 'serve', app, `--port=${port}`]);
+
+  return new Promise<ChildProcessWithoutNullStreams>((resolve) => {
+    child.stdout.on('data', (data) => {
+      if (data.toString().includes(`HTTP start 🚀 app server on ${port}`)) {
+        resolve(child);
+      }
+    });
+  });
+};
 
 describe('puppeteer', { timeout: 120_000 }, () => {
   [currentArch()].map((arch) => {
     describe(`arch: ${arch}`, () => {
       let container: StartedTestContainer;
+      let child: ChildProcessWithoutNullStreams;
       let port: number;
 
       beforeAll(async () => {
-        container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
-          .withEnvironment({ PORT: String(containerPort) })
-          .withExposedPorts(containerPort)
-          .withLogConsumer((stream) => stream.pipe(process.stdout))
-          .start();
+        if (process.env.TEST_SERVER_RUNNER === 'local') {
+          child = await spawnServer('puppeteer', 5555);
+        } else {
+          container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
+            .withEnvironment({ PORT: String(containerPort) })
+            .withExposedPorts(containerPort)
+            .withLogConsumer((stream) => stream.pipe(process.stdout))
+            .start();
+        }
 
         port = container.getMappedPort(containerPort);
       });
 
       afterAll(async () => {
-        await container.stop();
+        if (process.env.RUNNER === 'local') {
+          child.kill();
+        } else {
+          await container.stop();
+        }
       });
 
       it('should convert url to pdf', async () => {
