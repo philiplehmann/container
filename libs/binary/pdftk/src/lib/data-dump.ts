@@ -8,7 +8,7 @@ import {
 } from '@container/stream';
 import { splitLine } from './helpers/split-line';
 import { stringOrFirst, toObject } from './helpers/to-object';
-import { Page } from 'puppeteer';
+import { Page } from 'puppeteer-core';
 
 export interface DataDumpPage {
   number: number;
