@@ -50,3 +50,6 @@ Thumbs.db
 .env.local
 
 test-results
+
+# running puppeteer locally
+chromium-data
