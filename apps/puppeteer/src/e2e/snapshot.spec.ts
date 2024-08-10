@@ -7,8 +7,24 @@ import { join, resolve } from 'node:path';
 import { createReadStream, createWriteStream, existsSync } from 'node:fs';
 import { streamToBuffer } from '@container/stream';
 import { finished } from 'node:stream/promises';
+import { execSync } from 'node:child_process';
 
 const containerPort = 5000;
+
+const imageMagickConvert = async (input: string, output: string) => {
+  const whichOutput = (() => {
+    try {
+      return execSync('which magick').toString().trim();
+    } catch {
+      return null;
+    }
+  })();
+  if (whichOutput && existsSync(whichOutput)) {
+    await promiseSpawn('magick', [input, output]);
+  } else {
+    await promiseSpawn('convert', [input, output]);
+  }
+};
 
 let container: StartedTestContainer;
 let port: number;
@@ -62,7 +78,7 @@ let port: number;
     await finished(response.pipe(createWriteStream(filePath)));
 
     const imagePath = filePath.replace(/pdf$/, 'png');
-    await promiseSpawn('magick', [filePath, imagePath]);
+    await imageMagickConvert(filePath, imagePath);
     const files = await readdir(resolve(__dirname, 'assets'));
     outputPaths = files
       .filter((file) => file.endsWith('.png') && file.startsWith(date))
