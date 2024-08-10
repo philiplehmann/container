@@ -88,3 +88,22 @@ colima start --arch x86_64 --cpu 4 --memory 16
 ## Ports
 
 - HTTP 3000
+
+## test locally
+
+start puppeteer server, will be on port 3000
+```
+PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" yarn nx serve puppeteer
+```
+
+run *-local tests
+```
+# run playwright ui tests
+TEST_SERVER_RUNNER=local yarn nx e2e-local puppeteer
+
+# run vitest
+TEST_SERVER_RUNNER=local yarn nx vitest-local puppeteer
+
+# run both, e2e and vitest
+TEST_SERVER_RUNNER=local yarn nx test-local puppeteer
+´´´

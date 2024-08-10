@@ -4,8 +4,9 @@ import { streamRequest } from '@container/test/request';
 import { currentArch, promiseSpawn } from '@container/docker';
 import { readdir, unlink } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { createReadStream, createWriteStream } from 'node:fs';
+import { createReadStream, createWriteStream, existsSync } from 'node:fs';
 import { streamToBuffer } from '@container/stream';
+import { finished } from 'node:stream/promises';
 
 const containerPort = 5000;
 
@@ -14,17 +15,23 @@ let port: number;
 
 [currentArch()].map((arch) => {
   test.beforeAll(async () => {
-    container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
-      .withEnvironment({ PORT: String(containerPort) })
-      .withExposedPorts(containerPort)
-      .withLogConsumer((stream) => stream.pipe(process.stdout))
-      .start();
+    if (process.env.TEST_SERVER_RUNNER === 'local') {
+      port = 3000;
+    } else {
+      container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
+        .withEnvironment({ PORT: String(containerPort) })
+        .withExposedPorts(containerPort)
+        .withLogConsumer((stream) => stream.pipe(process.stdout))
+        .start();
 
-    port = container.getMappedPort(containerPort);
+      port = container.getMappedPort(containerPort);
+    }
   });
 
   test.afterAll(async () => {
-    await container.stop();
+    if (process.env.TEST_SERVER_RUNNER !== 'local') {
+      await container.stop();
+    }
   });
 
   let filePath = '';
@@ -46,14 +53,16 @@ let port: number;
         margin: { top: 0, right: 0, bottom: 0, left: 0 },
       }),
     });
+    expect(response.statusCode).toBe(200);
+
     const date = String(Date.now());
     const fileName = `${date}.pdf`;
     filePath = resolve(__dirname, 'assets', fileName);
 
-    response.pipe(createWriteStream(filePath), { end: true });
+    await finished(response.pipe(createWriteStream(filePath)));
 
     const imagePath = filePath.replace(/pdf$/, 'png');
-    await promiseSpawn('convert', [filePath, imagePath]);
+    await promiseSpawn('magick', [filePath, imagePath]);
     const files = await readdir(resolve(__dirname, 'assets'));
     outputPaths = files
       .filter((file) => file.endsWith('.png') && file.startsWith(date))
@@ -63,7 +72,9 @@ let port: number;
   test.afterEach(async () => {
     await Promise.all(
       [filePath, ...outputPaths].map(async (path) => {
-        await unlink(path);
+        if (existsSync(path)) {
+          await unlink(path);
+        }
       }),
     );
   });
