@@ -23,8 +23,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     libreoffice-impress \
                     libreoffice-draw \
                     default-jre=${JRE_VERSION} \
-                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
-    apt-get remove git --yes && \
+                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf && \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
     virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}
 
