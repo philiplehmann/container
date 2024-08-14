@@ -7,7 +7,6 @@
 FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim
 
 ENV NODE_ENV=production
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
@@ -22,8 +21,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     libpangocairo-1.0-0 libxss1 libgtk-3-0 libgtk2.0-0 libdrm2 libxkbcommon0 \
                     wget gnupg \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
-                    chromium && \
-    apt-get remove git --yes
+                    chromium
 
 WORKDIR /app
 
