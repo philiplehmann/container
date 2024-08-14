@@ -1,7 +1,10 @@
+import { randomUUID } from 'node:crypto';
 import puppeteer from 'puppeteer-core';
+import { join } from 'node:path';
 import type { TypeOf } from 'zod';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
+import { rmdir } from 'node:fs/promises';
 
 export const renderTo = async (
   schema: TypeOf<typeof bodySchema>,
@@ -10,10 +13,11 @@ export const renderTo = async (
   if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
     throw new Error('PUPPETEER_EXECUTABLE_PATH is required');
   }
+  const userDataDir = join(process.cwd(), 'puppeteer', randomUUID());
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: true,
-    userDataDir: './chromium-data',
+    userDataDir,
     args: ['--no-sandbox'],
   });
   try {
@@ -38,5 +42,6 @@ export const renderTo = async (
     throw new Error(`wrong type: ${type}`);
   } finally {
     await browser.close();
+    await rmdir(userDataDir, { recursive: true });
   }
 };
