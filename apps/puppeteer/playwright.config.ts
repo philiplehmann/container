@@ -15,7 +15,6 @@ const baseURL = process.env.BASE_URL || 'http://localhost:5000';
  */
 export default defineConfig({
   ...nxE2EPreset(__filename, { testDir: 'src/e2e/*.spec.ts' }),
-  timeout: 60_000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,

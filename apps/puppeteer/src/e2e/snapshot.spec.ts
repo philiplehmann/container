@@ -44,6 +44,8 @@ let port: number;
     }
   });
 
+  test.setTimeout(60_000);
+
   test.afterAll(async () => {
     if (process.env.TEST_SERVER_RUNNER !== 'local') {
       await container.stop();
