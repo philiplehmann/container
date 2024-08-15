@@ -4,7 +4,7 @@ import { join } from 'node:path';
 import type { TypeOf } from 'zod';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
-import { rmdir } from 'node:fs/promises';
+import { rm } from 'node:fs/promises';
 
 export const renderTo = async (
   schema: TypeOf<typeof bodySchema>,
@@ -42,6 +42,6 @@ export const renderTo = async (
     throw new Error(`wrong type: ${type}`);
   } finally {
     await browser.close();
-    await rmdir(userDataDir, { recursive: true });
+    await rm(userDataDir, { recursive: true });
   }
 };
