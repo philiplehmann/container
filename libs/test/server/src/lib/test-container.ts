@@ -21,6 +21,7 @@ export const testContainer = async ({
     .withEnvironment({ PORT: String(containerPort) })
     .withExposedPorts(containerPort)
     .withUser('1000:1000')
+    .withTmpFs({ '/app/tmp': 'rw,size=100m' })
     .withLogConsumer((stream) => stream.pipe(process.stdout))
     .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode));
 
