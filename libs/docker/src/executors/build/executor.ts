@@ -1,5 +1,5 @@
 import type { DockerBuildExecutorSchema } from './schema';
-import { dockerBuildxBuild } from '../../docker';
+import { dockerBuildxBuild } from '../../docker-buildx-build';
 import type { Executor } from '@nx/devkit';
 import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson } from '../../version';
 

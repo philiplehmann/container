@@ -1,4 +1,4 @@
-import type { DockerPlatform } from '../../docker';
+import type { DockerPlatform } from '../../docker-helper';
 
 export interface DockerTestExecutorSchema {
   platforms: DockerPlatform[];

@@ -9,8 +9,8 @@ import { middlewareQuery, nextQuery } from './query';
 const schema = z.strictObject({ key: z.string() });
 
 describe('validate-single', () => {
-  describe('middlewareBody', () => {
-    const server = useTestServer(
+  describe('middlewareBody', async () => {
+    const server = await useTestServer(
       post('/http-validate/single/middlewareBody', middlewareBody(schema), async ({ body }) => {
         return { statusCode: 200, body };
       }),
@@ -36,8 +36,8 @@ describe('validate-single', () => {
     });
   });
 
-  describe('validateBody', () => {
-    const server = useTestServer(
+  describe('validateBody', async () => {
+    const server = await useTestServer(
       post(
         '/http-validate/single/validateBody',
         nextBody(schema, ({ body }) => {
@@ -65,8 +65,8 @@ describe('validate-single', () => {
       expect(response.status).toBe(400);
     });
   });
-  describe('middlewareQuery', () => {
-    const server = useTestServer(
+  describe('middlewareQuery', async () => {
+    const server = await useTestServer(
       get('/http-validate/single/middlewareQuery', middlewareQuery(schema), async ({ query }) => {
         return { statusCode: 200, body: query };
       }),
@@ -88,8 +88,8 @@ describe('validate-single', () => {
     });
   });
 
-  describe('validateQuery', () => {
-    const server = useTestServer(
+  describe('validateQuery', async () => {
+    const server = await useTestServer(
       get(
         '/http-validate/single/validateQuery',
         nextQuery(schema, ({ query }) => {

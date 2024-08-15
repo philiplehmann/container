@@ -1,4 +1,4 @@
-import { envForDockerFile } from './docker';
+import { envForDockerFile } from './docker-helper';
 import type { ExecutorContext } from '@nx/devkit';
 
 export const versionFromPackageJson = (

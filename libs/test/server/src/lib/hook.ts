@@ -1,5 +1,4 @@
 import type { Server } from 'node:http';
-import { beforeAll, afterAll } from 'vitest';
 import { testServer } from './test-server';
 import { connect, type routes } from '@container/http/route';
 
@@ -44,7 +43,8 @@ export class TestServer {
   }
 }
 
-export const useTestServer = (...testRoutes: Parameters<typeof routes>): TestServer => {
+export const useTestServer = async (...testRoutes: Parameters<typeof routes>): Promise<TestServer> => {
+  const { beforeAll, afterAll } = await import('vitest');
   const server = new TestServer();
 
   beforeAll(async () => {

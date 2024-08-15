@@ -4,7 +4,7 @@ import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
   describe('object config', async () => {
-    const server = useTestServer(
+    const server = await useTestServer(
       del({ path: '/delete' }, async ({ res }) => {
         res.statusCode = 200;
         res.write('delete');

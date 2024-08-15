@@ -1,5 +1,6 @@
 import type { DockerTestExecutorSchema } from './schema';
-import { dockerBuildxBuild, dockerImageRemove } from '../../docker';
+import { dockerBuildxBuild } from '../../docker-buildx-build';
+import { dockerImageRemove } from '../../docker-image-remove';
 import type { Executor } from '@nx/devkit';
 
 const runExecutor: Executor<DockerTestExecutorSchema> = async ({

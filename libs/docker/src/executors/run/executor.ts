@@ -1,5 +1,5 @@
 import type { Executor } from '@nx/devkit';
-import { dockerRun } from '../../docker';
+import { dockerRun } from '../../docker-run';
 import type { DockerRunExecutorSchema } from './schema';
 
 const runExecutor: Executor<DockerRunExecutorSchema> = async (options) => {
