@@ -25,7 +25,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     default-jre=${JRE_VERSION} \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf && \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
-    virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}
+    virtenv/bin/pip install unoserver==${UNOSERVER_VERSION} && \
+    chmod -R 666 /tmp
 
 ENV PATH="/app/virtenv/bin:${PATH}"
 
