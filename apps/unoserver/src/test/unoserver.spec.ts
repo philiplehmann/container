@@ -1,13 +1,13 @@
-import { Wait } from 'testcontainers';
 import { resolve } from 'node:path';
 import { testRequest } from '@container/test/request';
 import { describe, it, expect } from 'vitest';
 import { useTestContainer } from '@container/test/server';
+import { currentArch } from '@container/docker';
 
 const containerPort = 5000;
 
 describe('unoserver', () => {
-  ['amd', 'arm'].map((arch) => {
+  [currentArch()].map((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({
         image: `philiplehmann/unoserver:test-${arch}`,
