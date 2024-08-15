@@ -73,10 +73,24 @@
       ],
       "options": {}
     },
+    "vitest-local": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {}
+    },
     "test": {
       "executor": "@container/helper:empty",
       "dependsOn": [
         "vitest"
+      ],
+      "options": {}
+    },
+    "test-local": {
+      "executor": "@container/helper:empty",
+      "dependsOn": [
+        "vitest-local"
       ],
       "options": {}
     },

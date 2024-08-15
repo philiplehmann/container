@@ -23,8 +23,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     tesseract-ocr-deu=${TESSERACT_LOCALE_VERSION} \
                     tesseract-ocr-fra=${TESSERACT_LOCALE_VERSION} \
                     tesseract-ocr-eng=${TESSERACT_LOCALE_VERSION} \
-                    imagemagick && \
-    apt-get remove git --yes
+                    imagemagick
 
 WORKDIR /app
 
@@ -33,5 +32,7 @@ COPY dist/apps/tesseract tesseract
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 RUN npm --prefix tesseract --omit=dev -f install
+
+USER 1000:1000
 
 CMD [ "node", "tesseract" ]
