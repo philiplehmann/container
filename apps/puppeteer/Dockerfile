@@ -7,7 +7,7 @@
 FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim
 
 ENV NODE_ENV=production
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-sandbox
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
