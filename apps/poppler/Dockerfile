@@ -14,8 +14,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
-    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION} && \
-    apt-get remove git --yes
+    apt-get install --no-install-recommends --yes poppler-utils=${POPPLER_VERSION}
 
 WORKDIR /app
 
@@ -27,5 +26,7 @@ COPY dist/apps/poppler poppler
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 RUN npm --prefix poppler --omit=dev -f install
+
+USER 1000:1000
 
 CMD [ "node", "poppler" ]

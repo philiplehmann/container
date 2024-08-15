@@ -25,6 +25,9 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 
 WORKDIR /app
 
+RUN mkdir /app/chromium-data && \
+    chown -R 1000:1000 /app/chromium-data
+
 ENV HOST=0.0.0.0
 ENV PORT=3000
 
@@ -33,5 +36,7 @@ COPY dist/apps/puppeteer puppeteer
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 RUN npm --prefix puppeteer --omit=dev -f install
+
+USER 1000:1000
 
 CMD [ "node", "puppeteer" ]

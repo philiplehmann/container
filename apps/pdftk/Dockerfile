@@ -34,10 +34,10 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
     apt-get install --no-install-recommends --yes \
-    default-jre=${JRE_VERSION} && \
-    mkdir /app/tmp && \
-    chmod -R 666 /app/tmp && \
-    apt-get remove git --yes
+    default-jre=${JRE_VERSION}
+
+RUN mkdir /app/tmp && \
+    chown -R 1000:1000 /app/tmp
 
 COPY --from=pdftk /pdftk /pdftk
 COPY apps/pdftk/bin/pdftk /bin/pdftk
@@ -46,5 +46,7 @@ COPY dist/apps/pdftk pdftk
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 RUN npm --prefix pdftk --omit=dev -f install
+
+USER 1000:1000
 
 CMD [ "node", "pdftk" ]

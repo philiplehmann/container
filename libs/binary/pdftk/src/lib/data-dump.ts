@@ -135,7 +135,7 @@ export function parseDataDump(content: string): {
         meta[metaMappingNumber[key]] = Number(value);
       } else if (isMetaKeyString(key)) {
         meta[metaMappingString[key]] = value;
-      } else {
+      } else if (key !== '') {
         console.warn(`Unknown key: ${key}`);
       }
     }
