@@ -37,7 +37,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const response = await streamRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/uncompress',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -54,7 +54,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/encrypt?password=1234',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -68,7 +68,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/encrypt?password=1234&userPassword=5678',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -82,7 +82,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/encrypt?password=1234&userPassword=5678&allow=AllFeatures',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -98,7 +98,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/decrypt?password=1234',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -114,7 +114,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/data/fields',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -130,7 +130,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/data/dump',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -146,7 +146,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/data/fdf',
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -176,7 +176,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const response = await streamRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: `/form/fill?${searchParams.toString()}`,
             headers: { 'Content-Type': 'application/pdf' },
             file,
@@ -188,7 +188,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const [, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/data/fields',
             headers: { 'Content-Type': 'application/pdf' },
             body: pdf,
