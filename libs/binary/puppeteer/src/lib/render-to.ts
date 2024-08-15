@@ -3,6 +3,7 @@ import type { TypeOf } from 'zod';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
 import { join } from 'node:path';
+import { cwd } from 'node:process';
 
 export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;
@@ -14,7 +15,7 @@ export class BrowserToPdfRenderer {
       this.launchedBrowser = await puppeteer.launch({
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         headless: true,
-        userDataDir: join(process.cwd(), 'chromium-data'),
+        userDataDir: join(cwd(), 'chromium-data'),
         args: ['--no-sandbox'],
       });
     }

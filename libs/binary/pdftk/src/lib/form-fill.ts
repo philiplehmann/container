@@ -5,6 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { unlink, existsSync, createWriteStream, createReadStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
 import { dataFields, type DataFieldType } from './data-fields';
+import { cwd } from 'node:process';
 
 const fdfHeader = `%FDF-1.2
 %����
@@ -57,7 +58,7 @@ export async function formFillStream(
   },
   options?: PdftkOptions,
 ): Promise<void> {
-  const tmpDir = `${process.cwd()}/tmp`;
+  const tmpDir = `${cwd()}/tmp`;
   const inputFile = `${tmpDir}/${randomUUID()}.pdf`;
   try {
     input.pipe(createWriteStream(inputFile));

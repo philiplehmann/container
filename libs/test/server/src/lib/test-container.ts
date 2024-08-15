@@ -24,7 +24,9 @@ export const testContainer = async ({
     .withLogConsumer((stream) => stream.pipe(process.stdout))
     .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode));
 
-  if (hook) genericContainer = hook(genericContainer);
+  if (hook) {
+    genericContainer = hook(genericContainer);
+  }
 
   const container = await genericContainer.start();
   const port = container.getMappedPort(containerPort);
