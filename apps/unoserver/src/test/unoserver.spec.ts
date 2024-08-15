@@ -13,9 +13,7 @@ describe('unoserver', () => {
         image: `philiplehmann/unoserver:test-${arch}`,
         containerPort,
         hook: (container) => {
-          return container
-            .withStartupTimeout(60_000)
-            .withWaitStrategy(Wait.forLogMessage('INFO:unoserver:Server PID', 1));
+          return container.withStartupTimeout(60_000);
         },
       });
 

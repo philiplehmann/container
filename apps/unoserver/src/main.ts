@@ -5,17 +5,21 @@ import { httpServer } from '@container/http/server';
 
 const PORT = process.env.PORT || '3000';
 
-unoserver();
+const main = async () => {
+  await unoserver();
 
-httpServer(
-  connect(
-    post('/convert', middlewareQuery(schema), async ({ req, res, query: { convertTo } }) => {
-      // unoconvert [-h] [--convert-to CONVERT_TO] [--filter FILTER_NAME] [--interface INTERFACE] [--port PORT] infile outfile
-      res.setHeader('Content-Type', ConvertToMimeType[convertTo]);
+  httpServer(
+    connect(
+      post('/convert', middlewareQuery(schema), async ({ req, res, query: { convertTo } }) => {
+        // unoconvert [-h] [--convert-to CONVERT_TO] [--filter FILTER_NAME] [--interface INTERFACE] [--port PORT] infile outfile
+        res.setHeader('Content-Type', ConvertToMimeType[convertTo]);
 
-      unoconvert({ input: req, output: res, to: convertTo });
-    }),
-    ...healthEndpoints,
-  ),
-  { port: PORT, name: 'unoserver' },
-);
+        unoconvert({ input: req, output: res, to: convertTo });
+      }),
+      ...healthEndpoints,
+    ),
+    { port: PORT, name: 'unoserver' },
+  );
+};
+
+main();
