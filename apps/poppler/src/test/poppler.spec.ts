@@ -1,36 +1,21 @@
-import { GenericContainer, type StartedTestContainer } from 'testcontainers';
 import { resolve } from 'node:path';
 import { testRequest } from '@container/test/request';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
+import { useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
 describe('poppler', () => {
   ['amd', 'arm'].map((arch) => {
-    describe(`arch: ${arch}`, () => {
-      let container: StartedTestContainer;
-      let port: number;
-
-      beforeAll(async () => {
-        container = await new GenericContainer(`philiplehmann/poppler-server:test-${arch}`)
-          .withEnvironment({ PORT: String(containerPort) })
-          .withExposedPorts(containerPort)
-          .withLogConsumer((stream) => stream.pipe(process.stdout))
-          .start();
-
-        port = container.getMappedPort(containerPort);
-      });
-
-      afterAll(async () => {
-        await container.stop();
-      });
+    describe(`arch: ${arch}`, async () => {
+      const setup = await useTestContainer({ image: `philiplehmann/poppler-server:test-${arch}`, containerPort });
 
       it('should convert PDF to text', async () => {
         const file = resolve(__dirname, 'assets/dummy.pdf');
         const [response, text] = await testRequest({
           method: 'POST',
           host: 'localhost',
-          port,
+          port: setup.port,
           path: '/pdf-to-text',
           headers: { 'Content-Type': 'application/pdf' },
           file,
@@ -45,7 +30,7 @@ describe('poppler', () => {
         const [response, text] = await testRequest({
           method: 'POST',
           host: 'localhost',
-          port,
+          port: setup.port,
           path: '/pdf-to-html',
           headers: { 'content-type': 'application/x-www-form-urlencoded' },
           file,

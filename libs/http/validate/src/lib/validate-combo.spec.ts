@@ -9,8 +9,8 @@ import { middlewareQuery, nextQuery } from './query';
 const schema = z.strictObject({ key: z.string() });
 
 describe('validate-combo', () => {
-  describe('middlewareBody', () => {
-    const server = useTestServer(
+  describe('middlewareBody', async () => {
+    const server = await useTestServer(
       post(
         '/http-validate/combo/middlewareBody',
         middlewareBody(schema),
@@ -41,8 +41,8 @@ describe('validate-combo', () => {
     });
   });
 
-  describe('validateBody', () => {
-    const server = useTestServer(
+  describe('validateBody', async () => {
+    const server = await useTestServer(
       post(
         '/http-validate/combo/validateBody',
         middlewareQuery(schema),
@@ -71,8 +71,8 @@ describe('validate-combo', () => {
       expect(response.status).toBe(400);
     });
   });
-  describe('middlewareQuery', () => {
-    const server = useTestServer(
+  describe('middlewareQuery', async () => {
+    const server = await useTestServer(
       put(
         '/http-validate/combo/middlewareQuery',
         middlewareQuery(schema),
@@ -103,8 +103,8 @@ describe('validate-combo', () => {
     });
   });
 
-  describe('validateQuery', () => {
-    const server = useTestServer(
+  describe('validateQuery', async () => {
+    const server = await useTestServer(
       put(
         '/http-validate/combo/validateQuery',
         middlewareBody(schema),

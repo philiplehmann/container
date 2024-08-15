@@ -1,41 +1,21 @@
-import { type ChildProcessWithoutNullStreams, spawn } from 'node:child_process';
-import { GenericContainer, type StartedTestContainer } from 'testcontainers';
+import type { StartedTestContainer } from 'testcontainers';
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
 import { testRequest } from '@container/test/request';
 import { currentArch } from '@container/docker';
+import { testContainer, useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
 describe('puppeteer', { timeout: 120_000 }, () => {
   [currentArch()].map((arch) => {
-    describe(`arch: ${arch}`, () => {
-      let container: StartedTestContainer;
-      let port: number;
-
-      beforeAll(async () => {
-        if (process.env.TEST_SERVER_RUNNER === 'local') {
-          port = 3000;
-        } else {
-          container = await new GenericContainer(`philiplehmann/puppeteer:test-${arch}`)
-            .withEnvironment({ PORT: String(containerPort) })
-            .withExposedPorts(containerPort)
-            .withLogConsumer((stream) => stream.pipe(process.stdout))
-            .start();
-          port = container.getMappedPort(containerPort);
-        }
-      });
-
-      afterAll(async () => {
-        if (process.env.TEST_SERVER_RUNNER !== 'local') {
-          await container.stop();
-        }
-      });
+    describe(`arch: ${arch}`, async () => {
+      const setup = await useTestContainer({ image: `philiplehmann/puppeteer:test-${arch}`, containerPort });
 
       it('should convert url to pdf', async () => {
         const [response, text] = await testRequest({
           method: 'POST',
           host: 'localhost',
-          port,
+          port: setup.port,
           path: '/',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url: 'https://google.com' }),
@@ -48,7 +28,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
       it('should convert html to pdf', async () => {
         const [response, text] = await testRequest({
           method: 'POST',
-          port,
+          port: setup.port,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ html: '<h1>Hello World</h1>' }),
         });
@@ -60,7 +40,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
       it('should complain about missing content-type', async () => {
         const [response, text] = await testRequest({
           method: 'POST',
-          port,
+          port: setup.port,
           body: JSON.stringify({ html: '<h1>Hello World</h1>' }),
         });
 
@@ -73,7 +53,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
       it('should complain about missing url / html', async () => {
         const [response, text] = await testRequest({
           method: 'POST',
-          port,
+          port: setup.port,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({}),
         });
@@ -87,7 +67,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
       it('should convert url to pdf with all properties', async () => {
         const [response, text] = await testRequest({
           method: 'POST',
-          port,
+          port: setup.port,
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             url: 'https://google.com',

@@ -4,7 +4,7 @@ import { useTestServer } from '@container/test/server';
 
 describe('http-route', () => {
   describe('object config', async () => {
-    const server = useTestServer(
+    const server = await useTestServer(
       put({ path: '/put' }, async ({ res }) => {
         await res.write('put');
         await res.end();

@@ -11,7 +11,9 @@ const api = routes(
 
 describe('http-route', () => {
   describe('create tree with multiple routes and route', async () => {
-    const server = useTestServer(routes({ path: 'api' }, routes({ path: 'v1' }, api), routes({ path: 'v2' }, api)));
+    const server = await useTestServer(
+      routes({ path: 'api' }, routes({ path: 'v1' }, api), routes({ path: 'v2' }, api)),
+    );
 
     describe('index', () => {
       it('v1', async () => {
@@ -35,7 +37,7 @@ describe('http-route', () => {
   });
 
   describe('create tree with multiple routes and route with regex', async () => {
-    const server = useTestServer(routes({ path: 'api' }, routes({ path: /v\d+/, name: 'version' }, api)));
+    const server = await useTestServer(routes({ path: 'api' }, routes({ path: /v\d+/, name: 'version' }, api)));
 
     describe('index', () => {
       it('v1', async () => {
@@ -59,7 +61,7 @@ describe('http-route', () => {
   });
 
   describe('create tree with multiple routes and route with regex', async () => {
-    const server = useTestServer(
+    const server = await useTestServer(
       routes(
         { path: 'api' },
         routes({ path: /v\d+/, name: 'version1' }, routes({ path: /\d+/, name: 'version2' }, api), api),

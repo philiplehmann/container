@@ -1,4 +1,4 @@
-import { DockerPlatform } from '../../docker';
+import { DockerPlatform } from '../../docker-helper';
 
 export interface BiomejsExecutorSchema {
   fix?: boolean;

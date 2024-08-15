@@ -1,31 +1,16 @@
-import { GenericContainer, type StartedTestContainer } from 'testcontainers';
 import { resolve } from 'node:path';
 import { beautifyJson, streamRequest, testRequest } from '@container/test/request';
 import { describe, beforeAll, afterAll, it, expect } from 'vitest';
 import { statSync } from 'node:fs';
 import { streamLength, streamToBuffer } from '@container/stream';
+import { useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
 describe('pdftk', { timeout: 10_000 }, () => {
   ['arm'].map((arch) => {
-    describe(`arch: ${arch}`, () => {
-      let container: StartedTestContainer;
-      let port: number;
-
-      beforeAll(async () => {
-        container = await new GenericContainer(`philiplehmann/pdftk:test-${arch}`)
-          .withEnvironment({ PORT: String(containerPort) })
-          .withExposedPorts(containerPort)
-          .withLogConsumer((stream) => stream.pipe(process.stdout))
-          .start();
-
-        port = container.getMappedPort(containerPort);
-      });
-
-      afterAll(async () => {
-        await container.stop();
-      });
+    describe(`arch: ${arch}`, async () => {
+      const setup = await useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
 
       describe('compress', async () => {
         it('pdf file reduces in size', async () => {
@@ -34,7 +19,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           const response = await streamRequest({
             method: 'POST',
             host: 'localhost',
-            port,
+            port: setup.port,
             path: '/compress',
             headers: { 'Content-Type': 'application/pdf' },
             file,
