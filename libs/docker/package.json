@@ -4,7 +4,7 @@
   "dependencies": {
     "tslib": "^2.3.0",
     "@nx/vite": "19.6.1",
-    "vite": "5.4.1"
+    "vite": "5.4.2"
   },
   "type": "commonjs",
   "main": "./src/index.js",
