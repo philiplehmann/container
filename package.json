@@ -39,7 +39,7 @@
   },
   "packageManager": "yarn@4.4.0",
   "engines": {
-    "node": "20.16.0",
+    "node": "20.17.0",
     "yarn": "4.4.0"
   }
 }
