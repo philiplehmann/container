@@ -20,8 +20,6 @@ export class BrowserToPdfRenderer {
       });
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);
-      const pages = await this.launchedBrowser.pages();
-      await Promise.all(pages.map((page) => page.close()));
     }
     return this.launchedBrowser;
   }
