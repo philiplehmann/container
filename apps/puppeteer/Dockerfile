@@ -6,8 +6,8 @@
 # Run the container with `docker run -p 3000:3000 -t puppeteer`.
 FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim
 
-ENV NODE_ENV=production
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV NODE_ENV production
+ENV PUPPETEER_EXECUTABLE_PATH /usr/bin/chromium
 ENV DBUS_SESSION_BUS_ADDRESS autolaunch:
 ENV LANG en_US.UTF-8
 
@@ -31,8 +31,8 @@ WORKDIR /app
 RUN mkdir /app/chromium-data && \
     chown -R 1000:1000 /app/chromium-data
 
-ENV HOST=0.0.0.0
-ENV PORT=3000
+ENV HOST 0.0.0.0
+ENV PORT 3000
 
 COPY dist/apps/puppeteer puppeteer
 

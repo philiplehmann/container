@@ -22,8 +22,8 @@ FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim
 
 ARG JRE_VERSION
 
-ENV HOST=0.0.0.0
-ENV PORT=3000
+ENV HOST 0.0.0.0
+ENV PORT 3000
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
