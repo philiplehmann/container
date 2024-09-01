@@ -16,7 +16,7 @@ export class BrowserToPdfRenderer {
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         headless: true,
         userDataDir: join(cwd(), 'chromium-data'),
-        args: ['--no-sandbox'],
+        args: ['--no-sandbox', '--disable-gpu', '--enable-font-antialiasing', '--font-render-hinting=none'],
       });
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);

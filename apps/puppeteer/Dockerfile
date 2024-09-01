@@ -8,6 +8,8 @@ FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim
 
 ENV NODE_ENV=production
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV DBUS_SESSION_BUS_ADDRESS autolaunch:
+ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -22,7 +24,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     wget gnupg \
                     dbus dbus-x11 \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
-                    chromium chromium-sandbox
+                    chromium
 
 WORKDIR /app
 
