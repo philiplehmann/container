@@ -22,6 +22,7 @@ export class BrowserToPdfRenderer {
           '--disable-gpu',
           '--enable-font-antialiasing',
           '--font-render-hinting=none',
+          '--disable-dev-shm-usage',
         ]),
       });
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
