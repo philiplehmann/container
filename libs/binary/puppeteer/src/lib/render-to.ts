@@ -3,7 +3,7 @@ import type { TypeOf } from 'zod';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
 import { join } from 'node:path';
-import { cwd, getuid } from 'node:process';
+import { cwd } from 'node:process';
 
 export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;
@@ -12,18 +12,18 @@ export class BrowserToPdfRenderer {
       if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
         throw new Error('PUPPETEER_EXECUTABLE_PATH is required');
       }
-      const uid = typeof getuid === 'function' ? getuid() : 0;
-      const isNonRoot = uid > 0;
       this.launchedBrowser = await puppeteer.launch({
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
         headless: true,
         userDataDir: join(cwd(), 'chromium-data'),
-        args: (isNonRoot ? [] : ['--no-sandbox']).concat([
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
           '--disable-gpu',
           '--enable-font-antialiasing',
           '--font-render-hinting=none',
           '--disable-dev-shm-usage',
-        ]),
+        ],
       });
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);

@@ -24,13 +24,12 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
                     wget gnupg \
                     dbus dbus-x11 \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
-                    chromium chromium-sandbox
+                    chromium
 
 WORKDIR /app
 
-RUN usermod -a -G audio,video node
-
-RUN mkdir /app/chromium-data && \
+RUN usermod -a -G audio,video node && \
+    mkdir /app/chromium-data && \
     chown -R 1000:1000 /app/chromium-data
 
 ENV HOST 0.0.0.0
