@@ -21,7 +21,7 @@
     "@types/nodemailer": "^6.4.15",
     "@vitest/coverage-v8": "1.6.0",
     "@vitest/ui": "1.6.0",
-    "esbuild": "0.23.1",
+    "esbuild": "0.24.0",
     "jsdom": "^25.0.0",
     "nodemailer": "6.9.15",
     "nx": "19.8.3",
