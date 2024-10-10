@@ -1590,7 +1590,7 @@ __metadata:
     nx: "npm:19.8.4"
     nx-remotecache-minio: "npm:19.0.0"
     playwright: "npm:^1.44.0"
-    puppeteer-core: "npm:23.5.1"
+    puppeteer-core: "npm:23.5.2"
     testcontainers: "npm:10.13.2"
     tslib: "npm:2.7.0"
     typescript: "npm:5.6.3"
@@ -11851,9 +11851,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:23.5.1":
-  version: 23.5.1
-  resolution: "puppeteer-core@npm:23.5.1"
+"puppeteer-core@npm:23.5.2":
+  version: 23.5.2
+  resolution: "puppeteer-core@npm:23.5.2"
   dependencies:
     "@puppeteer/browsers": "npm:2.4.0"
     chromium-bidi: "npm:0.8.0"
@@ -11861,7 +11861,7 @@ __metadata:
     devtools-protocol: "npm:0.0.1342118"
     typed-query-selector: "npm:^2.12.0"
     ws: "npm:^8.18.0"
-  checksum: 10c0/9aca3ed67bbca5870172333d592444a91c40872093a413b0a73f14a5b40346241e3757645ac33a970d98dfc4b66bc2b270db903755369759782f58f40d2736f7
+  checksum: 10c0/fe5ad091c819797b31aa5806a444c4ef58bdc3cd83b49696146ecdf6d7b589d066e84b09680a37b2e20b4bb8dec1211480254836a5fc680f0b29d35bfcb9be6f
   languageName: node
   linkType: hard
 
