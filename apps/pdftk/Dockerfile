@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/pdftk`.
-FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim AS pdftk
+FROM harbor.riwi.dev/hub/node:20.18.0-bookworm-slim AS pdftk
 
 ARG PDFTK_VERSION
 
@@ -18,7 +18,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
     curl -o /pdftk/pdftk.jar https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v${PDFTK_VERSION}/pdftk-all.jar
 
 
-FROM harbor.riwi.dev/hub/node:20.16.0-bookworm-slim
+FROM harbor.riwi.dev/hub/node:20.18.0-bookworm-slim
 
 ARG JRE_VERSION
 
