@@ -1580,7 +1580,7 @@ __metadata:
     "@swc/cli": "npm:0.4.0"
     "@swc/core": "npm:1.7.40"
     "@swc/helpers": "npm:0.5.13"
-    "@types/node": "npm:20.17.1"
+    "@types/node": "npm:20.17.3"
     "@types/nodemailer": "npm:^6.4.15"
     "@vitest/coverage-v8": "npm:1.6.0"
     "@vitest/ui": "npm:1.6.0"
@@ -4037,12 +4037,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.17.1":
-  version: 20.17.1
-  resolution: "@types/node@npm:20.17.1"
+"@types/node@npm:20.17.3":
+  version: 20.17.3
+  resolution: "@types/node@npm:20.17.3"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/214cf1fffff9c80ae0d49d7dd1f04254215d49711276fff44ff6f61e36dc8d53520509a88add6955fe029b2259c87eaf284b43bc1236d4f4f06bd80c46f0e2b8
+  checksum: 10c0/31e5076665e906fd5c04fbe840976947fdacb6e69613fde4b129778d54b7447999a96300d5c12f04cc177875b8d1e4c8f9f8fe604cab484efdfc1e33184a695b
   languageName: node
   linkType: hard
 
