@@ -25,7 +25,7 @@
     "jsdom": "^25.0.0",
     "nodemailer": "6.9.16",
     "nx": "19.8.8",
-    "nx-remotecache-minio": "19.0.0",
+    "nx-remotecache-minio": "20.0.0",
     "playwright": "^1.44.0",
     "testcontainers": "10.13.2",
     "tslib": "2.8.0",

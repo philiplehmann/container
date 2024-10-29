@@ -1588,7 +1588,7 @@ __metadata:
     jsdom: "npm:^25.0.0"
     nodemailer: "npm:6.9.16"
     nx: "npm:19.8.8"
-    nx-remotecache-minio: "npm:19.0.0"
+    nx-remotecache-minio: "npm:20.0.0"
     playwright: "npm:^1.44.0"
     puppeteer-core: "npm:23.6.1"
     testcontainers: "npm:10.13.2"
@@ -10621,28 +10621,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx-remotecache-custom@npm:^19.0.0":
-  version: 19.0.0
-  resolution: "nx-remotecache-custom@npm:19.0.0"
+"nx-remotecache-custom@npm:^20.0.0":
+  version: 20.0.0
+  resolution: "nx-remotecache-custom@npm:20.0.0"
   dependencies:
     chalk: "npm:^4.1.2"
     dotenv: "npm:^16.0.3"
-    tar: "npm:^6.1.12"
+    tar: "npm:^6.2.1"
   peerDependencies:
-    nx: ^19.0.0
-  checksum: 10c0/2bbb96a4c18f4588dbfbe3599beaad922f7f8553fd311f3a3d10818fef68df4c3e0d84b1077cdb526ffc34a8f013c97b8259644bef299e588f506af4793145a3
+    nx: ^20.0.0
+  checksum: 10c0/ce49faaf663429d730b230959564e8e5ff1c48de4ad03cc7ebaf9577f1ef4e154b9fb4a39de9b8e029fd41dbd0367d0cef1524d36c36083255512da502c951fa
   languageName: node
   linkType: hard
 
-"nx-remotecache-minio@npm:19.0.0":
-  version: 19.0.0
-  resolution: "nx-remotecache-minio@npm:19.0.0"
+"nx-remotecache-minio@npm:20.0.0":
+  version: 20.0.0
+  resolution: "nx-remotecache-minio@npm:20.0.0"
   dependencies:
     minio: "npm:^8.0.0"
-    nx-remotecache-custom: "npm:^19.0.0"
+    nx-remotecache-custom: "npm:^20.0.0"
   peerDependencies:
-    nx: ^19.0.0
-  checksum: 10c0/d1a88565e43c4e49710f5710ef9f27abc9690e522b6af51e407283ad37bc4dde20c3346ac2d560fd12620bf19d5a6f4fded64d3b700fb17f14532784c5ffd757
+    nx: ^20.0.0
+  checksum: 10c0/7c0c9013b4c2ab3f95ea302575478f03bf36f849a5c9f6b4fa5870260274bb95445babd146d1762212dc0e9cdf1173450fee9917751faf5448b05456c713cc2a
   languageName: node
   linkType: hard
 
@@ -13396,7 +13396,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^6.1.11, tar@npm:^6.1.12, tar@npm:^6.1.2":
+"tar@npm:^6.1.11, tar@npm:^6.1.2":
   version: 6.2.0
   resolution: "tar@npm:6.2.0"
   dependencies:
@@ -13407,6 +13407,20 @@ __metadata:
     mkdirp: "npm:^1.0.3"
     yallist: "npm:^4.0.0"
   checksum: 10c0/02ca064a1a6b4521fef88c07d389ac0936730091f8c02d30ea60d472e0378768e870769ab9e986d87807bfee5654359cf29ff4372746cc65e30cbddc352660d8
+  languageName: node
+  linkType: hard
+
+"tar@npm:^6.2.1":
+  version: 6.2.1
+  resolution: "tar@npm:6.2.1"
+  dependencies:
+    chownr: "npm:^2.0.0"
+    fs-minipass: "npm:^2.0.0"
+    minipass: "npm:^5.0.0"
+    minizlib: "npm:^2.1.1"
+    mkdirp: "npm:^1.0.3"
+    yallist: "npm:^4.0.0"
+  checksum: 10c0/a5eca3eb50bc11552d453488344e6507156b9193efd7635e98e867fab275d527af53d8866e2370cd09dfe74378a18111622ace35af6a608e5223a7d27fe99537
   languageName: node
   linkType: hard
 
