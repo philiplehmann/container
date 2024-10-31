@@ -17,7 +17,7 @@
     "@swc/cli": "0.5.0",
     "@swc/core": "1.7.40",
     "@swc/helpers": "0.5.13",
-    "@types/node": "22.8.4",
+    "@types/node": "22.8.5",
     "@types/nodemailer": "^6.4.15",
     "@vitest/coverage-v8": "1.6.0",
     "@vitest/ui": "1.6.0",
