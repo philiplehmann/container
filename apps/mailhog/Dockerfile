@@ -2,23 +2,17 @@
 # MailHog Dockerfile
 #
 
-FROM harbor.riwi.dev/hub/golang:1.22-bookworm AS builder
+FROM harbor.riwi.dev/hub/bitnami/golang:1.23.3 AS builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
 ARG MAILHOG_VERSION
 
 # Install MailHog:
-RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
-    --mount=target=/var/cache/apt,type=cache,sharing=locked \
-    rm -f /etc/apt/apt.conf.d/docker-clean && \
-    apt-get update && \
-    apt-get install --no-install-recommends --yes build-essential git && \
-    mkdir -p /root/gocode && \
-    export GOPATH=/root/gocode && \
-    go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
+RUN mkdir -p /root/gocode && \
+    GOSUMDB=off GOPATH=/root/gocode GOPROXY=https://proxy.golang.org/cached-only go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
-FROM harbor.riwi.dev/hub/debian:stable-slim
+FROM harbor.riwi.dev/hub/bitnami/minideb:bookworm
 RUN apt-get update && apt-get upgrade --yes
 RUN useradd -ms /bin/bash -u 1000 mailhog
 
