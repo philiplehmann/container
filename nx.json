@@ -73,7 +73,7 @@
     "default": {
       "runner": "nx-remotecache-minio",
       "options": {
-        "url": "https://storage.riwi.dev",
+        "url": "https://data.riwi.dev",
         "bucket": "nx-cache",
         "cacheableOperations": [
           "build",
