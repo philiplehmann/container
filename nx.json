@@ -80,7 +80,9 @@
           "test",
           "vitest",
           "lint",
-          "e2e"
+          "e2e",
+          "docker-test",
+          "test"
         ]
       }
     }
