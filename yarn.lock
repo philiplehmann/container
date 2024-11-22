@@ -1591,7 +1591,7 @@ __metadata:
     nx-remotecache-minio: "npm:20.0.0"
     playwright: "npm:^1.44.0"
     puppeteer-core: "npm:23.9.0"
-    testcontainers: "npm:10.14.0"
+    testcontainers: "npm:10.15.0"
     tslib: "npm:2.8.1"
     typescript: "npm:5.6.3"
     vite: "npm:5.4.11"
@@ -13455,9 +13455,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.14.0":
-  version: 10.14.0
-  resolution: "testcontainers@npm:10.14.0"
+"testcontainers@npm:10.15.0":
+  version: 10.15.0
+  resolution: "testcontainers@npm:10.15.0"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.29"
@@ -13474,7 +13474,7 @@ __metadata:
     tar-fs: "npm:^3.0.6"
     tmp: "npm:^0.2.3"
     undici: "npm:^5.28.4"
-  checksum: 10c0/b988205b3402cac4873c6592d6f57d4e4fded1e9fd10a748d861028a961fc9d4a8d97c41bf44da207f9de85b73632c51ec152502aa00ae77cbbc6e57fd02205a
+  checksum: 10c0/37f788f914b83740621ef526cc6aa522d99a9c2c6d506fa01e42ad09095e2747c46b5ad8c86882807099644013a5479af1d94a9c5ae63d2a632bcf13d8e0e312
   languageName: node
   linkType: hard
 
