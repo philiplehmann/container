@@ -6,7 +6,14 @@ const runExecutor: Executor<E2EInstallExecutorSchema> = async () => {
   if (process.env.RUNNER_OS === 'Linux') {
     try {
       await promiseSpawn('sudo', ['apt-get', 'update']);
-      await promiseSpawn('sudo', ['apt-get', 'install', 'ghostscript', '--yes', '--no-install-recommends']);
+      await promiseSpawn('sudo', [
+        'apt-get',
+        'install',
+        'ghostscript',
+        'imagemagick',
+        '--yes',
+        '--no-install-recommends',
+      ]);
       await promiseSpawn('sudo', [
         'sed',
         '-i',
