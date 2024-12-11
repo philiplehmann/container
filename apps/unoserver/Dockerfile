@@ -30,9 +30,9 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 RUN mkdir /app/tmp && \
     chown -R 1000:1000 /app/tmp
 
-ENV PATH "/app/virtenv/bin:${PATH}"
-ENV HOST 0.0.0.0
-ENV PORT 3000
+ENV PATH="/app/virtenv/bin:${PATH}"
+ENV HOST=0.0.0.0
+ENV PORT=3000
 
 COPY dist/apps/unoserver unoserver
 
