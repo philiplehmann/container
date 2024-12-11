@@ -18,8 +18,8 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 
 WORKDIR /app
 
-ENV HOST 0.0.0.0
-ENV PORT 3000
+ENV HOST=0.0.0.0
+ENV PORT=3000
 
 COPY dist/apps/poppler poppler
 

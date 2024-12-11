@@ -6,8 +6,8 @@
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/tesseract`.
 FROM harbor.riwi.dev/hub/node:20.18.0-bookworm-slim
 
-ENV HOST 0.0.0.0
-ENV PORT 3000
+ENV HOST=0.0.0.0
+ENV PORT=3000
 
 ARG TESSERACT_VERSION
 ARG TESSERACT_LOCALE_VERSION
