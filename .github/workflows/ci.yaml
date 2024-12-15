@@ -62,10 +62,13 @@ jobs:
       contents: "read"
       actions: "read"
     steps:
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 100
 
       - name: Use Node.js
         uses: actions/setup-node@v4
@@ -97,7 +100,7 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: test
-        run: yarn nx affected --target test --parallel 1 --platforms ${{ matrix.arch }}
+        run: yarn nx affected --target test --parallel 2
         env:
           NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
           NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
