@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t puppeteer`.
-FROM harbor.riwi.dev/hub/node:20.18.0-bookworm-slim
+FROM harbor.riwi.dev/hub/node:22.12.0-bookworm-slim
 
 ENV NODE_ENV=production
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium

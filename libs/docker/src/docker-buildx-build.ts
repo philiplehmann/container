@@ -16,8 +16,6 @@ export async function dockerBuildxBuild({
   const builderName = `builder-${platforms.join('-')}-${randomBytes(10).toString('hex')}`;
   try {
     await promiseSpawn('docker', ['buildx', 'create', '--name', builderName, '--platform', 'linux/amd64,linux/arm64']);
-    const [registry, tag] = tags[0].split(':');
-    const cacheTag = [registry, tag.startsWith('test-') ? `build-cache-${tag}` : 'build-cache'].join(':');
     await new Promise<void>((resolve, reject) => {
       const processEnv = envForDockerFile(file);
       const docker = dockerSpawn([
@@ -31,11 +29,11 @@ export async function dockerBuildxBuild({
         file,
         `--${output}`,
         '--platform',
-        platforms.map((platform) => `linux/${platform}64`).join(','),
+        platforms.map((platform) => `linux/${platform}`).join(','),
         '--cache-from',
-        `type=registry,ref=harbor.riwi.dev/${cacheTag}`,
+        'type=gha',
         '--cache-to',
-        `type=registry,ref=harbor.riwi.dev/${cacheTag},mode=max,image-manifest=true`,
+        'type=gha,mode=max',
         ...tags.flatMap((tag) => ['--tag', tag]),
         ...Object.entries(processEnv).flatMap(([key, value]) => ['--build-arg', `${key}=${value}`]),
         '.',
