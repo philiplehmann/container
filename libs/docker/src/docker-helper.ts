@@ -3,7 +3,7 @@ import { arch } from 'node:os';
 import { config } from 'dotenv';
 import { dirname, resolve as pathResolve } from 'node:path';
 
-export type DockerPlatform = 'amd' | 'arm';
+export type DockerPlatform = 'amd64' | 'arm64';
 
 export function dockerSpawn(args: string[], options?: Omit<SpawnOptions, 'stdio'>) {
   console.info('spawn:', 'docker', ...args);
@@ -19,8 +19,8 @@ export function envForDockerFile(file: string) {
 }
 
 export const archMapping = {
-  x64: 'amd',
-  arm64: 'arm',
+  x64: 'amd64',
+  arm64: 'arm64',
 } as const;
 
 export const currentArch = () => {

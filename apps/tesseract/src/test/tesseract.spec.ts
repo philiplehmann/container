@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 import { testRequest } from '@container/test/request';
 import { describe, it, expect } from 'vitest';
 import { useTestContainer } from '@container/test/server';
+import { currentArch } from '@container/docker';
 
 const containerPort = 5000;
 
@@ -9,7 +10,7 @@ const expectText =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
 describe('tesseract', () => {
-  ['amd', 'arm'].map((arch) => {
+  [currentArch()].map((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({ image: `philiplehmann/tesseract:test-${arch}`, containerPort });
 

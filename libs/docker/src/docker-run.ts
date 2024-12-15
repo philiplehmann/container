@@ -11,7 +11,7 @@ export async function dockerRun({
   image: string;
   file: string;
   port: string[] | string;
-  platform?: 'arm' | 'amd';
+  platform?: 'arm64' | 'amd64';
 }) {
   if (!platform) {
     platform = currentArch();

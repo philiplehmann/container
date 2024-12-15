@@ -20,8 +20,8 @@
     "platform": {
       "type": "string",
       "enum": [
-        "arm",
-        "amd"
+        "arm64",
+        "amd64"
       ],
       "required": false
     }

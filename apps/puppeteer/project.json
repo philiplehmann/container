@@ -136,8 +136,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tag": "philiplehmann/puppeteer:test",
         "file": "apps/puppeteer/Dockerfile"
@@ -150,8 +150,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tags": [
           "philiplehmann/puppeteer:auto"

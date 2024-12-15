@@ -2,5 +2,5 @@ export interface DockerRunExecutorSchema {
   image: string;
   file: string;
   port: string[] | string;
-  platform?: 'arm' | 'amd';
+  platform?: 'arm64' | 'amd64';
 }
