@@ -88,8 +88,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tag": "philiplehmann/poppler-server:test",
         "file": "apps/poppler/Dockerfile"
@@ -102,8 +102,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tags": [
           "philiplehmann/poppler-server:auto"

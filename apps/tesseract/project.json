@@ -87,8 +87,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tag": "philiplehmann/tesseract:test",
         "file": "apps/tesseract/Dockerfile"
@@ -101,8 +101,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tags": [
           "philiplehmann/tesseract:auto"

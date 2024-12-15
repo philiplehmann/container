@@ -2,9 +2,10 @@ import type { DockerTestExecutorSchema } from './schema';
 import executor from './executor';
 import { describe, it, expect } from 'vitest';
 import { cwd } from 'node:process';
+import { currentArch } from '../../docker-helper';
 
 const options: DockerTestExecutorSchema = {
-  platforms: ['amd', 'arm'],
+  platforms: [currentArch()],
   tag: 'https://ghcr.io/philiplehmann/container/build:test',
   file: 'Dockerfile',
 };

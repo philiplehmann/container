@@ -99,7 +99,8 @@
       ],
       "options": {
         "platforms": [
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tag": "philiplehmann/pdftk:test",
         "file": "apps/pdftk/Dockerfile"
@@ -112,8 +113,8 @@
       ],
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tags": [
           "philiplehmann/pdftk:auto"

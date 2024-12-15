@@ -4,11 +4,12 @@ import { describe, beforeAll, afterAll, it, expect } from 'vitest';
 import { statSync } from 'node:fs';
 import { streamLength, streamToBuffer } from '@container/stream';
 import { useTestContainer } from '@container/test/server';
+import { currentArch } from '@container/docker';
 
 const containerPort = 5000;
 
 describe('pdftk', { timeout: 10_000 }, () => {
-  ['arm'].map((arch) => {
+  [currentArch()].map((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
 

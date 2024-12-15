@@ -31,8 +31,8 @@
       "executor": "@container/docker:test",
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tag": "philiplehmann/maildev:test",
         "file": "apps/maildev/Dockerfile"
@@ -42,8 +42,8 @@
       "executor": "@container/docker:build",
       "options": {
         "platforms": [
-          "amd",
-          "arm"
+          "amd64",
+          "arm64"
         ],
         "tags": [
           "philiplehmann/maildev:auto"

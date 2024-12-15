@@ -50,7 +50,14 @@ jobs:
           NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04
+            arch: arm64
     permissions:
       contents: "read"
       actions: "read"
@@ -90,7 +97,7 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: test
-        run: yarn nx affected --target test --parallel 1
+        run: yarn nx affected --target test --parallel 1 --platforms ${{ matrix.arch }}
         env:
           NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
           NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
