@@ -87,10 +87,6 @@
         "build"
       ],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
         "tag": "philiplehmann/poppler-server:test",
         "file": "apps/poppler/Dockerfile"
       }

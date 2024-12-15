@@ -8,12 +8,6 @@
     "tag": {
       "type": "string"
     },
-    "platforms": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "file": {
       "type": "string"
     }

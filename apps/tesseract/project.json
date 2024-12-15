@@ -86,10 +86,6 @@
         "build"
       ],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
         "tag": "philiplehmann/tesseract:test",
         "file": "apps/tesseract/Dockerfile"
       }
