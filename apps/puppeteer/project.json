@@ -135,10 +135,6 @@
         "build"
       ],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
         "tag": "philiplehmann/puppeteer:test",
         "file": "apps/puppeteer/Dockerfile"
       }

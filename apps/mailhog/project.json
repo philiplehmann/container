@@ -30,10 +30,6 @@
     "docker-test": {
       "executor": "@container/docker:test",
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
         "tag": "philiplehmann/mailhog:test",
         "file": "apps/mailhog/Dockerfile"
       }

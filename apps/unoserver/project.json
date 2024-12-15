@@ -100,10 +100,6 @@
         "build"
       ],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
         "tag": "philiplehmann/unoserver:test",
         "file": "apps/unoserver/Dockerfile"
       }
