@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type { IncomingMessage } from 'node:http';
 import { Readable, Transform } from 'node:stream';
 import { checkContentType } from '../check-content-type';
-import { getBoundry } from './get-boundry';
+import { getBoundary } from './get-boundary';
 
 enum State {
   INIT = 'INIT',
@@ -24,7 +24,7 @@ export async function requestToMultipartFormData(
 ): Promise<void> {
   checkContentType(req, multipartFormData);
 
-  const boundaryLine = `--${getBoundry(req)}`;
+  const boundaryLine = `--${getBoundary(req)}`;
   let lastline = '';
   let bytes: number[] = [];
   let lastBytes: number[] = [];

@@ -1,7 +1,7 @@
 import { BadRequest } from '@container/http/error';
 import type { IncomingMessage } from 'node:http';
 
-export function getBoundry(req: IncomingMessage): string {
+export function getBoundary(req: IncomingMessage): string {
   const boundary = req.headers['content-type']
     ?.split('; ')
     .find((v) => v.startsWith('boundary='))
