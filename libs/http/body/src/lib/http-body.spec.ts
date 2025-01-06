@@ -127,7 +127,6 @@ describe('http-body', () => {
       method: 'POST',
       body: formData,
     });
-    console.log(await response.text());
     expect(response.status).toBe(200);
   });
 });
