@@ -46,7 +46,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
 
         expect(response.statusCode).toBe(400);
         expect(text).toBe(
-          '{"issues":[{"code":"invalid_literal","expected":"application/json","path":["content-type"],"message":"Invalid literal value, expected \\"application/json\\""}],"name":"ZodError"}',
+          '{"issues":[{"code":"invalid_type","expected":"string","received":"undefined","path":["content-type"],"message":"Required"}],"name":"ZodError"}',
         );
       });
 
