@@ -12,7 +12,7 @@ export function validateBody<RQ extends ReqRes, BodySchema extends ZodSchema>(
     if (body.success) {
       return body.data;
     }
-    throw new BadRequest(JSON.stringify(body.error));
+    throw new BadRequest('Invalid body');
   };
 }
 

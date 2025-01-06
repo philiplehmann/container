@@ -45,9 +45,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
         });
 
         expect(response.statusCode).toBe(400);
-        expect(text).toBe(
-          '{"issues":[{"code":"invalid_type","expected":"string","received":"undefined","path":["content-type"],"message":"Required"}],"name":"ZodError"}',
-        );
+        expect(text).toBe('Invalid request headers');
       });
 
       it('should complain about missing url / html', async () => {
@@ -59,9 +57,7 @@ describe('puppeteer', { timeout: 120_000 }, () => {
         });
 
         expect(response.statusCode).toBe(400);
-        expect(text).toBe(
-          '{"issues":[{"code":"invalid_union","unionErrors":[{"issues":[{"code":"invalid_type","expected":"string","received":"undefined","path":["url"],"message":"Required"}],"name":"ZodError"},{"issues":[{"code":"invalid_type","expected":"string","received":"undefined","path":["html"],"message":"Required"}],"name":"ZodError"}],"path":[],"message":"Invalid input"}],"name":"ZodError"}',
-        );
+        expect(text).toBe('Invalid body');
       });
 
       it('should convert url to pdf with all properties', async () => {

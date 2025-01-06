@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { IncomingMessage } from 'node:http';
 import { Readable, Transform } from 'node:stream';
-import { checkContentType } from '../check-content-type';
+import { validateRequestHeaders } from '../validate-request-headers';
 import { getBoundary } from './get-boundary';
 
 enum State {
@@ -22,7 +22,7 @@ export async function requestToMultipartFormData(
   req: IncomingMessage,
   partCallback: (header: Headers, stream: Readable) => Promise<void>,
 ): Promise<void> {
-  checkContentType(req, multipartFormData);
+  validateRequestHeaders(req, multipartFormData);
 
   const boundaryLine = `--${getBoundary(req)}`;
   let lastline = '';
