@@ -22,7 +22,7 @@
     "@vitest/coverage-v8": "2.1.8",
     "@vitest/ui": "2.1.8",
     "esbuild": "0.24.2",
-    "jsdom": "^25.0.0",
+    "jsdom": "^26.0.0",
     "nodemailer": "6.9.16",
     "nx": "20.3.1",
     "nx-remotecache-minio": "20.0.0",
