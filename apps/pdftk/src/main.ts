@@ -12,8 +12,10 @@ import {
   dataFieldsStream,
   formFillStream,
   formFillSchema,
+  concatSchema,
 } from '@container/binary/pdftk';
 import { httpServer } from '@container/http/server';
+import { requestToMultipartFormData } from '@container/http/body';
 
 const PORT = process.env.PORT || '3000';
 
@@ -53,6 +55,12 @@ httpServer(
     //   const pdftkSpawn = spawn('java', ['-jar', '/pdftk/pdftk.jar', '-', 'background', '-']);
     //   streamChildProcess(req, res, pdftkSpawn);
     // }),
+    post({ path: '/cat' }, middlewareQuery(concatSchema), async ({ req, query }) => {
+      concatSchema()
+      await requestToMultipartFormData(req, (header, stream) => {
+        const path = 
+      });
+    }),
     post(
       { path: '/form/fill' },
       middlewareQuery(formFillSchema),

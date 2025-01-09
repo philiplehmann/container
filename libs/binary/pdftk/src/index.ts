@@ -1,4 +1,5 @@
 export * from './lib/compress';
+export * from './lib/concat';
 export * from './lib/data-dump';
 export * from './lib/data-fdf';
 export * from './lib/data-fields';
