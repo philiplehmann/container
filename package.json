@@ -14,7 +14,7 @@
     "@nx/workspace": "20.3.1",
     "@playwright/test": "^1.44.0",
     "@swc-node/register": "1.10.9",
-    "@swc/cli": "0.5.2",
+    "@swc/cli": "0.6.0",
     "@swc/core": "1.10.6",
     "@swc/helpers": "0.5.15",
     "@types/node": "22.10.5",
