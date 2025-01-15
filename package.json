@@ -34,7 +34,7 @@
     "vitest": "2.1.8"
   },
   "dependencies": {
-    "puppeteer-core": "24.0.0",
+    "puppeteer-core": "24.1.0",
     "zod": "^3.23.8"
   },
   "packageManager": "yarn@4.6.0",
