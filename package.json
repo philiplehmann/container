@@ -23,7 +23,7 @@
     "@vitest/ui": "3.0.3",
     "esbuild": "0.24.2",
     "jsdom": "^26.0.0",
-    "nodemailer": "6.9.16",
+    "nodemailer": "6.10.0",
     "nx": "20.3.2",
     "nx-remotecache-minio": "20.0.0",
     "playwright": "^1.44.0",
