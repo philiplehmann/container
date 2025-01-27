@@ -1646,7 +1646,7 @@ __metadata:
     nx-remotecache-minio: "npm:20.0.0"
     playwright: "npm:^1.44.0"
     puppeteer-core: "npm:24.1.1"
-    testcontainers: "npm:10.17.1"
+    testcontainers: "npm:10.17.2"
     tslib: "npm:2.8.1"
     typescript: "npm:5.7.3"
     vite: "npm:6.0.11"
@@ -12364,9 +12364,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.17.1":
-  version: 10.17.1
-  resolution: "testcontainers@npm:10.17.1"
+"testcontainers@npm:10.17.2":
+  version: 10.17.2
+  resolution: "testcontainers@npm:10.17.2"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.29"
@@ -12382,8 +12382,8 @@ __metadata:
     ssh-remote-port-forward: "npm:^1.0.4"
     tar-fs: "npm:^3.0.6"
     tmp: "npm:^0.2.3"
-    undici: "npm:^5.28.4"
-  checksum: 10c0/7707790330385db82ef8f9abee052b7830c7cfce1166db4154626d09611698958568650db189eadd5e8c58e264bce36c71ce46002e04eb7ecd3dab48c70b436a
+    undici: "npm:^5.28.5"
+  checksum: 10c0/9d2397f6972b44aa1b4278ab3481a3a925d79d1141e88cddeb9798d569ece4cde510436e1c75cbfd7970153100cf04dd52bd5ef970b32eef644818bb5cbf1f4e
   languageName: node
   linkType: hard
 
@@ -12776,12 +12776,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^5.28.4":
-  version: 5.28.4
-  resolution: "undici@npm:5.28.4"
+"undici@npm:^5.28.5":
+  version: 5.28.5
+  resolution: "undici@npm:5.28.5"
   dependencies:
     "@fastify/busboy": "npm:^2.0.0"
-  checksum: 10c0/08d0f2596553aa0a54ca6e8e9c7f45aef7d042c60918564e3a142d449eda165a80196f6ef19ea2ef2e6446959e293095d8e40af1236f0d67223b06afac5ecad7
+  checksum: 10c0/4dfaa13089fe4c0758f84ec0d34b257e58608e6be3aa540f493b9864b39e3fdcd0a1ace38e434fe79db55f833aa30bcfddd8d6cbe3e0982b0dcae8ec17b65e08
   languageName: node
   linkType: hard
 
