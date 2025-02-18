@@ -107,3 +107,8 @@ TEST_SERVER_RUNNER=local yarn nx vitest-local puppeteer
 # run both, e2e and vitest
 TEST_SERVER_RUNNER=local yarn nx test-local puppeteer
 ´´´
+
+## update snapshots
+```
+yarn nx e2e puppeteer --update-snapshots
+```
