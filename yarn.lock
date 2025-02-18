@@ -1618,7 +1618,7 @@ __metadata:
     nx: "npm:20.4.4"
     nx-remotecache-minio: "npm:20.0.0"
     playwright: "npm:^1.44.0"
-    puppeteer-core: "npm:24.2.0"
+    puppeteer-core: "npm:24.2.1"
     testcontainers: "npm:10.18.0"
     tslib: "npm:2.8.1"
     typescript: "npm:5.7.3"
@@ -4896,15 +4896,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromium-bidi@npm:1.2.0":
-  version: 1.2.0
-  resolution: "chromium-bidi@npm:1.2.0"
+"chromium-bidi@npm:1.3.0":
+  version: 1.3.0
+  resolution: "chromium-bidi@npm:1.3.0"
   dependencies:
     mitt: "npm:^3.0.1"
     zod: "npm:^3.24.1"
   peerDependencies:
     devtools-protocol: "*"
-  checksum: 10c0/7961a9bab729a73fb5f7b5cf0b3779f885dd006fb32efeabffda93414ffa7a2f329eab377d6ed74537d889fa63a12f194c465589df52abdb5727f5b51e453990
+  checksum: 10c0/97f1620f9cb925f045670bd55092f33b16642a7dcbbf91ae935ee4a9eb352ab2a8b5beb5080d5feb35fd663773ff3b882a3ebfd5475a9b1037a47dd9b7d05aee
   languageName: node
   linkType: hard
 
@@ -8672,17 +8672,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.2.0":
-  version: 24.2.0
-  resolution: "puppeteer-core@npm:24.2.0"
+"puppeteer-core@npm:24.2.1":
+  version: 24.2.1
+  resolution: "puppeteer-core@npm:24.2.1"
   dependencies:
     "@puppeteer/browsers": "npm:2.7.1"
-    chromium-bidi: "npm:1.2.0"
+    chromium-bidi: "npm:1.3.0"
     debug: "npm:^4.4.0"
     devtools-protocol: "npm:0.0.1402036"
     typed-query-selector: "npm:^2.12.0"
     ws: "npm:^8.18.0"
-  checksum: 10c0/45cc00d72e0900c254142d86f258b7020093d1879d45ec98daca7c960d7de15b61fdfb4d2d274d58797d3a8cb4df4d15b0ac4b3475ea32936d971fd01b9f860a
+  checksum: 10c0/6bc02274dceaee2ce55ab60fa347bbc67ca6dd0e72d28076a5f9ee3cbc7d9612484138732022fa3e1724f9fde55984ba4e132d0616633fb4f503ca16c56cb061
   languageName: node
   linkType: hard
 
