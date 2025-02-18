@@ -43,7 +43,7 @@ test.setTimeout(60_000);
 
     test.afterAll(async () => {
       if (process.env.TEST_SERVER_RUNNER !== 'local') {
-        await container.stop();
+        await container?.stop();
       }
     });
 
@@ -92,7 +92,8 @@ test.setTimeout(60_000);
       );
     });
 
-    test('test pdf visually', async ({ page }) => {
+    test('test pdf visually', async ({ page }, testinfo) => {
+      testinfo.snapshotSuffix = '';
       await Promise.all(
         outputPaths.map(async (imagePath, index) => {
           const buffer = await streamToBuffer(createReadStream(imagePath));
