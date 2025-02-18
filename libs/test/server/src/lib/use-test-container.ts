@@ -25,7 +25,7 @@ export const useTestContainer = async ({
 
   afterAll(async () => {
     if (process.env.TEST_SERVER_RUNNER !== 'local') {
-      await container.stop();
+      await container?.stop();
     }
   });
 

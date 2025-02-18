@@ -24,7 +24,7 @@ describe('mailhog', () => {
       });
 
       afterAll(async () => {
-        await container.stop();
+        await container?.stop();
       });
 
       it('should receive email', async () => {
