@@ -121,7 +121,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/dataFields.json');
+          await expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/dataFields.json');
         });
       });
 
@@ -137,7 +137,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/dataDump.json');
+          await expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/dataDump.json');
         });
       });
 
@@ -153,7 +153,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(text).toMatchFileSnapshot('./snapshots/dataFdf.fdf');
+          await expect(text).toMatchFileSnapshot('./snapshots/dataFdf.fdf');
         });
       });
 
@@ -194,7 +194,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             headers: { 'Content-Type': 'application/pdf' },
             body: pdf,
           });
-          expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/formFill.json');
+          await expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/formFill.json');
         });
       });
     });
