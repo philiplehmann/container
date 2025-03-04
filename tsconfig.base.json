@@ -10,32 +10,70 @@
     "importHelpers": true,
     "target": "esnext",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@container/binary/pdftk": ["libs/binary/pdftk/src/index.ts"],
-      "@container/binary/poppler": ["libs/binary/poppler/src/index.ts"],
-      "@container/binary/puppeteer": ["libs/binary/puppeteer/src/index.ts"],
-      "@container/binary/tesseract": ["libs/binary/tesseract/src/index.ts"],
-      "@container/binary/unoserver": ["libs/binary/unoserver/src/index.ts"],
-      "@container/biomejs": ["libs/biomejs/src/index.ts"],
-      "@container/docker": ["libs/docker/src/index.ts"],
-      "@container/helper": ["libs/helper/src/index.ts"],
-      "@container/http/body": ["libs/http/body/src/index.ts"],
-      "@container/http/error": ["libs/http/error/src/index.ts"],
+      "@container/binary/pdftk": [
+        "libs/binary/pdftk/src/index.ts"
+      ],
+      "@container/binary/poppler": [
+        "libs/binary/poppler/src/index.ts"
+      ],
+      "@container/binary/puppeteer": [
+        "libs/binary/puppeteer/src/index.ts"
+      ],
+      "@container/binary/tesseract": [
+        "libs/binary/tesseract/src/index.ts"
+      ],
+      "@container/binary/unoserver": [
+        "libs/binary/unoserver/src/index.ts"
+      ],
+      "@container/biomejs": [
+        "libs/biomejs/src/index.ts"
+      ],
+      "@container/docker": [
+        "libs/docker/src/index.ts"
+      ],
+      "@container/helper": [
+        "libs/helper/src/index.ts"
+      ],
+      "@container/http/body": [
+        "libs/http/body/src/index.ts"
+      ],
+      "@container/http/error": [
+        "libs/http/error/src/index.ts"
+      ],
       "@container/http/multipart-form-data": [
         "libs/http/multipart-form-data/src/index.ts"
       ],
-      "@container/http/route": ["libs/http/route/src/index.ts"],
-      "@container/http/server": ["libs/http/server/src/index.ts"],
-      "@container/http/validate": ["libs/http/validate/src/index.ts"],
-      "@container/stream": ["libs/stream/src/index.ts"],
-      "@container/test/request": ["libs/test/request/src/index.ts"],
-      "@container/test/server": ["libs/test/server/src/index.ts"]
+      "@container/http/route": [
+        "libs/http/route/src/index.ts"
+      ],
+      "@container/http/server": [
+        "libs/http/server/src/index.ts"
+      ],
+      "@container/http/validate": [
+        "libs/http/validate/src/index.ts"
+      ],
+      "@container/stream": [
+        "libs/stream/src/index.ts"
+      ],
+      "@container/test/request": [
+        "libs/test/request/src/index.ts"
+      ],
+      "@container/test/server": [
+        "libs/test/server/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

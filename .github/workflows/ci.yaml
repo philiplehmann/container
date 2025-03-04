@@ -148,5 +148,6 @@ jobs:
       - name: Build & Push Docker Image
         run: yarn nx affected --target docker-push
         env:
-          NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
-          NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NX_POWERPACK_LICENSE: ${{ secrets.NX_POWERPACK_LICENSE }}
