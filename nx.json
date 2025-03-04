@@ -69,20 +69,11 @@
       }
     }
   ],
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-remotecache-minio",
-      "options": {
-        "url": "https://data.riwi.dev",
-        "bucket": "nx-cache",
-        "cacheableOperations": [
-          "build",
-          "test",
-          "vitest",
-          "lint",
-          "e2e"
-        ]
-      }
-    }
+  "s3": {
+    "endpoint": "https://data.riwi.dev",
+    "region": "public",
+    "bucket": "nx-cache",
+    "forcePathStyle": true,
+    "localMode": "read-write"
   }
 }
