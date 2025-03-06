@@ -46,8 +46,9 @@ jobs:
       - name: lint
         run: yarn nx affected --target lint
         env:
-          NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
-          NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NX_POWERPACK_LICENSE: ${{ secrets.NX_POWERPACK_LICENSE }}
 
   test:
     runs-on: ${{ matrix.os }}
@@ -102,8 +103,9 @@ jobs:
       - name: test
         run: yarn nx affected --target test --parallel 2
         env:
-          NXCACHE_MINIO_ACCESS_KEY: ${{ secrets.NXCACHE_MINIO_ACCESS_KEY }}
-          NXCACHE_MINIO_SECRET_KEY: ${{ secrets.NXCACHE_MINIO_SECRET_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NX_POWERPACK_LICENSE: ${{ secrets.NX_POWERPACK_LICENSE }}
 
   build:
     runs-on: ubuntu-latest
