@@ -2362,7 +2362,7 @@ __metadata:
     testcontainers: "npm:10.18.0"
     tslib: "npm:2.8.1"
     typescript: "npm:5.8.2"
-    vite: "npm:6.1.1"
+    vite: "npm:6.2.1"
     vitest: "npm:3.0.8"
     zod: "npm:^3.23.8"
   languageName: unknown
@@ -6995,7 +6995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:0.25.0":
+"esbuild@npm:0.25.0, esbuild@npm:^0.25.0":
   version: 0.25.0
   resolution: "esbuild@npm:0.25.0"
   dependencies:
@@ -9849,7 +9849,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.2":
+"postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -11559,13 +11559,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:6.1.1":
-  version: 6.1.1
-  resolution: "vite@npm:6.1.1"
+"vite@npm:6.2.1":
+  version: 6.2.1
+  resolution: "vite@npm:6.2.1"
   dependencies:
-    esbuild: "npm:^0.24.2"
+    esbuild: "npm:^0.25.0"
     fsevents: "npm:~2.3.3"
-    postcss: "npm:^8.5.2"
+    postcss: "npm:^8.5.3"
     rollup: "npm:^4.30.1"
   peerDependencies:
     "@types/node": ^18.0.0 || ^20.0.0 || >=22.0.0
@@ -11607,7 +11607,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/4ec5ddc9436951a68b213cd59c2a157663ef423658c387400774582ea33da40dcae18e55f3adb3b629173e2183b10d49db8370bc51a0aa89797e4ca5a34702a0
+  checksum: 10c0/2c024376a840eae2ce9cfba98d62e9f1eae93caa8304875854dbc0740414aedcfbe157c2244567bd456cdb60a300312af02ae9b5c63c147d35cf4da3a0591312
   languageName: node
   linkType: hard
 
