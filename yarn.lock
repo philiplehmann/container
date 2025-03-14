@@ -2359,7 +2359,7 @@ __metadata:
     nx: "npm:20.6.0"
     playwright: "npm:^1.44.0"
     puppeteer-core: "npm:24.4.0"
-    testcontainers: "npm:10.19.0"
+    testcontainers: "npm:10.20.0"
     tslib: "npm:2.8.1"
     typescript: "npm:5.8.2"
     vite: "npm:6.2.1"
@@ -11369,9 +11369,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.19.0":
-  version: 10.19.0
-  resolution: "testcontainers@npm:10.19.0"
+"testcontainers@npm:10.20.0":
+  version: 10.20.0
+  resolution: "testcontainers@npm:10.20.0"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.29"
@@ -11388,7 +11388,7 @@ __metadata:
     tar-fs: "npm:^3.0.6"
     tmp: "npm:^0.2.3"
     undici: "npm:^5.28.5"
-  checksum: 10c0/eb2b6d70d60ef60512c85f148ceb0e928fbc7e0d822dc03a05f8e85ec369a596aa23290b77febd71f94864e6c32ed30a8ff812edc75b0bd124dd5a1a0645bb0e
+  checksum: 10c0/3366cbdfc61dccf1dc8a62b914ac9ea2b3c307c2afcaaea05b347fe91fcd3d38403ca36ae2c20b508e5dfca9798787094927f7079696f33db7a4763848cb7106
   languageName: node
   linkType: hard
 
