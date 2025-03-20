@@ -31,7 +31,7 @@ describe('easyocr', () => {
         });
 
         expect(response.statusCode).toBe(200);
-        expect(JSON.parse(text)).toBe({ detectedLanguage: 'de', insuranceCode: '01560', expiryDate: '31/03/2093' });
+        expect(JSON.parse(text)).toEqual({ detectedLanguage: 'de', insuranceCode: '01560', expiryDate: '31/03/2093' });
       });
 
       it('should ocr and detect from helsana sample', async () => {
@@ -48,7 +48,7 @@ describe('easyocr', () => {
         });
 
         expect(response.statusCode).toBe(200);
-        expect(JSON.parse(text)).toBe({
+        expect(JSON.parse(text)).toEqual({
           detectedLanguage: 'de',
           birthDate: '26/04/1987',
           personalNumber: '756.756.0006.4893.68',
@@ -73,7 +73,7 @@ describe('easyocr', () => {
         });
 
         expect(response.statusCode).toBe(200);
-        expect(JSON.parse(text)).toBe({
+        expect(JSON.parse(text)).toEqual({
           detectedLanguage: 'de',
           insuranceCode: '01509',
           insuranceName: 'Sanitas',
@@ -95,7 +95,7 @@ describe('easyocr', () => {
         });
 
         expect(response.statusCode).toBe(200);
-        expect(JSON.parse(text)).toBe({
+        expect(JSON.parse(text)).toEqual({
           detectedLanguage: 'de',
           birthDate: '31/12/2021',
           personalNumber: '756.756.6290.1234.56',
@@ -120,7 +120,7 @@ describe('easyocr', () => {
         });
 
         expect(response.statusCode).toBe(200);
-        expect(JSON.parse(text)).toBe({
+        expect(JSON.parse(text)).toEqual({
           detectedLanguage: 'de',
           birthDate: '08/10/1964',
           personalNumber: '756.756.1234.1234.56',
@@ -147,7 +147,7 @@ describe('easyocr', () => {
         });
 
         expect(response.statusCode).toBe(200);
-        expect(JSON.parse(text)).toBe({
+        expect(JSON.parse(text)).toEqual({
           detectedLanguage: 'de',
           personalNumber: '756.756.3047.5009.62',
           insuranceCode: '01555',
