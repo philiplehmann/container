@@ -32,10 +32,13 @@ const main = async () => {
               userNetworkDirectory: 'userNetwork',
             },
           });
-          const body = extractSwissHealthCardInfo(results);
+          const cardInfo = extractSwissHealthCardInfo(results);
           return {
             statusCode: 200,
-            body,
+            body: {
+              cardInfo,
+              results,
+            },
           };
         },
       ),
