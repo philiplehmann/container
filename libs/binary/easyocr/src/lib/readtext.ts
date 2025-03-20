@@ -7,7 +7,7 @@ import { cwd } from 'node:process';
 import { createWriteStream, existsSync } from 'node:fs';
 import { unlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import type { Detail, ReadtextParams } from './schema';
+import { Locale, type Detail, type ReadtextParams } from './schema';
 
 /**
  *
@@ -119,7 +119,7 @@ export async function readtext({
 }: { input: InputType; output?: Writable; params?: ReadtextParams }): Promise<unknown> {
   const {
     gpu = false,
-    locale = ['en'],
+    locale = Object.values(Locale),
     detail,
     modelStorageDirectory,
     userNetworkDirectory,
