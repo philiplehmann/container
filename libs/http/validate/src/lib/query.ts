@@ -12,6 +12,7 @@ export function validateQuery<RQ extends ReqRes, QuerySchema extends ZodType>(
     if (query.success) {
       return query.data;
     }
+    console.error(query.error);
     throw new BadRequest('Invalid query');
   };
 }
