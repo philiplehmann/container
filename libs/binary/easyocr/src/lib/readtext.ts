@@ -1,11 +1,10 @@
-import { spawn } from 'node:child_process';
-import type { Writable } from 'node:stream';
+import { exec } from 'node:child_process';
 import { finished } from 'node:stream/promises';
-import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@container/stream';
+import type { InputType } from '@container/stream';
 import { randomUUID } from 'node:crypto';
 import { cwd } from 'node:process';
 import { createWriteStream, existsSync } from 'node:fs';
-import { unlink } from 'node:fs/promises';
+import { mkdir, unlink } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { Locale, type Detail, type ReadtextParams } from './schema';
 
@@ -103,20 +102,10 @@ export interface DetailTextCoordinates {
   confident: number;
 }
 
-export async function readtext<D extends Detail>(options: {
-  input: InputType;
-  output: Writable;
-  params?: ReadtextParams<D>;
-}): Promise<void>;
 export async function readtext<
   D extends Detail,
   T extends D extends (typeof Detail)['text'] ? string[] : DetailTextCoordinates[],
->(options: { input: InputType; params?: ReadtextParams<D> }): Promise<T>;
-export async function readtext({
-  input,
-  output,
-  params = {},
-}: { input: InputType; output?: Writable; params?: ReadtextParams }): Promise<unknown> {
+>({ input, params = {} }: { input: InputType; params?: ReadtextParams<D> }): Promise<T> {
   const {
     gpu = false,
     locale = Object.values(Locale),
@@ -136,6 +125,9 @@ export async function readtext({
   } = params;
 
   const tmpDir = `${cwd()}/tmp`;
+  if (!existsSync(tmpDir)) {
+    await mkdir(tmpDir, { recursive: true });
+  }
   const inputFile = `${tmpDir}/${randomUUID()}.pdf`;
 
   const writeStream = createWriteStream(inputFile);
@@ -147,30 +139,38 @@ export async function readtext({
   }
 
   try {
-    const easyocr = spawn('easyocr', [
-      ...['--lang', locale.join(' ')],
-      ...['--file', inputFile],
-      ...['--detail', detail === 'text' ? '0' : '1'],
-      ...['--gpu', toBoolean(gpu)],
-      ...['--output_format', 'json'],
-      ...(modelStorageDirectory !== undefined ? ['--model_storage_directory', resolve(modelStorageDirectory)] : []),
-      ...(userNetworkDirectory !== undefined ? ['--user_network_directory', resolve(userNetworkDirectory)] : []),
-      ...['--download_enabled', toBoolean(downloadEnabled)],
-      ...(detector !== undefined ? ['--detector', toBoolean(detector)] : []),
-      ...(recognizer !== undefined ? ['--recognizer', toBoolean(recognizer)] : []),
-      ...(quantize !== undefined ? ['--quantize', toBoolean(quantize)] : []),
-      ...(beamWidth !== undefined ? ['--beamWidth', String(beamWidth)] : []),
-      ...(batchSize !== undefined ? ['--batch_size', String(batchSize)] : []),
-      ...(workers !== undefined ? ['--workers', String(workers)] : []),
-      ...(allowlist !== undefined ? ['--allowlist', allowlist] : []),
-      ...(blocklist !== undefined ? ['--blocklist', blocklist] : []),
-      ...(rotationInfo !== undefined ? ['--rotation_info', rotationInfo.join(' ')] : []),
-    ]);
-    if (output) {
-      return streamChildProcess(input, output, easyocr);
-    }
-    const buffer = await streamChildProcessToBuffer(input, easyocr);
-    return JSON.parse(`[${buffer.toString().trim().split('\n').join(',\n')}]`);
+    const easyocr = await new Promise<string>((pResolve, pReject) => {
+      exec(
+        `easyocr ${[
+          ...['--lang', locale.join(' ')],
+          ...['--file', inputFile],
+          ...['--detail', detail === 'text' ? '0' : '1'],
+          ...['--gpu', toBoolean(gpu)],
+          ...['--output_format', 'json'],
+          ...(modelStorageDirectory !== undefined ? ['--model_storage_directory', resolve(modelStorageDirectory)] : []),
+          ...(userNetworkDirectory !== undefined ? ['--user_network_directory', resolve(userNetworkDirectory)] : []),
+          ...['--download_enabled', toBoolean(downloadEnabled)],
+          ...(detector !== undefined ? ['--detector', toBoolean(detector)] : []),
+          ...(recognizer !== undefined ? ['--recognizer', toBoolean(recognizer)] : []),
+          ...(quantize !== undefined ? ['--quantize', toBoolean(quantize)] : []),
+          ...(beamWidth !== undefined ? ['--beamWidth', String(beamWidth)] : []),
+          ...(batchSize !== undefined ? ['--batch_size', String(batchSize)] : []),
+          ...(workers !== undefined ? ['--workers', String(workers)] : []),
+          ...(allowlist !== undefined ? ['--allowlist', allowlist] : []),
+          ...(blocklist !== undefined ? ['--blocklist', blocklist] : []),
+          ...(rotationInfo !== undefined ? ['--rotation_info', rotationInfo.join(' ')] : []),
+        ].join(' ')}`,
+        {},
+        (error, stdout, stderr) => {
+          if (error) {
+            pReject(error);
+          }
+          console.error(stderr);
+          pResolve(stdout);
+        },
+      );
+    });
+    return JSON.parse(`[${easyocr.trim().split('\n').join(',\n')}]`);
   } finally {
     if (existsSync(inputFile)) {
       unlink(inputFile);
