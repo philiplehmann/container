@@ -47,6 +47,8 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
         break;
       case 'nx-cache-server':
         tags = createTags(tags, versionFromEnv(file, 'NX_CACHE_SERVER_VERSION'));
+      case 'easyocr':
+        tags = createTags(tags, versionFromEnv(file, 'EASYOCR_VERSION'));
         break;
     }
   }

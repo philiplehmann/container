@@ -30,6 +30,7 @@
     "rootDir": ".",
     "baseUrl": ".",
     "paths": {
+      "@container/binary/easyocr": ["libs/binary/easyocr/src/index.ts"],
       "@container/binary/pdftk": ["libs/binary/pdftk/src/index.ts"],
       "@container/binary/poppler": ["libs/binary/poppler/src/index.ts"],
       "@container/binary/puppeteer": ["libs/binary/puppeteer/src/index.ts"],
