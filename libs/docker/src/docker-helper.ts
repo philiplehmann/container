@@ -24,6 +24,9 @@ export const archMapping = {
 } as const;
 
 export const currentArch = () => {
+  if (isDockerPlatform(process.env.PLATFORM)) {
+    return process.env.PLATFORM;
+  }
   const myArch = arch();
   if (myArch !== 'x64' && myArch !== 'arm64') {
     throw new Error('Unsupported platform');
