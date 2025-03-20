@@ -57,7 +57,7 @@ const FIELD_LABELS: Record<string, Record<string, string[]>> = {
 };
 
 const EXCLUDED_WORDS: Record<string, string[]> = {
-  de: ['KARTE', 'VERSICHERUNG', 'EUROPEAN', 'EUROPÄISCHE', 'EUROPAISCHE'],
+  de: ['KARTE', 'VERSICHERUNG', 'EUROPEAN', 'EUROPÄISCHE', 'EUROPAISCHE', 'EUROPÄISCHE', 'KRANKENVERSICHERUNGSKARTE'],
   fr: ['CARTE', 'ASSURANCE', 'EUROPÉENNE', 'SANTÉ'],
   it: ['CARTA', 'ASSICURAZIONE', 'EUROPEA', 'SANITARIA'],
 };
@@ -109,8 +109,8 @@ export const detectCardLanguage = (results: DetailTextCoordinates[]): (typeof SU
 
 export const extractSwissHealthCardInfo = (results: DetailTextCoordinates[]): Partial<HealthCardInfo> => {
   const cardInfo: Partial<HealthCardInfo> = {};
-  const detected_lang = detectCardLanguage(results);
-  cardInfo.detectedLanguage = detected_lang;
+  const detectedLang = detectCardLanguage(results);
+  cardInfo.detectedLanguage = detectedLang;
 
   const potentialNames: [string, number, number][] = [];
 
@@ -121,10 +121,10 @@ export const extractSwissHealthCardInfo = (results: DetailTextCoordinates[]): Pa
     if (COUNTRY_CODES.includes(text)) return;
 
     if (text === text.toUpperCase() && text.length > 2 && confident > 0.7) {
-      if (Array.from(text).every((c) => c.match(/[A-Z\s]/))) {
+      if (Array.from(text).every((c) => c.match(/[\D]/))) {
         if (
-          !Object.values(FIELD_LABELS).some((labels) => labels[detected_lang].includes(text)) &&
-          !EXCLUDED_WORDS[detected_lang].includes(text)
+          !Object.values(FIELD_LABELS).some((labels) => labels[detectedLang].includes(text)) &&
+          !EXCLUDED_WORDS[detectedLang].some((exclude) => text.includes(exclude))
         ) {
           const y_min = Math.min(...boxes.map((point) => point[1]));
           const x_min = Math.min(...boxes.map((point) => point[0]));
@@ -133,15 +133,17 @@ export const extractSwissHealthCardInfo = (results: DetailTextCoordinates[]): Pa
       }
     }
 
+    console.log('potentialNames', potentialNames);
+
     if (text.includes('756') && confident > 0.7) {
-      const cleaned_text = text.trim();
-      if (cleaned_text.startsWith('756') && cleaned_text.replace(/\D/g, '').length >= 13) {
-        const formatted = cleaned_text.replace(/\D/g, '').replace(/(\d{3})(\d{4})(\d{4})(\d{2})?/, '756.$1.$2.$3.$4');
+      const cleanedText = text.trim();
+      if (cleanedText.startsWith('756') && cleanedText.replace(/\D/g, '').length >= 13) {
+        const formatted = cleanedText.replace(/\D/g, '').replace(/(\d{3})(\d{4})(\d{4})(\d{2})?/, '756.$1.$2.$3.$4');
         cardInfo.personalNumber = formatted;
       }
     }
 
-    if (FIELD_LABELS.insurance_number[detected_lang].some((label) => text.includes(label))) {
+    if (FIELD_LABELS.insurance_number[detectedLang].some((label) => text.includes(label))) {
       const number = text.replace(/\D/g, '');
       if (number.length >= 6) {
         cardInfo.insuranceNumber = number;
@@ -203,18 +205,18 @@ export const extractSwissHealthCardInfo = (results: DetailTextCoordinates[]): Pa
   });
 
   if (cardInfo.personalNumber && (!cardInfo.insuranceCode || !cardInfo.insuranceName)) {
-    const personal_number_idx = results.findIndex((result) => result.text.includes(cardInfo.personalNumber ?? ''));
-    if (personal_number_idx !== -1) {
-      for (let i = personal_number_idx + 1; i < Math.min(personal_number_idx + 5, results.length); i++) {
+    const personalNumberIdx = results.findIndex((result) => result.text.includes(cardInfo.personalNumber ?? ''));
+    if (personalNumberIdx !== -1) {
+      for (let i = personalNumberIdx + 1; i < Math.min(personalNumberIdx + 5, results.length); i++) {
         const text = results[i].text.trim();
         const prob = results[i].confident;
         if (!cardInfo.insuranceCode && prob > 0.5) {
           const digits = text.replace(/\D/g, '');
           if (digits.length >= 4 && digits.length <= 5) {
             cardInfo.insuranceCode = digits;
-            const non_digits = text.replace(/\d/g, '').trim();
-            if (non_digits?.[0].match(/[A-Z]/)) {
-              cardInfo.insuranceName = non_digits.split(' ')[0];
+            const nonDigits = text.replace(/\d/g, '').trim();
+            if (nonDigits?.[0].match(/[A-Z]/)) {
+              cardInfo.insuranceName = nonDigits.split(' ')[0];
             }
             continue;
           }
@@ -228,10 +230,12 @@ export const extractSwissHealthCardInfo = (results: DetailTextCoordinates[]): Pa
 
   potentialNames.sort((a, b) => a[1] - b[1] || a[2] - b[2]);
 
-  const filteredNames = potentialNames.filter((name_tuple) => {
-    const nameText = name_tuple[0];
+  const filteredNames = potentialNames.filter((nameTuple) => {
+    const nameText = nameTuple[0];
     return !Object.values(cardInfo).includes(nameText);
   });
+
+  console.log('filteredNames', filteredNames);
 
   if (filteredNames.length >= 2) {
     cardInfo.surname = filteredNames[0][0];
