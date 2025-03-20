@@ -45,6 +45,9 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
       case 'pdftk':
         tags = createTags(tags, versionFromEnv(file, 'PDFTK_VERSION'));
         break;
+      case 'easyocr':
+        tags = createTags(tags, versionFromEnv(file, 'EASYOCR_VERSION'));
+        break;
     }
   }
   try {
