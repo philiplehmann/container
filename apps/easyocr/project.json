@@ -1,0 +1,137 @@
+{
+  "name": "easyocr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/easyocr/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/easyocr",
+        "format": [
+          "cjs"
+        ],
+        "bundle": false,
+        "main": "apps/easyocr/src/main.ts",
+        "tsConfig": "apps/easyocr/tsconfig.app.json",
+        "assets": [
+          "apps/easyocr/src/assets"
+        ],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "easyocr:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "easyocr:build:development"
+        },
+        "production": {
+          "buildTarget": "easyocr:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ]
+    },
+    "vitest": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-test"
+      ],
+      "options": {}
+    },
+    "vitest-local": {
+      "executor": "@nx/vite:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "options": {}
+    },
+    "test": {
+      "executor": "@container/helper:empty",
+      "dependsOn": [
+        "vitest"
+      ],
+      "options": {}
+    },
+    "test-local": {
+      "executor": "@container/helper:empty",
+      "dependsOn": [
+        "vitest-local"
+      ],
+      "options": {}
+    },
+    "docker-test": {
+      "executor": "@container/docker:test",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "tag": "philiplehmann/easyocr:test",
+        "file": "apps/easyocr/Dockerfile"
+      }
+    },
+    "docker-push": {
+      "executor": "@container/docker:build",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "platforms": [
+          "amd64"
+        ],
+        "tags": [
+          "philiplehmann/easyocr:auto"
+        ],
+        "file": "apps/easyocr/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/docker:run",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "image": "philiplehmann/easyocr:run",
+        "file": "apps/easyocr/Dockerfile",
+        "port": [
+          "3000"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
