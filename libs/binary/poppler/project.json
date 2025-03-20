@@ -1,7 +1,7 @@
 {
   "name": "binary-poppler",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/binary/poppler",
+  "sourceRoot": "libs/binary/poppler/src",
   "projectType": "library",
   "targets": {
     "lint": {
