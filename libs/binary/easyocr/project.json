@@ -1,7 +1,7 @@
 {
-  "name": "binary-puppeteer",
+  "name": "binary-easyocr",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/binary/puppeteer/src",
+  "sourceRoot": "libs/binary/easyocr/src",
   "projectType": "library",
   "targets": {
     "lint": {
