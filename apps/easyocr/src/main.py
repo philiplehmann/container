@@ -119,6 +119,7 @@ def readtext():
           log_error('Error processing image:', e)
           return Response('Error processing image', status=500)
       except Exception as e:
+        log_error('Error writting body:', e)
         return Response('error writing body', status=500)
   else:
     return Response('bad request body', status=400)
