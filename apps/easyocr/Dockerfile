@@ -45,7 +45,7 @@ USER 0:0
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends --yes libvips-dev && \
+    apt-get install --no-install-recommends --yes libvips && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
