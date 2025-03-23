@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "python serve",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "entrypoint": {
+      "type": "string"
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "entrypoint"
+  ]
+}

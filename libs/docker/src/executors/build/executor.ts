@@ -1,7 +1,7 @@
 import type { DockerBuildExecutorSchema } from './schema';
 import { dockerBuildxBuild } from '../../docker-buildx-build';
 import type { Executor } from '@nx/devkit';
-import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson } from '../../version';
+import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson, versionFromRequirements } from '../../version';
 
 const runExecutor: Executor<DockerBuildExecutorSchema> = async (
   { file, tags = [], platforms },
@@ -46,7 +46,7 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
         tags = createTags(tags, versionFromEnv(file, 'PDFTK_VERSION'));
         break;
       case 'easyocr':
-        tags = createTags(tags, versionFromEnv(file, 'EASYOCR_VERSION'));
+        tags = createTags(tags, versionFromRequirements(file, 'EASYOCR_VERSION'));
         break;
     }
   }

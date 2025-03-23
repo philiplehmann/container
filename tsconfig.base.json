@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@container/binary/easyocr": ["libs/binary/easyocr/src/index.ts"],
       "@container/binary/pdftk": ["libs/binary/pdftk/src/index.ts"],
       "@container/binary/poppler": ["libs/binary/poppler/src/index.ts"],
       "@container/binary/puppeteer": ["libs/binary/puppeteer/src/index.ts"],
@@ -24,6 +23,7 @@
       "@container/binary/unoserver": ["libs/binary/unoserver/src/index.ts"],
       "@container/biomejs": ["libs/biomejs/src/index.ts"],
       "@container/docker": ["libs/docker/src/index.ts"],
+      "@container/python": ["libs/python/src/index.ts"],
       "@container/helper": ["libs/helper/src/index.ts"],
       "@container/http/body": ["libs/http/body/src/index.ts"],
       "@container/http/error": ["libs/http/error/src/index.ts"],

@@ -5,6 +5,12 @@ import type { Executor } from '@nx/devkit';
 import { currentArch } from '../../docker-helper';
 
 const runExecutor: Executor<DockerTestExecutorSchema> = async ({ file, tag }): Promise<{ success: boolean }> => {
+  if (process.env.TEST_SERVER_RUNNER === 'local') {
+    console.log('Skipping docker build because of TEST_SERVER_RUNNER=local');
+    return {
+      success: true,
+    };
+  }
   try {
     const platform = currentArch();
     const tagWithPlatform = `${tag}-${platform}`;
