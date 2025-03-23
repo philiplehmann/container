@@ -29,7 +29,8 @@ reader = Reader(
   recog_network='standard',
   detector=DETECTOR,
   recognizer=RECOGNIZER,
-  model_storage_directory=Path.cwd() / 'model',
+  model_storage_directory=str(Path.cwd() / 'model'),
+  user_network_directory=str(Path.cwd() / 'model' / 'user_network'),
 )
 
 sys.stdout.reconfigure(encoding='utf-8')
