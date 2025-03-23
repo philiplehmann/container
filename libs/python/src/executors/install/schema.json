@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "PythonInstall executor",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "file": {
+      "type": "requirements"
+    }
+  },
+  "required": []
+}

@@ -40,39 +40,23 @@ RUN unzip /app/model/craft_mlt_25k.zip -d /app/model && \
 
 FROM bitnami/pytorch:2.6.0 AS easyocr
 
-ARG EASYOCR_VERSION
-
 USER 0:0
 
 WORKDIR /app
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends --yes curl && \
-    curl -fsSL https://deb.nodesource.com/setup_22.x | sh && \
-    apt-get install --no-install-recommends --yes nodejs && \
-    pip install easyocr==${EASYOCR_VERSION}
+COPY apps/easyocr/requirements.txt .
+COPY apps/easyocr/src/main.py main.py
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY --from=models --chown=1000:1000 /app/model /app/model
 
 RUN mkdir /app/tmp && \
-    mkdir /app/userNetwork && \
-    chown -R 1000:1000 /app/tmp && \
-    chown -R 1000:1000 /app/userNetwork
+    chown -R 1000:1000 /app/tmp
 
-ENV PATH="/app/virtenv/bin:${PATH}"
-ENV HOST=0.0.0.0
 ENV PORT=3000
-# ENV DNNL_DEFAULT_FPMATH_MODE=BF16
-# ENV LRU_CACHE_CAPACITY=1024
-# ENV THP_MEM_ALLOC_ENABLE=1
-
-
-COPY dist/apps/easyocr easyocr
-
-# You can remove this install step if you build with `--bundle` option.
-# The bundled output will include external dependencies.
-RUN npm --prefix easyocr --omit=dev -f install
+ENV WEB_CONCURRENCY=1
 
 USER 1000:1000
 
-CMD [ "node", "easyocr" ]
+CMD ["gunicorn", "main:easyocr"]
