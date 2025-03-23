@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
-import { envForDockerFile } from './docker-helper';
+import { dirname, resolve as pathResolve } from 'node:path';
 import type { ExecutorContext } from '@nx/devkit';
-import { envForDockerFile } from './docker-helper';
+import { envForDockerFile, envForDockerFile } from './docker-helper';
 
 export const versionFromPackageJson = (
   packageName: string,
@@ -21,7 +21,8 @@ export const versionFromEnv = (dockerFile: string, env: string, parser: (version
   return parser(version);
 };
 
-export const versionFromRequirements = (requirements: string, lib: string) => {
+export const versionFromRequirements = (dockerfile: string, lib: string) => {
+  const requirements = pathResolve(dirname(dockerfile), 'requirements.txt');
   const [, version] =
     readFileSync(requirements, 'utf-8')
       .split('\n')
