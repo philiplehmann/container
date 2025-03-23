@@ -64,4 +64,4 @@ ENV WEB_CONCURRENCY=1
 
 USER 1000:1000
 
-CMD ["gunicorn", "main:easyocr"]
+CMD ["gunicorn", "main:app"]
