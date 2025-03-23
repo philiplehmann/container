@@ -1,0 +1,43 @@
+{
+  "name": "python",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/python/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/python",
+        "main": "libs/python/src/index.ts",
+        "tsConfig": "libs/python/tsconfig.lib.json",
+        "assets": [
+          "libs/python/*.md",
+          {
+            "input": "./libs/python/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/python/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/python",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/python",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}

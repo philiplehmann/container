@@ -1,6 +1,6 @@
 import type { Executor } from '@nx/devkit';
 import { dockerBuildxBuild } from '../../docker-buildx-build';
-import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson } from '../../version';
+import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson, versionFromRequirements } from '../../version';
 import type { DockerBuildExecutorSchema } from './schema';
 
 const runExecutor: Executor<DockerBuildExecutorSchema> = async (
@@ -48,7 +48,7 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
       case 'nx-cache-server':
         tags = createTags(tags, versionFromEnv(file, 'NX_CACHE_SERVER_VERSION'));
       case 'easyocr':
-        tags = createTags(tags, versionFromEnv(file, 'EASYOCR_VERSION'));
+        tags = createTags(tags, versionFromRequirements(file, 'EASYOCR_VERSION'));
         break;
     }
   }
