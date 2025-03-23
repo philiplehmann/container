@@ -44,6 +44,11 @@ USER 0:0
 
 WORKDIR /app
 
+RUN apt-get update && \
+    apt-get install --no-install-recommends --yes libvips-dev && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY apps/easyocr/requirements.txt .
 COPY apps/easyocr/src/main.py main.py
 
