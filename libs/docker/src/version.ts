@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { envForDockerFile } from './docker-helper';
 import type { ExecutorContext } from '@nx/devkit';
 import { envForDockerFile } from './docker-helper';
 
@@ -19,7 +21,21 @@ export const versionFromEnv = (dockerFile: string, env: string, parser: (version
   return parser(version);
 };
 
-export const tagToRepository = (tag = '') => {
+export const versionFromRequirements = (requirements: string, lib: string) => {
+  const [, version] =
+    readFileSync(requirements, 'utf-8')
+      .split('\n')
+      .map((line) => line.split('=='))
+      .find(([name]) => {
+        return name === lib;
+      }) || [];
+  if (version) {
+    return version;
+  }
+  throw new Error(`can not find ${lib} in ${requirements}`);
+};
+
+export const tagToRepository = (tag: string) => {
   const repository = tag.split(':').shift();
   if (!repository) throw new Error('repository not found in tag');
   return repository;

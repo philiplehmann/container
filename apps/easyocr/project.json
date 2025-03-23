@@ -4,58 +4,21 @@
   "sourceRoot": "apps/easyocr/src",
   "projectType": "application",
   "targets": {
-    "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "defaultConfiguration": "production",
-      "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/easyocr",
-        "format": [
-          "cjs"
-        ],
-        "bundle": false,
-        "main": "apps/easyocr/src/main.ts",
-        "tsConfig": "apps/easyocr/tsconfig.app.json",
-        "assets": [
-          "apps/easyocr/src/assets"
-        ],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
-      }
-    },
     "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
+      "executor": "@container/python:serve",
       "options": {
-        "buildTarget": "easyocr:build"
+        "entrypoint": "apps/easyocr/src/main.py"
       },
-      "configurations": {
-        "development": {
-          "buildTarget": "easyocr:build:development"
-        },
-        "production": {
-          "buildTarget": "easyocr:build:production"
-        }
-      }
+      "dependsOn": [
+        "install"
+      ]
+    },
+    "install": {
+      "executor": "@container/python:install",
+      "options": {
+        "requirements": "apps/easyocr/requirements.txt"
+      },
+      "dependsOn": []
     },
     "lint": {
       "executor": "@container/biomejs:lint",
@@ -96,9 +59,7 @@
     },
     "docker-test": {
       "executor": "@container/docker:test",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": [],
       "options": {
         "tag": "philiplehmann/easyocr:test",
         "file": "apps/easyocr/Dockerfile"
@@ -106,9 +67,7 @@
     },
     "docker-push": {
       "executor": "@container/docker:build",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": [],
       "options": {
         "platforms": [
           "amd64"
@@ -121,9 +80,7 @@
     },
     "docker-run": {
       "executor": "@container/docker:run",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": [],
       "options": {
         "image": "philiplehmann/easyocr:run",
         "file": "apps/easyocr/Dockerfile",
