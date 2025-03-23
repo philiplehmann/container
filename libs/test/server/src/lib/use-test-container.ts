@@ -1,5 +1,6 @@
 import type { StartedTestContainer } from 'testcontainers';
 import { testContainer, type TestContainerProps } from './test-container';
+import { dockerImageRemove } from '@container/docker';
 
 export interface TestContainerOutput {
   port: number;
@@ -26,6 +27,7 @@ export const useTestContainer = async ({
   afterAll(async () => {
     if (process.env.TEST_SERVER_RUNNER !== 'local') {
       await container?.stop();
+      await dockerImageRemove(props.image);
     }
   });
 
