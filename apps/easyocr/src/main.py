@@ -126,4 +126,4 @@ def readtext():
 
 
 if "gunicorn" not in environ.get("SERVER_SOFTWARE", "").lower():
-  app.run(host='0.0.0.0', port=PORT, debug=True)
+  app.run(host='0.0.0.0', port=int(PORT), debug=True)
