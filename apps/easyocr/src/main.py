@@ -99,6 +99,7 @@ def readtext():
       file_path = tmp_path / f"upload-{random_uuid}.{extname}"
 
       if request.content_length and request.content_length > FILE_MAX_SIZE:
+        log_error(f"File too large: {request.content_length} / {FILE_MAX_SIZE}")
         return Response(f"File too large, maximum size is {FILE_MAX_SIZE / 1024 / 1024:.1f}MB", status=413)
 
       try:
@@ -125,6 +126,17 @@ def readtext():
   else:
     return Response('bad request body', status=400)
 
+@app.route("/health", methods=["GET"])
+def health():
+  return Response('ok', 200)
+
+@app.route("/health/liveness", methods=["GET"])
+def health_liveness():
+  return Response('ok', 200)
+
+@app.route("/health/readiness", methods=["GET"])
+def health_readiness():
+  return Response('ok', 200)
 
 if "gunicorn" not in environ.get("SERVER_SOFTWARE", "").lower():
   app.run(host='0.0.0.0', port=int(PORT), debug=True)
