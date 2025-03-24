@@ -17,7 +17,7 @@ GPU = environ.get('EASYOCR_GPU', 'True') == 'True'
 DETECTOR = environ.get('EASYOCR_DETECTOR', 'True') == 'True'
 RECOGNIZER = environ.get('EASYOCR_RECOGNIZER', 'True') == 'True'
 MAX_SIZE = int(environ.get('EASYOCR_MAX_SIZE', '1000'))
-FILE_MAX_SIZE = int(environ.get('EASYOCR_FILE_MAX_SIZE', '10485760')) # 10MB
+FILE_MAX_SIZE = int(environ.get('EASYOCR_FILE_MAX_SIZE', '52428800')) # 50MB
 
 app = Flask('easyocr')
 
@@ -99,7 +99,7 @@ def readtext():
       file_path = tmp_path / f"upload-{random_uuid}.{extname}"
 
       if request.content_length and request.content_length > FILE_MAX_SIZE:
-        log_error(f"File too large: {request.content_length} / {FILE_MAX_SIZE}")
+        log_error("File too large: ", f"{request.content_length} / {FILE_MAX_SIZE}")
         return Response(f"File too large, maximum size is {FILE_MAX_SIZE / 1024 / 1024:.1f}MB", status=413)
 
       try:
