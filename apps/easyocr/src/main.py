@@ -67,18 +67,10 @@ def stream_file(file_path: Path, stream):
 
 @log_duration
 def resize(input_path: Path, output_path: Path) -> Tuple[Path, int, int]:
-  image = Image.new_from_file(str(input_path), access="sequential")
-  width = image.width
-  height = image.height
-  if width > MAX_SIZE or height > MAX_SIZE:
-    scale = MAX_SIZE / max(width, height)
-    print(f"Resizing image {width}x{height} to {width*scale:.0f}x{height*scale:.0f}")
-    new_image = image.resize(scale)
-    new_image.write_to_file(str(output_path))
-    input_path.unlink(missing_ok=True)
-    return output_path, int(width*scale), int(height*scale)
-
-  return input_path, width, height
+  image = Image.thumbnail(str(input_path), MAX_SIZE, height=MAX_SIZE, size="down")
+  image.write_to_file(str(output_path))
+  input_path.unlink(missing_ok=True)
+  return output_path, int(image.width), int(image.height)
 
 def json_serializer(obj):
     if isinstance(obj, int64):
@@ -104,7 +96,7 @@ def readtext():
 
       try:
         stream_file(file_path, request.stream)
-        new_file_path = tmp_path / f"resize-{random_uuid}.{extname}"
+        new_file_path = tmp_path / f"resize-{random_uuid}.png"
         file_path, width, height = resize(file_path, new_file_path)
 
         try:
