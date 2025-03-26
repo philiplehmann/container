@@ -5,6 +5,7 @@ from pathlib import Path
 from os import environ
 import time
 from typing import Tuple
+import logging
 
 from easyocr import Reader
 from flask import Flask, request, Response, abort
@@ -20,8 +21,10 @@ MAX_SIZE = int(environ.get('EASYOCR_MAX_SIZE', '1000'))
 FILE_MAX_SIZE = int(environ.get('EASYOCR_FILE_MAX_SIZE', '52428800')) # 50MB
 
 app = Flask('easyocr')
+logger = logging.getLogger('easyocr')
 
-print('Loading EasyOCR with languages:', LANG.split(','))
+
+logger.info('Loading EasyOCR with languages:', LANG.split(','))
 reader = Reader(
   LANG.split(','),
   gpu=GPU,
@@ -32,8 +35,6 @@ reader = Reader(
   model_storage_directory=str(Path.cwd() / 'model'),
   user_network_directory=str(Path.cwd() / 'model' / 'user_network'),
 )
-
-sys.stdout.reconfigure(encoding='utf-8')
 
 def log_error(message, error):
   sys.stderr.write(message)
@@ -52,7 +53,7 @@ def log_duration(func):
     result = func(*args, **kwargs)
     end_time = time.perf_counter()
     duration_ms = (end_time - start_time) * 1000
-    print(f"{func.__name__}  Execution time: {duration_ms:.2f} ms")
+    logger.info(f"{func.__name__}  Execution time: {duration_ms:.2f} ms")
     return result
   return wrapper
 
@@ -66,8 +67,8 @@ def stream_file(file_path: Path, stream):
       f.write(chunk)
 
 @log_duration
-def resize(input_path: Path, output_path: Path) -> Tuple[Path, int, int]:
-  image = Image.thumbnail(str(input_path), MAX_SIZE, height=MAX_SIZE, size="down")
+def resize(input_path: Path, output_path: Path, max_size: int) -> Tuple[Path, int, int]:
+  image = Image.thumbnail(str(input_path), max_size, height=max_size, size="down")
   image.write_to_file(str(output_path))
   input_path.unlink(missing_ok=True)
   return output_path, int(image.width), int(image.height)
@@ -78,14 +79,36 @@ def json_serializer(obj):
     raise TypeError(f"Type {type(obj)} is not JSON serializable")
 
 @log_duration
-def easyocr_readtext(file_path):
-  print(f"Processing {file_path}")
-  results = reader.readtext(str(file_path), output_format='dict')
+def easyocr_readtext(file_path, workers=0, batch_size=1, decoder='greedy', beam_width=5, detail=1, paragraph=False, min_size=10, rotation_info=None):
+  logger.info(f"Processing {file_path}")
+  results = reader.readtext(
+    str(file_path),
+    output_format='dict',
+    workers=workers,
+    batch_size=batch_size,
+    decoder=decoder,
+    beamWidth=beam_width,
+    detail=detail,
+    paragraph=paragraph,
+    min_size=min_size,
+    rotation_info=rotation_info
+  )
   return results
 
 @app.route("/readtext", methods=["POST"])
 def readtext():
   if request.content_type == "image/png" or request.content_type == "image/jpeg":
+      workers = request.args.get('workers', default=0, type=int)
+      batch_size = request.args.get('batch_size', default=1, type=int)
+      if batch_size < 1:
+          return Response("Error: batch_size must be a positive integer", status=400)
+      decoder = request.args.get('decoder', default='greedy', type=str)
+      beam_width = request.args.get('beam_width', default=5, type=int)
+      detail = request.args.get('detail', default=1, type=int)
+      paragraph = request.args.get('paragraph', default='False', type=bool)
+      min_size = request.args.get('min_size', default=10, type=int)
+      rotation_info = request.args.get('rotation_info', default=None, type=str)
+      max_size = request.args.get('max_size', default=MAX_SIZE, type=int)
       random_uuid = uuid.uuid4()
       extname = request.content_type.split('/')[1]
       file_path = tmp_path / f"upload-{random_uuid}.{extname}"
@@ -97,10 +120,20 @@ def readtext():
       try:
         stream_file(file_path, request.stream)
         new_file_path = tmp_path / f"resize-{random_uuid}.png"
-        file_path, width, height = resize(file_path, new_file_path)
+        file_path, width, height = resize(file_path, new_file_path, max_size)
 
         try:
-          results = easyocr_readtext(file_path)
+          results = easyocr_readtext(
+            file_path,
+            workers,
+            batch_size,
+            decoder,
+            beam_width,
+            detail,
+            paragraph,
+            min_size,
+            rotation_info.split(',') if rotation_info else None
+          )
           file_path.unlink(missing_ok=True)
           try:
             output = { 'imageSize': { 'width': width, 'height': height }, 'results': results }

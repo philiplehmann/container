@@ -1,0 +1,92 @@
+{
+  "imageSize": {
+    "height": 510,
+    "width": 800,
+  },
+  "results": [
+    {
+      "boxes": [
+        [
+          154,
+          12,
+        ],
+        [
+          641,
+          12,
+        ],
+        [
+          641,
+          40,
+        ],
+        [
+          154,
+          40,
+        ],
+      ],
+      "text": "EUROPÄISCHE KRANKENVERSICHERUNGSKARTE",
+    },
+    {
+      "boxes": [
+        [
+          170,
+          168,
+        ],
+        [
+          502,
+          168,
+        ],
+        [
+          502,
+          198,
+        ],
+        [
+          170,
+          198,
+        ],
+      ],
+      "text": "Versichertennummer: 1234",
+    },
+    {
+      "boxes": [
+        [
+          22,
+          263,
+        ],
+        [
+          342,
+          263,
+        ],
+        [
+          342,
+          486,
+        ],
+        [
+          22,
+          486,
+        ],
+      ],
+      "text": "Name MAX Vornamen MUSTER 0 . Persönliche Kennnummer 756.6290.1234.56 8. Kennnummer_der Karte 12345601940001234567",
+    },
+    {
+      "boxes": [
+        [
+          530,
+          317,
+        ],
+        [
+          775,
+          317,
+        ],
+        [
+          775,
+          488,
+        ],
+        [
+          530,
+          488,
+        ],
+      ],
+      "text": "5 Geburtsdatum 01/01/2010 Kennnummer des Trägers 0194 Sumiswalder Ablautdatum 31/12/2021",
+    },
+  ],
+}
