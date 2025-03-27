@@ -19,6 +19,7 @@ DETECTOR = environ.get('EASYOCR_DETECTOR', 'True') == 'True'
 RECOGNIZER = environ.get('EASYOCR_RECOGNIZER', 'True') == 'True'
 MAX_SIZE = int(environ.get('EASYOCR_MAX_SIZE', '1000'))
 FILE_MAX_SIZE = int(environ.get('EASYOCR_FILE_MAX_SIZE', '52428800')) # 50MB
+DOWNLOAD_ENABLED = environ.get('EASYOCR_DOWNLOAD_ENABLED', 'False') == 'True'
 
 app = Flask('easyocr')
 logger = logging.getLogger('easyocr')
@@ -28,7 +29,7 @@ logger.info('Loading EasyOCR with languages:', LANG.split(','))
 reader = Reader(
   LANG.split(','),
   gpu=GPU,
-  download_enabled=False,
+  download_enabled=DOWNLOAD_ENABLED,
   recog_network='standard',
   detector=DETECTOR,
   recognizer=RECOGNIZER,
