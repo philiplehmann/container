@@ -2359,7 +2359,7 @@ __metadata:
     nx: "npm:20.7.0"
     playwright: "npm:^1.44.0"
     puppeteer-core: "npm:24.5.0"
-    testcontainers: "npm:10.23.0"
+    testcontainers: "npm:10.24.0"
     tslib: "npm:2.8.1"
     typescript: "npm:5.8.2"
     vite: "npm:6.2.4"
@@ -6255,18 +6255,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bare-fs@npm:^2.1.1":
-  version: 2.2.1
-  resolution: "bare-fs@npm:2.2.1"
-  dependencies:
-    bare-events: "npm:^2.0.0"
-    bare-os: "npm:^2.0.0"
-    bare-path: "npm:^2.0.0"
-    streamx: "npm:^2.13.0"
-  checksum: 10c0/79626d1b713a6b23e8d954ed9d11d8d42afbf189c58a7165c4b83b26904a30da9b05a2891feca21787488a2891d45760b73f9d89ef80577eb3c336847a1ac6ed
-  languageName: node
-  linkType: hard
-
 "bare-fs@npm:^4.0.1":
   version: 4.0.1
   resolution: "bare-fs@npm:4.0.1"
@@ -6278,26 +6266,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bare-os@npm:^2.0.0, bare-os@npm:^2.1.0":
-  version: 2.2.0
-  resolution: "bare-os@npm:2.2.0"
-  checksum: 10c0/bf50d2dfc19f8613f12d9785fe92cb4a9b3a9c5c829ac4b118fb9d86e435f6f78c001fa961bccbb9cb68753f14ae3917f473e92c905a64ff492e9b1b5529d12b
-  languageName: node
-  linkType: hard
-
 "bare-os@npm:^3.0.1":
   version: 3.4.0
   resolution: "bare-os@npm:3.4.0"
   checksum: 10c0/2d1a4467ef8aff0a13d738e549aac30bbecf7631721f7099de78d6f8fc0ced9334ab391e489de28d69809f788f64081ac25108303a9a9e122f9bf87a8d589025
-  languageName: node
-  linkType: hard
-
-"bare-path@npm:^2.0.0, bare-path@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "bare-path@npm:2.1.0"
-  dependencies:
-    bare-os: "npm:^2.1.0"
-  checksum: 10c0/60477ea217ee56f4e1070a944b30b1b4f7019568c63bd5485854040ae80d6912a58ffbc22438845fc7b4bae59516f7655f5a10f095ae1a2739642d4bebc458bc
   languageName: node
   linkType: hard
 
@@ -11223,7 +11195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"streamx@npm:^2.13.0, streamx@npm:^2.15.0":
+"streamx@npm:^2.15.0":
   version: 2.16.1
   resolution: "streamx@npm:2.16.1"
   dependencies:
@@ -11415,24 +11387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar-fs@npm:^3.0.6":
-  version: 3.0.6
-  resolution: "tar-fs@npm:3.0.6"
-  dependencies:
-    bare-fs: "npm:^2.1.1"
-    bare-path: "npm:^2.1.0"
-    pump: "npm:^3.0.0"
-    tar-stream: "npm:^3.1.5"
-  dependenciesMeta:
-    bare-fs:
-      optional: true
-    bare-path:
-      optional: true
-  checksum: 10c0/207b7c0f193495668bd9dbad09a0108ce4ffcfec5bce2133f90988cdda5c81fad83c99f963d01e47b565196594f7a17dbd063ae55b97b36268fcc843975278ee
-  languageName: node
-  linkType: hard
-
-"tar-fs@npm:^3.0.8":
+"tar-fs@npm:^3.0.7, tar-fs@npm:^3.0.8":
   version: 3.0.8
   resolution: "tar-fs@npm:3.0.8"
   dependencies:
@@ -11521,9 +11476,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:10.23.0":
-  version: 10.23.0
-  resolution: "testcontainers@npm:10.23.0"
+"testcontainers@npm:10.24.0":
+  version: 10.24.0
+  resolution: "testcontainers@npm:10.24.0"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.35"
@@ -11537,10 +11492,10 @@ __metadata:
     proper-lockfile: "npm:^4.1.2"
     properties-reader: "npm:^2.3.0"
     ssh-remote-port-forward: "npm:^1.0.4"
-    tar-fs: "npm:^3.0.6"
+    tar-fs: "npm:^3.0.7"
     tmp: "npm:^0.2.3"
     undici: "npm:^5.28.5"
-  checksum: 10c0/da93cc41f657c987943855d8f9dab1a98691f67ce60dea49ea0ad7ed2e4d4d3228099d33fb0b14c75dc535360b003705f92c90be4de4b7ee2597042e00ca975a
+  checksum: 10c0/ecf1a1c1dc10130ae9384f73dbef4a56373d4f24a47564327fb9c59bbec33e1bdc8082563f3e98aed7003b8bf77ba7a93628dae254e6f0107d1ebad9f87779c6
   languageName: node
   linkType: hard
 
