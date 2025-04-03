@@ -4001,11 +4001,11 @@ __metadata:
   linkType: hard
 
 "@nx/powerpack-license@npm:^1.2.5":
-  version: 1.3.0
-  resolution: "@nx/powerpack-license@npm:1.3.0"
+  version: 1.3.1
+  resolution: "@nx/powerpack-license@npm:1.3.1"
   dependencies:
-    "@nx/key": "npm:1.3.0"
-  checksum: 10c0/48b72eb30bc8c6e9c4052303b0c381cfbadb72288befaa946765b29a9281f0ec164e61e464496a5f9d63386dc972671a8b302076ab8d20eb3abbdb555d313b37
+    "@nx/key": "npm:1.3.1"
+  checksum: 10c0/993f4bd8a4362459011a563913970fa73d9cfd949374d1fdb33c7e94aab403ccc26bcc6efd59e35a6ab17f5c6bed4089b78a67414b6509c89f69a6cf65e5f149
   languageName: node
   linkType: hard
 
