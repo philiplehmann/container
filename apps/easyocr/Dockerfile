@@ -50,7 +50,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY apps/easyocr/requirements.txt .
-COPY apps/easyocr/src/main.py main.py
+COPY apps/easyocr/src/main.py .
+COPY apps/easyocr/src/logging.conf .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -64,4 +65,4 @@ ENV WEB_CONCURRENCY=1
 
 USER 1000:1000
 
-CMD ["gunicorn", "main:app"]
+CMD ["uvicorn", "main:app", "--log-config=logging.conf"]

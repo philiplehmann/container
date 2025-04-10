@@ -7,7 +7,13 @@
     "serve": {
       "executor": "@container/python:serve",
       "options": {
-        "entrypoint": "apps/easyocr/src/main.py"
+        "entrypoint": "main:app",
+        "module": "uvicorn",
+        "args": [
+          "--reload",
+          "--log-config=./logging.conf"
+        ],
+        "cwd": "apps/easyocr/src"
       },
       "dependsOn": [
         "install"
@@ -80,13 +86,9 @@
     },
     "docker-run": {
       "executor": "@container/docker:run",
-      "dependsOn": [],
       "options": {
         "image": "philiplehmann/easyocr:run",
-        "file": "apps/easyocr/Dockerfile",
-        "port": [
-          "3000"
-        ]
+        "file": "apps/easyocr/Dockerfile"
       }
     }
   },
