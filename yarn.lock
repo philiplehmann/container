@@ -3675,24 +3675,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/key-darwin-arm64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-darwin-arm64@npm:1.3.1"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
 "@nx/key-darwin-arm64@npm:1.3.2":
   version: 1.3.2
   resolution: "@nx/key-darwin-arm64@npm:1.3.2"
   conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@nx/key-darwin-x64@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-darwin-x64@npm:1.3.1"
-  conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
@@ -3703,24 +3689,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/key-linux-arm-gnueabihf@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-linux-arm-gnueabihf@npm:1.3.1"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
 "@nx/key-linux-arm-gnueabihf@npm:1.3.2":
   version: 1.3.2
   resolution: "@nx/key-linux-arm-gnueabihf@npm:1.3.2"
   conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@nx/key-linux-arm64-gnu@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-linux-arm64-gnu@npm:1.3.1"
-  conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -3731,24 +3703,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/key-linux-arm64-musl@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-linux-arm64-musl@npm:1.3.1"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@nx/key-linux-arm64-musl@npm:1.3.2":
   version: 1.3.2
   resolution: "@nx/key-linux-arm64-musl@npm:1.3.2"
   conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nx/key-linux-x64-gnu@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-linux-x64-gnu@npm:1.3.1"
-  conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
@@ -3759,24 +3717,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/key-linux-x64-musl@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-linux-x64-musl@npm:1.3.1"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
 "@nx/key-linux-x64-musl@npm:1.3.2":
   version: 1.3.2
   resolution: "@nx/key-linux-x64-musl@npm:1.3.2"
   conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nx/key-win32-arm64-msvc@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-win32-arm64-msvc@npm:1.3.1"
-  conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
@@ -3787,59 +3731,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/key-win32-x64-msvc@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key-win32-x64-msvc@npm:1.3.1"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
 "@nx/key-win32-x64-msvc@npm:1.3.2":
   version: 1.3.2
   resolution: "@nx/key-win32-x64-msvc@npm:1.3.2"
   conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@nx/key@npm:1.3.1":
-  version: 1.3.1
-  resolution: "@nx/key@npm:1.3.1"
-  dependencies:
-    "@napi-rs/wasm-runtime": "npm:^0.2.4"
-    "@nx/key-darwin-arm64": "npm:1.3.1"
-    "@nx/key-darwin-x64": "npm:1.3.1"
-    "@nx/key-linux-arm-gnueabihf": "npm:1.3.1"
-    "@nx/key-linux-arm64-gnu": "npm:1.3.1"
-    "@nx/key-linux-arm64-musl": "npm:1.3.1"
-    "@nx/key-linux-x64-gnu": "npm:1.3.1"
-    "@nx/key-linux-x64-musl": "npm:1.3.1"
-    "@nx/key-win32-arm64-msvc": "npm:1.3.1"
-    "@nx/key-win32-x64-msvc": "npm:1.3.1"
-    axios: "npm:^1.6.7"
-    axios-retry: "npm:^4.5.0"
-    chalk: "npm:^4.1.2"
-    enquirer: "npm:^2.4.1"
-    ora: "npm:^5.4.1"
-  dependenciesMeta:
-    "@nx/key-darwin-arm64":
-      optional: true
-    "@nx/key-darwin-x64":
-      optional: true
-    "@nx/key-linux-arm-gnueabihf":
-      optional: true
-    "@nx/key-linux-arm64-gnu":
-      optional: true
-    "@nx/key-linux-arm64-musl":
-      optional: true
-    "@nx/key-linux-x64-gnu":
-      optional: true
-    "@nx/key-linux-x64-musl":
-      optional: true
-    "@nx/key-win32-arm64-msvc":
-      optional: true
-    "@nx/key-win32-x64-msvc":
-      optional: true
-  checksum: 10c0/02f5cbfb214f50a021e1b3b15f632c3b441778dd72823d56289c5fe243c0cad56812c853b571147fc0511fb085297e3a1e4d22dd2a9bb89c92e3461149930bec
   languageName: node
   linkType: hard
 
@@ -4001,11 +3896,11 @@ __metadata:
   linkType: hard
 
 "@nx/powerpack-license@npm:^1.2.5":
-  version: 1.3.1
-  resolution: "@nx/powerpack-license@npm:1.3.1"
+  version: 1.3.2
+  resolution: "@nx/powerpack-license@npm:1.3.2"
   dependencies:
-    "@nx/key": "npm:1.3.1"
-  checksum: 10c0/993f4bd8a4362459011a563913970fa73d9cfd949374d1fdb33c7e94aab403ccc26bcc6efd59e35a6ab17f5c6bed4089b78a67414b6509c89f69a6cf65e5f149
+    "@nx/key": "npm:1.3.2"
+  checksum: 10c0/3b1768542e82a7badb0a7db0912289e63defdc6319cfabf68ed7217e9c97666e7ed04117704f10e22273526857055afe97feb87c51a2ce7b4252c659c3636a6a
   languageName: node
   linkType: hard
 
