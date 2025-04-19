@@ -1,8 +1,7 @@
-import type { Server } from 'node:http';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { z } from 'zod';
-import { post, put, routes } from '@container/http/route';
-import { testServer, useTestServer } from '@container/test/server';
+import { post, put } from '@container/http/route';
+import { useTestServer } from '@container/test/server';
 import { middlewareBody, nextBody } from './body';
 import { middlewareQuery, nextQuery } from './query';
 
