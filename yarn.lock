@@ -2341,7 +2341,7 @@ __metadata:
     "@nx/playwright": "npm:20.8.1"
     "@nx/plugin": "npm:20.8.1"
     "@nx/powerpack-license": "npm:^1.2.5"
-    "@nx/powerpack-s3-cache": "npm:^1.2.5"
+    "@nx/powerpack-s3-cache": "npm:^2.0.0"
     "@nx/vite": "npm:20.8.1"
     "@nx/workspace": "npm:20.8.1"
     "@playwright/test": "npm:^1.44.0"
@@ -3895,6 +3895,106 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/powerpack-license-darwin-arm64@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-darwin-arm64@npm:2.0.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-darwin-x64@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-darwin-x64@npm:2.0.0"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-linux-arm-gnueabihf@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-linux-arm-gnueabihf@npm:2.0.0"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-linux-arm64-gnu@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-linux-arm64-gnu@npm:2.0.0"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-linux-arm64-musl@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-linux-arm64-musl@npm:2.0.0"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-linux-x64-gnu@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-linux-x64-gnu@npm:2.0.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-linux-x64-musl@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-linux-x64-musl@npm:2.0.0"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-win32-arm64-msvc@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-win32-arm64-msvc@npm:2.0.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license-win32-x64-msvc@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license-win32-x64-msvc@npm:2.0.0"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nx/powerpack-license@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-license@npm:2.0.0"
+  dependencies:
+    "@napi-rs/wasm-runtime": "npm:^0.2.4"
+    "@nx/powerpack-license-darwin-arm64": "npm:2.0.0"
+    "@nx/powerpack-license-darwin-x64": "npm:2.0.0"
+    "@nx/powerpack-license-linux-arm-gnueabihf": "npm:2.0.0"
+    "@nx/powerpack-license-linux-arm64-gnu": "npm:2.0.0"
+    "@nx/powerpack-license-linux-arm64-musl": "npm:2.0.0"
+    "@nx/powerpack-license-linux-x64-gnu": "npm:2.0.0"
+    "@nx/powerpack-license-linux-x64-musl": "npm:2.0.0"
+    "@nx/powerpack-license-win32-arm64-msvc": "npm:2.0.0"
+    "@nx/powerpack-license-win32-x64-msvc": "npm:2.0.0"
+  dependenciesMeta:
+    "@nx/powerpack-license-darwin-arm64":
+      optional: true
+    "@nx/powerpack-license-darwin-x64":
+      optional: true
+    "@nx/powerpack-license-linux-arm-gnueabihf":
+      optional: true
+    "@nx/powerpack-license-linux-arm64-gnu":
+      optional: true
+    "@nx/powerpack-license-linux-arm64-musl":
+      optional: true
+    "@nx/powerpack-license-linux-x64-gnu":
+      optional: true
+    "@nx/powerpack-license-linux-x64-musl":
+      optional: true
+    "@nx/powerpack-license-win32-arm64-msvc":
+      optional: true
+    "@nx/powerpack-license-win32-x64-msvc":
+      optional: true
+  checksum: 10c0/f7a3f6578886acb380e0710186b5b48bddacc0f86ad1b28f6648912cfe53f01ee86e327187c891cbf3d041811b63cc54f8794ec096b73ba29184eec7090e9968
+  languageName: node
+  linkType: hard
+
 "@nx/powerpack-license@npm:^1.2.5":
   version: 1.3.3
   resolution: "@nx/powerpack-license@npm:1.3.3"
@@ -3904,29 +4004,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/powerpack-s3-cache@npm:^1.2.5":
-  version: 1.3.3
-  resolution: "@nx/powerpack-s3-cache@npm:1.3.3"
-  dependencies:
-    "@nx/s3-cache": "npm:1.3.3"
-  checksum: 10c0/76072bd0752b6783e6eec3435c6a317ff933a3edfbaf1e8012438a9e81c3d808cadd859c6539b0045f778802e321d74d8687541e0318891dfd1aad880480203a
-  languageName: node
-  linkType: hard
-
-"@nx/s3-cache@npm:1.3.3":
-  version: 1.3.3
-  resolution: "@nx/s3-cache@npm:1.3.3"
+"@nx/powerpack-s3-cache@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@nx/powerpack-s3-cache@npm:2.0.0"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.637.0"
     "@aws-sdk/credential-providers": "npm:^3.637.0"
     "@aws-sdk/lib-storage": "npm:^3.637.0"
     "@nx/devkit": "npm:>= 19 < 21"
-    "@nx/key": "npm:1.3.3"
-    "@smithy/property-provider": "npm:^3.1.11"
+    "@nx/powerpack-license": "npm:2.0.0"
     enquirer: "npm:^2.4.1"
     semver: "npm:7.5.4"
     tar-stream: "npm:^3.1.7"
-  checksum: 10c0/612e20f2b349c70cd9f40a07767c7cffda90eddfb4def082e7338035ffb14c03352a45d330377f10823889814195667932ae28000ad5a18db27c6ec396e22522
+  checksum: 10c0/835d56d2da878384242dbb3f4248081a8adfe708fe588ec3dcbf9941c9ff3d98c8ea6fdca1c9157b700478f4ccf3de05ea463426723bb337156330da069cf08c
   languageName: node
   linkType: hard
 
@@ -4784,16 +4874,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@smithy/property-provider@npm:^3.1.11":
-  version: 3.1.11
-  resolution: "@smithy/property-provider@npm:3.1.11"
-  dependencies:
-    "@smithy/types": "npm:^3.7.2"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/7c8a9b567ff2ec33b021e718b9757c5492f0e6b4330793bb9726d4756312fb3e786fe636f26c56ddfcbea4f58dbf6c3452c0fd2ecce9193031151a4555602424
-  languageName: node
-  linkType: hard
-
 "@smithy/property-provider@npm:^4.0.1":
   version: 4.0.1
   resolution: "@smithy/property-provider@npm:4.0.1"
@@ -4882,15 +4962,6 @@ __metadata:
     "@smithy/util-stream": "npm:^4.1.2"
     tslib: "npm:^2.6.2"
   checksum: 10c0/d3989f9af17e35e01ef09d3db52136548e9fa0433ec35ee4f192cd618e93a4a0472d79288655763142c7832d643ee3f0ecf6b84ea520bb07aa319615a2ed9629
-  languageName: node
-  linkType: hard
-
-"@smithy/types@npm:^3.7.2":
-  version: 3.7.2
-  resolution: "@smithy/types@npm:3.7.2"
-  dependencies:
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/4bf4674c922c092f9c92b482b074163ceea199e82466ccd4414c4cd9651f67757456414f969e9997371250e112778b636115727b5af53324334300f328069293
   languageName: node
   linkType: hard
 

@@ -11,7 +11,7 @@
     "@nx/playwright": "20.8.1",
     "@nx/plugin": "20.8.1",
     "@nx/powerpack-license": "^1.2.5",
-    "@nx/powerpack-s3-cache": "^1.2.5",
+    "@nx/powerpack-s3-cache": "^2.0.0",
     "@nx/vite": "20.8.1",
     "@nx/workspace": "20.8.1",
     "@playwright/test": "^1.44.0",
