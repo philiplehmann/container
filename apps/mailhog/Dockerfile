@@ -2,7 +2,7 @@
 # MailHog Dockerfile
 #
 
-FROM harbor.riwi.dev/hub/bitnami/golang:1.24.2 AS builder
+FROM harbor.riwi.dev/hub/bitnami/golang:1.24.3 AS builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
