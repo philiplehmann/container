@@ -2346,7 +2346,7 @@ __metadata:
     "@nx/workspace": "npm:20.8.1"
     "@playwright/test": "npm:^1.44.0"
     "@swc-node/register": "npm:1.10.10"
-    "@swc/cli": "npm:0.7.3"
+    "@swc/cli": "npm:0.7.7"
     "@swc/core": "npm:1.11.24"
     "@swc/helpers": "npm:0.5.17"
     "@types/node": "npm:22.15.3"
@@ -5240,9 +5240,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/cli@npm:0.7.3":
-  version: 0.7.3
-  resolution: "@swc/cli@npm:0.7.3"
+"@swc/cli@npm:0.7.7":
+  version: 0.7.7
+  resolution: "@swc/cli@npm:0.7.7"
   dependencies:
     "@swc/counter": "npm:^0.1.3"
     "@xhmikosr/bin-wrapper": "npm:^13.0.5"
@@ -5263,7 +5263,7 @@ __metadata:
     spack: bin/spack.js
     swc: bin/swc.js
     swcx: bin/swcx.js
-  checksum: 10c0/056ec3533ade2fec657158ef80ba0f5074a89346de02141e5da340b7ff5f17da62bcdb0b584abd2f205b2b778922574f8597e8934e1bb1fb0841f3f4897a4ad1
+  checksum: 10c0/fc66fc7c98dfc7a221dad4354e5de7b7521be8b5d6b8e495cddd2d2b9f956160507d949a06eea896c3d2bb224c0648b2ada8a7a479172438ae38b7b2eb4d334f
   languageName: node
   linkType: hard
 
