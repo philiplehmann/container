@@ -46,8 +46,6 @@ const optionSchema = z.strictObject({
       right: z.union([z.string(), z.number()]).optional(),
     })
     .optional(),
-
-  path: z.string().optional(),
   omitBackground: z.boolean().optional(),
   tagged: z.boolean().optional(),
   outline: z.boolean().optional(),
