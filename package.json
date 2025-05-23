@@ -21,8 +21,8 @@
     "@swc/helpers": "0.5.17",
     "@types/node": "22.15.18",
     "@types/nodemailer": "^6.4.15",
-    "@vitest/coverage-v8": "3.1.2",
-    "@vitest/ui": "3.1.2",
+    "@vitest/coverage-v8": "3.1.4",
+    "@vitest/ui": "3.1.4",
     "esbuild": "0.25.4",
     "jsdom": "^26.0.0",
     "nodemailer": "7.0.3",
@@ -32,7 +32,7 @@
     "tslib": "2.8.1",
     "typescript": "5.8.3",
     "vite": "6.3.5",
-    "vitest": "3.1.2"
+    "vitest": "3.1.4"
   },
   "dependencies": {
     "puppeteer-core": "24.8.2",
