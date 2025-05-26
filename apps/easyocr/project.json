@@ -68,7 +68,10 @@
       "dependsOn": [],
       "options": {
         "tag": "philiplehmann/easyocr:test",
-        "file": "apps/easyocr/Dockerfile"
+        "file": "apps/easyocr/Dockerfile",
+        "platforms": [
+          "amd64"
+        ]
       }
     },
     "docker-push": {
