@@ -6,6 +6,19 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
+    "test": {
+      "cache": true
+    },
+    "vitest": {
+      "cache": true
+    },
+    "e2e": {
+      "cache": true
+    },
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
     "@nx/esbuild:esbuild": {
       "cache": true,
       "dependsOn": ["^build"],
