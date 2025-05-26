@@ -32,6 +32,7 @@ const runExecutor: Executor<PythonServeExecutorSchema> = async (options) => {
     console.error(error);
     return {
       success: false,
+      error: error instanceof Error ? error.message : String(error),
     };
   }
 };
