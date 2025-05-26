@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs';
 import { envForDockerFile } from './docker-helper';
 import type { ExecutorContext } from '@nx/devkit';
-import { resolve as pathResolve, dirname } from 'node:path';
+import { getRequirementsPath } from './getRequirementsPath';
+import { readFile } from './readFile';
 export const versionFromPackageJson = (
   packageName: string,
   { projectGraph }: Pick<ExecutorContext, 'projectGraph'>,
@@ -21,14 +21,13 @@ export const versionFromEnv = (dockerFile: string, env: string, parser: (version
 };
 
 export const versionFromRequirements = (dockerfile: string, lib: string) => {
-  const requirements = pathResolve(dirname(dockerfile), 'requirements.txt');
+  const requirements = getRequirementsPath(dockerfile);
   const [, version] =
-    readFileSync(requirements, 'utf-8')
+    readFile(requirements)
       .split('\n')
-      .map((line) => line.split('=='))
-      .find(([name]) => {
-        return name === lib;
-      }) || [];
+      .map((line) => line.split('#')[0].trim()) // Remove inline comments and trim
+      .map((line) => line.split('==').map((part) => part.trim())) // Trim both name and version
+      .find(([name]) => name === lib) || [];
   if (version) {
     return version;
   }
