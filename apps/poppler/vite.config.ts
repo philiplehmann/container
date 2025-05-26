@@ -16,7 +16,6 @@ export default defineConfig({
 
   test: {
     globals: true,
-    cacheDir: '../../node_modules/.vitest',
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     testTimeout: 60_000,
@@ -24,7 +23,6 @@ export default defineConfig({
     poolOptions: {
       threads: {
         singleThread: true,
-        singleFork: true,
       },
     },
 

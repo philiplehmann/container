@@ -27,9 +27,13 @@ export const useTestContainer = async ({
   afterAll(async () => {
     if (process.env.TEST_SERVER_RUNNER !== 'local') {
       await container?.stop();
-      await dockerImageRemove(props.image);
-      await dockerContainerPrune();
-      await dockerImagePrune();
+      try {
+        await dockerImageRemove(props.image);
+        await dockerContainerPrune();
+        await dockerImagePrune();
+      } catch (error) {
+        console.warn('Docker cleanup failed:', error);
+      }
     }
   });
 
