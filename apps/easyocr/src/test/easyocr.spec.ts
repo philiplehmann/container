@@ -4,7 +4,7 @@ import { describe, it, expect } from 'vitest';
 import { useTestContainer } from '@container/test/server';
 import { currentArch } from '@container/docker';
 
-const containerPort = 5000;
+const containerPort = 3000;
 
 describe('easyocr', () => {
   [currentArch()]
