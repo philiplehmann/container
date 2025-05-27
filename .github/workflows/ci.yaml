@@ -38,7 +38,9 @@ jobs:
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: |
+          yarn install
+          yarn cache clean --all
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
@@ -91,13 +93,18 @@ jobs:
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: |
+          yarn install
+          yarn cache clean --all
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
       - name: test
-        run: yarn nx affected --target test --parallel 2
+        run: |
+          yarn nx affected --target test --exclude easyocr --parallel 2
+          docker system prune --all --force
+          yarn nx affected --target test --projects easyocr --parallel 2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -138,13 +145,18 @@ jobs:
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: |
+          yarn install
+          yarn cache clean --all
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
       - name: Build & Push Docker Image
-        run: yarn nx affected --target docker-push
+        run: |
+          yarn nx affected --target docker-push --exclude easyocr --parallel 2
+          docker system prune --all --force
+          yarn nx affected --target docker-push --projects easyocr --parallel 2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
