@@ -40,7 +40,6 @@ jobs:
         shell: bash
         run: |
           yarn install
-          yarn cache clean --all
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
@@ -96,7 +95,6 @@ jobs:
         shell: bash
         run: |
           yarn install
-          yarn cache clean --all
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
@@ -149,7 +147,6 @@ jobs:
         shell: bash
         run: |
           yarn install
-          yarn cache clean --all
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
