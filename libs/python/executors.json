@@ -1,0 +1,14 @@
+{
+  "executors": {
+    "install": {
+      "implementation": "./src/executors/install/executor",
+      "schema": "./src/executors/install/schema.json",
+      "description": "install project dependencies"
+    },
+    "serve": {
+      "implementation": "./src/executors/serve/executor",
+      "schema": "./src/executors/serve/schema.json",
+      "description": "serve python script"
+    }
+  }
+}

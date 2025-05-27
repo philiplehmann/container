@@ -4,9 +4,25 @@ import { dockerImageRemove } from '../../docker-image-remove';
 import type { Executor } from '@nx/devkit';
 import { currentArch } from '../../docker-helper';
 
-const runExecutor: Executor<DockerTestExecutorSchema> = async ({ file, tag }): Promise<{ success: boolean }> => {
+const runExecutor: Executor<DockerTestExecutorSchema> = async ({
+  file,
+  tag,
+  platforms,
+}): Promise<{ success: boolean }> => {
+  if (process.env.TEST_SERVER_RUNNER === 'local') {
+    console.log('Skipping docker build because of TEST_SERVER_RUNNER=local');
+    return {
+      success: true,
+    };
+  }
   try {
     const platform = currentArch();
+    if (platforms?.length > 0 && !platforms.includes(platform)) {
+      console.info('platform not supported, skipping docker build');
+      return {
+        success: true,
+      };
+    }
     const tagWithPlatform = `${tag}-${platform}`;
     await dockerImageRemove(tagWithPlatform);
     await dockerBuildxBuild({

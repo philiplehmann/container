@@ -1,0 +1,5 @@
+easyocr==1.7.2
+fastapi==0.103.1
+pyvips==2.2.3
+uvicorn==0.34.0
+numpy==1.26.4

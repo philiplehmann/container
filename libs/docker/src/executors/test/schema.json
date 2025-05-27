@@ -10,6 +10,12 @@
     },
     "file": {
       "type": "string"
+    },
+    "platforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": []
