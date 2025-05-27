@@ -4,7 +4,7 @@ import { currentArch } from '@container/docker';
 import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
 
-const containerPort = 5000;
+const containerPort = 3000;
 
 describe('easyocr', () => {
   [currentArch()]
