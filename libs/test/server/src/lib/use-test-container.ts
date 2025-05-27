@@ -1,6 +1,5 @@
 import type { StartedTestContainer } from 'testcontainers';
 import { testContainer, type TestContainerProps } from './test-container';
-import { dockerImageRemove } from '@container/docker';
 
 export interface TestContainerOutput {
   port: number;
@@ -27,11 +26,6 @@ export const useTestContainer = async ({
   afterAll(async () => {
     if (process.env.TEST_SERVER_RUNNER !== 'local') {
       await container?.stop();
-      try {
-        await dockerImageRemove(props.image);
-      } catch (error) {
-        console.warn('Docker cleanup failed:', error);
-      }
     }
   });
 
