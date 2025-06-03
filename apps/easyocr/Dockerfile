@@ -38,14 +38,18 @@ RUN unzip /app/model/craft_mlt_25k.zip -d /app/model && \
     rm /app/model/telugu.zip && \
     rm /app/model/kannada.zip
 
-FROM bitnami/pytorch:2.6.0 AS easyocr
+FROM bitnami/pytorch:2.7.0-debian-12-r2 AS easyocr
 
 USER 0:0
 
 WORKDIR /app
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends --yes libvips && \
+    apt-get install --no-install-recommends --yes libvips wget && \
+    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb && \
+    dpkg -i cuda-keyring_1.0-1_all.deb && \
+    apt-get update && \
+    apt-get install -y cuda-runtime-11-8 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
