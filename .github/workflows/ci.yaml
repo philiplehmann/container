@@ -93,10 +93,15 @@ jobs:
         shell: bash
         run: yarn install
 
+      - name: install dependencies
+        shell: bash
+        run: yarn install
+
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
-      - run: |
+      - name: log nx shas
+        run: |
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"
 
