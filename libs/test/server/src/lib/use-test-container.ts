@@ -1,5 +1,5 @@
 import type { StartedTestContainer } from 'testcontainers';
-import { testContainer, type TestContainerProps } from './test-container';
+import { type TestContainerProps, testContainer } from './test-container';
 
 export interface TestContainerOutput {
   port: number;

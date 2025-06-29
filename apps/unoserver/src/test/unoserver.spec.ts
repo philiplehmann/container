@@ -1,8 +1,8 @@
 import { resolve } from 'node:path';
-import { testRequest } from '@container/test/request';
-import { describe, it, expect } from 'vitest';
-import { useTestContainer } from '@container/test/server';
 import { currentArch } from '@container/docker';
+import { testRequest } from '@container/test/request';
+import { useTestContainer } from '@container/test/server';
+import { describe, expect, it } from 'vitest';
 
 const containerPort = 5000;
 

@@ -1,6 +1,6 @@
-import { connect, post, healthEndpoints } from '@container/http/route';
-import { httpServer } from '@container/http/server';
 import { imageToText } from '@container/binary/tesseract';
+import { connect, healthEndpoints, post } from '@container/http/route';
+import { httpServer } from '@container/http/server';
 
 const PORT = process.env.PORT || '3000';
 

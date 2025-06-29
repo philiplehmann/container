@@ -1,9 +1,9 @@
+import { join } from 'node:path';
+import { cwd } from 'node:process';
 import puppeteer, { type Browser } from 'puppeteer-core';
 import type { TypeOf } from 'zod';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
-import { join } from 'node:path';
-import { cwd } from 'node:process';
 
 export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;

@@ -1,7 +1,7 @@
 import type { Readable, Writable } from 'node:stream';
-import { pdftk, type PdftkOptions } from './pdftk';
 import { type StreamChildProcessOptions, streamChildProcessToBuffer } from '@container/stream';
 import { stringOrFirst, toObject } from './helpers/to-object';
+import { type PdftkOptions, pdftk } from './pdftk';
 
 export interface DataFieldType {
   type: 'text' | 'choice' | 'button';

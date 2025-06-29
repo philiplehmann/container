@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
-import type { WriteStream } from 'node:tty';
 import { join } from 'node:path';
 import { cwd } from 'node:process';
+import type { WriteStream } from 'node:tty';
 
 const UNOSERVER_STARTED = 'INFO:unoserver:Server PID';
 

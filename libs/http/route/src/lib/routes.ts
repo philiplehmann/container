@@ -1,7 +1,7 @@
-import { NoRoute } from './noRoute';
 import type { IncomingMessage } from 'node:http';
 import type { ReqRes, Response } from './http-route';
-import type { Prefix, route, RouteOutput } from './route';
+import { NoRoute } from './noRoute';
+import type { Prefix, RouteOutput, route } from './route';
 
 export type RoutesOutput<ParamKey extends string> = (
   req: IncomingMessage,
@@ -11,7 +11,7 @@ export type RoutesOutput<ParamKey extends string> = (
 export type RoutePathOptions<ParamKey extends string> =
   | { path: string; name?: undefined }
   | { path: RegExp; name: ParamKey };
-// biome-ignore lint/complexity/noBannedTypes:
+// biome-ignore lint/complexity/noBannedTypes: We need to support both string and RegExp paths.
 export type RoutePathOptionalOptions<ParamKey extends string> = RoutePathOptions<ParamKey> | {};
 export type RoutePrefixOptions<ParamKey extends string> = { prefix?: RoutePathOptions<ParamKey>[] };
 export type RoutesOptions<ParamKey extends string> = RoutePathOptions<ParamKey> & RoutePrefixOptions<ParamKey>;

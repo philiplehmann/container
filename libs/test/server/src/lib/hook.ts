@@ -1,6 +1,6 @@
 import type { Server } from 'node:http';
-import { testServer } from './test-server';
 import { connect, type routes } from '@container/http/route';
+import { testServer } from './test-server';
 
 export class TestServer {
   private server?: Server;

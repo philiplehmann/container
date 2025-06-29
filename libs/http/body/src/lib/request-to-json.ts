@@ -1,7 +1,7 @@
-import { z } from 'zod';
+import type { IncomingMessage } from 'node:http';
 import { BadRequest } from '@container/http/error';
 import { streamToJson } from '@container/stream';
-import type { IncomingMessage } from 'node:http';
+import { z } from 'zod';
 import { validateRequestHeaders } from './validate-request-headers';
 
 export const applicationJSON = z.object({

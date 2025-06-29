@@ -1,19 +1,19 @@
-import { connect, post, healthEndpoints } from '@container/http/route';
-import { middlewareQuery } from '@container/http/validate';
 import {
-  decryptSchema,
-  encryptSchema,
-  decryptStream,
-  encryptStream,
   compressStream,
-  uncompressStream,
   dataDumpStream,
   dataFdfStream,
   dataFieldsStream,
-  formFillStream,
+  decryptSchema,
+  decryptStream,
+  encryptSchema,
+  encryptStream,
   formFillSchema,
+  formFillStream,
+  uncompressStream,
 } from '@container/binary/pdftk';
+import { connect, healthEndpoints, post } from '@container/http/route';
 import { httpServer } from '@container/http/server';
+import { middlewareQuery } from '@container/http/validate';
 
 const PORT = process.env.PORT || '3000';
 

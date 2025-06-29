@@ -1,5 +1,5 @@
-import { type IncomingMessage, request, type RequestOptions } from 'node:http';
 import { createReadStream, type ReadStream } from 'node:fs';
+import { type IncomingMessage, type RequestOptions, request } from 'node:http';
 import { Readable } from 'node:stream';
 import { streamToString } from '@container/stream';
 

@@ -1,6 +1,6 @@
-import { put } from '../method/put';
-import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
+import { describe, expect, it } from 'vitest';
+import { put } from '../method/put';
 
 describe('http-route', () => {
   describe('string path config return', async () => {

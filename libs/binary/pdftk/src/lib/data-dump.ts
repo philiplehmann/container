@@ -1,14 +1,14 @@
 import type { Readable, Writable } from 'node:stream';
-import { pdftk, type PdftkOptions } from './pdftk';
 import {
-  streamToString,
-  streamChildProcess,
   type StreamChildProcessOptions,
+  streamChildProcess,
   streamChildProcessToBuffer,
+  streamToString,
 } from '@container/stream';
+import { Page } from 'puppeteer-core';
 import { splitLine } from './helpers/split-line';
 import { stringOrFirst, toObject } from './helpers/to-object';
-import { Page } from 'puppeteer-core';
+import { type PdftkOptions, pdftk } from './pdftk';
 
 export interface DataDumpPage {
   number: number;

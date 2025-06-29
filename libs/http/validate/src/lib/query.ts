@@ -1,6 +1,6 @@
 import { BadRequest } from '@container/http/error';
-import type { Next, ReqRes, Prefix } from '@container/http/route';
-import type { ZodSchema, TypeOf } from 'zod';
+import type { Next, Prefix, ReqRes } from '@container/http/route';
+import type { TypeOf, ZodSchema } from 'zod';
 
 export function validateQuery<RQ extends ReqRes, QuerySchema extends ZodSchema>(
   schema: QuerySchema,

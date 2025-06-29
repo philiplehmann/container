@@ -6,22 +6,16 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/unoserver",
-        "format": [
-          "cjs"
-        ],
+        "format": ["cjs"],
         "bundle": false,
         "main": "apps/unoserver/src/main.ts",
         "tsConfig": "apps/unoserver/tsconfig.app.json",
-        "assets": [
-          "apps/unoserver/src/assets"
-        ],
+        "assets": ["apps/unoserver/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -59,46 +53,32 @@
     },
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "vitest": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-test"],
       "options": {}
     },
     "vitest-local": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {}
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest"
-      ],
+      "dependsOn": ["vitest"],
       "options": {}
     },
     "test-local": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest-local"
-      ],
+      "dependsOn": ["vitest-local"],
       "options": {}
     },
     "docker-test": {
       "executor": "@container/docker:test",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "tag": "philiplehmann/unoserver:test",
         "file": "apps/unoserver/Dockerfile"
@@ -106,31 +86,20 @@
     },
     "docker-push": {
       "executor": "@container/docker:build",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
-        "tags": [
-          "philiplehmann/unoserver:auto"
-        ],
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/unoserver:auto"],
         "file": "apps/unoserver/Dockerfile"
       }
     },
     "docker-run": {
       "executor": "@container/docker:run",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/unoserver:run",
         "file": "apps/unoserver/Dockerfile",
-        "port": [
-          "3000"
-        ]
+        "port": ["3000"]
       }
     }
   },

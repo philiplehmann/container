@@ -1,7 +1,7 @@
 import { ReadStream } from 'node:fs';
 import { Readable } from 'node:stream';
 import { finished } from 'node:stream/promises';
-import type { Response, Next, ReqRes } from './http-route';
+import type { Next, ReqRes, Response } from './http-route';
 import type { Prefix } from './route';
 
 export const routeOutput = async <ParamKey extends string, Input extends Prefix<ParamKey, ReqRes>>(

@@ -1,7 +1,7 @@
-import { connect, post, healthEndpoints } from '@container/http/route';
-import { middlewareBody, middlewareQuery } from '@container/http/validate';
 import { BrowserToPdfRenderer, bodySchema, querySchema } from '@container/binary/puppeteer';
+import { connect, healthEndpoints, post } from '@container/http/route';
 import { httpServer } from '@container/http/server';
+import { middlewareBody, middlewareQuery } from '@container/http/validate';
 
 const PORT = process.env.PORT || '3000';
 

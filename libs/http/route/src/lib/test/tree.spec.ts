@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
-import { routes } from '../routes';
+import { describe, expect, it } from 'vitest';
 import { get } from '../method/get';
+import { routes } from '../routes';
 
 const api = routes(
   get('/', async ({ req, params }) => {

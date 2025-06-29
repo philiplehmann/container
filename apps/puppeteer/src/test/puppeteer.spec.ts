@@ -1,8 +1,8 @@
-import type { StartedTestContainer } from 'testcontainers';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import { testRequest } from '@container/test/request';
 import { currentArch } from '@container/docker';
+import { testRequest } from '@container/test/request';
 import { testContainer, useTestContainer } from '@container/test/server';
+import type { StartedTestContainer } from 'testcontainers';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const containerPort = 5000;
 

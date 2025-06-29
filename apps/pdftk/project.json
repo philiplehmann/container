@@ -6,22 +6,16 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/pdftk",
-        "format": [
-          "cjs"
-        ],
+        "format": ["cjs"],
         "bundle": false,
         "main": "apps/pdftk/src/main.ts",
         "tsConfig": "apps/pdftk/tsconfig.app.json",
-        "assets": [
-          "apps/pdftk/src/assets"
-        ],
+        "assets": ["apps/pdftk/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -59,44 +53,30 @@
     },
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "vitest": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-test"],
       "options": {}
     },
     "vitest-local": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ]
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest"
-      ],
+      "dependsOn": ["vitest"],
       "options": {}
     },
     "test-local": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest-local"
-      ]
+      "dependsOn": ["vitest-local"]
     },
     "docker-test": {
       "executor": "@container/docker:test",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "tag": "philiplehmann/pdftk:test",
         "file": "apps/pdftk/Dockerfile"
@@ -104,31 +84,20 @@
     },
     "docker-push": {
       "executor": "@container/docker:build",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
-        "tags": [
-          "philiplehmann/pdftk:auto"
-        ],
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/pdftk:auto"],
         "file": "apps/pdftk/Dockerfile"
       }
     },
     "docker-run": {
       "executor": "@container/docker:run",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/pdftk:run",
         "file": "apps/pdftk/Dockerfile",
-        "port": [
-          "3000"
-        ]
+        "port": ["3000"]
       }
     }
   },

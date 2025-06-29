@@ -1,4 +1,4 @@
-import { GenericContainer, Wait, type StartedTestContainer } from 'testcontainers';
+import { GenericContainer, type StartedTestContainer, Wait } from 'testcontainers';
 
 export interface TestContainerProps {
   image: string;
