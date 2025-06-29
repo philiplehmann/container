@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.6",
     "@nx/devkit": "21.2.1",
     "@nx/esbuild": "21.2.1",
     "@nx/js": "21.2.1",
