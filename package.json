@@ -10,7 +10,7 @@
     "@nx/node": "21.2.1",
     "@nx/playwright": "21.2.1",
     "@nx/plugin": "21.2.1",
-    "@nx/s3-cache": "^2.0.3",
+    "@nx/s3-cache": "^3.0.0",
     "@nx/vite": "21.2.1",
     "@nx/workspace": "21.2.1",
     "@playwright/test": "^1.44.0",
