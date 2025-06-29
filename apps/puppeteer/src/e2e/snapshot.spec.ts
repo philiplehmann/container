@@ -12,18 +12,31 @@ import { testContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
-const imageMagickConvert = async (input: string, output: string) => {
+const pdfToPngConvert = async (input: string, output: string) => {
   const whichOutput = (() => {
     try {
-      return execSync('which magick').toString().trim();
+      return execSync('which pdftoppm').toString().trim();
     } catch {
       return null;
     }
   })();
+
   if (whichOutput && existsSync(whichOutput)) {
-    await promiseSpawn('magick', [input, output]);
+    // Remove the .png extension from output to get the base name
+    const outputBase = output.replace(/\.png$/, '');
+
+    // pdftoppm arguments for high-quality PNG output
+    const args = [
+      '-png', // Output PNG format
+      '-r',
+      '300', // Resolution: 300 DPI for high quality
+      input, // Input PDF file
+      outputBase, // Output base name (pdftoppm will add page numbers)
+    ];
+
+    await promiseSpawn('pdftoppm', args);
   } else {
-    await promiseSpawn('convert', [input, output]);
+    throw new Error(`pdftoppm not found, please install poppler to convert PDF to PNG. Output: ${whichOutput}`);
   }
 };
 
@@ -62,7 +75,7 @@ test.setTimeout(60_000);
           scale: 0.8,
           printBackground: true,
           omitBackground: true,
-          pageRanges: '1-3',
+          pageRanges: '1-4',
           margin: { top: 0, right: 0, bottom: 0, left: 0 },
         }),
       });
@@ -75,7 +88,7 @@ test.setTimeout(60_000);
       await finished(response.pipe(createWriteStream(filePath)));
 
       const imagePath = filePath.replace(/pdf$/, 'png');
-      await imageMagickConvert(filePath, imagePath);
+      await pdfToPngConvert(filePath, imagePath);
       const files = await readdir(resolve(__dirname, 'assets'));
       outputPaths = files
         .filter((file) => file.endsWith('.png') && file.startsWith(date))
@@ -94,6 +107,7 @@ test.setTimeout(60_000);
 
     test('test pdf visually', async ({ page }, testinfo) => {
       testinfo.snapshotSuffix = '';
+      expect(outputPaths.length).toBe(4);
       await Promise.all(
         outputPaths.map(async (imagePath, index) => {
           const buffer = await streamToBuffer(createReadStream(imagePath));
