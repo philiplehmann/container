@@ -1,6 +1,6 @@
-import { get } from '../method/get';
-import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
+import { describe, expect, it } from 'vitest';
+import { get } from '../method/get';
 
 describe('http-route', () => {
   describe('object config', async () => {

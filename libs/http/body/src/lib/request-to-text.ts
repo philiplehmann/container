@@ -1,6 +1,6 @@
-import { z } from 'zod';
-import { streamToString } from '@container/stream';
 import type { IncomingMessage } from 'node:http';
+import { streamToString } from '@container/stream';
+import { z } from 'zod';
 import { validateRequestHeaders } from './validate-request-headers';
 
 export const textPlain = z.object({

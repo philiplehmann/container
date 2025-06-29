@@ -1,5 +1,5 @@
-import { type RawCreateParams, z } from 'zod';
 import type { PaperFormat } from 'puppeteer-core';
+import { type RawCreateParams, z } from 'zod';
 
 function paperFormatUnion(values: readonly [PaperFormat, PaperFormat, ...PaperFormat[]], params?: RawCreateParams) {
   return z.union(

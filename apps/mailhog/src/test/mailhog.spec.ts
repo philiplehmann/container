@@ -1,8 +1,8 @@
-import { GenericContainer, type StartedTestContainer } from 'testcontainers';
-import { testRequest } from '@container/test/request';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
-import { createTransport, type Transporter } from 'nodemailer';
 import { currentArch } from '@container/docker';
+import { testRequest } from '@container/test/request';
+import { createTransport, type Transporter } from 'nodemailer';
+import { GenericContainer, type StartedTestContainer } from 'testcontainers';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('mailhog', () => {
   [currentArch()].map((arch) => {

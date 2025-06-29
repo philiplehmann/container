@@ -1,14 +1,14 @@
-import { test, expect } from '@playwright/test';
-import type { StartedTestContainer } from 'testcontainers';
-import { streamRequest } from '@container/test/request';
-import { currentArch, promiseSpawn } from '@container/docker';
+import { execSync } from 'node:child_process';
+import { createReadStream, createWriteStream, existsSync } from 'node:fs';
 import { readdir, unlink } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { createReadStream, createWriteStream, existsSync } from 'node:fs';
-import { streamToBuffer } from '@container/stream';
 import { finished } from 'node:stream/promises';
-import { execSync } from 'node:child_process';
+import { currentArch, promiseSpawn } from '@container/docker';
+import { streamToBuffer } from '@container/stream';
+import { streamRequest } from '@container/test/request';
 import { testContainer } from '@container/test/server';
+import { expect, test } from '@playwright/test';
+import type { StartedTestContainer } from 'testcontainers';
 
 const containerPort = 5000;
 

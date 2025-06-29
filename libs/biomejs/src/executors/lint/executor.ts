@@ -14,9 +14,9 @@ const runExecutor: Executor<BiomejsExecutorSchema> = async (
 
   const args: string[] = [];
   if (fix) {
-    args.push('format', '--write');
+    args.push('check', '--write');
   } else {
-    args.push('lint');
+    args.push('check');
   }
 
   if (changed) {

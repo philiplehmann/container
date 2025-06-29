@@ -1,11 +1,11 @@
-import { z } from 'zod';
-import type { Readable, Writable } from 'node:stream';
-import { pdftk, type PdftkOptions } from './pdftk';
 import { randomUUID } from 'node:crypto';
-import { unlink, existsSync, createWriteStream, createReadStream } from 'node:fs';
-import { finished } from 'node:stream/promises';
-import { dataFields, type DataFieldType } from './data-fields';
+import { createReadStream, createWriteStream, existsSync, unlink } from 'node:fs';
 import { cwd } from 'node:process';
+import type { Readable, Writable } from 'node:stream';
+import { finished } from 'node:stream/promises';
+import { z } from 'zod';
+import { type DataFieldType, dataFields } from './data-fields';
+import { type PdftkOptions, pdftk } from './pdftk';
 
 const fdfHeader = `%FDF-1.2
 %����
@@ -26,7 +26,7 @@ const generateFDF = (fields: DataFieldType[], data: Record<string, string>) => {
         return null;
       }
       if (field.type === 'button') {
-        const checked = value === 'true' ? field.options?.[1] ?? 'Yes' : field.options?.[0] ?? 'Off';
+        const checked = value === 'true' ? (field.options?.[1] ?? 'Yes') : (field.options?.[0] ?? 'Off');
         return `<< /T (${name}) /V /${checked} >>`;
       }
       return `<< /T (${name}) /V (${value}) >>`;

@@ -1,10 +1,10 @@
-import { resolve } from 'node:path';
-import { beautifyJson, streamRequest, testRequest } from '@container/test/request';
-import { describe, beforeAll, afterAll, it, expect } from 'vitest';
 import { statSync } from 'node:fs';
-import { streamLength, streamToBuffer } from '@container/stream';
-import { useTestContainer } from '@container/test/server';
+import { resolve } from 'node:path';
 import { currentArch } from '@container/docker';
+import { streamLength, streamToBuffer } from '@container/stream';
+import { beautifyJson, streamRequest, testRequest } from '@container/test/request';
+import { useTestContainer } from '@container/test/server';
+import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const containerPort = 5000;
 

@@ -1,8 +1,21 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "files": {
-    "includes": ["**", "!**/node_modules/**/*", "!**/dist", "!**/coverage", "!**/.nx/cache"]
+    "includes": [
+      "**",
+      "!**/node_modules/**/*",
+      "!**/dist",
+      "!**/coverage",
+      "!**/.nx/cache",
+      "!**/snapshots/**"
+    ]
   },
   "linter": {
     "enabled": true,

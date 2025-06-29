@@ -1,5 +1,5 @@
-import { open, type FileHandle } from 'node:fs/promises';
 import type { Stats } from 'node:fs';
+import { type FileHandle, open } from 'node:fs/promises';
 import { basename } from 'node:path';
 
 export class StreamableFile extends File {

@@ -1,5 +1,5 @@
 import type { Next, ReqRes } from '../http-route';
-import { type Middleware, type Prefix, route, type RouteOutput } from '../route';
+import { type Middleware, type Prefix, type RouteOutput, route } from '../route';
 
 export function post<ParamKey extends string, MI1 extends Prefix<ParamKey, ReqRes>>(
   params:

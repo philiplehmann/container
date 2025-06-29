@@ -6,25 +6,17 @@
   "targets": {
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "vitest": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-test"],
       "options": {}
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest"
-      ],
+      "dependsOn": ["vitest"],
       "options": {}
     },
     "docker-test": {
@@ -37,13 +29,8 @@
     "docker-push": {
       "executor": "@container/docker:build",
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
-        "tags": [
-          "philiplehmann/maildev:auto"
-        ],
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/maildev:auto"],
         "file": "apps/maildev/Dockerfile"
       }
     },
@@ -52,10 +39,7 @@
       "options": {
         "image": "philiplehmann/maildev:run",
         "file": "apps/maildev/Dockerfile",
-        "port": [
-          "1025",
-          "1080"
-        ]
+        "port": ["1025", "1080"]
       }
     }
   },

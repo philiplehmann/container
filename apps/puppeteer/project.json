@@ -7,22 +7,16 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/puppeteer",
-        "format": [
-          "cjs"
-        ],
+        "format": ["cjs"],
         "bundle": false,
         "main": "apps/puppeteer/src/main.ts",
         "tsConfig": "apps/puppeteer/tsconfig.app.json",
-        "assets": [
-          "apps/puppeteer/src/assets"
-        ],
+        "assets": ["apps/puppeteer/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -61,25 +55,17 @@
     },
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
     "vitest": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-test"],
       "options": {}
     },
     "vitest-local": {
       "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ]
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
     },
     "e2e-install": {
       "executor": "@container/helper:e2e-install",
@@ -87,53 +73,34 @@
     },
     "e2e": {
       "executor": "@nx/playwright:playwright",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "e2e-install",
-        "docker-test"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["e2e-install", "docker-test"],
       "options": {
-        "testFiles": [
-          "src/e2e/snapshot.spec.ts"
-        ],
+        "testFiles": ["src/e2e/snapshot.spec.ts"],
         "browser": "chromium",
         "skipInstall": true
       }
     },
     "e2e-local": {
       "executor": "@nx/playwright:playwright",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "testFiles": [
-          "src/e2e/snapshot.spec.ts"
-        ],
+        "testFiles": ["src/e2e/snapshot.spec.ts"],
         "browser": "chromium"
       }
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "e2e",
-        "vitest"
-      ],
+      "dependsOn": ["e2e", "vitest"],
       "options": {}
     },
     "test-local": {
       "executor": "@container/helper:empty",
-      "dependsOn": [
-        "e2e-local",
-        "vitest-local"
-      ]
+      "dependsOn": ["e2e-local", "vitest-local"]
     },
     "docker-test": {
       "executor": "@container/docker:test",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "tag": "philiplehmann/puppeteer:test",
         "file": "apps/puppeteer/Dockerfile"
@@ -141,31 +108,20 @@
     },
     "docker-push": {
       "executor": "@container/docker:build",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
-        "platforms": [
-          "amd64",
-          "arm64"
-        ],
-        "tags": [
-          "philiplehmann/puppeteer:auto"
-        ],
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/puppeteer:auto"],
         "file": "apps/puppeteer/Dockerfile"
       }
     },
     "docker-run": {
       "executor": "@container/docker:run",
-      "dependsOn": [
-        "build"
-      ],
+      "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/puppeteer:run",
         "file": "apps/puppeteer/Dockerfile",
-        "port": [
-          "3000"
-        ]
+        "port": ["3000"]
       }
     }
   }

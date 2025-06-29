@@ -1,6 +1,6 @@
 import type { ChildProcessWithoutNullStreams } from 'node:child_process';
-import { streamToBuffer } from './stream-to-buffer';
 import type { InputType } from './stream-child-process';
+import { streamToBuffer } from './stream-to-buffer';
 
 export async function streamChildProcessToBuffer(
   input: InputType,

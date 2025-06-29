@@ -1,6 +1,6 @@
-import { del } from '../method/del';
-import { describe, it, expect } from 'vitest';
 import { useTestServer } from '@container/test/server';
+import { describe, expect, it } from 'vitest';
+import { del } from '../method/del';
 
 describe('http-route', () => {
   describe('object config return', async () => {
