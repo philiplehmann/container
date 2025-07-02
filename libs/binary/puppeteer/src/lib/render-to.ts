@@ -49,7 +49,7 @@ export class BrowserToPdfRenderer {
     const context = await browser.createBrowserContext();
     const page = await context.newPage();
     try {
-      const { url, html, ...props } = {
+      const { url, html, pageEvaluate, pageEvaluateArgs, ...props } = {
         url: null,
         html: null,
         ...schema,
@@ -61,6 +61,10 @@ export class BrowserToPdfRenderer {
         await page.setContent(html);
       } else {
         throw new Error('url or html is required');
+      }
+
+      if (pageEvaluate) {
+        await page.evaluate(pageEvaluate, ...(pageEvaluateArgs || []));
       }
 
       if (type === 'image') return await page.screenshot({ ...props, type: imageType });

@@ -50,6 +50,24 @@ const optionSchema = z.strictObject({
   tagged: z.boolean().optional(),
   outline: z.boolean().optional(),
   timeout: z.number().optional(),
+  pageEvaluate: z.string().optional(),
+  pageEvaluateArgs: z
+    .array(
+      z.any().refine(
+        (value) => {
+          try {
+            JSON.stringify(value);
+            return true;
+          } catch {
+            return false;
+          }
+        },
+        {
+          message: 'Value is not JSON-serializable',
+        },
+      ),
+    )
+    .optional(),
 });
 
 export const bodySchema = z.union([
