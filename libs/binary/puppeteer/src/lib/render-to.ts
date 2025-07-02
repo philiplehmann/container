@@ -23,6 +23,7 @@ export class BrowserToPdfRenderer {
           '--enable-font-antialiasing',
           '--font-render-hinting=none',
           '--disable-dev-shm-usage',
+          '--disable-features=PushMessaging',
         ],
       });
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
