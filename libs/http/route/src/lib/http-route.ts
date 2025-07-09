@@ -21,6 +21,7 @@ export type NextResponse = {
 };
 
 export type Response = ServerResponse<IncomingMessage> & {
+  ended?: boolean;
   req: IncomingMessage;
 };
 

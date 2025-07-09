@@ -71,6 +71,7 @@ export function route<ParamKey extends string>(
           return await routeOutput(res, next(params));
         } catch (error) {
           if (error instanceof HttpError) {
+            console.error('HttpError:', error);
             return routeOutput(res, { statusCode: error.status, body: error.message });
           }
           // not a known http error, so return a 500
@@ -78,11 +79,14 @@ export function route<ParamKey extends string>(
             statusCode: 500,
             body: (() => {
               if (error instanceof Error) {
+                console.error('Error', error);
                 return error.message;
               }
               if (typeof error === 'string') {
+                console.error('string', error);
                 return error;
               }
+              console.error('HttpError: 500 unknown error');
               return 'unknown error';
             })(),
           });
