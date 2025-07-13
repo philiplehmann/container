@@ -3,7 +3,7 @@ import { createReadStream, createWriteStream, existsSync, unlink } from 'node:fs
 import { cwd } from 'node:process';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { type DataFieldType, dataFields } from './data-fields';
 import { type PdftkOptions, pdftk } from './pdftk';
 

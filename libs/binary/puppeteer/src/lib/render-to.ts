@@ -1,7 +1,7 @@
 import { join } from 'node:path';
 import { cwd } from 'node:process';
 import puppeteer, { type Browser } from 'puppeteer-core';
-import type { TypeOf } from 'zod';
+import type { output } from 'zod/v4';
 import type { bodySchema } from './body-schema';
 import { ScreenshotType } from './screenshot-type';
 
@@ -43,7 +43,7 @@ export class BrowserToPdfRenderer {
   }
 
   public async renderTo(
-    schema: TypeOf<typeof bodySchema>,
+    schema: output<typeof bodySchema>,
     { type, imageType = ScreenshotType.png }: { type: 'pdf' | 'image'; imageType?: ScreenshotType },
   ) {
     const browser = await this.browser();

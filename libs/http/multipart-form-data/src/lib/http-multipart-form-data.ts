@@ -1,6 +1,6 @@
 import type { IncomingMessage } from 'node:http';
 import { BadRequest } from '@container/http/error';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 const multipartFormData = z.object({
   'content-type': z.literal('multipart/form-data'),

@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { ScreenshotType } from './screenshot-type';
 
 export const querySchema = z.strictObject({
-  type: z.nativeEnum(ScreenshotType).optional().default(ScreenshotType.png),
+  type: z.enum(ScreenshotType).optional().default(ScreenshotType.png),
 });
