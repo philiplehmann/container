@@ -1,6 +1,6 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { ConvertTo } from './convert-to';
 
 export const schema = z.strictObject({
-  convertTo: z.nativeEnum(ConvertTo).optional().default(ConvertTo.pdf),
+  convertTo: z.enum(ConvertTo).optional().default(ConvertTo.pdf),
 });

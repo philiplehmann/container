@@ -1,11 +1,11 @@
 import { requestToJson } from '@container/http/body';
 import { BadRequest } from '@container/http/error';
 import type { Next, Prefix, ReqRes } from '@container/http/route';
-import type { TypeOf, ZodSchema } from 'zod';
+import type { output, ZodType } from 'zod/v4';
 
-export function validateBody<RQ extends ReqRes, BodySchema extends ZodSchema>(
+export function validateBody<RQ extends ReqRes, BodySchema extends ZodType>(
   schema: BodySchema,
-): (params: RQ) => Promise<TypeOf<BodySchema>> {
+): (params: RQ) => Promise<output<BodySchema>> {
   return async (params: RQ) => {
     const data = await requestToJson(params.req);
     const body = await schema.safeParseAsync(data);
@@ -20,20 +20,20 @@ export function nextBody<
   ParamKey extends string,
   Input extends Prefix<ParamKey, ReqRes>,
   Output extends Input,
-  BodySchema extends ZodSchema,
->(schema: BodySchema, next: Next<ParamKey, Output & Record<'body', TypeOf<BodySchema>>>): Next<ParamKey, Input>;
+  BodySchema extends ZodType,
+>(schema: BodySchema, next: Next<ParamKey, Output & Record<'body', output<BodySchema>>>): Next<ParamKey, Input>;
 export function nextBody<
   ParamKey extends string,
   Input extends Prefix<ParamKey, ReqRes>,
   Output extends Input,
-  BodySchema extends ZodSchema,
+  BodySchema extends ZodType,
   Key extends string = 'body',
->(schema: BodySchema, key: Key, next: Next<ParamKey, Output & Record<Key, TypeOf<BodySchema>>>): Next<ParamKey, Input>;
+>(schema: BodySchema, key: Key, next: Next<ParamKey, Output & Record<Key, output<BodySchema>>>): Next<ParamKey, Input>;
 export function nextBody<
   ParamKey extends string,
   Input extends Prefix<ParamKey, ReqRes>,
   Output extends Input,
-  BodySchema extends ZodSchema,
+  BodySchema extends ZodType,
 >(...args: unknown[]): Next<ParamKey, Output> {
   const [schema, key, next] = (() => {
     if (args.length === 2) {
@@ -50,7 +50,7 @@ export function nextBody<
 
 export const middlewareBody =
   <
-    BodySchema extends ZodSchema,
+    BodySchema extends ZodType,
     ParamKey extends string,
     RQ extends Prefix<ParamKey, ReqRes>,
     Key extends string = 'body',
@@ -58,7 +58,7 @@ export const middlewareBody =
     schema: BodySchema,
     key?: Key,
   ) =>
-  async (params: RQ): Promise<RQ & Record<Key, TypeOf<BodySchema>>> => {
+  async (params: RQ): Promise<RQ & Record<Key, output<BodySchema>>> => {
     const validBody = await validateBody(schema)(params);
-    return { ...params, [key ?? 'body']: validBody } as RQ & Record<Key, TypeOf<BodySchema>>;
+    return { ...params, [key ?? 'body']: validBody } as RQ & Record<Key, output<BodySchema>>;
   };

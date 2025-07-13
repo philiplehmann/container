@@ -1,4 +1,4 @@
-import { type RawCreateParams, z } from 'zod';
+import { z } from 'zod/v4';
 
 export const outputSchema = z.strictObject({
   owner_pw: z.string().optional(),
