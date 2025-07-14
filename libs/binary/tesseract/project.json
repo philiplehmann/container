@@ -1,7 +1,7 @@
 {
   "name": "binary-tesseract",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/http/body/src",
+  "sourceRoot": "libs/binary/tesseract/src",
   "projectType": "library",
   "targets": {
     "lint": {

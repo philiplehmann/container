@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/http/body',
+  cacheDir: '../../node_modules/.vite/libs/binary/puppeteer',
 
   plugins: [nxViteTsPaths()],
 
@@ -31,7 +31,7 @@ export default defineConfig({
 
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/libs/http/body',
+      reportsDirectory: '../../coverage/libs/binary/puppeteer',
       provider: 'v8',
     },
   },
