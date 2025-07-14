@@ -8,6 +8,22 @@ export interface StreamChildProcessOptions {
   end?: boolean;
 }
 
+export async function streamInputToWriteable(
+  input: InputType,
+  writable: Writable,
+  options?: StreamChildProcessOptions,
+): Promise<void> {
+  const { end = true } = options ?? {};
+  if (typeof input === 'string' || Buffer.isBuffer(input)) {
+    writable.write(input);
+    if (end) {
+      writable.end();
+    }
+  } else {
+    await finished(input.pipe(writable, { end }));
+  }
+}
+
 export async function streamChildProcess(
   input: InputType,
   output: Writable,
@@ -19,11 +35,7 @@ export async function streamChildProcess(
     console.error(error);
   });
 
-  if (typeof input === 'string' || Buffer.isBuffer(input)) {
-    child.stdin.end(input);
-  } else {
-    input.pipe(child.stdin, { end: true });
-  }
+  await streamInputToWriteable(input, child.stdin, { end: true });
 
   child.stdout
     .on('error', (error) => {

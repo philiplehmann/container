@@ -34,6 +34,9 @@
       "@container/binary/unoserver": [
         "libs/binary/unoserver/src/index.ts"
       ],
+      "@container/binary/libreoffice": [
+        "libs/binary/libreoffice/src/index.ts"
+      ],
       "@container/biomejs": [
         "libs/biomejs/src/index.ts"
       ],

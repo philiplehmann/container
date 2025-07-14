@@ -1,7 +1,7 @@
 {
-  "name": "binary-unoserver",
+  "name": "binary-libreoffice",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/binary/unoserver/src",
+  "sourceRoot": "libs/binary/libreoffice/src",
   "projectType": "library",
   "targets": {
     "lint": {

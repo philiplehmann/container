@@ -1,4 +1,14 @@
-import { ConvertToMimeType, schema, unoconvert, unoserver } from '@container/binary/unoserver';
+import {
+  ConvertToMimeType as ConvertToMimeTypeLibreoffice,
+  libreoffice,
+  schema as schemaLibreoffice,
+} from '@container/binary/libreoffice';
+import {
+  ConvertToMimeType as ConvertToMimeTypeUnoserver,
+  schema as schemaUnoserver,
+  unoconvert,
+  unoserver,
+} from '@container/binary/unoserver';
 import { connect, healthEndpoints, post } from '@container/http/route';
 import { httpServer } from '@container/http/server';
 import { middlewareQuery } from '@container/http/validate';
@@ -10,11 +20,15 @@ const main = async () => {
 
   httpServer(
     connect(
-      post('/convert', middlewareQuery(schema), async ({ req, res, query: { convertTo } }) => {
-        // unoconvert [-h] [--convert-to CONVERT_TO] [--filter FILTER_NAME] [--interface INTERFACE] [--port PORT] infile outfile
-        res.setHeader('Content-Type', ConvertToMimeType[convertTo]);
+      post('/convert', middlewareQuery(schemaUnoserver), async ({ req, res, query: { convertTo } }) => {
+        res.setHeader('Content-Type', ConvertToMimeTypeUnoserver[convertTo]);
 
         unoconvert({ input: req, output: res, to: convertTo });
+      }),
+      post('/direct', middlewareQuery(schemaLibreoffice), async ({ req, res, query: { convertTo } }) => {
+        res.setHeader('Content-Type', ConvertToMimeTypeLibreoffice[convertTo]);
+
+        libreoffice({ input: req, output: res, to: convertTo });
       }),
       ...healthEndpoints,
     ),

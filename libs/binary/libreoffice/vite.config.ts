@@ -1,11 +1,11 @@
-/// <reference types='vitest' />
+/// <reference types="vitest" />
 
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/libs/binary/pdftk',
+  cacheDir: '../../node_modules/.vite/libs/binary/libreoffice',
 
   plugins: [nxViteTsPaths()],
 
@@ -31,7 +31,7 @@ export default defineConfig({
 
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../coverage/libs/binary/pdftk',
+      reportsDirectory: '../../coverage/libs/binary/libreoffice',
       provider: 'v8',
     },
   },
