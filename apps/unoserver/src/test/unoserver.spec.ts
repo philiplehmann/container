@@ -31,6 +31,76 @@ describe('unoserver', () => {
           expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
+        it('should convert docx to pdf with inputFilter/outputFilter/filterOptions', async () => {
+          const file = resolve(__dirname, 'assets/dummy.docx');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/convert?inputFilter=MS%20Word%202007%20XML&outputFilter=writer_pdf_Export&filterOptions=PageRange=1-2',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert docx to pdf with updateIndex', async () => {
+          const file = resolve(__dirname, 'assets/dummy.docx');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/convert?updateIndex=true',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert docx to pdf with dontUpdateIndex', async () => {
+          const file = resolve(__dirname, 'assets/dummy.docx');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/convert?dontUpdateIndex=true',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert docx to pdf with verbose', async () => {
+          const file = resolve(__dirname, 'assets/dummy.docx');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/convert?verbose=true',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert docx to pdf with quiet', async () => {
+          const file = resolve(__dirname, 'assets/dummy.docx');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/convert?quiet=true',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
         it('should convert docx to pdf with convertTo', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
           const [response, text] = await testRequest({
