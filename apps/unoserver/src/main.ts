@@ -16,20 +16,38 @@ import { middlewareQuery } from '@container/http/validate';
 const PORT = process.env.PORT || '3000';
 
 const main = async () => {
-  await unoserver();
+  if (process.env.DIRECT_ONLY !== 'true') {
+    await unoserver();
+  }
+
+  const unoconvertRoute = post('/convert', middlewareQuery(schemaUnoserver), async ({ req, res, query }) => {
+    res.setHeader('Content-Type', ConvertToMimeTypeUnoserver[query.convertTo]);
+
+    unoconvert({ input: req, output: res, ...query });
+  });
+  const libreofficeRoute = post(
+    '/direct',
+    middlewareQuery(schemaLibreoffice),
+    async ({ req, res, query: { convertTo } }) => {
+      res.setHeader('Content-Type', ConvertToMimeTypeLibreoffice[convertTo]);
+      try {
+        await libreoffice({ input: req, output: res, to: convertTo });
+      } catch (error) {
+        res.statusCode = 500;
+        if (error instanceof Error) {
+          res.statusMessage = error.message;
+          res.end(`Error during conversion: ${error.message}`);
+        } else {
+          res.statusMessage = 'Unknown error';
+          res.end('Error during conversion');
+        }
+      }
+    },
+  );
 
   httpServer(
     connect(
-      post('/convert', middlewareQuery(schemaUnoserver), async ({ req, res, query: { convertTo } }) => {
-        res.setHeader('Content-Type', ConvertToMimeTypeUnoserver[convertTo]);
-
-        unoconvert({ input: req, output: res, to: convertTo });
-      }),
-      post('/direct', middlewareQuery(schemaLibreoffice), async ({ req, res, query: { convertTo } }) => {
-        res.setHeader('Content-Type', ConvertToMimeTypeLibreoffice[convertTo]);
-
-        libreoffice({ input: req, output: res, to: convertTo });
-      }),
+      ...(process.env.DIRECT_ONLY === 'true' ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
       ...healthEndpoints,
     ),
     { port: PORT, name: 'unoserver' },
