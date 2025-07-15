@@ -8,8 +8,8 @@ FROM harbor.riwi.dev/hub/node:22.17.0-bookworm-slim AS pdftk
 
 ARG PDFTK_VERSION
 
-RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
-    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
     apt-get install --no-install-recommends --yes \
@@ -29,8 +29,8 @@ LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
 WORKDIR /app
 
-RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
-    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
     apt-get install --no-install-recommends --yes \
