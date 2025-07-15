@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { constants, createReadStream, createWriteStream } from 'node:fs';
-import { access, readdir, rmdir, unlink } from 'node:fs/promises';
+import { access, readdir, rm, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
@@ -14,7 +14,7 @@ async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
       await unlink(filePath);
       return;
     }
-    await rmdir(filePath, { recursive: true });
+    await rm(filePath, { recursive: true });
   } catch (error) {
     if (error instanceof Error) {
       console.warn(`Failed to cleanup ${type}: ${error.message}`);
