@@ -45,6 +45,7 @@ RUN mkdir /app/tmp && \
 ENV PATH="/app/virtenv/bin:${PATH}"
 ENV HOST=0.0.0.0
 ENV PORT=3000
+ENV UNOSERVER_DIRECT_ONLY=false
 
 COPY dist/apps/unoserver unoserver
 

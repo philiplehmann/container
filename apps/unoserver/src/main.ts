@@ -16,7 +16,7 @@ import { middlewareQuery } from '@container/http/validate';
 const PORT = process.env.PORT || '3000';
 
 const main = async () => {
-  if (process.env.DIRECT_ONLY !== 'true') {
+  if (process.env.UNOSERVER_DIRECT_ONLY !== 'true') {
     await unoserver();
   }
 
@@ -47,7 +47,7 @@ const main = async () => {
 
   httpServer(
     connect(
-      ...(process.env.DIRECT_ONLY === 'true' ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
+      ...(process.env.UNOSERVER_DIRECT_ONLY === 'true' ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
       ...healthEndpoints,
     ),
     { port: PORT, name: 'unoserver' },
