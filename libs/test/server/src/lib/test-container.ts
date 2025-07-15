@@ -1,4 +1,5 @@
 import { GenericContainer, type StartedTestContainer, Wait } from 'testcontainers';
+import type { Environment } from 'testcontainers/build/types';
 
 export interface TestContainerProps {
   image: string;
@@ -6,6 +7,7 @@ export interface TestContainerProps {
   healthPath?: string;
   healthPort?: number;
   healthStatusCode?: number;
+  env?: Environment;
   hook?: (container: GenericContainer) => GenericContainer;
 }
 
@@ -15,6 +17,7 @@ export const testContainer = async ({
   healthPath = '/health/readiness',
   healthPort = containerPort,
   healthStatusCode = 200,
+  env,
   hook,
 }: TestContainerProps): Promise<[StartedTestContainer, number]> => {
   let genericContainer = new GenericContainer(image)
@@ -22,7 +25,8 @@ export const testContainer = async ({
     .withExposedPorts(containerPort)
     .withUser('1000:1000')
     .withLogConsumer((stream) => stream.pipe(process.stdout))
-    .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode));
+    .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode))
+    .withEnvironment(env || {});
 
   if (hook) {
     genericContainer = hook(genericContainer);
