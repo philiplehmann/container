@@ -46,6 +46,7 @@ ENV PATH="/app/virtenv/bin:${PATH}"
 ENV HOST=0.0.0.0
 ENV PORT=3000
 ENV UNOSERVER_DIRECT_ONLY=false
+ENV LIBREOFFICE_EXECUTABLE_PATH=/usr/bin/soffice
 
 COPY dist/apps/unoserver unoserver
 
