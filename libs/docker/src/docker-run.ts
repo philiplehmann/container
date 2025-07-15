@@ -33,7 +33,7 @@ export async function dockerRun({
       '--user',
       '1000:1000',
       '--platform',
-      `linux/${platform}64`,
+      `linux/${platform}`,
       ...ports.flatMap((port) => ['--publish', port.includes(':') ? port : `${port}:${port}`]),
       `${image}`,
     ]);
