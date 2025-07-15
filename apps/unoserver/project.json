@@ -12,7 +12,7 @@
         "platform": "node",
         "outputPath": "dist/apps/unoserver",
         "format": ["cjs"],
-        "bundle": false,
+        "bundle": true,
         "main": "apps/unoserver/src/main.ts",
         "tsConfig": "apps/unoserver/tsconfig.app.json",
         "assets": ["apps/unoserver/src/assets"],
