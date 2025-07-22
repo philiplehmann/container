@@ -2351,7 +2351,7 @@ __metadata:
     nx: "npm:21.3.0"
     playwright: "npm:^1.44.0"
     puppeteer-core: "npm:24.14.0"
-    testcontainers: "npm:11.3.1"
+    testcontainers: "npm:11.3.2"
     tslib: "npm:2.8.1"
     typescript: "npm:5.8.3"
     vite: "npm:6.3.5"
@@ -11177,9 +11177,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"testcontainers@npm:11.3.1":
-  version: 11.3.1
-  resolution: "testcontainers@npm:11.3.1"
+"testcontainers@npm:11.3.2":
+  version: 11.3.2
+  resolution: "testcontainers@npm:11.3.2"
   dependencies:
     "@balena/dockerignore": "npm:^1.0.2"
     "@types/dockerode": "npm:^3.3.42"
@@ -11195,8 +11195,8 @@ __metadata:
     ssh-remote-port-forward: "npm:^1.0.4"
     tar-fs: "npm:^3.1.0"
     tmp: "npm:^0.2.3"
-    undici: "npm:^7.11.0"
-  checksum: 10c0/e42fdf8bf01dcbaf848f9af90f65cc4179a62cec478f1ec56b457d5104272e9198d5790cab3c2f1f184f92a359bd78b54b853470643be351fe97b2ae42993f66
+    undici: "npm:^7.12.0"
+  checksum: 10c0/9e714152336b7ace944761de759d003bd34f781aed1a562b6da9b16eb348af0124badb6eb571bbc2bbd00d129ef215e36d81b689b9903b62872f6b6e71015447
   languageName: node
   linkType: hard
 
@@ -11453,10 +11453,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^7.11.0":
-  version: 7.11.0
-  resolution: "undici@npm:7.11.0"
-  checksum: 10c0/e5dd3cc2acae9c8333f97a78d4e91108957367fa7e69918e3a5cbd84702cb453cf7de3f8c2a33bcf808850d78ead70f3bd62900a70d969912e9fed8842bbfc11
+"undici@npm:^7.12.0":
+  version: 7.12.0
+  resolution: "undici@npm:7.12.0"
+  checksum: 10c0/27aada7bd8d2588f146a2ba554f2f6b7593f9c2d14bf3797bbc7b74825d9bee38eb3ab61e2d0ee01bb827a9ac8017eb2991cb4f06d9ed9971c8a142d8306fbab
   languageName: node
   linkType: hard
 
