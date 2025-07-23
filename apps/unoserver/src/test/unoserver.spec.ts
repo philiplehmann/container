@@ -37,7 +37,7 @@ describe('unoserver', () => {
             method: 'POST',
             host: 'localhost',
             port: setup.port,
-            path: '/convert?inputFilter=MS%20Word%202007%20XML&outputFilter=writer_pdf_Export&filterOptions=PageRange=1-2',
+            path: `/convert?inputFilter=${encodeURIComponent('MS Word 2007 XML')}&outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent('PageRange=1-2')}`,
             file,
           });
 
@@ -163,6 +163,20 @@ describe('unoserver', () => {
             host: 'localhost',
             port: setup.port,
             path: '/direct',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert doc to pdf with outputFilter/filterOptions', async () => {
+          const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: `/direct?outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent('{"PageRange":{"type":"string","value":"1-2"}}')}`,
             file,
           });
 

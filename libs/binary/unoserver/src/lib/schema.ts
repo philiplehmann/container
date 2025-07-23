@@ -6,15 +6,29 @@ const booleanLiteral = z
   .optional()
   .transform((val) => val === 'true');
 
-export const schema = z.strictObject({
-  convertTo: z.enum(ConvertTo).optional().default(ConvertTo.pdf),
-  inputFilter: z.string().optional(),
-  outputFilter: z.string().optional(),
-  filterOptions: z.union([z.string(), z.array(z.string())]).optional(),
-  updateIndex: booleanLiteral,
-  dontUpdateIndex: booleanLiteral,
-  verbose: booleanLiteral,
-  quiet: booleanLiteral,
-});
+export const schema = z
+  .strictObject({
+    convertTo: z.enum(ConvertTo).optional().default(ConvertTo.pdf),
+    inputFilter: z.string().optional(),
+    outputFilter: z.string().optional(),
+    filterOptions: z.union([z.string(), z.array(z.string())]).optional(),
+    updateIndex: booleanLiteral,
+    dontUpdateIndex: booleanLiteral,
+    verbose: booleanLiteral,
+    quiet: booleanLiteral,
+  })
+  .refine(
+    (data) => {
+      // If filterOptions is provided, outputFilter must also be provided
+      if (data.filterOptions !== undefined && data.outputFilter === undefined) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'filterOptions can only be provided when outputFilter is set',
+      path: ['filterOptions'],
+    },
+  );
 
 export type Schema = z.infer<typeof schema>;
