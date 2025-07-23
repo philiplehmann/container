@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import { type InputType, streamInputToWriteable, streamToBuffer } from '@container/stream';
-import type { ConvertTo } from './convert-to';
+import type { Schema } from './schema';
 
 async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
   try {
@@ -24,17 +24,18 @@ async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
   }
 }
 
-export async function libreoffice(options: { input: Readable; output: Writable; to: ConvertTo }): Promise<undefined>;
-export async function libreoffice(options: { input: Buffer | string; to: ConvertTo }): Promise<Buffer>;
+export async function libreoffice(options: { input: Readable; output: Writable } & Schema): Promise<undefined>;
+export async function libreoffice(options: { input: Buffer | string } & Schema): Promise<Buffer>;
 export async function libreoffice({
   input,
   output,
-  to,
+  convertTo,
+  outputFilter,
+  filterOptions,
 }: {
   input: InputType;
   output?: Writable;
-  to: ConvertTo;
-}): Promise<undefined | Buffer> {
+} & Schema): Promise<undefined | Buffer> {
   const inFile = `${tmpdir()}/${randomUUID()}`;
   const outDir = `${tmpdir()}/${randomUUID()}`;
 
@@ -58,7 +59,7 @@ export async function libreoffice({
       '--norestore',
       `-env:UserInstallation=file://${tmpdir()}/${randomUUID()}`,
       '--convert-to',
-      to,
+      `${convertTo}${outputFilter ? `:"${outputFilter}"` : ''}${filterOptions ? `:"${Array.isArray(filterOptions) ? filterOptions.join(',') : filterOptions}"` : ''}`,
       '--outdir',
       outDir,
       inFile,
@@ -83,7 +84,7 @@ export async function libreoffice({
     });
 
     const files = await readdir(outDir);
-    const convertedFile = files.find((file) => file.endsWith(`.${to}`));
+    const convertedFile = files.find((file) => file.endsWith(`.${convertTo}`));
     if (!convertedFile) {
       throw new Error(`Converted file not found in ${outDir}`);
     }
