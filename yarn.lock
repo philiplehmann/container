@@ -3376,9 +3376,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:21.0.0":
-  version: 21.0.0
-  resolution: "@nx/devkit@npm:21.0.0"
+"@nx/devkit@npm:21.3.11":
+  version: 21.3.11
+  resolution: "@nx/devkit@npm:21.3.11"
   dependencies:
     ejs: "npm:^3.1.7"
     enquirer: "npm:~2.3.6"
@@ -3389,8 +3389,8 @@ __metadata:
     tslib: "npm:^2.3.0"
     yargs-parser: "npm:21.1.1"
   peerDependencies:
-    nx: 21.0.0
-  checksum: 10c0/db6a66c1fcc3c5dcbe8426041d82ae728b3881660a5a323f3f8f5f501675d9fa482583f51c0fc5cab77ca8db4550013955e4c4457c045152b8c1ff396bc60872
+    nx: 21.3.11
+  checksum: 10c0/3af10cbc5eea359e7eede4aa742aa6785e7562ec525b28ec61fa087bc259c344a1cb22d01997e111231e194f4518a68344f3a0a0c6baa470a0c965359fca8a52
   languageName: node
   linkType: hard
 
@@ -3515,86 +3515,86 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/key-darwin-arm64@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-darwin-arm64@npm:3.0.0"
+"@nx/key-darwin-arm64@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-darwin-arm64@npm:3.1.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/key-darwin-x64@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-darwin-x64@npm:3.0.0"
+"@nx/key-darwin-x64@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-darwin-x64@npm:3.1.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/key-linux-arm-gnueabihf@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-linux-arm-gnueabihf@npm:3.0.0"
+"@nx/key-linux-arm-gnueabihf@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-linux-arm-gnueabihf@npm:3.1.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/key-linux-arm64-gnu@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-linux-arm64-gnu@npm:3.0.0"
+"@nx/key-linux-arm64-gnu@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-linux-arm64-gnu@npm:3.1.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/key-linux-arm64-musl@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-linux-arm64-musl@npm:3.0.0"
+"@nx/key-linux-arm64-musl@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-linux-arm64-musl@npm:3.1.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/key-linux-x64-gnu@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-linux-x64-gnu@npm:3.0.0"
+"@nx/key-linux-x64-gnu@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-linux-x64-gnu@npm:3.1.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/key-linux-x64-musl@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-linux-x64-musl@npm:3.0.0"
+"@nx/key-linux-x64-musl@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-linux-x64-musl@npm:3.1.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/key-win32-arm64-msvc@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-win32-arm64-msvc@npm:3.0.0"
+"@nx/key-win32-arm64-msvc@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-win32-arm64-msvc@npm:3.1.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/key-win32-x64-msvc@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key-win32-x64-msvc@npm:3.0.0"
+"@nx/key-win32-x64-msvc@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key-win32-x64-msvc@npm:3.1.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/key@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@nx/key@npm:3.0.0"
+"@nx/key@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@nx/key@npm:3.1.0"
   dependencies:
     "@napi-rs/wasm-runtime": "npm:^0.2.4"
-    "@nx/key-darwin-arm64": "npm:3.0.0"
-    "@nx/key-darwin-x64": "npm:3.0.0"
-    "@nx/key-linux-arm-gnueabihf": "npm:3.0.0"
-    "@nx/key-linux-arm64-gnu": "npm:3.0.0"
-    "@nx/key-linux-arm64-musl": "npm:3.0.0"
-    "@nx/key-linux-x64-gnu": "npm:3.0.0"
-    "@nx/key-linux-x64-musl": "npm:3.0.0"
-    "@nx/key-win32-arm64-msvc": "npm:3.0.0"
-    "@nx/key-win32-x64-msvc": "npm:3.0.0"
+    "@nx/key-darwin-arm64": "npm:3.1.0"
+    "@nx/key-darwin-x64": "npm:3.1.0"
+    "@nx/key-linux-arm-gnueabihf": "npm:3.1.0"
+    "@nx/key-linux-arm64-gnu": "npm:3.1.0"
+    "@nx/key-linux-arm64-musl": "npm:3.1.0"
+    "@nx/key-linux-x64-gnu": "npm:3.1.0"
+    "@nx/key-linux-x64-musl": "npm:3.1.0"
+    "@nx/key-win32-arm64-msvc": "npm:3.1.0"
+    "@nx/key-win32-x64-msvc": "npm:3.1.0"
     axios: "npm:^1.6.7"
     axios-retry: "npm:^4.5.0"
-    chalk: "npm:^4.1.2"
+    chalk: "npm:4.1.2"
     enquirer: "npm:^2.4.1"
     ora: "npm:^5.4.1"
   dependenciesMeta:
@@ -3616,7 +3616,7 @@ __metadata:
       optional: true
     "@nx/key-win32-x64-msvc":
       optional: true
-  checksum: 10c0/5ff70c5518224247b83110c8168d77de4e31612e055c57c705fd7049ea1edc5359efad5fc0b2ae0042b7d31024f5799495b61df7af1121a40018d28266f8ccb8
+  checksum: 10c0/15e60d9715954c83701ebd4a180a92579c80cac9ddb81afb4445ca27babad83ba03599a0fa2900f87218f77648d51b8a829c7d9db851d68306ca8d9a6a55e4fd
   languageName: node
   linkType: hard
 
@@ -3738,19 +3738,21 @@ __metadata:
   linkType: hard
 
 "@nx/s3-cache@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@nx/s3-cache@npm:3.0.0"
+  version: 3.1.0
+  resolution: "@nx/s3-cache@npm:3.1.0"
   dependencies:
     "@aws-sdk/client-s3": "npm:3.796.0"
     "@aws-sdk/credential-providers": "npm:3.796.0"
     "@aws-sdk/lib-storage": "npm:3.796.0"
-    "@nx/devkit": "npm:21.0.0"
-    "@nx/key": "npm:3.0.0"
+    "@nx/devkit": "npm:21.3.11"
+    "@nx/key": "npm:3.1.0"
     "@smithy/property-provider": "npm:^3.1.11"
     enquirer: "npm:^2.4.1"
     semver: "npm:7.5.4"
     tar-stream: "npm:^3.1.7"
-  checksum: 10c0/fc248598823120f8426a1b8531be6f1523517febc67e70902632c3d051c7514be49e9557f3929fe84076fea0cf7e27279cc0ee020ae3bae3a345110276839462
+  peerDependencies:
+    nx: ">= 18 < 22"
+  checksum: 10c0/125f0dc1fe5baa81c8c1418ce1a1c9fe2151b3724d7b3da9016cb524f409ec63ee20cd525f83fc7125c677657eea9cd80cfd295e1b28e9710d1da54d6440614b
   languageName: node
   linkType: hard
 
@@ -6572,7 +6574,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.2, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
+"chalk@npm:4.1.2, chalk@npm:^4.0.2, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
