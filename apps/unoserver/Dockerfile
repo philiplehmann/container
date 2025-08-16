@@ -4,15 +4,12 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
-FROM harbor.riwi.dev/hub/node:22.17.0-bookworm-slim
+FROM harbor.riwi.dev/hub/node:24.6.0-trixie-slim
 
 ARG UNOSERVER_VERSION
 ARG JRE_VERSION
 
 WORKDIR /app
-
-# setup backports
-COPY apps/unoserver/debian-backports.sources /etc/apt/sources.list.d/debian-backports.sources
 
 # setup adoptium repository
 RUN apt-get update && apt-get install -y \
@@ -20,13 +17,13 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     ca-certificates
 RUN curl -fsSL https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /usr/share/keyrings/adoptium-archive-keyring.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/adoptium-archive-keyring.gpg] https://packages.adoptium.net/artifactory/deb bookworm main" > /etc/apt/sources.list.d/adoptium.list
+RUN echo "deb [signed-by=/usr/share/keyrings/adoptium-archive-keyring.gpg] https://packages.adoptium.net/artifactory/deb trixie main" > /etc/apt/sources.list.d/adoptium.list
 
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
-    apt-get install --yes --no-install-recommends -t bookworm-backports \
+    apt-get install --yes --no-install-recommends \
                     python3-full python3-pip python3-uno uno-libs-private virtualenv \
                     libreoffice-java-common \
                     libreoffice-writer \
@@ -34,7 +31,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
                     libreoffice-impress \
                     libreoffice-draw \
                     temurin-21-jdk \
-                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf fonts-dejavu \
+                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-freefont-ttf fonts-dejavu \
                     fonts-liberation fonts-noto-core fonts-noto-extra fonts-crosextra-carlito fonts-crosextra-caladea fonts-liberation2 && \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
     virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}

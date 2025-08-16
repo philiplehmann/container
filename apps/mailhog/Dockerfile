@@ -2,7 +2,7 @@
 # MailHog Dockerfile
 #
 
-FROM harbor.riwi.dev/hub/bitnami/golang:1.24.6 AS builder
+FROM harbor.riwi.dev/hub/golang:tip-20250808-trixie AS builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -12,7 +12,7 @@ ARG MAILHOG_VERSION
 RUN mkdir -p /root/gocode && \
     GOSUMDB=off GOPATH=/root/gocode GOPROXY=https://proxy.golang.org/cached-only go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
-FROM harbor.riwi.dev/hub/bitnami/minideb:bookworm
+FROM harbor.riwi.dev/hub/debian:trixie-slim
 RUN apt-get update && apt-get upgrade --yes
 RUN useradd -ms /bin/bash -u 1000 mailhog
 

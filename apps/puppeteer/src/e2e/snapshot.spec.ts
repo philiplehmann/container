@@ -44,7 +44,7 @@ let container: StartedTestContainer;
 let port: number;
 
 test.setTimeout(60_000);
-[currentArch()].map((arch) => {
+[currentArch()].forEach((arch) => {
   test.describe(`arch: ${arch}`, () => {
     test.beforeAll(async () => {
       if (process.env.TEST_SERVER_RUNNER === 'local') {

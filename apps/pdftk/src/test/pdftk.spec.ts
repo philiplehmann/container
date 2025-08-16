@@ -9,7 +9,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 const containerPort = 5000;
 
 describe('pdftk', { timeout: 10_000 }, () => {
-  [currentArch()].map((arch) => {
+  [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
 

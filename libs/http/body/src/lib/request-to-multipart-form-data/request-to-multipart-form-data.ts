@@ -62,7 +62,7 @@ export async function requestToMultipartFormData(
           state = State.DATA;
           stream.end();
           stream = new Transform({
-            transform(chunk, encoding, callback) {
+            transform(chunk, _encoding, callback) {
               this.push(chunk);
               callback();
             },
