@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/tesseract`.
-FROM harbor.riwi.dev/hub/node:22.17.0-bookworm-slim
+FROM harbor.riwi.dev/hub/node:24.6.0-trixie-slim
 
 ENV HOST=0.0.0.0
 ENV PORT=3000

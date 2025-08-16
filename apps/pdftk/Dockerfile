@@ -4,9 +4,10 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/pdftk`.
-FROM harbor.riwi.dev/hub/node:22.17.0-bookworm-slim AS pdftk
+FROM harbor.riwi.dev/hub/node:24.6.0-trixie-slim AS pdftk
 
 ARG PDFTK_VERSION
+ARG TARGETPLATFORM
 
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -15,10 +16,19 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get install --no-install-recommends --yes \
                     curl ca-certificates && \
     mkdir -p /pdftk && \
-    curl -o /pdftk/pdftk.jar https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v${PDFTK_VERSION}/pdftk-all.jar
+    curl -o /pdftk/pdftk.jar https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v${PDFTK_VERSION}/pdftk-all.jar && \
+    \
+    # Determine JDK architecture based on target platform
+    case "${TARGETPLATFORM}" in \
+        "linux/amd64") JDK_ARCH="x64" ;; \
+        "linux/arm64") JDK_ARCH="aarch64" ;; \
+        *) echo "Unsupported platform: ${TARGETPLATFORM}" && exit 1 ;; \
+    esac && \
+    mkdir /java && \
+    curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.28%2B6/OpenJDK11U-jre_${JDK_ARCH}_linux_hotspot_11.0.28_6.tar.gz" | tar --strip-components=1 -C /java -zxivf  -
 
 
-FROM harbor.riwi.dev/hub/node:22.17.0-bookworm-slim
+FROM harbor.riwi.dev/hub/node:24.6.0-trixie-slim
 
 ARG JRE_VERSION
 
@@ -29,19 +39,16 @@ LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
 WORKDIR /app
 
-RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-    --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    rm -f /etc/apt/apt.conf.d/docker-clean && \
-    apt-get update && \
-    apt-get install --no-install-recommends --yes \
-    default-jre=${JRE_VERSION}
-
 RUN mkdir /app/tmp && \
     chown -R 1000:1000 /app/tmp
 
 COPY --from=pdftk /pdftk /pdftk
+COPY --from=pdftk /java /java
 COPY apps/pdftk/bin/pdftk /bin/pdftk
 COPY dist/apps/pdftk pdftk
+
+ENV JAVA_HOME=/java
+ENV PATH=$JAVA_HOME/bin/:$PATH
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.

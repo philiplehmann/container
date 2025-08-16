@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const containerPort = 5000;
 
 describe('unoserver', () => {
-  [currentArch()].map((arch) => {
+  [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
       describe('/convert', async () => {
         const setup = await useTestContainer({

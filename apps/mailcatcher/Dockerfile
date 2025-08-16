@@ -2,7 +2,7 @@
 # MailCatcher Dockerfile
 #
 
-FROM harbor.riwi.dev/hub/ruby:3.3-bookworm AS bundler
+FROM harbor.riwi.dev/hub/ruby:3.4.5-trixie AS bundler
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev && \
     gem install mailcatcher --version ${MAILCATCHER_VERSION} --no-document
 
-FROM harbor.riwi.dev/hub/ruby:3.3-slim-bookworm AS runner
+FROM harbor.riwi.dev/hub/ruby:3.4.5-slim-trixie AS runner
 
 COPY --from=bundler /usr/local/bundle /usr/local/bundle
 

@@ -5,7 +5,7 @@ import { GenericContainer, type StartedTestContainer } from 'testcontainers';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('mailhog', () => {
-  [currentArch()].map((arch) => {
+  [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, () => {
       let container: StartedTestContainer;
       let httpPort: number;

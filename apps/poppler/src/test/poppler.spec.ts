@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 const containerPort = 5000;
 
 describe('poppler', () => {
-  [currentArch()].map((arch) => {
+  [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({ image: `philiplehmann/poppler-server:test-${arch}`, containerPort });
 

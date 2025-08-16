@@ -22,6 +22,6 @@ export class StreamableFile extends File {
   }
 
   stream() {
-    return this.handle.readableWebStream() as ReadableStream<Uint8Array<ArrayBufferLike>>;
+    return this.handle.readableWebStream() as ReadableStream<Uint8Array<ArrayBuffer>>;
   }
 }

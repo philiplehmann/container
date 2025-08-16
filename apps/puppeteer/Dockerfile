@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t puppeteer`.
-FROM harbor.riwi.dev/hub/node:22.17.0-bookworm-slim
+FROM harbor.riwi.dev/hub/node:24.6.0-trixie-slim
 
 ENV NODE_ENV=production
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
@@ -23,7 +23,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
                     libpangocairo-1.0-0 libxss1 libgtk-3-0 libgtk2.0-0 libdrm2 libxkbcommon0 \
                     wget gnupg \
                     dbus dbus-x11 \
-                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst fonts-freefont-ttf \
+                    fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-freefont-ttf \
                     chromium && \
     rm -rf /var/lib/apt/lists/*
 

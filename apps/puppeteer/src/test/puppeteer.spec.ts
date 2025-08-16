@@ -7,7 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 const containerPort = 5000;
 
 describe('puppeteer', { timeout: 120_000 }, () => {
-  [currentArch()].map((arch) => {
+  [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({ image: `philiplehmann/puppeteer:test-${arch}`, containerPort });
 
