@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
-import { constants, createReadStream, createWriteStream } from 'node:fs';
+import { constants, createReadStream, createWriteStream, existsSync } from 'node:fs';
 import { access, readdir, rm, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import type { Readable, Writable } from 'node:stream';
@@ -10,6 +10,9 @@ import type { Schema } from './schema';
 
 async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
   try {
+    if (existsSync(filePath)) {
+      return;
+    }
     if (type === 'file') {
       await unlink(filePath);
       return;
@@ -36,6 +39,9 @@ export async function libreoffice({
   input: InputType;
   output?: Writable;
 } & Schema): Promise<undefined | Buffer> {
+  if (filterOptions && !outputFilter) {
+    throw new Error('filterOptions requires outputFilter');
+  }
   const inFile = `${tmpdir()}/${randomUUID()}`;
   const outDir = `${tmpdir()}/${randomUUID()}`;
 
