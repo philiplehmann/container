@@ -22,6 +22,8 @@ const main = async () => {
     unoconvert({ input: req, output: res, ...query });
   });
   const libreofficeRoute = post('/direct', middlewareQuery(schemaLibreoffice), async ({ req, res, query }) => {
+    res.setHeader('Content-Type', ConvertToMimeTypeUnoserver[query.convertTo]);
+
     await libreoffice({ input: req, output: res, ...query });
   });
 
