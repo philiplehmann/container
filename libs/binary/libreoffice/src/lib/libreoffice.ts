@@ -10,7 +10,7 @@ import type { Schema } from './schema';
 
 async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
   try {
-    if (existsSync(filePath)) {
+    if (!existsSync(filePath)) {
       return;
     }
     if (type === 'file') {
@@ -65,7 +65,7 @@ export async function libreoffice({
       '--norestore',
       `-env:UserInstallation=file://${tmpdir()}/${randomUUID()}`,
       '--convert-to',
-      `${convertTo}${outputFilter ? `:"${outputFilter}"` : ''}${filterOptions ? `:"${Array.isArray(filterOptions) ? filterOptions.join(',') : filterOptions}"` : ''}`,
+      `${convertTo}${outputFilter ? `:${outputFilter}${filterOptions ? `:${Array.isArray(filterOptions) ? filterOptions.join(',') : filterOptions}` : ''}` : ''}`,
       '--outdir',
       outDir,
       inFile,
@@ -73,19 +73,24 @@ export async function libreoffice({
 
     await new Promise<void>((resolve, reject) => {
       unoconvert.stdout.on('data', (data) => {
-        if (output) {
-          console.log(data.toString());
-        }
+        console.info(`libreoffice.stdout: ${data}`);
+      });
+      let stderr = '';
+      unoconvert.stderr.on('data', (data) => {
+        console.error(`libreoffice.stderr: ${data}`);
+        stderr += data.toString();
       });
       unoconvert.on('close', (code) => {
         if (code !== 0) {
           reject(new Error(`LibreOffice conversion failed with exit code ${code}`));
+        } else if (!existsSync(outDir)) {
+          reject(new Error(`LibreOffice conversion failed, output directory not found: ${outDir}`));
         } else {
           resolve();
         }
       });
       unoconvert.on('error', (error) => {
-        reject(new Error(`LibreOffice process error: ${error.message}`));
+        reject(new Error(`LibreOffice process error: ${error.message}: ${stderr}`));
       });
     });
 

@@ -1,8 +1,4 @@
-import {
-  ConvertToMimeType as ConvertToMimeTypeLibreoffice,
-  libreoffice,
-  schema as schemaLibreoffice,
-} from '@container/binary/libreoffice';
+import { libreoffice, schema as schemaLibreoffice } from '@container/binary/libreoffice';
 import {
   ConvertToMimeType as ConvertToMimeTypeUnoserver,
   schema as schemaUnoserver,
@@ -26,19 +22,7 @@ const main = async () => {
     unoconvert({ input: req, output: res, ...query });
   });
   const libreofficeRoute = post('/direct', middlewareQuery(schemaLibreoffice), async ({ req, res, query }) => {
-    res.setHeader('Content-Type', ConvertToMimeTypeLibreoffice[query.convertTo]);
-    try {
-      await libreoffice({ input: req, output: res, ...query });
-    } catch (error) {
-      res.statusCode = 500;
-      if (error instanceof Error) {
-        res.statusMessage = error.message;
-        res.end(`Error during conversion: ${error.message}`);
-      } else {
-        res.statusMessage = 'Unknown error';
-        res.end('Error during conversion');
-      }
-    }
+    await libreoffice({ input: req, output: res, ...query });
   });
 
   httpServer(

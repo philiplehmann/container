@@ -170,13 +170,73 @@ describe('unoserver', () => {
           expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
-        it('should convert doc to pdf with outputFilter/filterOptions', async () => {
+        it('should convert doc to pdf with outputFilter', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
           const [response, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
-            path: `/direct?outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent('{"PageRange":{"type":"string","value":"1-2"}}')}`,
+            path: '/direct?outputFilter=writer_pdf_Export',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert doc to pdf with outputFilter/filterOptions string(SelectPdfVersion)', async () => {
+          const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: `/direct?outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent('SelectPdfVersion=1')}`,
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert doc to pdf with outputFilter/filterOptions string(PageRange)', async () => {
+          const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: `/direct?outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent('PageRange=1-2')}`,
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert doc to pdf with outputFilter/filterOptions json(SelectPdfVersion)', async () => {
+          const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: `/direct?outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent(
+              JSON.stringify({ SelectPdfVersion: { type: 'long', value: 3 } }),
+            )}`,
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
+        });
+
+        it('should convert doc to pdf with outputFilter/filterOptions json(PageRange)', async () => {
+          const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
+          const [response, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: `/direct?outputFilter=writer_pdf_Export&filterOptions=${encodeURIComponent(
+              JSON.stringify({ PageRange: { type: 'string', value: '1-2' } }),
+            )}`,
             file,
           });
 
