@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
-FROM harbor.riwi.dev/hub/node:24.6.0-trixie-slim
+FROM node:24.6.0-trixie-slim
 
 ARG UNOSERVER_VERSION
 ARG JRE_VERSION
