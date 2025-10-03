@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - '**'
+      - "**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.ref }}
@@ -82,8 +82,6 @@ jobs:
         with:
           docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
-          harbor-username: ${{ secrets.HARBOR_USERNAME }}
-          harbor-password: ${{ secrets.HARBOR_TOKEN }}
 
       - name: corepack enable
         shell: bash
@@ -138,8 +136,6 @@ jobs:
         with:
           docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
-          harbor-username: ${{ secrets.HARBOR_USERNAME }}
-          harbor-password: ${{ secrets.HARBOR_TOKEN }}
 
       - name: corepack enable
         shell: bash
