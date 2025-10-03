@@ -70,8 +70,8 @@
     }
   ],
   "s3": {
-    "endpoint": "https://data.riwi.dev",
-    "region": "public",
+    "endpoint": "https://storage.datage.ch",
+    "region": "hetzner",
     "bucket": "nx-cache",
     "forcePathStyle": true,
     "localMode": "read-write"
