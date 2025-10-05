@@ -2834,7 +2834,7 @@ __metadata:
     esbuild: "npm:0.25.10"
     form-data: "npm:^4.0.4"
     jsdom: "npm:^27.0.0"
-    nodemailer: "npm:7.0.6"
+    nodemailer: "npm:7.0.7"
     nx: "npm:21.6.3"
     playwright: "npm:1.55.1"
     puppeteer-core: "npm:24.23.0"
@@ -10598,10 +10598,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:7.0.6":
-  version: 7.0.6
-  resolution: "nodemailer@npm:7.0.6"
-  checksum: 10c0/84d3bdca7baa048df538506726a3e63a116276b9ee1ad1e3cd55a8ccbdbf3dea34af0d9bfbe2fdb63cc83f9abe2dbab1737cd58562955e42cbf6cd46e82da49a
+"nodemailer@npm:7.0.7":
+  version: 7.0.7
+  resolution: "nodemailer@npm:7.0.7"
+  checksum: 10c0/9f7215f3c76b0db3e76a9a6a10fa4fdca3e3ea907fa82430498b6598b40700df287efd586e1d5bc56fe4b903144e5d70413e01f621106e4417e7af7eb1dccaee
   languageName: node
   linkType: hard
 
