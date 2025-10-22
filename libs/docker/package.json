@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "tslib": "^2.3.0",
-    "@nx/vite": "21.6.5",
+    "@nx/vite": "22.0.0",
     "vite": "7.1.10"
   },
   "type": "commonjs",
