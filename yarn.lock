@@ -2837,7 +2837,7 @@ __metadata:
     nodemailer: "npm:7.0.9"
     nx: "npm:22.0.0"
     playwright: "npm:1.56.1"
-    puppeteer-core: "npm:24.26.0"
+    puppeteer-core: "npm:24.26.1"
     testcontainers: "npm:11.7.2"
     tslib: "npm:2.8.1"
     typescript: "npm:5.9.3"
@@ -11253,9 +11253,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.26.0":
-  version: 24.26.0
-  resolution: "puppeteer-core@npm:24.26.0"
+"puppeteer-core@npm:24.26.1":
+  version: 24.26.1
+  resolution: "puppeteer-core@npm:24.26.1"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.12"
     chromium-bidi: "npm:10.5.1"
@@ -11264,7 +11264,7 @@ __metadata:
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.3.8"
     ws: "npm:^8.18.3"
-  checksum: 10c0/62c5268ef371aba457449e234ee41b28d6f64aad828b101e6e72ff86f36f39162529eee97085ab0c63b6bd53818f31cf8187f48299406d5b78e5542bdd6fabda
+  checksum: 10c0/30e6424dc48862ca325bd16f1af09220441e23aeaf13ae4fec06aae13abd8a864160e17686967e26fa087694ea74fa06d43915ab3467a3f1873b90dac036e76f
   languageName: node
   linkType: hard
 
