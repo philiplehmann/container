@@ -20,8 +20,8 @@
     "@swc/helpers": "0.5.17",
     "@types/node": "24.9.1",
     "@types/nodemailer": "^7.0.1",
-    "@vitest/coverage-v8": "3.2.4",
-    "@vitest/ui": "3.2.4",
+    "@vitest/coverage-v8": "4.0.3",
+    "@vitest/ui": "4.0.3",
     "esbuild": "0.25.11",
     "form-data": "^4.0.4",
     "jsdom": "^27.0.0",
@@ -32,7 +32,7 @@
     "tslib": "2.8.1",
     "typescript": "5.9.3",
     "vite": "7.1.10",
-    "vitest": "3.2.4"
+    "vitest": "4.0.3"
   },
   "dependencies": {
     "puppeteer-core": "24.26.0",
