@@ -25,7 +25,7 @@
     "esbuild": "0.25.12",
     "form-data": "^4.0.4",
     "jsdom": "^27.0.0",
-    "nodemailer": "7.0.9",
+    "nodemailer": "7.0.10",
     "nx": "22.0.0",
     "playwright": "1.56.1",
     "testcontainers": "11.8.0",
