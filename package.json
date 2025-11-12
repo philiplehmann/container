@@ -18,7 +18,7 @@
     "@swc/cli": "0.7.9",
     "@swc/core": "1.15.1",
     "@swc/helpers": "0.5.17",
-    "@types/node": "24.10.0",
+    "@types/node": "24.10.1",
     "@types/nodemailer": "^7.0.1",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
@@ -40,7 +40,7 @@
   },
   "packageManager": "yarn@4.11.0",
   "engines": {
-    "node": "24.11.0",
+    "node": "24.11.1",
     "yarn": "4.11.0"
   }
 }
