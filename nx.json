@@ -75,5 +75,6 @@
     "bucket": "nx-cache",
     "forcePathStyle": true,
     "localMode": "read-write"
-  }
+  },
+  "nxCloudId": "6925becf4a5c93f9549469f5"
 }
