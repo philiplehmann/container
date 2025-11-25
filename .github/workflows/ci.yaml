@@ -22,7 +22,7 @@ jobs:
       actions: "read"
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -67,7 +67,7 @@ jobs:
         uses: catchpoint/workflow-telemetry-action@v2
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 100
 
@@ -121,7 +121,7 @@ jobs:
       - test
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
