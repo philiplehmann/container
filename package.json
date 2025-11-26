@@ -28,7 +28,7 @@
     "nodemailer": "7.0.10",
     "nx": "22.0.3",
     "playwright": "1.56.1",
-    "testcontainers": "11.8.0",
+    "testcontainers": "11.8.1",
     "tslib": "2.8.1",
     "typescript": "5.9.3",
     "vite": "7.1.10",
