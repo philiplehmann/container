@@ -79,9 +79,6 @@ jobs:
 
       - name: Docker Setup
         uses: ./.github/actions/setup-docker
-        with:
-          docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
-          docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: corepack enable
         shell: bash
