@@ -58,13 +58,13 @@
       "outputs": ["{options.outputFile}"]
     },
     "vitest": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-test"],
       "options": {}
     },
     "vitest-local": {
-      "executor": "@nx/vite:test",
+      "executor": "@nx/vitest:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
     },
     "e2e-install": {
