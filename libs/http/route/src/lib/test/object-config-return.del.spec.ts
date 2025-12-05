@@ -1,10 +1,11 @@
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import { useTestServer } from '@container/test/server';
-import { describe, expect, it } from 'vitest';
 import { del } from '../method/del';
 
 describe('http-route', () => {
-  describe('object config return', async () => {
-    const server = await useTestServer(
+  describe('object config return', () => {
+    const server = useTestServer(
       del({ path: '/delete' }, async () => {
         return { statusCode: 200, body: 'delete' };
       }),
@@ -15,16 +16,16 @@ describe('http-route', () => {
         const response = await server.request('/delete', {
           method: 'DELETE',
         });
-        expect(response.status).toEqual(200);
+        assert.deepStrictEqual(response.status, 200);
         const content = await response.text();
-        expect(content).toEqual('delete');
+        assert.deepStrictEqual(content, 'delete');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
           method: 'DELETE',
         });
-        expect(response.status).toEqual(404);
+        assert.deepStrictEqual(response.status, 404);
       });
     });
   });

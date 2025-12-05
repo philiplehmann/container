@@ -1,3 +1,4 @@
+import { after, before } from 'node:test';
 import type { StartedTestContainer } from 'testcontainers';
 import { type TestContainerProps, testContainer } from './test-container';
 
@@ -5,25 +6,25 @@ export interface TestContainerOutput {
   port: number;
 }
 
-export const useTestContainer = async ({
+export const useTestContainer = ({
   localPort = 3000,
   ...props
-}: TestContainerProps & { localPort?: number }): Promise<TestContainerOutput> => {
-  const { beforeAll, afterAll } = await import('vitest');
+}: TestContainerProps & { localPort?: number }): TestContainerOutput => {
   const output: TestContainerOutput = {} as TestContainerOutput;
-  let container: StartedTestContainer;
-  let port: number;
-  beforeAll(async () => {
+  let container: StartedTestContainer | undefined;
+
+  before(async () => {
     if (process.env.TEST_SERVER_RUNNER === 'local') {
-      port = localPort;
-    } else {
-      [container, port] = await testContainer(props);
+      output.port = localPort;
+      return;
     }
 
-    output.port = port;
+    const [startedContainer, mappedPort] = await testContainer(props);
+    container = startedContainer;
+    output.port = mappedPort;
   });
 
-  afterAll(async () => {
+  after(async () => {
     if (process.env.TEST_SERVER_RUNNER !== 'local') {
       await container?.stop();
     }

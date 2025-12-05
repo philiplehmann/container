@@ -101,10 +101,10 @@ run *-local tests
 # run playwright ui tests
 TEST_SERVER_RUNNER=local yarn nx e2e-local puppeteer
 
-# run vitest
-TEST_SERVER_RUNNER=local yarn nx vitest-local puppeteer
+# run node-test
+TEST_SERVER_RUNNER=local yarn nx node-test-local puppeteer
 
-# run both, e2e and vitest
+# run both, e2e and node-test
 TEST_SERVER_RUNNER=local yarn nx test-local puppeteer
 ´´´
 

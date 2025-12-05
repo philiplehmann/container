@@ -1,8 +1,9 @@
+import { strict as assert } from 'node:assert';
 import { resolve } from 'node:path';
+import { describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { testRequest } from '@container/test/request';
 import { useTestContainer } from '@container/test/server';
-import { describe, expect, it } from 'vitest';
 
 const containerPort = 5000;
 
@@ -26,8 +27,9 @@ describe('tesseract', () => {
             file,
           });
 
-          expect(response.statusCode).toBe(200);
-          expect(text.split('\n').join(' ').replace('|psum', 'Ipsum').replace('lpsum', 'Ipsum').trim()).toBe(
+          assert.strictEqual(response.statusCode, 200);
+          assert.strictEqual(
+            text.split('\n').join(' ').replace('|psum', 'Ipsum').replace('lpsum', 'Ipsum').trim(),
             expectText,
           );
         });

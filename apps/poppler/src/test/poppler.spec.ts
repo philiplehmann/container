@@ -1,8 +1,9 @@
+import { strict as assert } from 'node:assert';
 import { resolve } from 'node:path';
+import { describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { testRequest } from '@container/test/request';
 import { useTestContainer } from '@container/test/server';
-import { describe, expect, it } from 'vitest';
 
 const containerPort = 5000;
 
@@ -22,8 +23,8 @@ describe('poppler', () => {
           file,
         });
 
-        expect(response.statusCode).toBe(200);
-        expect(text).toContain('Dummy PDF file');
+        assert.strictEqual(response.statusCode, 200);
+        assert.ok(text.includes('Dummy PDF file'));
       });
 
       it('should convert PDF to HTML and include "Dummy PDF file"', async () => {
@@ -37,9 +38,9 @@ describe('poppler', () => {
           file,
         });
 
-        expect(response.statusCode).toBe(200);
-        expect(text).toContain('Dummy PDF file');
-        expect(text.toLowerCase()).toContain('<!doctype html>');
+        assert.strictEqual(response.statusCode, 200);
+        assert.ok(text.includes('Dummy PDF file'));
+        assert.ok(text.toLowerCase().includes('<!doctype html>'));
       });
     });
   });

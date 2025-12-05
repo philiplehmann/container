@@ -1,8 +1,9 @@
+import { strict as assert } from 'node:assert';
+import { after, before, describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { testRequest } from '@container/test/request';
 import { createTransport, type Transporter } from 'nodemailer';
 import { GenericContainer, type StartedTestContainer } from 'testcontainers';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('mailcatcher', () => {
   [currentArch()].forEach((arch) => {
@@ -12,7 +13,7 @@ describe('mailcatcher', () => {
       let smtpPort: number;
       let transport: Transporter;
 
-      beforeAll(async () => {
+      before(async () => {
         container = await new GenericContainer(`philiplehmann/maildev:test-${arch}`)
           .withExposedPorts(1080, 1025)
           .withLogConsumer((stream) => stream.pipe(process.stdout))
@@ -23,7 +24,7 @@ describe('mailcatcher', () => {
         transport = createTransport({ host: 'localhost', port: smtpPort });
       });
 
-      afterAll(async () => {
+      after(async () => {
         await container?.stop();
       });
 
@@ -47,14 +48,12 @@ describe('mailcatcher', () => {
         });
         const data = JSON.parse(text);
 
-        expect(response.statusCode).toBe(200);
-        expect(data.length).toBe(1);
-        expect(data[0].text.trim()).toMatch('test text content');
-        expect(data[0]).toMatchObject({
-          from: [{ address: 'sender@example.local' }],
-          to: [{ address: 'receiver@example.local' }],
-          subject: 'test subject',
-        });
+        assert.strictEqual(response.statusCode, 200);
+        assert.strictEqual(data.length, 1);
+        assert.match(data[0].text.trim(), /test text content/);
+        assert.deepStrictEqual(data[0].from, [{ address: 'sender@example.local', name: '' }]);
+        assert.deepStrictEqual(data[0].to, [{ address: 'receiver@example.local', name: '' }]);
+        assert.strictEqual(data[0].subject, 'test subject');
       });
     });
   });

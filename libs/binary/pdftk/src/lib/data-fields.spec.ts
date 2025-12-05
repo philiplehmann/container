@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import { parseDataFields } from './data-fields';
 
 describe('pdftk.dataFields', () => {
@@ -328,7 +329,7 @@ FieldStateOption: Violet
 FieldStateOption: Grey
 FieldStateOption: White`;
     const output = parseDataFields(data);
-    expect(output).toEqual([
+    assert.deepEqual(output, [
       {
         flags: 8388608,
         justification: 'left',

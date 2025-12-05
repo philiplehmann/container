@@ -43,6 +43,9 @@
       "@container/docker": [
         "libs/docker/src/index.ts"
       ],
+      "@container/node": [
+        "libs/node/src/index.ts"
+      ],
       "@container/helper": [
         "libs/helper/src/index.ts"
       ],

@@ -1,7 +1,8 @@
-import type { DockerBuildExecutorSchema } from './schema';
-import executor from './executor';
-import { describe, it, expect } from 'vitest';
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import { currentArch } from '../../docker-helper';
+import executor from './executor';
+import type { DockerBuildExecutorSchema } from './schema';
 
 const options: DockerBuildExecutorSchema = {
   platforms: [currentArch()],
@@ -11,7 +12,9 @@ const options: DockerBuildExecutorSchema = {
 
 describe.skip('DockerBuild Executor', () => {
   it('can run', async () => {
-    const output = await executor(options);
-    expect(output.success).toBe(true);
+    const output = (await executor(options, {} as never)) as {
+      success: boolean;
+    };
+    assert.strictEqual(output.success, true);
   });
 });

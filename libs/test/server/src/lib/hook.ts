@@ -1,3 +1,4 @@
+import { after, before } from 'node:test';
 import { type IncomingMessage, request, type Server } from 'node:http';
 import { connect, type routes } from '@container/http/route';
 import FormData from 'form-data';
@@ -73,16 +74,16 @@ export class TestServer {
   }
 }
 
-export const useTestServer = async (...testRoutes: Parameters<typeof routes>): Promise<TestServer> => {
-  const { beforeAll, afterAll } = await import('vitest');
+export const useTestServer = (...testRoutes: Parameters<typeof routes>): TestServer => {
   const server = new TestServer();
 
-  beforeAll(async () => {
+  before(async () => {
     await server.start(...testRoutes);
   });
 
-  afterAll(() => {
+  after(() => {
     server.stop();
   });
+
   return server;
 };
