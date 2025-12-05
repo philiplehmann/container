@@ -4,7 +4,7 @@ export interface NodeTestExecutorSchema {
   concurrency?: number; // specify test runner concurrency
   coverageBranches?: number; // the branch coverage minimum threshold
   coverageExclude?: string[]; // exclude files from coverage report that match this glob pattern
-  coverageFunctions?: string; // the function coverage minimum threshold
+  coverageFunctions?: number; // the function coverage minimum threshold
   coverageInclude?: string[]; // include files in coverage report that match this glob pattern
   coverageLines?: number; // the line coverage minimum threshold
   forceExit?: boolean; // force test runner to exit upon completion

@@ -60,10 +60,10 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
 
   try {
     const args = ['--require', '@swc-node/register', '--test'];
-    if (concurrency) {
+    if (concurrency != null) {
       args.push(`--test-concurrency=${concurrency}`);
     }
-    if (coverageBranches) {
+    if (coverageBranches != null) {
       args.push(`--test-coverage-branches=${coverageBranches}`);
     }
     if (coverageExclude) {
@@ -71,7 +71,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
         args.push(`--test-coverage-exclude=${pattern}`);
       });
     }
-    if (coverageFunctions) {
+    if (coverageFunctions != null) {
       args.push(`--test-coverage-functions=${coverageFunctions}`);
     }
     if (coverageInclude) {
@@ -79,7 +79,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
         args.push(`--test-coverage-include=${pattern}`);
       });
     }
-    if (coverageLines) {
+    if (coverageLines != null) {
       args.push(`--test-coverage-lines=${coverageLines}`);
     }
     if (forceExit) {
@@ -112,7 +112,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
     if (skipPattern) {
       args.push(`--test-skip-pattern=${skipPattern}`);
     }
-    if (timeout) {
+    if (timeout != null) {
       args.push(`--test-timeout=${timeout}`);
     }
     if (updateSnapshots) {
