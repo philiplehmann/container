@@ -24,7 +24,7 @@
       }
     },
     "coverageFunctions": {
-      "type": "string"
+      "type": "number"
     },
     "coverageInclude": {
       "type": "array",
