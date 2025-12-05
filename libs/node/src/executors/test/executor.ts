@@ -36,7 +36,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
     skipPattern,
     timeout,
     updateSnapshots,
-    allowEmptySuite,
+    allowEmptySuite = true,
   },
   context,
 ) => {
