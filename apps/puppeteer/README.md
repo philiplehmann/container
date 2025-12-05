@@ -106,7 +106,7 @@ TEST_SERVER_RUNNER=local yarn nx node-test-local puppeteer
 
 # run both, e2e and node-test
 TEST_SERVER_RUNNER=local yarn nx test-local puppeteer
-´´´
+```
 
 ## update snapshots
 ```
