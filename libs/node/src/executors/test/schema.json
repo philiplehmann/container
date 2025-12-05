@@ -5,7 +5,10 @@
   "description": "",
   "type": "object",
   "properties": {
-    "path": {
+    "include": {
+      "type": "string"
+    },
+    "exclude": {
       "type": "string"
     },
     "concurrency": {
@@ -71,6 +74,9 @@
       "type": "number"
     },
     "updateSnapshots": {
+      "type": "boolean"
+    },
+    "allowEmptySuite": {
       "type": "boolean"
     }
   },
