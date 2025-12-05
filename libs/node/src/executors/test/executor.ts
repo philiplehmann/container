@@ -4,6 +4,7 @@ import type { NodeTestExecutorSchema } from './schema';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { glob } from 'node:fs/promises';
+import { cwd } from 'node:process';
 
 const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> => {
   const results = [];
@@ -15,7 +16,8 @@ const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> =>
 
 const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
   {
-    path,
+    include: includePattern = '**/*.spec.ts',
+    exclude: excludePattern = '**/e2e/**',
     concurrency,
     coverageBranches,
     coverageExclude,
@@ -34,13 +36,15 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
     skipPattern,
     timeout,
     updateSnapshots,
+    allowEmptySuite,
   },
   context,
 ) => {
   const root =
-    context.projectName && context.projectGraph ? context.projectGraph.nodes[context.projectName].data.root : '';
+    context.projectName && context.projectGraph
+      ? context.projectGraph.nodes[context.projectName].data.root
+      : (context.root ?? cwd());
   let tsconfig = root ? './tsconfig.spec.json' : './tsconfig.base.json';
-  console.log('Checking tsconfig at:', tsconfig);
   if (existsSync(resolve(root, tsconfig)) === false) {
     tsconfig = './tsconfig.app.json';
   }
@@ -114,19 +118,23 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
     if (updateSnapshots) {
       args.push('--test-update-snapshots');
     }
-    if (path) {
-      args.push(path);
-    } else {
-      const files = await asyncToArray(glob(resolve(root ?? context.root, '**/*.spec.ts')));
-      const withoutE2E = files.filter((p) => !p.includes('/e2e/') && !p.includes('\\e2e\\'));
 
-      if (withoutE2E.length === 0) {
-        console.error('No non-e2e spec files found');
-        process.exit(1);
+    const includeFiles = await asyncToArray(glob(resolve(root ?? context.root, includePattern)));
+    const excludeFiles = await asyncToArray(glob(resolve(root ?? context.root, excludePattern)));
+    const withoutExcluded = includeFiles.filter((p) => !excludeFiles.includes(p));
+
+    if (withoutExcluded.length === 0) {
+      if (allowEmptySuite) {
+        return { success: true, message: 'No non-e2e spec files found, but allowing empty suite to pass.' };
       }
-
-      args.push(...withoutE2E);
+      return { success: false, message: 'No non-e2e spec files found' };
     }
+
+    args.push(...withoutExcluded);
+
+    console.log(
+      `Executing tests for project in ${root ?? context.root} with tsconfig ${tsconfig} with tests: [${withoutExcluded.join(',')}]`,
+    );
     await promiseSpawn('node', args, {
       env: { ...process.env, SWC_NODE_PROJECT: tsconfig },
       cwd: root ?? context.root,
