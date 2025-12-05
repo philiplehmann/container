@@ -112,9 +112,9 @@ run *-local tests
 # run playwright ui tests
 TEST_SERVER_RUNNER=local yarn nx e2e-local unoserver
 
-# run vitest
-TEST_SERVER_RUNNER=local yarn nx vitest-local unoserver
+# run node-test
+TEST_SERVER_RUNNER=local yarn nx node-test-local unoserver
 
-# run both, e2e and vitest
+# run both, e2e and node-test
 TEST_SERVER_RUNNER=local yarn nx test-local unoserver
 ´´´

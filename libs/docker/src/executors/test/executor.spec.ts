@@ -1,8 +1,9 @@
-import type { DockerTestExecutorSchema } from './schema';
-import executor from './executor';
-import { describe, it, expect } from 'vitest';
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import { cwd } from 'node:process';
 import { currentArch } from '../../docker-helper';
+import executor from './executor';
+import type { DockerTestExecutorSchema } from './schema';
 
 const options: DockerTestExecutorSchema = {
   platforms: [currentArch()],
@@ -17,6 +18,6 @@ describe.skip('DockerTest Executor', () => {
       cwd: cwd(),
       isVerbose: false,
     })) as { success: boolean };
-    expect(output.success).toBe(true);
+    assert.strictEqual(output.success, true);
   });
 });

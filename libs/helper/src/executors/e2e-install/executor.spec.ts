@@ -1,9 +1,10 @@
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import executor from './executor';
-import { describe, it, expect } from 'vitest';
 
 describe.skip('helperBuild Executor', () => {
   it('can run', async () => {
     const output = await executor({});
-    expect(output.success).toBe(true);
+    assert.strictEqual(output.success, true);
   });
 });

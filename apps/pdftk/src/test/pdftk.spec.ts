@@ -1,12 +1,19 @@
-import { statSync } from 'node:fs';
+import { strict as assert } from 'node:assert';
+import { readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { streamLength, streamToBuffer } from '@container/stream';
 import { beautifyJson, streamRequest, testRequest } from '@container/test/request';
 import { useTestContainer } from '@container/test/server';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 const containerPort = 5000;
+
+const assertSnapshot = (actual: string, relativePath: string): void => {
+  const snapshotPath = resolve(__dirname, relativePath);
+  const expected = readFileSync(snapshotPath, 'utf8');
+  assert.strictEqual(actual, expected);
+};
 
 describe('pdftk', { timeout: 10_000 }, () => {
   [currentArch()].forEach((arch) => {
@@ -27,7 +34,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           });
           const size = await streamLength(response);
 
-          expect(stats.size).toBeGreaterThan(size);
+          assert.ok(stats.size > size);
         });
       });
 
@@ -45,7 +52,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           });
           const size = await streamLength(response);
 
-          expect(stats.size).toBeLessThan(size);
+          assert.ok(stats.size < size);
         });
       });
 
@@ -61,7 +68,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(text).toContain('/Encrypt');
+          assert.ok(text.includes('/Encrypt'));
         });
 
         it('pdf file is encrypted and has password', async () => {
@@ -75,7 +82,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(text).toContain('/Encrypt');
+          assert.ok(text.includes('/Encrypt'));
         });
 
         it('pdf file is encrypted, has password and allow is defined', async () => {
@@ -89,7 +96,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(text).toContain('/Encrypt');
+          assert.ok(text.includes('/Encrypt'));
         });
       });
 
@@ -105,7 +112,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          expect(text).not.toContain('/Encrypt');
+          assert.ok(!text.includes('/Encrypt'));
         });
       });
 
@@ -121,7 +128,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          await expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/dataFields.json');
+          assertSnapshot(beautifyJson(text), './snapshots/dataFields.json');
         });
       });
 
@@ -137,7 +144,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          await expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/dataDump.json');
+          assertSnapshot(beautifyJson(text), './snapshots/dataDump.json');
         });
       });
 
@@ -153,7 +160,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          await expect(text).toMatchFileSnapshot('./snapshots/dataFdf.fdf');
+          assertSnapshot(text, './snapshots/dataFdf.fdf');
         });
       });
 
@@ -182,7 +189,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
-          expect(response.statusCode).toBe(200);
+          assert.strictEqual(response.statusCode, 200);
 
           const pdf = await streamToBuffer(response);
 
@@ -194,7 +201,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             headers: { 'Content-Type': 'application/pdf' },
             body: pdf,
           });
-          await expect(beautifyJson(text)).toMatchFileSnapshot('./snapshots/formFill.json');
+          assertSnapshot(beautifyJson(text), './snapshots/formFill.json');
         });
       });
     });

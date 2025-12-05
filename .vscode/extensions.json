@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "biomejs.biome",
-    "kingwl.vscode-vitest-runner",
-    "ms-playwright.playwright"
+    "ms-playwright.playwright",
+    "connor4312.nodejs-testing"
   ]
 }

@@ -6,17 +6,25 @@
   "targets": {
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": ["{options.outputFile}"]
+      "outputs": [
+        "{options.outputFile}"
+      ]
     },
-    "vitest": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "dependsOn": ["docker-test"],
+    "node-test": {
+      "executor": "@container/node:test",
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
+      "dependsOn": [
+        "docker-test"
+      ],
       "options": {}
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["vitest"],
+      "dependsOn": [
+        "node-test"
+      ],
       "options": {}
     },
     "docker-test": {
@@ -29,8 +37,13 @@
     "docker-push": {
       "executor": "@container/docker:build",
       "options": {
-        "platforms": ["amd64", "arm64"],
-        "tags": ["philiplehmann/mailhog:auto"],
+        "platforms": [
+          "amd64",
+          "arm64"
+        ],
+        "tags": [
+          "philiplehmann/mailhog:auto"
+        ],
         "file": "apps/mailhog/Dockerfile"
       }
     },
@@ -39,7 +52,10 @@
       "options": {
         "image": "philiplehmann/mailhog:run",
         "file": "apps/mailhog/Dockerfile",
-        "port": ["1025", "8025"]
+        "port": [
+          "1025",
+          "8025"
+        ]
       }
     }
   },

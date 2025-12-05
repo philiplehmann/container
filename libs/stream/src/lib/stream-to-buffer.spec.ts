@@ -1,7 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 
 describe('streamToBuffer', () => {
   it('should work', () => {
-    expect(true).toEqual(true);
+    assert.equal(true, true);
   });
 });

@@ -1,8 +1,9 @@
+import { strict as assert } from 'node:assert';
+import { after, before, describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { testRequest } from '@container/test/request';
 import { createTransport, type Transporter } from 'nodemailer';
 import { GenericContainer, type StartedTestContainer } from 'testcontainers';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('mailcatcher', () => {
   [currentArch()].forEach((arch) => {
@@ -12,7 +13,7 @@ describe('mailcatcher', () => {
       let smtpPort: number;
       let transport: Transporter;
 
-      beforeAll(async () => {
+      before(async () => {
         container = await new GenericContainer(`philiplehmann/mailcatcher:test-${arch}`)
           .withExposedPorts(1080, 1025)
           .withLogConsumer((stream) => stream.pipe(process.stdout))
@@ -23,7 +24,7 @@ describe('mailcatcher', () => {
         transport = createTransport({ host: 'localhost', port: smtpPort });
       });
 
-      afterAll(async () => {
+      after(async () => {
         await container?.stop();
       });
 
@@ -44,13 +45,11 @@ describe('mailcatcher', () => {
         });
         const data = JSON.parse(text);
 
-        expect(response.statusCode).toBe(200);
-        expect(data.length).toBe(1);
-        expect(data[0]).toMatchObject({
-          sender: '<sender@example.local>',
-          recipients: ['<receiver@example.local>'],
-          subject: 'test subject',
-        });
+        assert.strictEqual(response.statusCode, 200);
+        assert.strictEqual(data.length, 1);
+        assert.strictEqual(data[0].sender, '<sender@example.local>');
+        assert.deepStrictEqual(data[0].recipients, ['<receiver@example.local>']);
+        assert.strictEqual(data[0].subject, 'test subject');
 
         const [responseDetail, textDetail] = await testRequest({
           method: 'GET',
@@ -59,8 +58,8 @@ describe('mailcatcher', () => {
           path: '/messages/1.plain',
         });
 
-        expect(responseDetail.statusCode).toBe(200);
-        expect(textDetail.trim()).toBe('test text content');
+        assert.strictEqual(responseDetail.statusCode, 200);
+        assert.strictEqual(textDetail.trim(), 'test text content');
       });
     });
   });

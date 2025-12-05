@@ -1,6 +1,7 @@
-import { DockerRunExecutorSchema } from './schema';
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import executor from './executor';
-import { describe, it, expect } from 'vitest';
+import type { DockerRunExecutorSchema } from './schema';
 
 const options: DockerRunExecutorSchema = {
   image: 'https://ghcr.io/philiplehmann/container/build:test',
@@ -10,7 +11,7 @@ const options: DockerRunExecutorSchema = {
 
 describe.skip('DockerRun Executor', () => {
   it('can run', async () => {
-    const output = await executor(options);
-    expect(output.success).toBe(true);
+    const output = await executor(options, {} as never);
+    assert.strictEqual(output.success, true);
   });
 });

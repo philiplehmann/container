@@ -1,8 +1,8 @@
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { testRequest } from '@container/test/request';
-import { testContainer, useTestContainer } from '@container/test/server';
-import type { StartedTestContainer } from 'testcontainers';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
@@ -21,8 +21,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({ url: 'https://google.com' }),
         });
 
-        expect(response.statusCode).toBe(200);
-        expect(text.substring(0, 5)).toBe('%PDF-');
+        assert.strictEqual(response.statusCode, 200);
+        assert.strictEqual(text.substring(0, 5), '%PDF-');
       });
 
       it('should convert html to pdf', async () => {
@@ -33,8 +33,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({ html: '<h1>Hello World</h1>' }),
         });
 
-        expect(response.statusCode).toBe(200);
-        expect(text.substring(0, 5)).toBe('%PDF-');
+        assert.strictEqual(response.statusCode, 200);
+        assert.strictEqual(text.substring(0, 5), '%PDF-');
       });
 
       it('should complain about missing content-type', async () => {
@@ -44,8 +44,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({ html: '<h1>Hello World</h1>' }),
         });
 
-        expect(response.statusCode).toBe(400);
-        expect(text).toBe('Invalid request headers');
+        assert.strictEqual(response.statusCode, 400);
+        assert.strictEqual(text, 'Invalid request headers');
       });
 
       it('should complain about missing url / html', async () => {
@@ -56,8 +56,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({}),
         });
 
-        expect(response.statusCode).toBe(400);
-        expect(text).toBe('Invalid body');
+        assert.strictEqual(response.statusCode, 400);
+        assert.strictEqual(text, 'Invalid body');
       });
 
       it('should convert url to pdf with all properties', async () => {
@@ -91,8 +91,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           }),
         });
 
-        expect(response.statusCode).toBe(200);
-        expect(text.substring(0, 5)).toBe('%PDF-');
+        assert.strictEqual(response.statusCode, 200);
+        assert.strictEqual(text.substring(0, 5), '%PDF-');
       });
     });
   });

@@ -1,10 +1,11 @@
+import { strict as assert } from 'node:assert';
+import { describe, it } from 'node:test';
 import { useTestServer } from '@container/test/server';
-import { describe, expect, it } from 'vitest';
 import { get } from '../method/get';
 
 describe('http-route', () => {
-  describe('object config return', async () => {
-    const server = await useTestServer(
+  describe('object config return', () => {
+    const server = useTestServer(
       get({ path: '/get' }, async () => {
         return { statusCode: 200, body: 'get' };
       }),
@@ -16,14 +17,14 @@ describe('http-route', () => {
           method: 'GET',
         });
         const content = await response.text();
-        expect(content).toEqual('get');
+        assert.deepStrictEqual(content, 'get');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
           method: 'GET',
         });
-        expect(response.status).toEqual(404);
+        assert.deepStrictEqual(response.status, 404);
       });
     });
   });

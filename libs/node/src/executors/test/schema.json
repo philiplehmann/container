@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "node test runner",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "path": {
+      "type": "string"
+    },
+    "concurrency": {
+      "type": "number"
+    },
+    "coverageBranches": {
+      "type": "number"
+    },
+    "coverageExclude": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "coverageFunctions": {
+      "type": "string"
+    },
+    "coverageInclude": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "coverageLines": {
+      "type": "number"
+    },
+    "forceExit": {
+      "type": "boolean"
+    },
+    "globalSetup": {
+      "type": "string"
+    },
+    "testIsolation": {
+      "type": "string",
+      "enum": [
+        "none",
+        "vm",
+        "process"
+      ]
+    },
+    "namePattern": {
+      "type": "string"
+    },
+    "only": {
+      "type": "boolean"
+    },
+    "reporter": {
+      "type": "string"
+    },
+    "reporterDestination": {
+      "type": "string"
+    },
+    "rerunFailures": {
+      "type": "string"
+    },
+    "shard": {
+      "type": "string"
+    },
+    "skipPattern": {
+      "type": "string"
+    },
+    "timeout": {
+      "type": "number"
+    },
+    "updateSnapshots": {
+      "type": "boolean"
+    }
+  },
+  "required": []
+}

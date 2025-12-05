@@ -8,4 +8,4 @@ Run `nx build executors` to build the library.
 
 ## Running unit tests
 
-Run `nx test executors` to execute the unit tests via [Vitest](https://vitest.dev/).
+Run `nx test executors` to execute the unit tests via [Node test](https://nodejs.org/api/test.html).
