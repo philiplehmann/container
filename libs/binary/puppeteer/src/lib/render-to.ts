@@ -7,7 +7,7 @@ import { ScreenshotType } from './screenshot-type';
 
 export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;
-  private async browser(): Promise<Browser> {
+  private async browser({ timeout = 60_000 }: { timeout?: number } = {}): Promise<Browser> {
     if (!this.launchedBrowser) {
       if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
         throw new Error('PUPPETEER_EXECUTABLE_PATH is required');
@@ -25,6 +25,7 @@ export class BrowserToPdfRenderer {
           '--disable-dev-shm-usage',
           '--disable-features=PushMessaging',
         ],
+        timeout,
       });
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);
