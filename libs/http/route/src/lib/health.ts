@@ -1,13 +1,10 @@
 import { get } from './method/get';
 
 export const healthEndpoints = [
-  get('/health', () => {
+  get('/health/liveness', async () => {
     return { statusCode: 200, body: 'ok' };
   }),
-  get('/health/liveness', () => {
-    return { statusCode: 200, body: 'ok' };
-  }),
-  get('/health/readiness', () => {
+  get('/health/readiness', async () => {
     return { statusCode: 200, body: 'ok' };
   }),
 ];
