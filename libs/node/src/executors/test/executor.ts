@@ -45,6 +45,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
       ? context.projectGraph.nodes[context.projectName].data.root
       : (context.root ?? cwd());
   let tsconfig = root ? './tsconfig.spec.json' : './tsconfig.base.json';
+
   if (existsSync(resolve(root, tsconfig)) === false) {
     tsconfig = './tsconfig.app.json';
   }
@@ -60,6 +61,17 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
 
   try {
     const args = ['--require', '@swc-node/register', '--test'];
+
+    const hasCoverageOptions =
+      coverageBranches != null ||
+      coverageFunctions != null ||
+      coverageLines != null ||
+      coverageExclude ||
+      coverageInclude;
+
+    if (hasCoverageOptions) {
+      args.push('--experimental-test-coverage');
+    }
     if (concurrency != null) {
       args.push(`--test-concurrency=${concurrency}`);
     }
