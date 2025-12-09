@@ -27,11 +27,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Use Bun.js
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: package.json
-          cache: yarn
+          bun-version-file: package.json
 
       - name: corepack enable
         shell: bash
@@ -39,13 +38,13 @@ jobs:
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: bun install
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
       - name: lint
-        run: yarn nx affected --target lint
+        run: bun nx affected --target lint
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -71,11 +70,10 @@ jobs:
         with:
           fetch-depth: 100
 
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Use Bun.js
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: package.json
-          cache: yarn
+          bun-version-file: package.json
 
       - name: Docker Setup
         uses: ./.github/actions/setup-docker
@@ -86,11 +84,11 @@ jobs:
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: bun install
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: bun install
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
@@ -101,7 +99,7 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: test
-        run: yarn nx affected --target test --parallel 2
+        run: bun nx affected --target test --parallel 2
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -121,11 +119,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js
-        uses: actions/setup-node@v6
+      - name: Use Bun.js
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version-file: package.json
-          cache: yarn
+          bun-version-file: package.json
 
       - name: Docker Setup
         uses: ./.github/actions/setup-docker
@@ -139,13 +136,13 @@ jobs:
 
       - name: install dependencies
         shell: bash
-        run: yarn install
+        run: bun install
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
       - name: Build & Push Docker Image
-        run: yarn nx affected --target docker-push
+        run: bun nx affected --target docker-push
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

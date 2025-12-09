@@ -1,7 +1,6 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 import { post, put } from '@container/http/route';
-import { useTestServer } from '@container/test/server';
+import { useTestServer } from '@container/test/bun';
 import { z } from 'zod/v4';
 import { middlewareBody, nextBody } from './body';
 import { middlewareQuery, nextQuery } from './query';
@@ -27,8 +26,8 @@ describe('validate-combo', () => {
         body: JSON.stringify({ key: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(await response.json(), { body: { key: 'value' }, query: { key: 'value' } });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ body: { key: 'value' }, query: { key: 'value' } });
     });
 
     it('validate error', async () => {
@@ -37,7 +36,7 @@ describe('validate-combo', () => {
         body: JSON.stringify({ wrong: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 400);
+      expect(response.status).toBe(400);
     });
   });
 
@@ -58,8 +57,8 @@ describe('validate-combo', () => {
         body: JSON.stringify({ key: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(await response.json(), { body: { key: 'value' }, query: { key: 'value' } });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ body: { key: 'value' }, query: { key: 'value' } });
     });
 
     it('validate error', async () => {
@@ -68,7 +67,7 @@ describe('validate-combo', () => {
         body: JSON.stringify({ wrong: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 400);
+      expect(response.status).toBe(400);
     });
   });
   describe('middlewareQuery', () => {
@@ -89,8 +88,8 @@ describe('validate-combo', () => {
         body: JSON.stringify({ key: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(await response.json(), { body: { key: 'value' }, query: { key: 'value' } });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ body: { key: 'value' }, query: { key: 'value' } });
     });
 
     it('validate error', async () => {
@@ -99,7 +98,7 @@ describe('validate-combo', () => {
         body: JSON.stringify({ wrong: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 400);
+      expect(response.status).toBe(400);
     });
   });
 
@@ -120,8 +119,8 @@ describe('validate-combo', () => {
         body: JSON.stringify({ key: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 200);
-      assert.deepStrictEqual(await response.json(), { body: { key: 'value' }, query: { key: 'value' } });
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ body: { key: 'value' }, query: { key: 'value' } });
     });
 
     it('validate error', async () => {
@@ -130,7 +129,7 @@ describe('validate-combo', () => {
         body: JSON.stringify({ wrong: 'value' }),
         headers: { 'Content-Type': 'application/json' },
       });
-      assert.strictEqual(response.status, 400);
+      expect(response.status).toBe(400);
     });
   });
 });

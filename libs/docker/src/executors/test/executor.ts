@@ -1,10 +1,10 @@
-import type { DockerTestExecutorSchema } from './schema';
+import type { PromiseExecutor } from '@nx/devkit';
 import { dockerBuildxBuild } from '../../docker-buildx-build';
-import { dockerImageRemove } from '../../docker-image-remove';
-import type { Executor } from '@nx/devkit';
 import { currentArch } from '../../docker-helper';
+import { dockerImageRemove } from '../../docker-image-remove';
+import type { DockerTestExecutorSchema } from './schema';
 
-const runExecutor: Executor<DockerTestExecutorSchema> = async ({ file, tag }): Promise<{ success: boolean }> => {
+const runExecutor: PromiseExecutor<DockerTestExecutorSchema> = async ({ file, tag }): Promise<{ success: boolean }> => {
   try {
     const platform = currentArch();
     const tagWithPlatform = `${tag}-${platform}`;

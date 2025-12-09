@@ -1,6 +1,5 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
-import { useTestServer } from '@container/test/server';
+import { describe, expect, it } from 'bun:test';
+import { useTestServer } from '@container/test/bun';
 import { patch } from '../method/patch';
 
 describe('http-route', () => {
@@ -17,14 +16,14 @@ describe('http-route', () => {
           method: 'PATCH',
         });
         const content = await response.text();
-        assert.deepStrictEqual(content, 'patch');
+        expect(content).toEqual('patch');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
           method: 'PATCH',
         });
-        assert.deepStrictEqual(response.status, 404);
+        expect(response.status).toEqual(404);
       });
     });
   });

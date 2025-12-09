@@ -1,6 +1,5 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
-import { useTestServer } from '@container/test/server';
+import { describe, expect, it } from 'bun:test';
+import { useTestServer } from '@container/test/bun';
 import { get } from '../method/get';
 
 describe('http-route', () => {
@@ -17,14 +16,14 @@ describe('http-route', () => {
           method: 'GET',
         });
         const content = await response.text();
-        assert.deepStrictEqual(content, 'get');
+        expect(content).toEqual('get');
       });
 
       it('404', async () => {
         const response = await server.request('/other', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 404);
+        expect(response.status).toEqual(404);
       });
     });
   });

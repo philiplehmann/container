@@ -21,12 +21,11 @@ export const testContainer = async ({
   hook,
 }: TestContainerProps): Promise<[StartedTestContainer, number]> => {
   let genericContainer = new GenericContainer(image)
-    .withEnvironment({ PORT: String(containerPort) })
+    .withEnvironment({ ...(env || {}), PORT: String(containerPort) })
     .withExposedPorts(containerPort)
     .withUser('1000:1000')
     .withLogConsumer((stream) => stream.pipe(process.stdout))
-    .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode))
-    .withEnvironment(env || {});
+    .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode));
 
   if (hook) {
     genericContainer = hook(genericContainer);

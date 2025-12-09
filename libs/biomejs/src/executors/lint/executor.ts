@@ -1,6 +1,6 @@
 import { promiseSpawn } from '@container/docker';
-import type { BiomejsExecutorSchema } from './schema';
 import type { Executor } from '@nx/devkit';
+import type { BiomejsExecutorSchema } from './schema';
 
 const runExecutor: Executor<BiomejsExecutorSchema> = async (
   { fix, changed, 'log-level': logLevel, verbose },
@@ -32,7 +32,7 @@ const runExecutor: Executor<BiomejsExecutorSchema> = async (
   }
 
   try {
-    await promiseSpawn('yarn', ['biome', ...args, '.'], {
+    await promiseSpawn('bun', ['biome', ...args, '.'], {
       cwd: projectRoot,
     });
     return { success: true };
