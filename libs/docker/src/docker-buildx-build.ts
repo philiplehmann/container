@@ -1,5 +1,4 @@
-import { randomBytes } from 'node:crypto';
-import { dockerSpawn, envForDockerFile, type DockerPlatform } from './docker-helper';
+import { type DockerPlatform, dockerSpawn, envForDockerFile } from './docker-helper';
 import { promiseSpawn } from './promise-spawn';
 
 export async function dockerBuildxBuild({
@@ -13,9 +12,20 @@ export async function dockerBuildxBuild({
   file: string;
   tags: string[];
 }) {
-  const builderName = `builder-${platforms.join('-')}-${randomBytes(10).toString('hex')}`;
+  const builderName = `builder-${tags[0]?.split(':')?.[0]?.replaceAll('/', '-') ?? file.replaceAll('/', '-')}-${platforms.join('-')}`;
   try {
-    await promiseSpawn('docker', ['buildx', 'create', '--name', builderName, '--platform', 'linux/amd64,linux/arm64']);
+    try {
+      await promiseSpawn('docker', [
+        'buildx',
+        'create',
+        '--name',
+        builderName,
+        '--platform',
+        'linux/amd64,linux/arm64',
+      ]);
+    } catch (error) {
+      console.error('Failed to create builder:', error);
+    }
     await new Promise<void>((resolve, reject) => {
       const processEnv = envForDockerFile(file);
       const docker = dockerSpawn([
@@ -47,6 +57,6 @@ export async function dockerBuildxBuild({
       });
     });
   } finally {
-    await promiseSpawn('docker', ['buildx', 'rm', builderName]);
+    //await promiseSpawn('docker', ['buildx', 'rm', builderName]);
   }
 }

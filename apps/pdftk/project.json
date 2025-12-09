@@ -55,24 +55,24 @@
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "node-test": {
-      "executor": "@container/node:test",
+    "bun-test": {
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-test"],
       "options": {}
     },
-    "node-test-local": {
-      "executor": "@container/node:test",
+    "bun-test-local": {
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["node-test"],
+      "dependsOn": ["bun-test"],
       "options": {}
     },
     "test-local": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["node-test-local"]
+      "dependsOn": ["bun-test-local"]
     },
     "docker-test": {
       "executor": "@container/docker:test",

@@ -1,6 +1,5 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
-import { useTestServer } from '@container/test/server';
+import { describe, expect, it } from 'bun:test';
+import { useTestServer } from '@container/test/bun';
 import { get } from '../method/get';
 import { routes } from '../routes';
 
@@ -19,18 +18,18 @@ describe('http-route', () => {
         const response = await server.request('/api/v1', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v1', params: {} });
+        expect(content).toEqual({ url: '/api/v1', params: {} });
       });
 
       it('v2', async () => {
         const response = await server.request('/api/v2', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v2', params: {} });
+        expect(content).toEqual({ url: '/api/v2', params: {} });
       });
     });
   });
@@ -43,18 +42,18 @@ describe('http-route', () => {
         const response = await server.request('/api/v1', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v1', params: { version: 'v1' } });
+        expect(content).toEqual({ url: '/api/v1', params: { version: 'v1' } });
       });
 
       it('v2', async () => {
         const response = await server.request('/api/v2', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v2', params: { version: 'v2' } });
+        expect(content).toEqual({ url: '/api/v2', params: { version: 'v2' } });
       });
     });
   });
@@ -72,27 +71,27 @@ describe('http-route', () => {
         const response = await server.request('/api/v1', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v1', params: { version1: 'v1' } });
+        expect(content).toEqual({ url: '/api/v1', params: { version1: 'v1' } });
       });
 
       it('v2', async () => {
         const response = await server.request('/api/v2', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v2', params: { version1: 'v2' } });
+        expect(content).toEqual({ url: '/api/v2', params: { version1: 'v2' } });
       });
 
       it('v2/1', async () => {
         const response = await server.request('/api/v2/1', {
           method: 'GET',
         });
-        assert.deepStrictEqual(response.status, 200);
+        expect(response.status).toEqual(200);
         const content = await response.json();
-        assert.deepStrictEqual(content, { url: '/api/v2/1', params: { version1: 'v2', version2: '1' } });
+        expect(content).toEqual({ url: '/api/v2/1', params: { version1: 'v2', version2: '1' } });
       });
     });
   });

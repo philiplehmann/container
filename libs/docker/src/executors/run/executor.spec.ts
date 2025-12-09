@@ -1,5 +1,4 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 import executor from './executor';
 import type { DockerRunExecutorSchema } from './schema';
 
@@ -12,6 +11,6 @@ const options: DockerRunExecutorSchema = {
 describe.skip('DockerRun Executor', () => {
   it('can run', async () => {
     const output = await executor(options, {} as never);
-    assert.strictEqual(output.success, true);
+    expect(output.success).toBe(true);
   });
 });

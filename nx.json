@@ -3,26 +3,72 @@
   "targetDefaults": {
     "build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     },
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
+    },
+    "@nx/playwright:playwright": {
+      "cache": true,
+      "inputs": [
+        "default",
+        "{workspaceRoot}/biome.json"
+      ]
     },
     "@container/biomejs:lint": {
       "cache": true,
-      "inputs": ["default", "{workspaceRoot}/biome.json"]
+      "inputs": [
+        "default",
+        "{workspaceRoot}/biome.json"
+      ]
+    },
+    "@container/node:test": {
+      "cache": true,
+      "inputs": [
+        "default"
+      ]
+    },
+    "@container/bun:test": {
+      "cache": true,
+      "inputs": [
+        "default"
+      ]
+    },
+    "@container/docker:test": {
+      "cache": true,
+      "inputs": [
+        "default"
+      ]
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",

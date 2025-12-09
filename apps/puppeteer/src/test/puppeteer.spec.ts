@@ -1,15 +1,18 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 import { currentArch } from '@container/docker';
+import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
-import { useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
-describe('puppeteer', { timeout: 120_000 }, () => {
+describe('puppeteer', () => {
   [currentArch()].forEach((arch) => {
-    describe(`arch: ${arch}`, async () => {
-      const setup = await useTestContainer({ image: `philiplehmann/puppeteer:test-${arch}`, containerPort });
+    describe(`arch: ${arch}`, () => {
+      const setup = useTestContainer({
+        image: `philiplehmann/puppeteer:test-${arch}`,
+        containerPort,
+        timeout: 120_000,
+      });
 
       it('should convert url to pdf', async () => {
         const [response, text] = await testRequest({
@@ -21,8 +24,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({ url: 'https://google.com' }),
         });
 
-        assert.strictEqual(response.statusCode, 200);
-        assert.strictEqual(text.substring(0, 5), '%PDF-');
+        expect(response.statusCode).toBe(200);
+        expect(text.substring(0, 5)).toBe('%PDF-');
       });
 
       it('should convert html to pdf', async () => {
@@ -33,8 +36,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({ html: '<h1>Hello World</h1>' }),
         });
 
-        assert.strictEqual(response.statusCode, 200);
-        assert.strictEqual(text.substring(0, 5), '%PDF-');
+        expect(response.statusCode).toBe(200);
+        expect(text.substring(0, 5)).toBe('%PDF-');
       });
 
       it('should complain about missing content-type', async () => {
@@ -44,8 +47,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({ html: '<h1>Hello World</h1>' }),
         });
 
-        assert.strictEqual(response.statusCode, 400);
-        assert.strictEqual(text, 'Invalid request headers');
+        expect(response.statusCode).toBe(400);
+        expect(text).toBe('Invalid request headers');
       });
 
       it('should complain about missing url / html', async () => {
@@ -56,8 +59,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           body: JSON.stringify({}),
         });
 
-        assert.strictEqual(response.statusCode, 400);
-        assert.strictEqual(text, 'Invalid body');
+        expect(response.statusCode).toBe(400);
+        expect(text).toBe('Invalid body');
       });
 
       it('should convert url to pdf with all properties', async () => {
@@ -91,8 +94,8 @@ describe('puppeteer', { timeout: 120_000 }, () => {
           }),
         });
 
-        assert.strictEqual(response.statusCode, 200);
-        assert.strictEqual(text.substring(0, 5), '%PDF-');
+        expect(response.statusCode).toBe(200);
+        expect(text.substring(0, 5)).toBe('%PDF-');
       });
     });
   });
