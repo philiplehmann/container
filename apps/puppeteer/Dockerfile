@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t puppeteer`.
-FROM node:24.12.0-trixie-slim
+FROM oven/bun:1.3.4-slim
 
 ENV NODE_ENV=production
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
@@ -29,7 +29,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
 
 WORKDIR /app
 
-RUN usermod -a -G audio,video node && \
+RUN usermod -a -G audio,video bun && \
     mkdir /app/chromium-data && \
     chown -R 1000:1000 /app/chromium-data
 
@@ -40,8 +40,8 @@ COPY --chown=1000:1000 dist/apps/puppeteer puppeteer
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix puppeteer --omit=dev -f install
+RUN bun install --production --cwd puppeteer
 
 USER 1000:1000
 
-CMD [ "node", "puppeteer" ]
+CMD [ "bun", "puppeteer" ]

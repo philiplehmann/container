@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/tesseract`.
-FROM node:24.12.0-trixie-slim
+FROM oven/bun:1.3.4-slim
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
@@ -31,8 +31,8 @@ COPY dist/apps/tesseract tesseract
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix tesseract --omit=dev -f install
+RUN bun install --production --cwd tesseract
 
 USER 1000:1000
 
-CMD [ "node", "tesseract" ]
+CMD [ "bun", "tesseract" ]
