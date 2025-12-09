@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
-FROM node:24.12.0-trixie-slim
+FROM oven/bun:1.3.4-slim
 
 ARG UNOSERVER_VERSION
 ARG JRE_VERSION
@@ -49,8 +49,9 @@ COPY dist/apps/unoserver unoserver
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix unoserver --omit=dev -f install
+RUN bun install --production --cwd unoserver
+
 
 USER 1000:1000
 
-CMD [ "node", "unoserver" ]
+CMD [ "bun", "unoserver" ]
