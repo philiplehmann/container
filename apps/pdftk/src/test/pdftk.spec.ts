@@ -1,21 +1,20 @@
-import { strict as assert } from 'node:assert';
+import { describe, expect, it } from 'bun:test';
 import { readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
 import { streamLength, streamToBuffer } from '@container/stream';
+import { useTestContainer } from '@container/test/bun';
 import { beautifyJson, streamRequest, testRequest } from '@container/test/request';
-import { useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
 const assertSnapshot = (actual: string, relativePath: string): void => {
   const snapshotPath = resolve(__dirname, relativePath);
   const expected = readFileSync(snapshotPath, 'utf8');
-  assert.strictEqual(actual, expected);
+  expect(actual).toBe(expected);
 };
 
-describe('pdftk', { timeout: 10_000 }, () => {
+describe('pdftk', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
       const setup = await useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
@@ -34,7 +33,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           });
           const size = await streamLength(response);
 
-          assert.ok(stats.size > size);
+          expect(stats.size > size).toBeTruthy();
         });
       });
 
@@ -52,7 +51,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
           });
           const size = await streamLength(response);
 
-          assert.ok(stats.size < size);
+          expect(stats.size < size).toBeTruthy();
         });
       });
 
@@ -68,7 +67,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          assert.ok(text.includes('/Encrypt'));
+          expect(text.includes('/Encrypt')).toBeTruthy();
         });
 
         it('pdf file is encrypted and has password', async () => {
@@ -82,7 +81,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          assert.ok(text.includes('/Encrypt'));
+          expect(text.includes('/Encrypt')).toBeTruthy();
         });
 
         it('pdf file is encrypted, has password and allow is defined', async () => {
@@ -96,7 +95,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          assert.ok(text.includes('/Encrypt'));
+          expect(text.includes('/Encrypt')).toBeTruthy();
         });
       });
 
@@ -112,7 +111,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             file,
           });
 
-          assert.ok(!text.includes('/Encrypt'));
+          expect(text.includes('/Encrypt')).toBeFalsy();
         });
       });
 
@@ -189,7 +188,7 @@ describe('pdftk', { timeout: 10_000 }, () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
-          assert.strictEqual(response.statusCode, 200);
+          expect(response.statusCode).toBe(200);
 
           const pdf = await streamToBuffer(response);
 

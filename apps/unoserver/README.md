@@ -104,17 +104,17 @@ curl -X POST \
 
 start puppeteer server, will be on port 3000
 ```
-LIBREOFFICE_EXECUTABLE_PATH="/Applications/LibreOffice.app/Contents/MacOS/soffice" yarn nx serve unoserver
+LIBREOFFICE_EXECUTABLE_PATH="/Applications/LibreOffice.app/Contents/MacOS/soffice" bun nx serve unoserver
 ```
 
 run *-local tests
 ```
 # run playwright ui tests
-TEST_SERVER_RUNNER=local yarn nx e2e-local unoserver
+TEST_SERVER_RUNNER=local bun nx e2e-local unoserver
 
-# run node-test
-TEST_SERVER_RUNNER=local yarn nx node-test-local unoserver
+# run bun-test
+TEST_SERVER_RUNNER=local bun nx bun-test-local unoserver
 
-# run both, e2e and node-test
-TEST_SERVER_RUNNER=local yarn nx test-local unoserver
+# run both, e2e and bun-test
+TEST_SERVER_RUNNER=local bun nx test-local unoserver
 ```

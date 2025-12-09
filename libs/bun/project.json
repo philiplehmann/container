@@ -1,0 +1,41 @@
+{
+  "name": "bun",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/bun/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/bun",
+        "main": "libs/bun/src/index.ts",
+        "tsConfig": "libs/bun/tsconfig.lib.json",
+        "assets": [
+          "libs/bun/*.md",
+          {
+            "input": "./libs/bun/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/bun/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/bun",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/bun",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}

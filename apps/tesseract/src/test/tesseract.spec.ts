@@ -1,9 +1,8 @@
-import { strict as assert } from 'node:assert';
+import { describe, expect, it } from 'bun:test';
 import { resolve } from 'node:path';
-import { describe, it } from 'node:test';
 import { currentArch } from '@container/docker';
+import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
-import { useTestContainer } from '@container/test/server';
 
 const containerPort = 5000;
 
@@ -13,7 +12,7 @@ const expectText =
 describe('tesseract', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
-      const setup = await useTestContainer({ image: `philiplehmann/tesseract:test-${arch}`, containerPort });
+      const setup = useTestContainer({ image: `philiplehmann/tesseract:test-${arch}`, containerPort });
 
       for (const type of ['gif', 'jpg', 'png', 'tiff', 'webp']) {
         it(`should convert ${type} to text`, async () => {
@@ -27,9 +26,8 @@ describe('tesseract', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(
-            text.split('\n').join(' ').replace('|psum', 'Ipsum').replace('lpsum', 'Ipsum').trim(),
+          expect(response.statusCode).toBe(200);
+          expect(text.split('\n').join(' ').replace('|psum', 'Ipsum').replace('lpsum', 'Ipsum').trim()).toBe(
             expectText,
           );
         });
