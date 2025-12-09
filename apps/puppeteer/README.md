@@ -93,22 +93,22 @@ colima start --arch x86_64 --cpu 4 --memory 16
 
 start puppeteer server, will be on port 3000
 ```
-PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" yarn nx serve puppeteer
+PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" bun nx serve puppeteer
 ```
 
 run *-local tests
 ```
 # run playwright ui tests
-TEST_SERVER_RUNNER=local yarn nx e2e-local puppeteer
+TEST_SERVER_RUNNER=local bun nx e2e-local puppeteer
 
-# run node-test
-TEST_SERVER_RUNNER=local yarn nx node-test-local puppeteer
+# run bun-test
+TEST_SERVER_RUNNER=local bun nx bun-test-local puppeteer
 
-# run both, e2e and node-test
-TEST_SERVER_RUNNER=local yarn nx test-local puppeteer
+# run both, e2e and bun-test
+TEST_SERVER_RUNNER=local bun nx test-local puppeteer
 ```
 
 ## update snapshots
 ```
-yarn nx e2e puppeteer --update-snapshots
+bun nx e2e puppeteer --update-snapshots
 ```

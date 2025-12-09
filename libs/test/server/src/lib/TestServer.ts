@@ -1,7 +1,5 @@
-import { type IncomingMessage, request, type Server } from 'node:http';
-import { after, before } from 'node:test';
+import type { IncomingMessage, Server } from 'node:http';
 import { connect, type routes } from '@container/http/route';
-import FormData from 'form-data';
 import { testServer } from './test-server';
 
 export class TestServer {
@@ -26,36 +24,11 @@ export class TestServer {
     throw new Error('port not found in address');
   }
 
-  public request(
-    path: string,
-    options: { formData: FormData; method?: 'POST' | 'PUT' | 'PATCH' },
-  ): Promise<IncomingMessage>;
   public request(path: string, options?: Parameters<typeof fetch>[1]): Promise<Response>;
   public request(
     path: string,
     options?: Parameters<typeof fetch>[1] | { formData: FormData; method?: 'POST' | 'PUT' | 'PATCH' },
   ): Promise<Response> | Promise<IncomingMessage> {
-    if (options && 'formData' in options && options.formData instanceof FormData) {
-      return new Promise<IncomingMessage>((resolve, reject) => {
-        const url = new URL(path, `http://localhost:${this.port}`);
-        const req = request({
-          method: options.method || 'POST',
-          host: url.hostname,
-          port: url.port,
-          path: url.pathname,
-          headers: options.formData.getHeaders(),
-        });
-
-        options.formData.pipe(req);
-
-        req.on('response', (res) => {
-          resolve(res);
-        });
-        req.on('error', (err) => {
-          reject(err);
-        });
-      });
-    }
     return fetch(`http://localhost:${this.port}${path}`, options);
   }
 
@@ -73,17 +46,3 @@ export class TestServer {
     this.httpServer.close();
   }
 }
-
-export const useTestServer = (...testRoutes: Parameters<typeof routes>): TestServer => {
-  const server = new TestServer();
-
-  before(async () => {
-    await server.start(...testRoutes);
-  });
-
-  after(() => {
-    server.stop();
-  });
-
-  return server;
-};

@@ -1,5 +1,4 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 import { parseDataDump } from './data-dump';
 
 describe('pdftk.dataDump', () => {
@@ -25,7 +24,7 @@ PageMediaRotation: 0
 PageMediaRect: -9 -9 604.276 850.89
 PageMediaDimensions: 613.276 859.89`;
     const output = parseDataDump(data);
-    assert.deepEqual(output, {
+    expect(output).toEqual({
       info: {
         author: 'Beattie',
         creator: 'CorelDRAW',
@@ -73,7 +72,7 @@ PageMediaRotation: 0
 PageMediaRect: 0 0 595 842
 PageMediaDimensions: 595 842`;
     const output = parseDataDump(data);
-    assert.deepEqual(output, {
+    expect(output).toEqual({
       info: {
         creationDate: new Date('2013-06-29T18:48:53.000Z'),
         creator: 'Writer',
@@ -124,7 +123,7 @@ PageMediaRotation: 0
 PageMediaRect: 0 0 595 842
 PageMediaDimensions: 595 842`;
     const output = parseDataDump(data);
-    assert.deepEqual(output, {
+    expect(output).toEqual({
       info: {
         creationDate: new Date('2024-06-15T06:53:31.000Z'),
         creator: 'pdftk-java 3.3.3',

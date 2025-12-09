@@ -1,0 +1,13 @@
+{
+  "name": "test-bun",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/test/bun/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": []
+}

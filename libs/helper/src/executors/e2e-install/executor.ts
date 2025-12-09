@@ -1,8 +1,8 @@
 import { promiseSpawn } from '@container/docker';
+import type { PromiseExecutor } from '@nx/devkit';
 import type { E2EInstallExecutorSchema } from './schema';
-import type { Executor } from '@nx/devkit';
 
-const runExecutor: Executor<E2EInstallExecutorSchema> = async () => {
+const runExecutor: PromiseExecutor<E2EInstallExecutorSchema> = async () => {
   if (process.env.RUNNER_OS === 'Linux') {
     try {
       await promiseSpawn('sudo', ['apt-get', 'update']);
@@ -15,7 +15,7 @@ const runExecutor: Executor<E2EInstallExecutorSchema> = async () => {
     }
   }
   try {
-    await promiseSpawn('yarn', ['playwright', 'install', '--with-deps', 'chromium']);
+    await promiseSpawn('bun', ['playwright', 'install', '--with-deps', 'chromium']);
     return {
       success: true,
     };

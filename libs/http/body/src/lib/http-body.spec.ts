@@ -1,13 +1,11 @@
-import { strict as assert } from 'node:assert';
+import { describe, expect, it, vi } from 'bun:test';
 import { createReadStream } from 'node:fs';
 import type { IncomingMessage } from 'node:http';
 import { resolve } from 'node:path';
 import type { Readable } from 'node:stream';
-import { describe, it } from 'node:test';
 import { post } from '@container/http/route';
 import { streamToBuffer, streamToString } from '@container/stream';
 import { TestServer } from '@container/test/server';
-import FormData from 'form-data';
 
 import {
   getContentDispositionName,
@@ -36,20 +34,20 @@ describe('http-body', () => {
   it('requestToJson', async () => {
     const server = await createTestServer(async (req) => {
       const body = await requestToJson(req);
-      assert.deepStrictEqual(body, { key: 'value' });
+      expect(body).toEqual({ key: 'value' });
     });
     const response = await server.request('/', {
       method: 'POST',
       body: JSON.stringify({ key: 'value' }),
       headers: { 'Content-Type': 'application/json' },
     });
-    assert.strictEqual(response.status, 200);
+    expect(response.status).toBe(200);
   });
 
   it('requestToText', async () => {
     const server = await createTestServer(async (req) => {
       const body = await requestToText(req);
-      assert.deepStrictEqual(body, '{"key":"value"}');
+      expect(body).toEqual('{"key":"value"}');
     });
     const response = await server.request('/', {
       method: 'POST',
@@ -57,20 +55,20 @@ describe('http-body', () => {
       headers: { 'Content-Type': 'text/plain' },
     });
 
-    assert.strictEqual(response.status, 200);
+    expect(response.status).toBe(200);
   });
 
   it('requestToBuffer', async () => {
     const server = await createTestServer(async (req) => {
       const body = await requestToBuffer(req);
-      assert.ok(body instanceof Buffer);
+      expect(body).toBeInstanceOf(Buffer);
     });
     const response = await server.request('/', {
       method: 'POST',
       body: JSON.stringify({ key: 'value' }),
       headers: { 'Content-Type': 'text/plain' },
     });
-    assert.strictEqual(response.status, 200);
+    expect(response.status).toBe(200);
   });
 
   it('requestToMultipartFormData', async () => {
@@ -85,47 +83,43 @@ describe('http-body', () => {
 
     const isName = (name: string): name is keyof typeof values => name in values;
 
-    let mockPartCalls = 0;
-    const mockPart = async (header: Headers, stream: Readable) => {
+    const mockPart = vi.fn().mockImplementation(async (header: Headers, stream: Readable) => {
       const { filename, name } = getContentDispositionName(header);
 
       if (filename && isName(name) && name.startsWith('file_')) {
         const netbuffer = await streamToBuffer(stream);
         const filebuffer = await streamToBuffer(createReadStream(values[name]));
 
-        const diff = netbuffer.length - filebuffer.length;
-        assert.ok(diff <= 1);
-        assert.ok(diff >= 0);
-        mockPartCalls += 1;
+        expect(netbuffer.length - filebuffer.length).toBeLessThanOrEqual(1);
+        expect(netbuffer.length - filebuffer.length).toBeGreaterThanOrEqual(0);
         return;
       }
 
       if (isName(name)) {
         const content = await streamToString(stream);
-        assert.deepStrictEqual(content, values[name]);
-        mockPartCalls += 1;
+        expect(content).toEqual(values[name]);
         return;
       }
       throw new Error(`Unexpected part: ${name}`);
-    };
+    });
 
     const server = await createTestServer(async (req) => {
       await requestToMultipartFormData(req, mockPart);
-      assert.strictEqual(mockPartCalls, 6);
+      expect(mockPart).toBeCalledTimes(6);
     });
 
     const formData = new FormData();
     formData.append('firstname', values.firstname);
     formData.append('lastname', values.lastname);
-    formData.append('file_compressed', createReadStream(values.file_compressed));
-    formData.append('file_encrypted', createReadStream(values.file_encrypted));
-    formData.append('file_form', createReadStream(values.file_form));
-    formData.append('file_uncompressed', createReadStream(values.file_uncompressed));
+    formData.append('file_compressed', Bun.file(values.file_compressed));
+    formData.append('file_encrypted', Bun.file(values.file_encrypted));
+    formData.append('file_form', Bun.file(values.file_form));
+    formData.append('file_uncompressed', Bun.file(values.file_uncompressed));
 
     const response = await server.request('/', {
       method: 'POST',
-      formData,
+      body: formData,
     });
-    assert.strictEqual(response.statusCode, 200);
+    expect(response.status).toBe(200);
   });
 });

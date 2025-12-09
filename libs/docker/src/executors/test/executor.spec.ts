@@ -1,12 +1,10 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 import { cwd } from 'node:process';
-import { currentArch } from '../../docker-helper';
+import type { ExecutorContext } from '@nx/devkit';
 import executor from './executor';
 import type { DockerTestExecutorSchema } from './schema';
 
 const options: DockerTestExecutorSchema = {
-  platforms: [currentArch()],
   tag: 'https://ghcr.io/philiplehmann/container/build:test',
   file: 'Dockerfile',
 };
@@ -17,7 +15,7 @@ describe.skip('DockerTest Executor', () => {
       root: cwd(),
       cwd: cwd(),
       isVerbose: false,
-    })) as { success: boolean };
-    assert.strictEqual(output.success, true);
+    } as ExecutorContext)) as { success: boolean };
+    expect(output.success).toBe(true);
   });
 });
