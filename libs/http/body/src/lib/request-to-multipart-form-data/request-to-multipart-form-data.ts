@@ -25,6 +25,7 @@ export async function requestToMultipartFormData(
   validateRequestHeaders(req, multipartFormData);
 
   const boundaryLine = `--${getBoundary(req)}`;
+  const finalBoundaryLine = `${boundaryLine}--`;
   let lastline = '';
   let bytes: number[] = [];
   let lastBytes: number[] = [];
@@ -73,7 +74,7 @@ export async function requestToMultipartFormData(
         bytes = [];
         lastBytes = [];
       } else if (State.DATA === state) {
-        if (boundaryLine === lastline) {
+        if (boundaryLine === lastline || finalBoundaryLine === lastline) {
           stream.write(new Uint8Array(lastBytes.slice(0, -2)));
           stream.end();
           currentPartHeaders = [];
@@ -94,5 +95,17 @@ export async function requestToMultipartFormData(
       }
     }
   }
+
+  // Handle remaining data if stream ended without final boundary
+  if (state === State.DATA) {
+    if (lastBytes.length > 0) {
+      stream.write(new Uint8Array(lastBytes));
+    }
+    if (bytes.length > 0) {
+      stream.write(new Uint8Array(bytes));
+    }
+    stream.end();
+  }
+
   await Promise.all(callbackPromises);
 }

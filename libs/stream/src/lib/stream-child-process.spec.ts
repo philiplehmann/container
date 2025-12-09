@@ -1,8 +1,7 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 
 describe('streamChildProcess', () => {
   it('should work', () => {
-    assert.equal(true, true);
+    expect(true).toBe(true);
   });
 });

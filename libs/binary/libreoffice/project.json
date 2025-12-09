@@ -9,7 +9,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@container/node:test",
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {}
     }

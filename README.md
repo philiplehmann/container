@@ -10,7 +10,7 @@ Monorepo containing multiple images for wrapped binaries or custom builds
 - [docker](https://hub.docker.com/r/philiplehmann/poppler-server)
 
 ```bash
-yarn nx docker-run poppler
+bun nx docker-run poppler
 ```
 
 ### tesseract wrapper
@@ -19,7 +19,7 @@ yarn nx docker-run poppler
 - [docker](https://hub.docker.com/r/philiplehmann/tesseract)
 
 ```bash
-yarn nx docker-run tesseract
+bun nx docker-run tesseract
 ```
 
 ### unoserver wrapper
@@ -28,7 +28,7 @@ yarn nx docker-run tesseract
 - [docker](https://hub.docker.com/r/philiplehmann/unoserver)
 
 ```bash
-yarn nx docker-run unoserver
+bun nx docker-run unoserver
 ```
 
 ### puppeteer wrapper
@@ -37,7 +37,7 @@ yarn nx docker-run unoserver
 - [docker](https://hub.docker.com/r/philiplehmann/puppeteer)
 
 ```bash
-yarn nx docker-run puppeteer
+bun nx docker-run puppeteer
 ```
 
 ### pdftk wrapper
@@ -46,7 +46,7 @@ yarn nx docker-run puppeteer
 - [docker](https://hub.docker.com/r/philiplehmann/pdftk)
 
 ```bash
-yarn nx docker-run pdftk
+bun nx docker-run pdftk
 ```
 
 ## Mailboxes Apps
@@ -57,7 +57,7 @@ yarn nx docker-run pdftk
 - [docker](https://hub.docker.com/r/philiplehmann/mailcatcher)
 
 ```bash
-yarn nx docker-run mailcatcher
+bun nx docker-run mailcatcher
 ```
 
 ### MailDev (Node)
@@ -66,7 +66,7 @@ yarn nx docker-run mailcatcher
 - [docker](https://hub.docker.com/r/philiplehmann/maildev)
 
 ```bash
-yarn nx docker-run maildev
+bun nx docker-run maildev
 ```
 
 ### MailHog (Go)
@@ -75,19 +75,19 @@ yarn nx docker-run maildev
 - [docker](https://hub.docker.com/r/philiplehmann/mailhog)
 
 ```bash
-yarn nx docker-run mailhog
+bun nx docker-run mailhog
 ```
 
 ## Lint
 
 ```
-yarn nx run-many --target lint
+bun nx run-many --target lint
 ```
 
 ## Test
 
 ```
-yarn nx run-many --target test
+bun nx run-many --target test
 ```
 
 ## Generate code
@@ -95,13 +95,13 @@ yarn nx run-many --target test
 generate a new application, generates are not very configured and project/testing/linting has to be ajusted afterwards in the project.json
 
 ```
-yarn nx g @nx/node:application name
+bun nx g @nx/node:application name
 ```
 
 generate a new library, generates are not very configured and project/testing/linting has to be ajusted afterwards in the project.json
 
 ```
-yarn nx g @nx/node:library libs/new/name
+bun nx g @nx/node:library libs/new/name
 ```
 
 If you happen to use Nx plugins, you can leverage code generators that might come with it.

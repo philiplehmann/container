@@ -1,7 +1,7 @@
+import type { PromiseExecutor } from '@nx/devkit';
 import type { helperEmptyExecutorSchema } from './schema';
-import type { Executor } from '@nx/devkit';
 
-const runExecutor: Executor<helperEmptyExecutorSchema> = async () => {
+const runExecutor: PromiseExecutor<helperEmptyExecutorSchema> = async () => {
   return {
     success: true,
   };
