@@ -2,7 +2,7 @@
 # maildev Dockerfile
 #
 
-FROM node:24.11.1-trixie-slim
+FROM node:24.12.0-trixie-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
