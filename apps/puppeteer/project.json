@@ -6,36 +6,9 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "executor": "@container/bun:build",
       "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/puppeteer",
-        "format": ["cjs"],
-        "bundle": true,
-        "main": "apps/puppeteer/src/main.ts",
-        "tsConfig": "apps/puppeteer/tsconfig.app.json",
-        "assets": ["apps/puppeteer/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "generateLockfile": true,
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
@@ -56,6 +29,9 @@
     "lint": {
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     },
     "bun-test": {
       "executor": "@container/bun:test",

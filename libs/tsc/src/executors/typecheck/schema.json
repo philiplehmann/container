@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "typescript typecheck",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "tsconfig": {
+      "type": "string"
+    }
+  },
+  "required": []
+}

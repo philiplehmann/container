@@ -1,8 +1,9 @@
 import { execSync } from 'node:child_process';
 import { createReadStream, createWriteStream, existsSync } from 'node:fs';
 import { readdir, unlink } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 import { finished } from 'node:stream/promises';
+import { fileURLToPath } from 'node:url';
 import { currentArch, promiseSpawn } from '@container/docker';
 import { streamToBuffer } from '@container/stream';
 import { streamRequest } from '@container/test/request';
@@ -10,6 +11,8 @@ import { testContainer } from '@container/test/server';
 import { expect, test } from '@playwright/test';
 import type { StartedTestContainer } from 'testcontainers';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const containerPort = 5000;
 
 const pdfToPngConvert = async (input: string, output: string) => {

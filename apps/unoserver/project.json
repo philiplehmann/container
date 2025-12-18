@@ -5,35 +5,9 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "executor": "@container/bun:build",
       "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/unoserver",
-        "format": ["cjs"],
-        "bundle": true,
-        "main": "apps/unoserver/src/main.ts",
-        "tsConfig": "apps/unoserver/tsconfig.app.json",
-        "assets": ["apps/unoserver/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
@@ -54,6 +28,9 @@
     "lint": {
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     },
     "bun-test": {
       "executor": "@container/bun:test",

@@ -15,6 +15,6 @@ export const toObject = (lines: string[]): Record<string, string | string[]> => 
   );
 };
 
-export const stringOrFirst = (value: string | string[]): string => {
-  return Array.isArray(value) ? value[0] : value;
+export const stringOrFirst = (value: string | string[] = ''): string => {
+  return Array.isArray(value) ? (value[0] ?? '') : value;
 };

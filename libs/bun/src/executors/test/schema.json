@@ -59,7 +59,10 @@
     },
     "coverageReporter": {
       "type": "string",
-      "enum": ["text", "lcov"],
+      "enum": [
+        "text",
+        "lcov"
+      ],
       "description": "Report coverage in 'text' and/or 'lcov'. Defaults to 'text'."
     },
     "coverageDir": {
@@ -72,7 +75,10 @@
     },
     "reporter": {
       "type": "string",
-      "enum": ["dots", "junit"],
+      "enum": [
+        "dots",
+        "junit"
+      ],
       "description": "Test output reporter format. Available: 'junit' (requires --reporter-outfile), 'dots'. Default: console output."
     },
     "reporterOutfile": {

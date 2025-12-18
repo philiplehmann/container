@@ -8,19 +8,15 @@
     }
   },
   "files": {
-    "includes": [
-      "**",
-      "!**/node_modules/**/*",
-      "!**/dist",
-      "!**/coverage",
-      "!**/.nx/cache",
-      "!**/snapshots/**"
-    ]
+    "includes": ["**", "!**/node_modules/**/*", "!**/dist", "!**/coverage", "!**/.nx/cache", "!**/snapshots"]
   },
   "linter": {
     "enabled": true,
     "rules": {
       "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "error"
+      },
       "style": {
         "noParameterAssign": "error",
         "useAsConstAssertion": "error",
