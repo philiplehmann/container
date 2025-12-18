@@ -12,6 +12,9 @@
       "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {}
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     }
   },
   "tags": []

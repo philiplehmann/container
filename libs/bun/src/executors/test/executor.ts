@@ -1,7 +1,7 @@
 import { glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { cwd } from 'node:process';
 import { promiseSpawn } from '@container/docker';
+import { projectRoot } from '@container/nx';
 import type { Executor } from '@nx/devkit';
 import type { NodeTestExecutorSchema } from './schema';
 
@@ -13,7 +13,7 @@ const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> =>
   return results;
 };
 
-const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
+const bunTestExecutor: Executor<NodeTestExecutorSchema> = async (
   {
     include: includePattern = '**/*.spec.ts',
     exclude: excludePattern = '**/e2e/**',
@@ -38,10 +38,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
   },
   context,
 ) => {
-  const root =
-    context.projectName && context.projectGraph
-      ? context.projectGraph.nodes[context.projectName].data.root
-      : (context.root ?? cwd());
+  const root = projectRoot(context);
   try {
     const args = ['--bun', 'test'];
 
@@ -126,4 +123,4 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
   }
 };
 
-export default nodeTestExecutor;
+export default bunTestExecutor;

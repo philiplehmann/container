@@ -8,6 +8,9 @@
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    },
     "bun-test": {
       "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],

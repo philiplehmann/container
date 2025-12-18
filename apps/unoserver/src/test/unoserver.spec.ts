@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'bun:test';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { currentArch } from '@container/docker';
 import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const containerPort = 5000;
 
 describe('unoserver', () => {
@@ -118,7 +121,7 @@ describe('unoserver', () => {
 
         it('should convert docx to png with convertTo', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, _text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -132,7 +135,7 @@ describe('unoserver', () => {
 
         it('should convert docx to jpeg with convertTo', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, _text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,

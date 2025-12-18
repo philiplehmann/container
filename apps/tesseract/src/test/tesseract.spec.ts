@@ -1,9 +1,12 @@
 import { describe, expect, it } from 'bun:test';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { currentArch } from '@container/docker';
 import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const containerPort = 5000;
 
 const expectText =

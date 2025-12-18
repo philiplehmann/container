@@ -35,6 +35,9 @@
           }
         ]
       }
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     }
   },
   "tags": []

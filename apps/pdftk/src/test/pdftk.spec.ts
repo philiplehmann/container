@@ -1,10 +1,14 @@
 import { describe, expect, it } from 'bun:test';
 import { readFileSync, statSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { currentArch } from '@container/docker';
 import { streamLength, streamToBuffer } from '@container/stream';
 import { useTestContainer } from '@container/test/bun';
 import { beautifyJson, streamRequest, testRequest } from '@container/test/request';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const containerPort = 5000;
 

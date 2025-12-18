@@ -5,36 +5,9 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "executor": "@container/bun:build",
       "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/poppler",
-        "format": ["cjs"],
-        "bundle": true,
-        "main": "apps/poppler/src/main.ts",
-        "tsConfig": "apps/poppler/tsconfig.app.json",
-        "assets": ["apps/poppler/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "generateLockfile": true,
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
@@ -55,6 +28,9 @@
     "lint": {
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     },
     "bun-test": {
       "executor": "@container/bun:test",

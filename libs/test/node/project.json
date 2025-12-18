@@ -7,6 +7,9 @@
     "lint": {
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     }
   },
   "tags": []

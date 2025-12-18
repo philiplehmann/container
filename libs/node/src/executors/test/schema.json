@@ -43,11 +43,7 @@
     },
     "testIsolation": {
       "type": "string",
-      "enum": [
-        "none",
-        "vm",
-        "process"
-      ]
+      "enum": ["none", "vm", "process"]
     },
     "namePattern": {
       "type": "string"
@@ -78,6 +74,9 @@
     },
     "allowEmptySuite": {
       "type": "boolean"
+    },
+    "tsconfig": {
+      "type": "string"
     }
   },
   "required": []

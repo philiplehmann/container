@@ -1,7 +1,7 @@
 export class HttpError extends Error {
   constructor(
     public status: number,
-    public message: string,
+    public override message: string,
   ) {
     super(message);
   }

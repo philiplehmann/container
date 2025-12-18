@@ -1,8 +1,8 @@
-import type { Executor } from '@nx/devkit';
+import type { PromiseExecutor } from '@nx/devkit';
 import { dockerRun } from '../../docker-run';
 import type { DockerRunExecutorSchema } from './schema';
 
-const runExecutor: Executor<DockerRunExecutorSchema> = async (options) => {
+const runExecutor: PromiseExecutor<DockerRunExecutorSchema> = async (options) => {
   try {
     await dockerRun(options);
     return {

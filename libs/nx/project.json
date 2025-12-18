@@ -1,0 +1,16 @@
+{
+  "name": "nx",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/nx/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    }
+  },
+  "tags": []
+}

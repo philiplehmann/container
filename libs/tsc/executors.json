@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "typecheck": {
+      "implementation": "./src/executors/typecheck/executor",
+      "schema": "./src/executors/typecheck/schema.json",
+      "description": "typescript typecheck"
+    }
+  }
+}

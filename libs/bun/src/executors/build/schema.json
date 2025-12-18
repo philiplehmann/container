@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "bun build",
+  "description": "Bun build executor schema",
+  "type": "object",
+  "properties": {
+    "entrypoints": {
+      "type": "array",
+      "description": "Entry points for the build",
+      "items": {
+        "type": "string"
+      },
+      "default": ["{projectRoot}/src/index.ts"]
+    },
+    "outdir": {
+      "type": "string",
+      "description": "Output directory for the build",
+      "default": "{workspaceRoot}/dist/{projectRoot}"
+    },
+    "target": {
+      "enum": ["bun", "node", "browser"],
+      "description": "Target for the build",
+      "default": "bun"
+    },
+    "format": {
+      "enum": ["esm", "cjs", "iife"],
+      "description": "Format for the build",
+      "default": "esm"
+    },
+    "packages": {
+      "enum": ["bundle", "external"],
+      "description": "Packages for the build",
+      "default": "bundle"
+    }
+  },
+  "required": []
+}

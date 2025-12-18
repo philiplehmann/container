@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'bun:test';
 import { createReadStream } from 'node:fs';
 import type { IncomingMessage } from 'node:http';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 import type { Readable } from 'node:stream';
+import { fileURLToPath } from 'node:url';
 import { post } from '@container/http/route';
 import { streamToBuffer, streamToString } from '@container/stream';
 import { TestServer } from '@container/test/server';
-
 import {
   getContentDispositionName,
   requestToBuffer,
@@ -14,6 +14,9 @@ import {
   requestToMultipartFormData,
   requestToText,
 } from '../index';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const createTestServer = async (callback: (req: IncomingMessage) => Promise<void>): Promise<TestServer> => {
   const server = new TestServer();
