@@ -4,7 +4,13 @@ import type { ExecutorContext } from '@nx/devkit';
 import executor from './executor';
 import type { BunBuildExecutorSchema } from './schema';
 
-const options: BunBuildExecutorSchema = {};
+const options: BunBuildExecutorSchema = {
+  entrypoints: ['some/file.ts'],
+  outdir: 'dist/some',
+  target: 'bun',
+  format: 'esm',
+  packages: 'bundle',
+};
 
 describe.skip('BunTest Executor', () => {
   it('can run', async () => {
