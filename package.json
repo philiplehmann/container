@@ -28,7 +28,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "puppeteer-core": "24.33.0",
+    "puppeteer-core": "24.34.0",
     "zod": "^4.0.17"
   },
   "packageManager": "yarn@4.12.0",
