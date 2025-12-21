@@ -5,35 +5,9 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "executor": "@container/bun:build",
       "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/tesseract",
-        "format": ["cjs"],
-        "bundle": true,
-        "main": "apps/tesseract/src/main.ts",
-        "tsConfig": "apps/tesseract/tsconfig.app.json",
-        "assets": ["apps/tesseract/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
@@ -55,15 +29,18 @@
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "node-test": {
-      "executor": "@container/node:test",
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    },
+    "bun-test": {
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-test"],
       "options": {}
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["node-test"],
+      "dependsOn": ["bun-test"],
       "options": {}
     },
     "docker-test": {

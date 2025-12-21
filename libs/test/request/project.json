@@ -5,8 +5,10 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@container/biomejs:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@container/biomejs:lint"
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     }
   },
   "tags": []

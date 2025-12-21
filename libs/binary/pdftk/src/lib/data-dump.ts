@@ -1,11 +1,5 @@
 import type { Readable, Writable } from 'node:stream';
-import {
-  type StreamChildProcessOptions,
-  streamChildProcess,
-  streamChildProcessToBuffer,
-  streamToString,
-} from '@container/stream';
-import { Page } from 'puppeteer-core';
+import { type StreamChildProcessOptions, streamChildProcessToBuffer } from '@container/stream';
 import { splitLine } from './helpers/split-line';
 import { stringOrFirst, toObject } from './helpers/to-object';
 import { type PdftkOptions, pdftk } from './pdftk';
@@ -26,8 +20,9 @@ export interface DataDumpMeta {
 export interface DataDumpInfo {
   keywords: string;
   creator: string;
-  autor: string;
+  author: string;
   creationDate: Date;
+  modDate: Date;
   producer: string;
   title: string;
 }
@@ -61,7 +56,7 @@ const parseDate = (date: string | undefined): Date | null => {
   const match = date.match(dateRegex);
   if (match) {
     const { year, month, day, hour, minute, second, timezone } = match.groups || {};
-    return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}${timezone.replace("'", ':')}`);
+    return new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}${timezone?.replace("'", ':')}`);
   }
   console.warn('Invalid date format:', date);
   return null;
@@ -77,8 +72,8 @@ const isMetaKeyString = (key: string): key is keyof typeof metaMappingString => 
   return Object.keys(metaMappingString).includes(key);
 };
 
-const infoToObject = (lines: string[]): Partial<DataDumpInfo> => {
-  let { InfoKey, InfoValue } = toObject(lines);
+const infoToObject = (lines: (string | undefined)[]): Partial<DataDumpInfo> => {
+  let { InfoKey, InfoValue } = toObject(lines.filter((l) => l !== undefined));
   InfoKey = stringOrFirst(InfoKey);
   InfoValue = stringOrFirst(InfoValue);
   if (InfoKey === 'CreationDate' || InfoKey === 'ModDate') {
@@ -95,8 +90,10 @@ const infoToObject = (lines: string[]): Partial<DataDumpInfo> => {
   };
 };
 
-const pageToObject = (lines: string[]): DataDumpPage => {
-  let { PageMediaNumber, PageMediaRotation, PageMediaRect, PageMediaDimensions } = toObject(lines);
+const pageToObject = (lines: (string | undefined)[]): DataDumpPage => {
+  let { PageMediaNumber, PageMediaRotation, PageMediaRect, PageMediaDimensions } = toObject(
+    lines.filter((l) => l !== undefined),
+  );
   PageMediaNumber = stringOrFirst(PageMediaNumber);
   PageMediaRotation = stringOrFirst(PageMediaRotation);
   PageMediaRect = stringOrFirst(PageMediaRect);

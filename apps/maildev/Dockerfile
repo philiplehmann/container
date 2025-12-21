@@ -2,21 +2,19 @@
 # maildev Dockerfile
 #
 
-FROM node:24.12.0-trixie-slim
+FROM oven/bun:1.3.4-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
 ARG MAILDEV_VERSION
 
-WORKDIR /home/maildev
+WORKDIR /home/bun
 
-RUN npm install --global --yes maildev@${MAILDEV_VERSION}
+USER bun
 
-RUN useradd -ms /bin/bash maildev
-
-USER maildev
+RUN bun install --production maildev@${MAILDEV_VERSION}
 
 # Expose the SMTP and HTTP ports:
 EXPOSE 1025 1080
 
-CMD ["maildev"]
+CMD ["maildev", "--mail-directory", "mails"]

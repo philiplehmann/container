@@ -1,5 +1,4 @@
-import { strict as assert } from 'node:assert';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
 import { currentArch } from '../../docker-helper';
 import executor from './executor';
 import type { DockerBuildExecutorSchema } from './schema';
@@ -15,6 +14,6 @@ describe.skip('DockerBuild Executor', () => {
     const output = (await executor(options, {} as never)) as {
       success: boolean;
     };
-    assert.strictEqual(output.success, true);
+    expect(output.success).toBe(true);
   });
 });

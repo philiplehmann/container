@@ -6,36 +6,9 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
+      "executor": "@container/bun:build",
       "options": {
-        "platform": "node",
-        "outputPath": "dist/apps/puppeteer",
-        "format": ["cjs"],
-        "bundle": true,
-        "main": "apps/puppeteer/src/main.ts",
-        "tsConfig": "apps/puppeteer/tsconfig.app.json",
-        "assets": ["apps/puppeteer/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
-      },
-      "configurations": {
-        "development": {},
-        "production": {
-          "generateLockfile": true,
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
+        "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
@@ -57,14 +30,17 @@
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "node-test": {
-      "executor": "@container/node:test",
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    },
+    "bun-test": {
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-test"],
       "options": {}
     },
-    "node-test-local": {
-      "executor": "@container/node:test",
+    "bun-test-local": {
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
     },
     "e2e-install": {
@@ -91,12 +67,12 @@
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["e2e", "node-test"],
+      "dependsOn": ["e2e", "bun-test"],
       "options": {}
     },
     "test-local": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["e2e-local", "node-test-local"]
+      "dependsOn": ["e2e-local", "bun-test-local"]
     },
     "docker-test": {
       "executor": "@container/docker:test",

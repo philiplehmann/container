@@ -8,15 +8,18 @@
       "executor": "@container/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
-    "node-test": {
-      "executor": "@container/node:test",
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    },
+    "bun-test": {
+      "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-test"],
       "options": {}
     },
     "test": {
       "executor": "@container/helper:empty",
-      "dependsOn": ["node-test"],
+      "dependsOn": ["bun-test"],
       "options": {}
     },
     "docker-test": {

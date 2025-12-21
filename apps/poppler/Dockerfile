@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t poppler`.
-FROM node:24.12.0-trixie-slim
+FROM oven/bun:1.3.4-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -25,8 +25,8 @@ COPY dist/apps/poppler poppler
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix poppler --omit=dev -f install
+RUN bun install --production --cwd poppler
 
 USER 1000:1000
 
-CMD [ "node", "poppler" ]
+CMD [ "bun", "poppler" ]

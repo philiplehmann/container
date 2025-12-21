@@ -13,7 +13,7 @@ export const pathMatcher = <T extends string>(
       if (internalPath[0] !== path) {
         return null;
       }
-    } else {
+    } else if (internalPath[0]) {
       const match = internalPath[0].match(path);
       if (!match) {
         return null;

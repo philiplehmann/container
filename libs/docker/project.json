@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/docker",
         "main": "libs/docker/src/index.ts",
@@ -37,6 +35,9 @@
           }
         ]
       }
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     }
   },
   "tags": []

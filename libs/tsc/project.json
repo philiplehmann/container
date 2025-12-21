@@ -1,0 +1,44 @@
+{
+  "name": "tsc",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/tsc/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/tsc",
+        "main": "libs/tsc/src/index.ts",
+        "tsConfig": "libs/tsc/tsconfig.lib.json",
+        "assets": [
+          "libs/node/*.md",
+          {
+            "input": "./libs/tsc/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/tsc/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./libs/tsc",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./libs/tsc",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    }
+  },
+  "tags": []
+}

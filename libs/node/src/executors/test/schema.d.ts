@@ -20,4 +20,5 @@ export interface NodeTestExecutorSchema {
   timeout?: number; // specify test runner timeout
   updateSnapshots?: boolean; // regenerate test snapshots
   allowEmptySuite?: boolean; // allow test runner to complete with no tests found
+  tsconfig?: string; // specify the path to the tsconfig file
 }

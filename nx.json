@@ -16,9 +16,33 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
+    "@nx/playwright:playwright": {
+      "cache": true,
+      "inputs": ["default"]
+    },
     "@container/biomejs:lint": {
       "cache": true,
       "inputs": ["default", "{workspaceRoot}/biome.json"]
+    },
+    "@container/tsc:typecheck": {
+      "cache": true,
+      "inputs": ["default", "{workspaceRoot}/tsconfig.base.json"]
+    },
+    "@container/node:test": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "@container/bun:test": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "@container/bun:build": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "@container/docker:test": {
+      "cache": true,
+      "inputs": ["default"]
     }
   },
   "namedInputs": {
@@ -31,7 +55,10 @@
       "!{projectRoot}/test-setup.[jt]s",
       "!{projectRoot}/biome.json"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/bun.lock"]
+  },
+  "cli": {
+    "packageManager": "bun"
   },
   "plugins": [
     {
@@ -48,5 +75,5 @@
     "forcePathStyle": true,
     "localMode": "read-write"
   },
-  "nxCloudId": "6925becf4a5c93f9549469f5"
+  "neverConnectToCloud": true
 }

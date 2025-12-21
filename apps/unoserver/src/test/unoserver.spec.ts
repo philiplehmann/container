@@ -1,22 +1,25 @@
-import { strict as assert } from 'node:assert';
-import { resolve } from 'node:path';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { currentArch } from '@container/docker';
+import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
-import { useTestContainer } from '@container/test/server';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const containerPort = 5000;
 
 describe('unoserver', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
       describe('/convert', async () => {
-        const setup = await useTestContainer({
+        const setup = useTestContainer({
           image: `philiplehmann/unoserver:test-${arch}`,
           containerPort,
           hook: (container) => {
             return container.withStartupTimeout(60_000);
           },
+          timeout: 90_000,
         });
         it('should convert docx to pdf per default', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
@@ -28,8 +31,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to pdf with inputFilter/outputFilter/filterOptions', async () => {
@@ -42,8 +45,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to pdf with updateIndex', async () => {
@@ -56,8 +59,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to pdf with dontUpdateIndex', async () => {
@@ -70,8 +73,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to pdf with verbose', async () => {
@@ -84,8 +87,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to pdf with quiet', async () => {
@@ -98,8 +101,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to pdf with convertTo', async () => {
@@ -112,13 +115,13 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert docx to png with convertTo', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, _text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -126,13 +129,13 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(response.headers['content-type'], 'image/png');
+          expect(response.statusCode).toBe(200);
+          expect(response.headers['content-type']).toBe('image/png');
         });
 
         it('should convert docx to jpeg with convertTo', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, _text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -140,8 +143,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(response.headers['content-type'], 'image/jpeg');
+          expect(response.statusCode).toBe(200);
+          expect(response.headers['content-type']).toBe('image/jpeg');
         });
       });
 
@@ -167,8 +170,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert doc to pdf with outputFilter', async () => {
@@ -181,8 +184,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions string(SelectPdfVersion)', async () => {
@@ -195,8 +198,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions string(PageRange)', async () => {
@@ -209,8 +212,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions json(SelectPdfVersion)', async () => {
@@ -225,8 +228,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions json(PageRange)', async () => {
@@ -241,8 +244,8 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 200);
-          assert.strictEqual(text.substring(0, 5), '%PDF-');
+          expect(response.statusCode).toBe(200);
+          expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
         it('fails convert docx to pdf per default', async () => {
@@ -255,7 +258,7 @@ describe('unoserver', () => {
             file,
           });
 
-          assert.strictEqual(response.statusCode, 404);
+          expect(response.statusCode).toBe(404);
         });
       });
     });

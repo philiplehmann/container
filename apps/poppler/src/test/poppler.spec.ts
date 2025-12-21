@@ -1,10 +1,12 @@
-import { strict as assert } from 'node:assert';
-import { resolve } from 'node:path';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'bun:test';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { currentArch } from '@container/docker';
+import { useTestContainer } from '@container/test/bun';
 import { testRequest } from '@container/test/request';
-import { useTestContainer } from '@container/test/server';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const containerPort = 5000;
 
 describe('poppler', () => {
@@ -23,8 +25,8 @@ describe('poppler', () => {
           file,
         });
 
-        assert.strictEqual(response.statusCode, 200);
-        assert.ok(text.includes('Dummy PDF file'));
+        expect(response.statusCode).toBe(200);
+        expect(text.includes('Dummy PDF file')).toBeTruthy();
       });
 
       it('should convert PDF to HTML and include "Dummy PDF file"', async () => {
@@ -38,9 +40,9 @@ describe('poppler', () => {
           file,
         });
 
-        assert.strictEqual(response.statusCode, 200);
-        assert.ok(text.includes('Dummy PDF file'));
-        assert.ok(text.toLowerCase().includes('<!doctype html>'));
+        expect(response.statusCode).toBe(200);
+        expect(text.includes('Dummy PDF file')).toBeTruthy();
+        expect(text.toLowerCase().includes('<!doctype html>')).toBeTruthy();
       });
     });
   });

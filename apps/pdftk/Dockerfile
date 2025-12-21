@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/pdftk`.
-FROM node:24.12.0-trixie-slim AS pdftk
+FROM oven/bun:1.3.4-slim AS pdftk
 
 ARG PDFTK_VERSION
 ARG TARGETPLATFORM
@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.28%2B6/OpenJDK11U-jre_${JDK_ARCH}_linux_hotspot_11.0.28_6.tar.gz" | tar --strip-components=1 -C /java -zxivf  -
 
 
-FROM node:24.12.0-trixie-slim
+FROM oven/bun:1.3.4-slim
 
 ARG JRE_VERSION
 
@@ -52,8 +52,8 @@ ENV PATH=$JAVA_HOME/bin/:$PATH
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix pdftk --omit=dev -f install
+RUN bun install --production --cwd pdftk
 
 USER 1000:1000
 
-CMD [ "node", "pdftk" ]
+CMD [ "bun", "pdftk" ]
