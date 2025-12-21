@@ -48,7 +48,6 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          NX_POWERPACK_LICENSE: ${{ secrets.NX_POWERPACK_LICENSE }}
 
   test:
     runs-on: ${{ matrix.os }}
@@ -104,7 +103,6 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          NX_POWERPACK_LICENSE: ${{ secrets.NX_POWERPACK_LICENSE }}
 
   build:
     runs-on: ubuntu-latest
@@ -148,4 +146,3 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          NX_POWERPACK_LICENSE: ${{ secrets.NX_POWERPACK_LICENSE }}
