@@ -32,6 +32,10 @@
       "enum": ["bundle", "external"],
       "description": "Packages for the build",
       "default": "bundle"
+    },
+    "tsConfig": {
+      "type": "string",
+      "description": "Path to the TypeScript configuration file"
     }
   },
   "required": []

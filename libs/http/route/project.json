@@ -5,8 +5,7 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@container/biomejs:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@container/biomejs:lint"
     },
     "test": {
       "executor": "@container/bun:test",
