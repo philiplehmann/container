@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import type { ExecutorContext } from '@nx/devkit';
 import { getCwd } from 'nx/src/utils/path';
 
