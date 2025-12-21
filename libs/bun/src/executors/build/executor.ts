@@ -3,6 +3,7 @@ import { cwd } from 'node:process';
 import { promiseSpawn } from '@container/docker';
 import { projectRoot as getProjectRoot } from '@container/nx';
 import type { Executor, ExecutorContext } from '@nx/devkit';
+import { copyPackageJson, createEntryPoints } from '@nx/js';
 import type { BunBuildExecutorSchema } from './schema';
 
 const replacePlaceholders = (context: ExecutorContext) => {
@@ -42,13 +43,33 @@ const bunBuildExecutor: Executor<BunBuildExecutorSchema> = async (
       cwd: context.root,
       env: process.env,
     });
-    return { success: true };
   } catch (e) {
     if (e instanceof Error) {
       console.error(e.message);
     }
     return { success: false };
   }
+
+  try {
+    context.target = context.target || {};
+    context.target.options = context.target.options || {};
+    context.target.options.tsConfig = context.target.options.tsConfig || resolve(projectRoot, 'tsconfig.json');
+    await copyPackageJson(
+      {
+        main: entrypoints[0] || '',
+        outputPath: replace(outdir),
+        additionalEntryPoints: createEntryPoints([], context.root),
+        format: [format === 'esm' ? 'esm' : 'cjs'],
+      },
+      context,
+    );
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    }
+    return { success: false };
+  }
+  return { success: true };
 };
 
 export default bunBuildExecutor;
