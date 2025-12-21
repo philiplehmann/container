@@ -1,5 +1,8 @@
+import { fileURLToPath } from 'node:url';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices } from '@playwright/test';
+
+const __filename = fileURLToPath(import.meta.url);
 
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env.BASE_URL || 'http://localhost:5000';

@@ -11,7 +11,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "esnext",
-    "module": "Preserve",
+    "module": "preserve",
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
