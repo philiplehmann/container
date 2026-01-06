@@ -57,6 +57,5 @@ export async function dockerBuildxBuild({
       });
     });
   } finally {
-    //await promiseSpawn('docker', ['buildx', 'rm', builderName]);
   }
 }
