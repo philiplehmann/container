@@ -21,6 +21,11 @@ RUN unzip v${NX_CACHE_SERVER_VERSION}.zip; \
 
 FROM debian:trixie-slim
 
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    libssl3 \
+    && rm -rf /var/lib/apt/lists/*
+
 # # Required
 # export S3_BUCKET_NAME="your-s3-bucket-name"
 # export SERVICE_ACCESS_TOKEN="your-bearer-token"
