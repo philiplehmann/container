@@ -9,7 +9,6 @@
     "@nx/js": "^22.3.3",
     "@nx/playwright": "22.3.3",
     "@nx/plugin": "22.3.3",
-    "@nx/s3-cache": "^5.0.0",
     "@nx/workspace": "22.3.3",
     "@playwright/test": "1.57.0",
     "@swc-node/register": "^1.11.1",
