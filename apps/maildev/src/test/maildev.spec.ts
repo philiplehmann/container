@@ -1,5 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import { currentArch } from '@container/docker';
+import { wait } from '@container/helper';
 import { testRequest } from '@container/test/request';
 import { createTransport, type Transporter } from 'nodemailer';
 import { GenericContainer, type StartedTestContainer, Wait } from 'testcontainers';
@@ -41,6 +42,7 @@ describe('mailcatcher', () => {
           text: 'test text content',
         };
         await transport.sendMail(mailOptions);
+        await wait(1000);
 
         const [response, text] = await testRequest({
           method: 'GET',
@@ -52,6 +54,7 @@ describe('mailcatcher', () => {
           },
         });
         const data = JSON.parse(text);
+        console.log(data);
 
         expect(response.statusCode).toBe(200);
         expect(data.length).toBe(1);
