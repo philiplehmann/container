@@ -1,5 +1,5 @@
 {
-  "name": "@container/node",
+  "name": "@container/bun",
   "version": "0.0.1",
 
   "type": "module",

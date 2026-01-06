@@ -20,8 +20,8 @@ const assertSnapshot = (actual: string, relativePath: string): void => {
 
 describe('pdftk', () => {
   [currentArch()].forEach((arch) => {
-    describe(`arch: ${arch}`, async () => {
-      const setup = await useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
+    describe(`arch: ${arch}`, () => {
+      const setup = useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
 
       describe('compress', async () => {
         it('pdf file reduces in size', async () => {
