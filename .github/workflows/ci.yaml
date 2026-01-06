@@ -26,6 +26,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          filter: tree:0
 
       - name: Use Bun.js
         uses: oven-sh/setup-bun@v2
@@ -46,6 +47,10 @@ jobs:
 
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: lint
         run: bun nx affected --target lint typecheck
