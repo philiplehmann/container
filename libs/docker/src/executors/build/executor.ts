@@ -1,7 +1,7 @@
-import type { DockerBuildExecutorSchema } from './schema';
-import { dockerBuildxBuild } from '../../docker-buildx-build';
 import type { Executor } from '@nx/devkit';
+import { dockerBuildxBuild } from '../../docker-buildx-build';
 import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson } from '../../version';
+import type { DockerBuildExecutorSchema } from './schema';
 
 const runExecutor: Executor<DockerBuildExecutorSchema> = async (
   { file, tags = [], platforms },
@@ -44,6 +44,9 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
         break;
       case 'pdftk':
         tags = createTags(tags, versionFromEnv(file, 'PDFTK_VERSION'));
+        break;
+      case 'nx-cache-server':
+        tags = createTags(tags, versionFromEnv(file, 'NX_CACHE_SERVER_VERSION'));
         break;
     }
   }

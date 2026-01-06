@@ -1,0 +1,27 @@
+{
+  "name": "nx-cache-server",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/nx-cache-server/src",
+  "projectType": "application",
+  "targets": {
+    "docker-push": {
+      "executor": "@container/docker:build",
+      "dependsOn": ["build"],
+      "options": {
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/nx-cache-server:auto"],
+        "file": "apps/nx-cache-server/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/docker:run",
+      "dependsOn": ["build"],
+      "options": {
+        "image": "philiplehmann/nx-cache-server:run",
+        "file": "apps/nx-cache-server/Dockerfile",
+        "port": ["3000"]
+      }
+    }
+  },
+  "tags": []
+}
