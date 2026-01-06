@@ -4,4 +4,4 @@ This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
 
-Run `nx test test-server` to execute the unit tests via [Node test](https://nodejs.org/api/test.html).
+Run `nx test test-bun` to execute the unit tests via [Bun test](https://bun.sh/docs/test).

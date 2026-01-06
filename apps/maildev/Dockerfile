@@ -17,4 +17,4 @@ RUN bun install --production maildev@${MAILDEV_VERSION}
 # Expose the SMTP and HTTP ports:
 EXPOSE 1025 1080
 
-CMD ["maildev", "--mail-directory", "mails"]
+CMD ["bun", "x", "maildev", "--mail-directory", "mails"]
