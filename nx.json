@@ -67,12 +67,5 @@
         "targetName": "e2e"
       }
     }
-  ],
-  "s3": {
-    "endpoint": "https://storage.datage.ch",
-    "region": "hetzner",
-    "bucket": "nx-cache",
-    "forcePathStyle": true,
-    "localMode": "read-write"
-  }
+  ]
 }
