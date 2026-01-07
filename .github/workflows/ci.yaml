@@ -55,8 +55,8 @@ jobs:
       - name: lint
         run: bun nx affected --target lint typecheck
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
+          NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
 
   test:
     runs-on: ${{ matrix.os }}
@@ -115,8 +115,8 @@ jobs:
       - name: test
         run: bun nx affected --target test --parallel 2
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
+          NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
@@ -163,5 +163,5 @@ jobs:
       - name: Build & Push Docker Image
         run: bun nx affected --target docker-push
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
+          NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
