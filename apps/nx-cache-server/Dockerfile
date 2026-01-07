@@ -8,15 +8,10 @@ FROM rust:1.92.0-trixie AS rust
 
 ARG NX_CACHE_SERVER_VERSION
 
-# ADD https://github.com/nxcite/nx-cache-server/archive/refs/tags/v${NX_CACHE_SERVER_VERSION}.tar.gz v${NX_CACHE_SERVER_VERSION}.tar.gz
-ADD https://github.com/philiplehmann/nx-cache-server/archive/refs/heads/bugfix/force_path_style.zip v${NX_CACHE_SERVER_VERSION}.zip
+ADD https://github.com/nxcite/nx-cache-server/archive/refs/tags/v${NX_CACHE_SERVER_VERSION}.tar.gz v${NX_CACHE_SERVER_VERSION}.tar.gz
 
-# RUN tar -xzf v${NX_CACHE_SERVER_VERSION}.tar.gz; \
-#     cd nx-cache-server-${NX_CACHE_SERVER_VERSION}; \
-#     cargo install --path .
-
-RUN unzip v${NX_CACHE_SERVER_VERSION}.zip; \
-    cd nx-cache-server-bugfix-force_path_style; \
+RUN tar -xzf v${NX_CACHE_SERVER_VERSION}.tar.gz; \
+    cd nx-cache-server-${NX_CACHE_SERVER_VERSION}; \
     cargo install --path .
 
 FROM debian:trixie-slim
