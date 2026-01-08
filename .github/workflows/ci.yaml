@@ -16,17 +16,32 @@ permissions:
   actions: read
 
 jobs:
+  nx-sha:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      actions: "read"
+    outputs:
+      base: ${{ steps.set-shas.outputs.base }}
+      head: ${{ steps.set-shas.outputs.head }}
+    steps:
+      - name: setup nx shas
+        uses: nrwl/nx-set-shas@v4
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
+
   lint:
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
       actions: "read"
+    needs:
+      - nx-sha
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          filter: tree:0
 
       - name: Use Bun.js
         uses: oven-sh/setup-bun@v2
@@ -37,26 +52,18 @@ jobs:
         with:
           node-version-file: package.json
 
-      - name: corepack enable
-        shell: bash
-        run: corepack enable
 
       - name: install dependencies
         shell: bash
         run: bun install
-
-      - name: setup nx shas
-        uses: nrwl/nx-set-shas@v4
-
-      - run: |
-          echo "BASE: ${{ env.NX_BASE }}"
-          echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: lint
         run: bun nx affected --target lint typecheck bun-test
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
+          NX_BASE: ${{ needs.nx-sha.outputs.base }}
+          NX_HEAD: ${{ needs.nx-sha.outputs.head }}
 
   test:
     runs-on: ${{ matrix.os }}
@@ -70,15 +77,14 @@ jobs:
     permissions:
       contents: "read"
       actions: "read"
+    needs:
+      - nx-sha
     steps:
       - name: Collect Workflow Telemetry
         uses: catchpoint/workflow-telemetry-action@v2
 
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          filter: tree:0
 
       - name: Use Bun.js
         uses: oven-sh/setup-bun@v2
@@ -92,31 +98,17 @@ jobs:
       - name: Docker Setup
         uses: ./.github/actions/setup-docker
 
-      - name: corepack enable
-        shell: bash
-        run: corepack enable
-
       - name: install dependencies
         shell: bash
         run: bun install
-
-      - name: install dependencies
-        shell: bash
-        run: bun install
-
-      - name: setup nx shas
-        uses: nrwl/nx-set-shas@v4
-
-      - name: log nx shas
-        run: |
-          echo "BASE: ${{ env.NX_BASE }}"
-          echo "HEAD: ${{ env.NX_HEAD }}"
 
       - name: test
         run: bun nx affected --target docker-test --parallel 2
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
+          NX_BASE: ${{ needs.nx-sha.outputs.base }}
+          NX_HEAD: ${{ needs.nx-sha.outputs.head }}
 
   build:
     runs-on: ubuntu-latest
@@ -130,9 +122,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          filter: tree:0
 
       - name: Use Bun.js
         uses: oven-sh/setup-bun@v2
@@ -149,19 +138,14 @@ jobs:
           docker-username: ${{ secrets.DOCKERHUB_USERNAME }}
           docker-password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: corepack enable
-        shell: bash
-        run: corepack enable
-
       - name: install dependencies
         shell: bash
         run: bun install
-
-      - name: setup nx shas
-        uses: nrwl/nx-set-shas@v4
 
       - name: Build & Push Docker Image
         run: bun nx affected --target docker-push --parallel 2
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
+          NX_BASE: ${{ needs.nx-sha.outputs.base }}
+          NX_HEAD: ${{ needs.nx-sha.outputs.head }}
