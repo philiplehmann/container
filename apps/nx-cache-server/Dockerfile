@@ -3,7 +3,7 @@
 # Build the docker image with `bun nx docker-build nx-cache-server`.
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
-# Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
+# Run the container with `docker run -p 3000:3000 -t philiplehmann/nx-cache-server`.
 FROM rust:1.92.0-trixie AS rust
 
 ARG NX_CACHE_SERVER_VERSION
@@ -16,10 +16,13 @@ RUN tar -xzf v${NX_CACHE_SERVER_VERSION}.tar.gz; \
 
 FROM debian:trixie-slim
 
+ENV PORT=3000
+
 RUN apt-get update && apt-get install -y \
     ca-certificates \
     libssl3 \
     && rm -rf /var/lib/apt/lists/*
+RUN useradd -ms /bin/bash -u 1000 nx-cache-server
 
 # # Required
 # export S3_BUCKET_NAME="your-s3-bucket-name"
@@ -39,5 +42,8 @@ RUN apt-get update && apt-get install -y \
 # export PORT="3000"                              # Server port (default: 3000)
 
 COPY --from=rust /usr/local/cargo/bin/nx-cache-aws /usr/local/bin/nx-cache-aws
+
+USER nx-cache-server
+EXPOSE $PORT
 
 CMD [ "/usr/local/bin/nx-cache-aws" ]
