@@ -24,21 +24,91 @@ jobs:
     outputs:
       base: ${{ steps.set-shas.outputs.base }}
       head: ${{ steps.set-shas.outputs.head }}
+      affected-projects: ${{ steps.get-affected.outputs.affected-projects }}
+      lint-matrix: ${{ steps.get-affected.outputs.lint-matrix }}
+      test-matrix: ${{ steps.get-affected.outputs.test-matrix }}
+      build-matrix: ${{ steps.get-affected.outputs.build-matrix }}
+      has-affected-lint: ${{ steps.get-affected.outputs.has-affected-lint }}
+      has-affected-test: ${{ steps.get-affected.outputs.has-affected-test }}
+      has-affected-build: ${{ steps.get-affected.outputs.has-affected-build }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Use Bun.js
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: package.json
+
+      - name: Install dependencies
+        run: bun install
+
       - name: setup nx shas
         uses: nrwl/nx-set-shas@v4
 
-      - run: |
+      - name: Get affected projects and targets
+        id: get-affected
+        run: |
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"
 
+          # Get affected projects for lint targets (lint, typecheck, bun-test)
+          LINT_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=lint,typecheck,bun-test --json 2>/dev/null || echo "[]")
+          echo "Affected projects for lint: $LINT_PROJECTS"
+
+          # Get affected projects for test targets
+          TEST_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=docker-test --json 2>/dev/null || echo "[]")
+          echo "Affected projects for test: $TEST_PROJECTS"
+
+          # Get affected projects for build targets
+          BUILD_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=docker-push --json 2>/dev/null || echo "[]")
+          echo "Affected projects for build: $BUILD_PROJECTS"
+
+          # Check if there are affected projects
+          HAS_LINT=$(echo $LINT_PROJECTS | jq 'length > 0')
+          HAS_TEST=$(echo $TEST_PROJECTS | jq 'length > 0')
+          HAS_BUILD=$(echo $BUILD_PROJECTS | jq 'length > 0')
+
+          echo "has-affected-lint=$HAS_LINT" >> $GITHUB_OUTPUT
+          echo "has-affected-test=$HAS_TEST" >> $GITHUB_OUTPUT
+          echo "has-affected-build=$HAS_BUILD" >> $GITHUB_OUTPUT
+
+          # Create matrix for lint job
+          LINT_MATRIX=$(echo $LINT_PROJECTS | jq -c '{project: .}')
+          echo "lint-matrix=$LINT_MATRIX" >> $GITHUB_OUTPUT
+
+          # Create matrix for test job (with OS matrix)
+          TEST_MATRIX=$(echo $TEST_PROJECTS | jq -c '{project: ., os: ["ubuntu-24.04"], arch: ["amd64", "arm64"]}')
+          echo "test-matrix=$TEST_MATRIX" >> $GITHUB_OUTPUT
+
+          # Create matrix for build job
+          BUILD_MATRIX=$(echo $BUILD_PROJECTS | jq -c '{project: .}')
+          echo "build-matrix=$BUILD_MATRIX" >> $GITHUB_OUTPUT
+
+          # Output all affected projects
+          ALL_AFFECTED=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --json 2>/dev/null || echo "[]")
+          echo "affected-projects=$ALL_AFFECTED" >> $GITHUB_OUTPUT
+          echo "All affected projects: $ALL_AFFECTED"
+
+  # Lint jobs run in parallel for each affected project
   lint:
     runs-on: ubuntu-latest
+    if: needs.nx-sha.outputs.has-affected-lint == 'true'
     permissions:
       contents: "read"
       actions: "read"
     needs:
       - nx-sha
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.nx-sha.outputs.lint-matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -47,6 +117,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: package.json
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
@@ -56,23 +127,23 @@ jobs:
         shell: bash
         run: bun install
 
-      - name: lint
-        run: bun nx affected --target lint typecheck bun-test
+      - name: lint ${{ matrix.project }}
+        run: |
+          echo "Running lint for project: ${{ matrix.project }}"
+          bun nx run ${{ matrix.project }}:lint
+          bun nx run ${{ matrix.project }}:typecheck
+          bun nx run ${{ matrix.project }}:bun-test
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
-          NX_BASE: ${{ needs.nx-sha.outputs.base }}
-          NX_HEAD: ${{ needs.nx-sha.outputs.head }}
 
+  # Test jobs run in parallel for each affected project and architecture
   test:
     runs-on: ${{ matrix.os }}
+    if: needs.nx-sha.outputs.has-affected-test == 'true'
     strategy:
-      matrix:
-        include:
-          - os: ubuntu-24.04
-            arch: amd64
-          - os: ubuntu-24.04
-            arch: arm64
+      fail-fast: false
+      matrix: ${{ fromJson(needs.nx-sha.outputs.test-matrix) }}
     permissions:
       contents: "read"
       actions: "read"
@@ -89,6 +160,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: package.json
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
@@ -103,23 +175,28 @@ jobs:
         shell: bash
         run: bun install
 
-      - name: test
-        run: bun nx affected --target docker-test --parallel 2
+      - name: test ${{ matrix.project }} on ${{ matrix.arch }}
+        run: |
+          echo "Running tests for project: ${{ matrix.project }} on ${{ matrix.arch }}"
+          bun nx run ${{ matrix.project }}:docker-test
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
-          NX_BASE: ${{ needs.nx-sha.outputs.base }}
-          NX_HEAD: ${{ needs.nx-sha.outputs.head }}
 
+  # Build jobs run in parallel for each affected project
   build:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && needs.nx-sha.outputs.has-affected-build == 'true'
     permissions:
       contents: "read"
       actions: "read"
-    if: github.ref == 'refs/heads/main'
     needs:
+      - nx-sha
       - lint
       - test
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.nx-sha.outputs.build-matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -128,6 +205,7 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: package.json
+
       - name: Use Node.js
         uses: actions/setup-node@v6
         with:
@@ -143,10 +221,10 @@ jobs:
         shell: bash
         run: bun install
 
-      - name: Build & Push Docker Image
-        run: bun nx affected --target docker-push --parallel 2
+      - name: Build & Push Docker Image for ${{ matrix.project }}
+        run: |
+          echo "Building and pushing Docker image for project: ${{ matrix.project }}"
+          bun nx run ${{ matrix.project }}:docker-push
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
-          NX_BASE: ${{ needs.nx-sha.outputs.base }}
-          NX_HEAD: ${{ needs.nx-sha.outputs.head }}
