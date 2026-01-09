@@ -42,7 +42,15 @@
     },
     "@container/docker:test": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["default", "{projectRoot}/Dockerfile"]
+    },
+    "@container/docker:build": {
+      "cache": false,
+      "inputs": ["default", "{projectRoot}/Dockerfile"]
+    },
+    "@container/docker:run": {
+      "cache": false,
+      "inputs": ["default", "{projectRoot}/Dockerfile"]
     }
   },
   "namedInputs": {
@@ -55,7 +63,7 @@
       "!{projectRoot}/test-setup.[jt]s",
       "!{projectRoot}/biome.json"
     ],
-    "sharedGlobals": ["{workspaceRoot}/bun.lock"]
+    "sharedGlobals": ["{workspaceRoot}/bun.lock", "{workspaceRoot}/.github/**/*"]
   },
   "cli": {
     "packageManager": "bun"
