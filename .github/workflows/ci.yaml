@@ -52,7 +52,6 @@ jobs:
         with:
           node-version-file: package.json
 
-
       - name: install dependencies
         shell: bash
         run: bun install
@@ -97,6 +96,8 @@ jobs:
 
       - name: Docker Setup
         uses: ./.github/actions/setup-docker
+        with:
+          setup-qemu: false
 
       - name: install dependencies
         shell: bash

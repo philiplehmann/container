@@ -1,5 +1,5 @@
 name: Docker Setup
-description: install buildx, qemu and docker login
+description: install buildx, qemu and docker login with caching
 inputs:
   docker-username:
     description: "docker username"
@@ -9,11 +9,27 @@ inputs:
     description: "docker password"
     required: false
     default: ""
+  setup-qemu:
+    description: should setup qemu for arm64
+    required: false
+    default: "true"
+  cache-key:
+    description: "cache key prefix for docker buildx cache"
+    required: false
+    default: "docker-buildx"
 runs:
   using: "composite"
   steps:
+    - name: Cache Docker buildx
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ inputs.cache-key }}-${{ runner.os }}-${{ runner.arch }}-${{ github.sha }}
+        restore-keys: |
+          ${{ inputs.cache-key }}-${{ runner.os }}-${{ runner.arch }}-
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
+      if: runner.arch != 'ARM64' && inputs.setup-qemu == 'true'
       with:
         platforms: arm64
         image: tonistiigi/binfmt:qemu-v8.1.5
@@ -21,7 +37,7 @@ runs:
     - name: Set up Docker Context for Buildx
       shell: bash
       run: |
-        docker context create container-builder
+        docker context create container-builder || echo "Context already exists"
 
     - name: Set up Docker Buildx
       id: buildx
@@ -29,11 +45,17 @@ runs:
       with:
         version: latest
         endpoint: container-builder
+        driver-opts: |
+          image=moby/buildkit:latest
+          network=host
+        buildkitd-flags: --debug
 
-    - name: Set BUILDX_BUILDER environment variable
+    - name: Set BUILDX_BUILDER and cache environment variables
       shell: bash
       run: |
         echo "BUILDX_BUILDER=${{ steps.buildx.outputs.name }}" >> $GITHUB_ENV
+        echo "DOCKER_BUILDKIT_CACHE_FROM=type=local,src=/tmp/.buildx-cache" >> $GITHUB_ENV
+        echo "DOCKER_BUILDKIT_CACHE_TO=type=local,dest=/tmp/.buildx-cache-new,mode=max" >> $GITHUB_ENV
 
     - name: Login to dockerhub
       uses: docker/login-action@v3
@@ -41,3 +63,11 @@ runs:
       with:
         username: ${{ inputs.docker-username }}
         password: ${{ inputs.docker-password }}
+
+    - name: Move cache
+      shell: bash
+      run: |
+        rm -rf /tmp/.buildx-cache
+        if [ -d "/tmp/.buildx-cache-new" ]; then
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+        fi
