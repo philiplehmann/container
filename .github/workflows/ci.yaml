@@ -80,7 +80,7 @@ jobs:
           echo "has-affected-build=$HAS_BUILD" >> $GITHUB_OUTPUT
 
           # Create matrix for test job (with OS matrix)
-          TEST_MATRIX=$(echo $TEST_PROJECTS | jq -c '{project: ., os: ["ubuntu-24.04", "ubuntu-24.04-arm"], arch: ["amd64", "arm64"]}')
+          TEST_MATRIX=$(echo $TEST_PROJECTS | jq -c '{project: ., os: ["ubuntu-24.04", "ubuntu-24.04-arm"]}')
           echo "test-matrix=$TEST_MATRIX" >> $GITHUB_OUTPUT
 
           # Create matrix for build job
@@ -163,9 +163,9 @@ jobs:
         shell: bash
         run: bun install
 
-      - name: test ${{ matrix.project }} on ${{ matrix.arch }}
+      - name: test ${{ matrix.project }}
         run: |
-          echo "Running tests for project: ${{ matrix.project }} on ${{ matrix.arch }}"
+          echo "Running tests for project: ${{ matrix.project }}"
           bun nx run-many --projects ${{ matrix.project }} --target docker-test,docker-e2e --parallel=1
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
