@@ -1,7 +1,7 @@
-import { spawn, type SpawnOptions } from 'node:child_process';
+import { type SpawnOptions, spawn } from 'node:child_process';
 import { arch } from 'node:os';
-import { config } from 'dotenv';
 import { dirname, resolve as pathResolve } from 'node:path';
+import { config } from 'dotenv';
 
 export type DockerPlatform = 'amd64' | 'arm64';
 

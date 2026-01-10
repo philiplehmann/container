@@ -1,5 +1,5 @@
-import { currentArch, dockerSpawn, isDockerPlatform } from './docker-helper';
 import { dockerBuildxBuild } from './docker-buildx-build';
+import { currentArch, dockerSpawn, isDockerPlatform } from './docker-helper';
 import { dockerImageRemove } from './docker-image-remove';
 
 export async function dockerRun({

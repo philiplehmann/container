@@ -24,8 +24,8 @@ const possibleTsConfigs = [
 
 const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
   {
-    include: includePattern = '**/*.spec.ts',
-    exclude: excludePattern = '**/e2e/**',
+    include: includePattern,
+    exclude: excludePattern,
     concurrency,
     coverageBranches,
     coverageExclude,
@@ -44,7 +44,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
     skipPattern,
     timeout,
     updateSnapshots,
-    allowEmptySuite = true,
+    allowEmptySuite,
     tsconfig = 'tsconfig.spec.json',
   },
   context,

@@ -22,13 +22,7 @@
     },
     "log-level": {
       "type": "string",
-      "enum": [
-        "none",
-        "debug",
-        "info",
-        "warn",
-        "error"
-      ],
+      "enum": ["none", "debug", "info", "warn", "error"],
       "required": false,
       "description": "The level of logging. In order, from the most verbose to the least verbose: debug, info, warn, error."
     }

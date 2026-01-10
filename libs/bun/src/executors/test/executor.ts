@@ -15,15 +15,15 @@ const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> =>
 
 const bunTestExecutor: Executor<NodeTestExecutorSchema> = async (
   {
-    include: includePattern = '**/*.spec.ts',
-    exclude: excludePattern = '**/e2e/**',
+    include: includePattern,
+    exclude: excludePattern,
     testNamePattern,
-    timeout = 30_000,
+    timeout,
     updateSnapshots,
     rerunEach,
     todo,
     only,
-    passWithNoTests = true,
+    passWithNoTests,
     concurrent,
     randomize,
     seed,

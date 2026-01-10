@@ -25,7 +25,6 @@ jobs:
       base: ${{ steps.set-shas.outputs.base }}
       head: ${{ steps.set-shas.outputs.head }}
       affected-projects: ${{ steps.get-affected.outputs.affected-projects }}
-      lint-matrix: ${{ steps.get-affected.outputs.lint-matrix }}
       test-matrix: ${{ steps.get-affected.outputs.test-matrix }}
       build-matrix: ${{ steps.get-affected.outputs.build-matrix }}
       has-affected-lint: ${{ steps.get-affected.outputs.has-affected-lint }}
@@ -60,11 +59,11 @@ jobs:
           echo "HEAD: ${{ env.NX_HEAD }}"
 
           # Get affected projects for lint targets (lint, typecheck, bun-test)
-          LINT_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=lint,typecheck,bun-test --json 2>/dev/null || echo "[]")
+          LINT_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=lint,typecheck --json 2>/dev/null || echo "[]")
           echo "Affected projects for lint: $LINT_PROJECTS"
 
           # Get affected projects for test targets
-          TEST_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=docker-test --json 2>/dev/null || echo "[]")
+          TEST_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=test --json 2>/dev/null || echo "[]")
           echo "Affected projects for test: $TEST_PROJECTS"
 
           # Get affected projects for build targets
@@ -79,10 +78,6 @@ jobs:
           echo "has-affected-lint=$HAS_LINT" >> $GITHUB_OUTPUT
           echo "has-affected-test=$HAS_TEST" >> $GITHUB_OUTPUT
           echo "has-affected-build=$HAS_BUILD" >> $GITHUB_OUTPUT
-
-          # Create matrix for lint job
-          LINT_MATRIX=$(echo $LINT_PROJECTS | jq -c '{project: .}')
-          echo "lint-matrix=$LINT_MATRIX" >> $GITHUB_OUTPUT
 
           # Create matrix for test job (with OS matrix)
           TEST_MATRIX=$(echo $TEST_PROJECTS | jq -c '{project: ., os: ["ubuntu-24.04"], arch: ["amd64", "arm64"]}')
@@ -106,9 +101,6 @@ jobs:
       actions: "read"
     needs:
       - nx-sha
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.nx-sha.outputs.lint-matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -127,12 +119,8 @@ jobs:
         shell: bash
         run: bun install
 
-      - name: lint ${{ matrix.project }}
-        run: |
-          echo "Running lint for project: ${{ matrix.project }}"
-          bun nx run ${{ matrix.project }}:lint
-          bun nx run ${{ matrix.project }}:typecheck
-          bun nx run ${{ matrix.project }}:bun-test
+      - name: lint ${{ needs.nx-sha.outputs.affected-projects }}
+        run: bun nx run-many ${{ needs.nx-sha.outputs.affected-projects }} --target lint typecheck
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}

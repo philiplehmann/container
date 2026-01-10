@@ -19,10 +19,7 @@
     },
     "platform": {
       "type": "string",
-      "enum": [
-        "arm64",
-        "amd64"
-      ],
+      "enum": ["arm64", "amd64"],
       "required": false
     }
   },

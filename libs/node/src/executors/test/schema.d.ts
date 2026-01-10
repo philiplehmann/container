@@ -1,6 +1,6 @@
 export interface NodeTestExecutorSchema {
-  include?: string; // glob pattern for test files to include
-  exclude?: string; // glob pattern for test files to exclude
+  include: string; // glob pattern for test files to include
+  exclude: string; // glob pattern for test files to exclude
   concurrency?: number; // specify test runner concurrency
   coverageBranches?: number; // the branch coverage minimum threshold
   coverageExclude?: string[]; // exclude files from coverage report that match this glob pattern
@@ -19,6 +19,6 @@ export interface NodeTestExecutorSchema {
   skipPattern?: string; // run tests whose name do not match this regular expression
   timeout?: number; // specify test runner timeout
   updateSnapshots?: boolean; // regenerate test snapshots
-  allowEmptySuite?: boolean; // allow test runner to complete with no tests found
+  allowEmptySuite: boolean; // allow test runner to complete with no tests found
   tsconfig?: string; // specify the path to the tsconfig file
 }

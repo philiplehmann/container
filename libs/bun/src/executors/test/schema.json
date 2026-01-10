@@ -7,11 +7,13 @@
   "properties": {
     "include": {
       "type": "string",
-      "description": "glob pattern for test files to include"
+      "description": "glob pattern for test files to include",
+      "default": "**/*.spec.ts"
     },
     "exclude": {
       "type": "string",
-      "description": "glob pattern for test files to exclude"
+      "description": "glob pattern for test files to exclude",
+      "default": "**/e2e/**"
     },
     "testNamePattern": {
       "type": "string",
@@ -19,7 +21,8 @@
     },
     "timeout": {
       "type": "number",
-      "description": "Set the per-test timeout in milliseconds, default is 5000."
+      "description": "Set the per-test timeout in milliseconds, default is 5000.",
+      "default": 30000
     },
     "updateSnapshots": {
       "type": "boolean",
@@ -39,7 +42,8 @@
     },
     "passWithNoTests": {
       "type": "boolean",
-      "description": "Exit with code 0 when no tests are found"
+      "description": "Exit with code 0 when no tests are found",
+      "default": true
     },
     "concurrent": {
       "type": "boolean",
@@ -59,10 +63,7 @@
     },
     "coverageReporter": {
       "type": "string",
-      "enum": [
-        "text",
-        "lcov"
-      ],
+      "enum": ["text", "lcov"],
       "description": "Report coverage in 'text' and/or 'lcov'. Defaults to 'text'."
     },
     "coverageDir": {
@@ -75,10 +76,7 @@
     },
     "reporter": {
       "type": "string",
-      "enum": [
-        "dots",
-        "junit"
-      ],
+      "enum": ["dots", "junit"],
       "description": "Test output reporter format. Available: 'junit' (requires --reporter-outfile), 'dots'. Default: console output."
     },
     "reporterOutfile": {

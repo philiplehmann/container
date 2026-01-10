@@ -6,10 +6,12 @@
   "type": "object",
   "properties": {
     "include": {
-      "type": "string"
+      "type": "string",
+      "default": "**/*.spec.ts"
     },
     "exclude": {
-      "type": "string"
+      "type": "string",
+      "default": "**/e2e/**"
     },
     "concurrency": {
       "type": "number"
@@ -73,7 +75,8 @@
       "type": "boolean"
     },
     "allowEmptySuite": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "tsconfig": {
       "type": "string"

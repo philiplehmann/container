@@ -1,8 +1,8 @@
 export interface NodeTestExecutorSchema {
-  include?: string; // glob pattern for test files to include
-  exclude?: string; // glob pattern for test files to exclude
+  include: string; // glob pattern for test files to include
+  exclude: string; // glob pattern for test files to exclude
   testNamePattern?: string; // Run only tests with a name that matches the given regex.
-  timeout?: number; // Set the per-test timeout in milliseconds, default is 5000.
+  timeout: number; // Set the per-test timeout in milliseconds, default is 5000.
   updateSnapshots?: boolean; // Update snapshot files
   rerunEach?: number; // Re-run each test file <NUMBER> times, helps catch certain bugs
   todo?: boolean; // Include tests that are marked with "test.todo()"
