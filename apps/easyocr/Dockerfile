@@ -4,24 +4,21 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/easyocr`.
-FROM bitnami/minideb:bookworm AS models
-RUN apt-get update && \
-    apt-get install --no-install-recommends --yes unzip
+FROM python:3.14-trixie
 
 WORKDIR /app
 
-RUN mkdir /app/model
-
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/craft_mlt_25k.zip /app/model/craft_mlt_25k.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/english_g2.zip /app/model/english_g2.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/latin_g2.zip /app/model/latin_g2.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/zh_sim_g2.zip /app/model/zh_sim_g2.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/japanese_g2.zip /app/model/japanese_g2.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/korean_g2.zip /app/model/korean_g2.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.2/telugu.zip /app/model/telugu.zip
-ADD https://github.com/JaidedAI/EasyOCR/releases/download/v1.2/kannada.zip /app/model/kannada.zip
-
-RUN unzip /app/model/craft_mlt_25k.zip -d /app/model && \
+RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130 && \
+    mkdir -p /app/model && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/craft_mlt_25k.zip --output /app/model/craft_mlt_25k.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/english_g2.zip --output /app/model/english_g2.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/latin_g2.zip --output /app/model/latin_g2.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/zh_sim_g2.zip --output /app/model/zh_sim_g2.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/japanese_g2.zip --output /app/model/japanese_g2.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/korean_g2.zip --output /app/model/korean_g2.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.2/telugu.zip --output /app/model/telugu.zip && \
+    curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.2/kannada.zip --output /app/model/kannada.zip && \
+    unzip /app/model/craft_mlt_25k.zip -d /app/model && \
     unzip /app/model/english_g2.zip -d /app/model && \
     unzip /app/model/latin_g2.zip -d /app/model && \
     unzip /app/model/zh_sim_g2.zip -d /app/model && \
@@ -38,31 +35,14 @@ RUN unzip /app/model/craft_mlt_25k.zip -d /app/model && \
     rm /app/model/telugu.zip && \
     rm /app/model/kannada.zip
 
-FROM bitnami/pytorch:2.7.0-debian-12-r2 AS easyocr
-
-USER 0:0
-
-WORKDIR /app
-
-RUN apt-get update && \
-    apt-get install --no-install-recommends --yes libvips wget && \
-    wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.0-1_all.deb && \
-    dpkg -i cuda-keyring_1.0-1_all.deb && \
-    apt-get update && \
-    apt-get install -y cuda-runtime-11-8 && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
 COPY apps/easyocr/requirements.txt .
 COPY apps/easyocr/src/main.py .
 COPY apps/easyocr/src/logging.conf .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY --from=models --chown=1000:1000 /app/model /app/model
-
 RUN mkdir /app/tmp && \
-    chown -R 1000:1000 /app/tmp
+    chown -R 1000:1000 /app
 
 ENV PORT=3000
 ENV WEB_CONCURRENCY=1

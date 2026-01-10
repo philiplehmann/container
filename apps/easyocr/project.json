@@ -52,14 +52,14 @@
       "options": {
         "tag": "philiplehmann/easyocr:test",
         "file": "apps/easyocr/Dockerfile",
-        "platforms": ["amd64"]
+        "platforms": ["amd64", "arm64"]
       }
     },
     "docker-push": {
       "executor": "@container/docker:build",
       "dependsOn": [],
       "options": {
-        "platforms": ["amd64"],
+        "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/easyocr:auto"],
         "file": "apps/easyocr/Dockerfile"
       }
