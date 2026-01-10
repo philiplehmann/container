@@ -80,7 +80,7 @@ jobs:
           echo "has-affected-build=$HAS_BUILD" >> $GITHUB_OUTPUT
 
           # Create matrix for test job (with OS matrix)
-          TEST_MATRIX=$(echo $TEST_PROJECTS | jq -c '{project: ., os: ["ubuntu-24.04"], arch: ["amd64", "arm64"]}')
+          TEST_MATRIX=$(echo $TEST_PROJECTS | jq -c '{project: ., os: ["ubuntu-24.04", "ubuntu-24.04-arm"], arch: ["amd64", "arm64"]}')
           echo "test-matrix=$TEST_MATRIX" >> $GITHUB_OUTPUT
 
           # Create matrix for build job
