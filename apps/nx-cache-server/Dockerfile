@@ -4,17 +4,29 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/nx-cache-server`.
-FROM rust:1.92.0-trixie AS rust
+
+# Builder stage to download the binary
+FROM --platform=$BUILDPLATFORM debian:trixie-slim AS builder
 
 ARG NX_CACHE_SERVER_VERSION
+ARG TARGETPLATFORM
 
-ADD https://github.com/nxcite/nx-cache-server/archive/refs/tags/v${NX_CACHE_SERVER_VERSION}.tar.gz v${NX_CACHE_SERVER_VERSION}.tar.gz
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN tar -xzf v${NX_CACHE_SERVER_VERSION}.tar.gz; \
-    cd nx-cache-server-${NX_CACHE_SERVER_VERSION}; \
-    cargo install --path .
+# Download architecture-specific binary based on target platform
+RUN ARCH_SUFFIX=$(case ${TARGETPLATFORM} in \
+    linux/amd64) echo "x86_64" ;; \
+    linux/arm64) echo "arm64" ;; \
+    *) echo "Unsupported platform: ${TARGETPLATFORM}" && exit 1 ;; \
+    esac) && \
+    curl -L "https://github.com/philiplehmann/nx-cache-server/releases/download/v${NX_CACHE_SERVER_VERSION}/nx-cache-aws-v${NX_CACHE_SERVER_VERSION}-linux-${ARCH_SUFFIX}" \
+    -o /tmp/nx-cache-aws && \
+    chmod +x /tmp/nx-cache-aws
 
-FROM debian:trixie-slim
+# Final stage - minimal runtime image
+FROM --platform=$TARGETPLATFORM debian:trixie-slim
 
 ENV PORT=3000
 
@@ -22,7 +34,11 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     libssl3 \
     && rm -rf /var/lib/apt/lists/*
+
 RUN useradd -ms /bin/bash -u 1000 nx-cache-server
+
+# Copy binary from builder stage
+COPY --from=builder /tmp/nx-cache-aws /usr/local/bin/nx-cache-aws
 
 # # Required
 # export S3_BUCKET_NAME="your-s3-bucket-name"
@@ -40,8 +56,6 @@ RUN useradd -ms /bin/bash -u 1000 nx-cache-server
 # export S3_ENDPOINT_URL="your-s3-endpoint-url"   # For S3-compatible services like MinIO
 # export S3_TIMEOUT="30"                          # S3 operation timeout in seconds (default: 30)
 # export PORT="3000"                              # Server port (default: 3000)
-
-COPY --from=rust /usr/local/cargo/bin/nx-cache-aws /usr/local/bin/nx-cache-aws
 
 USER nx-cache-server
 EXPOSE $PORT
