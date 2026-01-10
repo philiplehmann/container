@@ -4,7 +4,7 @@ import { currentArch } from '../../docker-helper';
 import { dockerImageRemove } from '../../docker-image-remove';
 import type { DockerTestExecutorSchema } from './schema';
 
-const runExecutor: Executor<DockerTestExecutorSchema> = async ({
+const runExecutor: PromiseExecutor<DockerTestExecutorSchema> = async ({
   file,
   tag,
   platforms,

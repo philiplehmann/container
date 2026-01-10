@@ -1,6 +1,6 @@
-import type { PythonInstallExecutorSchema } from './schema';
-import type { Executor } from '@nx/devkit';
 import { promiseSpawn } from '@container/docker';
+import type { Executor } from '@nx/devkit';
+import type { PythonInstallExecutorSchema } from './schema';
 
 const runExecutor: Executor<PythonInstallExecutorSchema> = async (options) => {
   try {

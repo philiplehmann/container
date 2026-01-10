@@ -52,7 +52,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
 ) => {
   const root = projectRoot(context);
 
-  if (existsSync(resolve(root, tsconfig))) {
+  if (!existsSync(resolve(root, tsconfig))) {
     for (const config in possibleTsConfigs) {
       if (existsSync(resolve(root, config))) {
         tsconfig = config;
