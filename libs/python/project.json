@@ -8,9 +8,9 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/python",
+        "outputPath": "{workspaceRoot}/dist/{projectRoot}",
         "main": "libs/python/src/index.ts",
-        "tsConfig": "libs/python/tsconfig.lib.json",
+        "tsConfig": "tsconfig.lib.json",
         "assets": [
           "libs/python/*.md",
           {
