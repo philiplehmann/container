@@ -32,7 +32,7 @@ const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
     }
   }
   try {
-    await promiseSpawn('tsc', ['--noEmit', '-p', resolve(root, tsconfig)], {
+    await promiseSpawn('node_modules/.bin/tsc', ['--noEmit', '-p', resolve(root, tsconfig)], {
       cwd: context.root,
       env: process.env,
     });
