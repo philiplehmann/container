@@ -6,9 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/python",
         "main": "libs/python/src/index.ts",
@@ -37,6 +35,17 @@
           }
         ]
       }
+    },
+    "lint": {
+      "executor": "@container/biomejs:lint"
+    },
+    "test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {}
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     }
   },
   "tags": []

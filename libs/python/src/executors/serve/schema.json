@@ -25,10 +25,14 @@
     },
     "port": {
       "type": "number"
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables to set for the python process",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
-  "required": [
-    "entrypoint",
-    "cwd"
-  ]
+  "required": ["entrypoint", "cwd"]
 }

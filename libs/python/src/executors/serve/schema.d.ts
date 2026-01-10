@@ -5,4 +5,5 @@ export interface PythonServeExecutorSchema {
   module?: string;
   executable?: string;
   port?: number;
+  env?: Record<string, string>;
 }
