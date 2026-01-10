@@ -35,6 +35,7 @@ const bunTestExecutor: Executor<NodeTestExecutorSchema> = async (
     reporterOutfile,
     onlyFailures,
     maxConcurrency,
+    env = {},
   },
   context,
 ) => {
@@ -109,7 +110,7 @@ const bunTestExecutor: Executor<NodeTestExecutorSchema> = async (
 
     console.log(`Executing tests for project in ${root ?? context.root} with tests: [${withoutExcluded.join(',')}]`);
     await promiseSpawn('bun', args, {
-      env: { ...process.env },
+      env: { ...env, ...process.env },
       cwd: root,
     });
     return {

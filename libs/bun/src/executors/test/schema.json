@@ -90,6 +90,13 @@
     "maxConcurrency": {
       "type": "number",
       "description": "Maximum number of concurrent tests to execute at once. Default is 20."
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables to set for the test process",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "required": []

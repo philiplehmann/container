@@ -21,4 +21,5 @@ export interface NodeTestExecutorSchema {
   updateSnapshots?: boolean; // regenerate test snapshots
   allowEmptySuite: boolean; // allow test runner to complete with no tests found
   tsconfig?: string; // specify the path to the tsconfig file
+  env?: Record<string, string>; // environment variables to set for the test process
 }

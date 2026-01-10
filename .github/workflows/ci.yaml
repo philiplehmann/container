@@ -58,13 +58,13 @@ jobs:
           echo "BASE: ${{ env.NX_BASE }}"
           echo "HEAD: ${{ env.NX_HEAD }}"
 
-          # Get affected projects for lint targets (lint, typecheck, bun-test)
-          LINT_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=lint,typecheck --json 2>/dev/null || echo "[]")
+          # Get affected projects for lint targets (lint, typecheck, test)
+          LINT_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=lint,typecheck,test --json 2>/dev/null || echo "[]")
           echo "Affected projects for lint: $LINT_PROJECTS"
 
-          # Get affected projects for test targets
-          TEST_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=test --json 2>/dev/null || echo "[]")
-          echo "Affected projects for test: $TEST_PROJECTS"
+          # Get affected projects for docker test targets (docker-test, docker-e2e)
+          TEST_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=docker-test,docker-e2e --json 2>/dev/null || echo "[]")
+          echo "Affected projects for docker test: $TEST_PROJECTS"
 
           # Get affected projects for build targets
           BUILD_PROJECTS=$(bun nx show projects --affected --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }} --withTarget=docker-push --json 2>/dev/null || echo "[]")
@@ -166,7 +166,7 @@ jobs:
       - name: test ${{ matrix.project }} on ${{ matrix.arch }}
         run: |
           echo "Running tests for project: ${{ matrix.project }} on ${{ matrix.arch }}"
-          bun nx run ${{ matrix.project }}:docker-test
+          bun nx run-many --projects ${{ matrix.project }} --target docker-test,docker-e2e --parallel=1
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}

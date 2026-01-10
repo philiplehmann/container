@@ -33,48 +33,49 @@
     "typecheck": {
       "executor": "@container/tsc:typecheck"
     },
-    "bun-test": {
+    "docker-test": {
       "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "dependsOn": ["docker-test"],
+      "dependsOn": ["docker-build-test"],
       "options": {}
     },
-    "bun-test-local": {
+    "local-test": {
       "executor": "@container/bun:test",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"]
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "env": {
+          "TEST_SERVER_RUNNER": "local"
+        }
+      }
     },
     "e2e-install": {
       "executor": "@container/helper:e2e-install",
       "options": {}
     },
-    "e2e": {
+    "docker-e2e": {
       "executor": "@nx/playwright:playwright",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "dependsOn": ["e2e-install", "docker-test"],
+      "dependsOn": ["e2e-install", "docker-build-test"],
       "options": {
         "testFiles": ["src/e2e/snapshot.spec.ts"],
         "browser": "chromium",
         "skipInstall": true
       }
     },
-    "e2e-local": {
+    "local-e2e": {
       "executor": "@nx/playwright:playwright",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "testFiles": ["src/e2e/snapshot.spec.ts"],
-        "browser": "chromium"
+        "browser": "chromium",
+        "options": {
+          "env": {
+            "TEST_SERVER_RUNNER": "local"
+          }
+        }
       }
     },
-    "test": {
-      "executor": "@container/helper:empty",
-      "dependsOn": ["e2e", "bun-test"],
-      "options": {}
-    },
-    "test-local": {
-      "executor": "@container/helper:empty",
-      "dependsOn": ["e2e-local", "bun-test-local"]
-    },
-    "docker-test": {
+    "docker-build-test": {
       "executor": "@container/docker:test",
       "dependsOn": ["build"],
       "options": {

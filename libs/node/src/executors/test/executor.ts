@@ -46,6 +46,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
     updateSnapshots,
     allowEmptySuite,
     tsconfig = 'tsconfig.spec.json',
+    env = {},
   },
   context,
 ) => {
@@ -149,7 +150,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
       `Executing tests for project in ${root ?? context.root} with tsconfig ${tsconfig} with tests: [${withoutExcluded.join(',')}]`,
     );
     await promiseSpawn('node', args, {
-      env: { ...process.env, SWC_NODE_PROJECT: tsconfig },
+      env: { ...env, ...process.env, SWC_NODE_PROJECT: tsconfig },
       cwd: root ?? context.root,
     });
     return {

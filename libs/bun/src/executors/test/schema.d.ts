@@ -19,4 +19,5 @@ export interface NodeTestExecutorSchema {
   reporterOutfile?: string; // Output file path for the reporter format (required with --reporter).
   onlyFailures?: boolean; // Only display test failures, hiding passing tests.
   maxConcurrency?: number; // Maximum number of concurrent tests to execute at once. Default is 20.
+  env?: Record<string, string>; // Environment variables to set for the test process
 }

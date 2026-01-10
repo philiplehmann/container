@@ -11,18 +11,13 @@
     "typecheck": {
       "executor": "@container/tsc:typecheck"
     },
-    "bun-test": {
+    "docker-test": {
       "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "dependsOn": ["docker-test"],
+      "dependsOn": ["docker-build-test"],
       "options": {}
     },
-    "test": {
-      "executor": "@container/helper:empty",
-      "dependsOn": ["bun-test"],
-      "options": {}
-    },
-    "docker-test": {
+    "docker-build-test": {
       "executor": "@container/docker:test",
       "options": {
         "tag": "philiplehmann/mailcatcher:test",

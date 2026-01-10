@@ -80,6 +80,13 @@
     },
     "tsconfig": {
       "type": "string"
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables to set for the test process",
+      "additionalProperties": {
+        "type": "string"
+      }
     }
   },
   "required": []
