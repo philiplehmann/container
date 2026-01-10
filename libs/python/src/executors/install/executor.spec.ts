@@ -1,6 +1,6 @@
-import type { PythonInstallExecutorSchema } from './schema';
+import { describe, expect, it } from 'vitest';
 import executor from './executor';
-import { describe, it, expect } from 'vitest';
+import type { PythonInstallExecutorSchema } from './schema';
 
 const options: PythonInstallExecutorSchema = {
   requirements: 'apps/easyocr/requirements.txt',

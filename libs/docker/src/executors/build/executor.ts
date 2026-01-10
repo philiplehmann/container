@@ -46,7 +46,8 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
         tags = createTags(tags, versionFromEnv(dockerfile, 'PDFTK_VERSION'));
         break;
       case 'nx-cache-server':
-        tags = createTags(tags, versionFromEnv(file, 'NX_CACHE_SERVER_VERSION'));
+        tags = createTags(tags, versionFromEnv(dockerfile, 'NX_CACHE_SERVER_VERSION'));
+        break;
       case 'easyocr':
         tags = createTags(tags, versionFromRequirements(dockerfile, 'easyocr'));
         break;

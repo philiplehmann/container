@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Hoist the mock function definitions so they are available to the vi.mock factory
 const { mockGetRequirementsPath } = vi.hoisted(() => ({ mockGetRequirementsPath: vi.fn() }));

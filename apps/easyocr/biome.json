@@ -1,10 +1,6 @@
 {
-  "extends": [
-    "./../../biome.json"
-  ],
+  "extends": ["./../../biome.json"],
   "files": {
-    "ignore": [
-      "src/test/snapshots/*.json"
-    ]
+    "includes": ["!src/test/snapshots/*.json"]
   }
 }
