@@ -1,5 +1,5 @@
-import { envForDockerFile } from './docker-helper';
 import type { ExecutorContext } from '@nx/devkit';
+import { envForDockerFile } from './docker-helper';
 import { getRequirementsPath } from './getRequirementsPath';
 import { readFile } from './readFile';
 export const versionFromPackageJson = (
@@ -25,7 +25,7 @@ export const versionFromRequirements = (dockerfile: string, lib: string) => {
   const [, version] =
     readFile(requirements)
       .split('\n')
-      .map((line) => line.split('#')[0].trim()) // Remove inline comments and trim
+      .map((line) => line.split('#')[0]?.trim() || '') // Remove inline comments and trim
       .map((line) => line.split('==').map((part) => part.trim())) // Trim both name and version
       .find(([name]) => name === lib) || [];
   if (version) {
@@ -34,7 +34,7 @@ export const versionFromRequirements = (dockerfile: string, lib: string) => {
   throw new Error(`can not find ${lib} in ${requirements}`);
 };
 
-export const tagToRepository = (tag: string) => {
+export const tagToRepository = (tag = '') => {
   const repository = tag.split(':').shift();
   if (!repository) throw new Error('repository not found in tag');
   return repository;

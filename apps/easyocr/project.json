@@ -9,15 +9,13 @@
       "options": {
         "entrypoint": "main:app",
         "module": "uvicorn",
-        "args": [
-          "--reload",
-          "--log-config=./logging.conf"
-        ],
-        "cwd": "apps/easyocr/src"
+        "args": ["--reload", "--log-config=./logging.conf"],
+        "cwd": "apps/easyocr/src",
+        "env": {
+          "EASYOCR_DOWNLOAD_ENABLED": "True"
+        }
       },
-      "dependsOn": [
-        "install"
-      ]
+      "dependsOn": ["install"]
     },
     "install": {
       "executor": "@container/python:install",
@@ -28,62 +26,41 @@
     },
     "lint": {
       "executor": "@container/biomejs:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ]
+      "outputs": ["{options.outputFile}"]
     },
-    "vitest": {
-      "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "dependsOn": [
-        "docker-test"
-      ],
-      "options": {}
-    },
-    "vitest-local": {
-      "executor": "@nx/vite:test",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
-      "options": {}
-    },
-    "test": {
-      "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest"
-      ],
-      "options": {}
-    },
-    "test-local": {
-      "executor": "@container/helper:empty",
-      "dependsOn": [
-        "vitest-local"
-      ],
-      "options": {}
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
     },
     "docker-test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-build-test"],
+      "options": {}
+    },
+    "local-test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "env": {
+          "TEST_SERVER_RUNNER": "local"
+        }
+      }
+    },
+    "docker-build-test": {
       "executor": "@container/docker:test",
       "dependsOn": [],
       "options": {
         "tag": "philiplehmann/easyocr:test",
         "file": "apps/easyocr/Dockerfile",
-        "platforms": [
-          "amd64"
-        ]
+        "platforms": ["amd64"]
       }
     },
     "docker-push": {
       "executor": "@container/docker:build",
       "dependsOn": [],
       "options": {
-        "platforms": [
-          "amd64"
-        ],
-        "tags": [
-          "philiplehmann/easyocr:auto"
-        ],
+        "platforms": ["amd64"],
+        "tags": ["philiplehmann/easyocr:auto"],
         "file": "apps/easyocr/Dockerfile"
       }
     },
@@ -95,7 +72,5 @@
       }
     }
   },
-  "tags": [
-    "easyocr"
-  ]
+  "tags": ["easyocr"]
 }
