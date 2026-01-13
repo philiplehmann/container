@@ -56,14 +56,17 @@ export async function streamChildProcess(
     child.kill();
   });
 
-  await finished(child.stdout);
-
-  // Wait for the process to exit and check the exit code
-  const exitCode = await new Promise<number | null>((resolve) => {
+  // Set up exit listener before awaiting to avoid race condition
+  const exitPromise = new Promise<number | null>((resolve) => {
     child.on('exit', (code) => {
       resolve(code);
     });
   });
+
+  await finished(child.stdout);
+
+  // Wait for the process to exit and check the exit code
+  const exitCode = await exitPromise;
 
   if (exitCode !== 0) {
     const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
