@@ -2,7 +2,7 @@
 # MailCatcher Dockerfile
 #
 
-FROM ruby:4.0.0-trixie AS bundler
+FROM ruby:4.0.1-trixie AS bundler
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
@@ -17,7 +17,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev && \
     gem install mailcatcher --version ${MAILCATCHER_VERSION} --no-document
 
-FROM ruby:4.0.0-slim-trixie AS runner
+FROM ruby:4.0.1-slim-trixie AS runner
 
 COPY --from=bundler /usr/local/bundle /usr/local/bundle
 
