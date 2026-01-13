@@ -74,26 +74,32 @@ export async function formFillStream(
     }
 
     const child = pdftk([inputFile, 'fill_form', '-', 'output', '-', ...args], options);
-    child.stdout.pipe(output, { end: true }).on('error', (error) => {
-      console.error('child.stdout', error);
+
+    child.stdin.on('error', (error) => {
+      console.error('child.stdin error:', error);
     });
 
     child.stdin.write(generateFDF(fields, data));
     child.stdin.end();
 
-    child.stderr.pipe(process.stderr).on('error', (error) => {
-      console.error('child.stderr', error);
-    });
+    child.stdout
+      .on('error', (error) => {
+        console.error('child.stdout error:', error);
+      })
+      .pipe(output, { end: true });
 
-    input.on('close', () => {
-      child.kill();
-    });
-    await finished(output);
+    child.stderr
+      .on('error', (error) => {
+        console.error('child.stderr error:', error);
+      })
+      .pipe(process.stderr);
+
+    await finished(child.stdout);
   } finally {
     if (existsSync(inputFile))
       unlink(inputFile, (error) => {
         if (error) {
-          console.error('unlink', error);
+          console.error('unlink error:', error);
         }
       });
   }
