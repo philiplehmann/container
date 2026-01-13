@@ -8,7 +8,13 @@ FROM python:3.14-trixie
 
 WORKDIR /app
 
-RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130 && \
+RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt update && \
+    apt install -y libvips libvips-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130 && \
     mkdir -p /app/model && \
     curl -L https://github.com/JaidedAI/EasyOCR/releases/download/pre-v1.1.6/craft_mlt_25k.zip --output /app/model/craft_mlt_25k.zip && \
     curl -L https://github.com/JaidedAI/EasyOCR/releases/download/v1.3/english_g2.zip --output /app/model/english_g2.zip && \

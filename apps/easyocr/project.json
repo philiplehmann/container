@@ -35,7 +35,9 @@
       "executor": "@container/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-build-test"],
-      "options": {}
+      "options": {
+        "timeout": 60000
+      }
     },
     "local-test": {
       "executor": "@container/bun:test",
@@ -43,7 +45,8 @@
       "options": {
         "env": {
           "TEST_SERVER_RUNNER": "local"
-        }
+        },
+        "timeout": 60000
       }
     },
     "docker-build-test": {
