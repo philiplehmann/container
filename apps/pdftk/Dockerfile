@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/pdftk`.
-FROM oven/bun:1.3.5-slim AS pdftk
+FROM oven/bun:1.3.6-slim AS pdftk
 
 ARG PDFTK_VERSION
 ARG TARGETPLATFORM
@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.28%2B6/OpenJDK11U-jre_${JDK_ARCH}_linux_hotspot_11.0.28_6.tar.gz" | tar --strip-components=1 -C /java -zxivf  -
 
 
-FROM oven/bun:1.3.5-slim
+FROM oven/bun:1.3.6-slim
 
 ARG JRE_VERSION
 
