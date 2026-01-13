@@ -41,7 +41,7 @@
       "inputs": ["default"]
     },
     "@container/docker:test": {
-      "cache": true,
+      "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile"]
     },
     "@container/docker:build": {
