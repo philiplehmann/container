@@ -88,13 +88,28 @@ export async function formFillStream(
       })
       .pipe(output, { end: true });
 
-    child.stderr
-      .on('error', (error) => {
-        console.error('child.stderr error:', error);
-      })
-      .pipe(process.stderr);
+    const stderrChunks: Buffer[] = [];
+    child.stderr.on('data', (chunk) => {
+      stderrChunks.push(Buffer.from(chunk));
+    });
+
+    child.stderr.on('error', (error) => {
+      console.error('child.stderr error:', error);
+    });
 
     await finished(child.stdout);
+
+    // Wait for the process to exit and check the exit code
+    const exitCode = await new Promise<number | null>((resolve) => {
+      child.on('exit', (code) => {
+        resolve(code);
+      });
+    });
+
+    if (exitCode !== 0) {
+      const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
+      throw new Error(`pdftk exited with code ${exitCode}${stderrOutput ? `: ${stderrOutput}` : ''}`);
+    }
   } finally {
     if (existsSync(inputFile))
       unlink(inputFile, (error) => {
