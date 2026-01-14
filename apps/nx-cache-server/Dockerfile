@@ -21,9 +21,9 @@ RUN ARCH_SUFFIX=$(case ${TARGETPLATFORM} in \
     linux/arm64) echo "arm64" ;; \
     *) echo "Unsupported platform: ${TARGETPLATFORM}" && exit 1 ;; \
     esac) && \
-    curl -L "https://github.com/philiplehmann/nx-cache-server/releases/download/v${NX_CACHE_SERVER_VERSION}/nx-cache-aws-v${NX_CACHE_SERVER_VERSION}-linux-${ARCH_SUFFIX}" \
-    -o /tmp/nx-cache-aws && \
-    chmod +x /tmp/nx-cache-aws
+    curl -L "https://github.com/philiplehmann/nx-cache-server/releases/download/v${NX_CACHE_SERVER_VERSION}/nx-cache-server-v${NX_CACHE_SERVER_VERSION}-linux-${ARCH_SUFFIX}" \
+    -o /tmp/nx-cache-server && \
+    chmod +x /tmp/nx-cache-server
 
 # Final stage - minimal runtime image
 FROM --platform=$TARGETPLATFORM debian:trixie-slim
@@ -38,7 +38,7 @@ RUN apt-get update && apt-get install -y \
 RUN useradd -ms /bin/bash -u 1000 nx-cache-server
 
 # Copy binary from builder stage
-COPY --from=builder /tmp/nx-cache-aws /usr/local/bin/nx-cache-aws
+COPY --from=builder /tmp/nx-cache-server /usr/local/bin/nx-cache-server
 
 # # Required
 # export S3_BUCKET_NAME="your-s3-bucket-name"
@@ -60,4 +60,4 @@ COPY --from=builder /tmp/nx-cache-aws /usr/local/bin/nx-cache-aws
 USER nx-cache-server
 EXPOSE $PORT
 
-CMD [ "/usr/local/bin/nx-cache-aws" ]
+CMD [ "/usr/local/bin/nx-cache-server" ]
