@@ -22,7 +22,7 @@
     },
     "@container/biomejs:lint": {
       "cache": true,
-      "inputs": ["default", "{workspaceRoot}/biome.json"]
+      "inputs": ["default", "{workspaceRoot}/biome.json", "{projectRoot}/biome.json"]
     },
     "@container/tsc:typecheck": {
       "cache": true,
@@ -42,15 +42,15 @@
     },
     "@container/docker:test": {
       "cache": false,
-      "inputs": ["default", "{projectRoot}/Dockerfile"]
+      "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
     "@container/docker:build": {
       "cache": false,
-      "inputs": ["default", "{projectRoot}/Dockerfile"]
+      "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
     "@container/docker:run": {
       "cache": false,
-      "inputs": ["default", "{projectRoot}/Dockerfile"]
+      "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     }
   },
   "namedInputs": {
