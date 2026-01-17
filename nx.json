@@ -68,6 +68,8 @@
   "cli": {
     "packageManager": "bun"
   },
+  "defaultBase": "main",
+  "parallel": 8,
   "plugins": [
     {
       "plugin": "@nx/playwright/plugin",

@@ -4,6 +4,26 @@
   "sourceRoot": "apps/nx-cache-server/src",
   "projectType": "application",
   "targets": {
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    },
+    "docker-test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-build-test"],
+      "options": {}
+    },
+    "docker-build-test": {
+      "executor": "@container/docker:test",
+      "options": {
+        "tag": "philiplehmann/nx-cache-server:test",
+        "file": "apps/nx-cache-server/Dockerfile"
+      }
+    },
     "docker-push": {
       "executor": "@container/docker:build",
       "dependsOn": ["build"],

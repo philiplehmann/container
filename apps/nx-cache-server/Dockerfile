@@ -26,7 +26,9 @@ RUN ARCH_SUFFIX=$(case ${TARGETPLATFORM} in \
     chmod +x /tmp/nx-cache-server
 
 # Final stage - minimal runtime image
-FROM --platform=$TARGETPLATFORM debian:trixie-slim
+FROM debian:trixie-slim
+
+WORKDIR /nx-cache-server
 
 ENV PORT=3000
 
@@ -60,4 +62,4 @@ COPY --from=builder /tmp/nx-cache-server /usr/local/bin/nx-cache-server
 USER nx-cache-server
 EXPOSE $PORT
 
-CMD [ "/usr/local/bin/nx-cache-server" ]
+CMD [ "/usr/local/bin/nx-cache-server", "--config", "config.yaml" ]
