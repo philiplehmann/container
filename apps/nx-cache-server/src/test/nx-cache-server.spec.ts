@@ -182,8 +182,7 @@ serviceAccessTokens:
         });
 
         it('should return 401 when bearer token is missing', async () => {
-          // NOTE: Server returns 401 status correctly but violates Nx API spec by not including error message
-          // Nx API spec requires text/plain error message body for 401 responses
+          // Server correctly returns 401 status with error message per Nx API spec
           const hash = 'test-hash-no-auth';
           const content = Buffer.from('test cache content');
 
@@ -200,12 +199,11 @@ serviceAccessTokens:
           });
 
           expect(response.statusCode).toBe(401);
-          expect(text).toBe(''); // TODO: Should be truthy per API spec
+          expect(text).toBe('Unauthorized');
         });
 
         it('should return 401 when bearer token is invalid', async () => {
-          // NOTE: Server returns 401 status correctly but violates Nx API spec by not including error message
-          // Nx API spec requires text/plain error message body for 401 responses
+          // Server correctly returns 401 status with error message per Nx API spec
           const hash = 'test-hash-invalid-auth';
           const content = Buffer.from('test cache content');
 
@@ -223,7 +221,7 @@ serviceAccessTokens:
           });
 
           expect(response.statusCode).toBe(401);
-          expect(text).toBe(''); // TODO: Should be truthy per API spec
+          expect(text).toBe('Unauthorized');
         });
 
         it('should return 409 when trying to override existing record', async () => {
@@ -321,8 +319,7 @@ serviceAccessTokens:
         });
 
         it('should return 401 when bearer token is missing', async () => {
-          // NOTE: Server returns 401 status correctly but violates Nx API spec by not including error message
-          // Nx API spec requires text/plain error message body for 401 responses
+          // Server correctly returns 401 status with error message per Nx API spec
           const [response, text] = await testRequest({
             method: 'GET',
             host: 'localhost',
@@ -331,12 +328,11 @@ serviceAccessTokens:
           });
 
           expect(response.statusCode).toBe(401);
-          expect(text).toBe(''); // TODO: Should be truthy per API spec
+          expect(text).toBe('Unauthorized');
         });
 
         it('should return 401 when bearer token is invalid', async () => {
-          // NOTE: Server returns 401 status correctly but violates Nx API spec by not including error message
-          // Nx API spec requires text/plain error message body for 401 responses
+          // Server correctly returns 401 status with error message per Nx API spec
           const [response, text] = await testRequest({
             method: 'GET',
             host: 'localhost',
@@ -348,7 +344,7 @@ serviceAccessTokens:
           });
 
           expect(response.statusCode).toBe(401);
-          expect(text).toBe(''); // TODO: Should be truthy per API spec
+          expect(text).toBe('Unauthorized');
         });
 
         it('should return 404 when cache artifact does not exist', async () => {
