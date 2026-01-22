@@ -99,16 +99,16 @@ PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google
 run *-local tests
 ```
 # run playwright ui tests
-TEST_SERVER_RUNNER=local bun nx e2e-local puppeteer
+bun nx local-e2e puppeteer
 
 # run bun-test
-TEST_SERVER_RUNNER=local bun nx bun-test-local puppeteer
+bun nx local-test puppeteer
 
 # run both, e2e and bun-test
-TEST_SERVER_RUNNER=local bun nx test-local puppeteer
+bun nx run-many --projects puppeteer --target local-test local-e2e
 ```
 
 ## update snapshots
 ```
-bun nx e2e puppeteer --update-snapshots
+bun nx local-e2e puppeteer --update-snapshots
 ```

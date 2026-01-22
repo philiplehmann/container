@@ -9,6 +9,11 @@
       "implementation": "./src/executors/test/executor",
       "schema": "./src/executors/test/schema.json",
       "description": "Bun.js test runner executor"
+    },
+    "serve": {
+      "implementation": "./src/executors/serve/executor",
+      "schema": "./src/executors/serve/schema.json",
+      "description": "Bun.js run runner executor"
     }
   }
 }

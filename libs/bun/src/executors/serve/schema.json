@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "bun serve",
+  "description": "Bun serve executor schema",
+  "type": "object",
+  "properties": {
+    "entrypoint": {
+      "type": "string",
+      "description": "Entry points for the serve",
+      "default": "{projectRoot}/src/main.ts"
+    }
+  },
+  "required": []
+}

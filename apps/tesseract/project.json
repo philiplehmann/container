@@ -11,19 +11,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "tesseract:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "tesseract:build:development"
-        },
-        "production": {
-          "buildTarget": "tesseract:build:production"
-        }
-      }
+      "executor": "@container/bun:serve"
     },
     "lint": {
       "executor": "@container/biomejs:lint",

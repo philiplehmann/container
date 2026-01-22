@@ -11,19 +11,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "poppler:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "poppler:build:development"
-        },
-        "production": {
-          "buildTarget": "poppler:build:production"
-        }
-      }
+      "executor": "@container/bun:serve"
     },
     "lint": {
       "executor": "@container/biomejs:lint",

@@ -11,19 +11,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "unoserver:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "unoserver:build:development"
-        },
-        "production": {
-          "buildTarget": "unoserver:build:production"
-        }
-      }
+      "executor": "@container/bun:serve"
     },
     "lint": {
       "executor": "@container/biomejs:lint",

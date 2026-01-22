@@ -4,38 +4,6 @@
   "sourceRoot": "libs/node/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/libs/node",
-        "main": "libs/node/src/index.ts",
-        "tsConfig": "libs/node/tsconfig.lib.json",
-        "assets": [
-          "libs/node/*.md",
-          {
-            "input": "./libs/node/src",
-            "glob": "**/!(*.ts)",
-            "output": "./src"
-          },
-          {
-            "input": "./libs/node/src",
-            "glob": "**/*.d.ts",
-            "output": "./src"
-          },
-          {
-            "input": "./libs/node",
-            "glob": "generators.json",
-            "output": "."
-          },
-          {
-            "input": "./libs/node",
-            "glob": "executors.json",
-            "output": "."
-          }
-        ]
-      }
-    },
     "lint": {
       "executor": "@container/biomejs:lint"
     },

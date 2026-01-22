@@ -11,19 +11,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
-      "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "pdftk:build"
-      },
-      "configurations": {
-        "development": {
-          "buildTarget": "pdftk:build:development"
-        },
-        "production": {
-          "buildTarget": "pdftk:build:production"
-        }
-      }
+      "executor": "@container/bun:serve"
     },
     "lint": {
       "executor": "@container/biomejs:lint",
