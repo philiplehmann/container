@@ -1,8 +1,7 @@
-import { existsSync } from 'node:fs';
 import { glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { promiseSpawn } from '@container/docker';
-import { projectRoot } from '@container/nx';
+import { getTsConfigPath, projectRoot } from '@container/nx';
 import type { Executor } from '@nx/devkit';
 import type { NodeTestExecutorSchema } from './schema';
 
@@ -13,14 +12,6 @@ const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> =>
   }
   return results;
 };
-
-const possibleTsConfigs = [
-  'tsconfig.spec.json',
-  'tsconfig.base.json',
-  'tsconfig.json',
-  'tsconfig.app.json',
-  'tsconfig.lib.json',
-];
 
 const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
   {
@@ -52,14 +43,7 @@ const nodeTestExecutor: Executor<NodeTestExecutorSchema> = async (
 ) => {
   const root = projectRoot(context);
 
-  if (existsSync(resolve(root, tsconfig))) {
-    for (const config in possibleTsConfigs) {
-      if (existsSync(resolve(root, config))) {
-        tsconfig = config;
-        break;
-      }
-    }
-  }
+  tsconfig = getTsConfigPath(tsconfig, root);
 
   try {
     const args = ['--require', '@swc-node/register', '--test'];

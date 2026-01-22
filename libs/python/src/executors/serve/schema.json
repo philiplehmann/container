@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "python serve",
+  "description": "Schema for executing a Python service with specified entry points and configuration",
+  "type": "object",
+  "properties": {
+    "entrypoint": {
+      "type": "string"
+    },
+    "cwd": {
+      "type": "string"
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "executable": {
+      "type": "string"
+    },
+    "module": {
+      "type": "string"
+    },
+    "port": {
+      "type": "number"
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables to set for the python process",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["entrypoint", "cwd"]
+}

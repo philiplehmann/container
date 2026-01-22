@@ -41,6 +41,7 @@
       "@container/docker": ["libs/docker/src/index.ts"],
       "@container/node": ["libs/node/src/index.ts"],
       "@container/nx": ["libs/nx/src/index.ts"],
+      "@container/python": ["libs/python/src/index.ts"],
       "@container/helper": ["libs/helper/src/index.ts"],
       "@container/http/body": ["libs/http/body/src/index.ts"],
       "@container/http/error": ["libs/http/error/src/index.ts"],

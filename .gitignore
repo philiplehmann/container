@@ -49,3 +49,6 @@ test-results
 
 # running puppeteer locally
 chromium-data
+
+model
+*__pycache__

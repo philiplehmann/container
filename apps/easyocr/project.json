@@ -1,0 +1,79 @@
+{
+  "name": "easyocr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/easyocr/src",
+  "projectType": "application",
+  "targets": {
+    "serve": {
+      "executor": "@container/python:serve",
+      "options": {
+        "entrypoint": "main:app",
+        "module": "uvicorn",
+        "args": ["--reload", "--log-config=./logging.conf"],
+        "cwd": "apps/easyocr/src",
+        "env": {
+          "EASYOCR_DOWNLOAD_ENABLED": "True"
+        }
+      },
+      "dependsOn": ["install"]
+    },
+    "install": {
+      "executor": "@container/python:install",
+      "options": {
+        "requirements": "apps/easyocr/requirements.txt"
+      },
+      "dependsOn": []
+    },
+    "lint": {
+      "executor": "@container/biomejs:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    },
+    "docker-test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-build-test"],
+      "options": {
+        "timeout": 60000
+      }
+    },
+    "local-test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "env": {
+          "TEST_SERVER_RUNNER": "local"
+        },
+        "timeout": 60000
+      }
+    },
+    "docker-build-test": {
+      "executor": "@container/docker:test",
+      "dependsOn": [],
+      "options": {
+        "tag": "philiplehmann/easyocr:test",
+        "file": "apps/easyocr/Dockerfile",
+        "platforms": ["amd64", "arm64"]
+      }
+    },
+    "docker-push": {
+      "executor": "@container/docker:build",
+      "dependsOn": [],
+      "options": {
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/easyocr:auto"],
+        "file": "apps/easyocr/Dockerfile"
+      }
+    },
+    "docker-run": {
+      "executor": "@container/docker:run",
+      "options": {
+        "image": "philiplehmann/easyocr:run",
+        "file": "apps/easyocr/Dockerfile"
+      }
+    }
+  },
+  "tags": ["easyocr"]
+}
