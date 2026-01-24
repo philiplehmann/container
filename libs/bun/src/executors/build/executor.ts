@@ -1,8 +1,7 @@
-import { relative, resolve } from 'node:path';
-import { cwd } from 'node:process';
+import { resolve } from 'node:path';
 import { promiseSpawn } from '@container/docker';
 import { projectRoot as getProjectRoot, replacePlaceholders } from '@container/nx';
-import type { Executor, ExecutorContext } from '@nx/devkit';
+import type { Executor } from '@nx/devkit';
 import { copyPackageJson, createEntryPoints } from '@nx/js';
 import type { BunBuildExecutorSchema } from './schema';
 

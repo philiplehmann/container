@@ -1,5 +1,3 @@
-import { DockerPlatform } from '../../docker-helper';
-
 export interface BiomejsExecutorSchema {
   fix?: boolean;
   verbose?: boolean;

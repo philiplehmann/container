@@ -1,4 +1,5 @@
 import { promiseSpawn } from '@container/docker';
+import { projectRoot as getProjectRoot } from '@container/nx';
 import type { Executor } from '@nx/devkit';
 import type { BiomejsExecutorSchema } from './schema';
 
@@ -6,17 +7,15 @@ const runExecutor: Executor<BiomejsExecutorSchema> = async (
   { fix, changed, 'log-level': logLevel, verbose },
   context,
 ) => {
-  const projectRoot = context.projectName && context.projectsConfigurations?.projects[context.projectName].root;
+  const projectRoot = getProjectRoot(context);
 
   if (!projectRoot) {
     throw new Error('Project root not found');
   }
 
-  const args: string[] = [];
+  const args: string[] = ['check'];
   if (fix) {
-    args.push('check', '--write');
-  } else {
-    args.push('check');
+    args.push('--write');
   }
 
   if (changed) {
