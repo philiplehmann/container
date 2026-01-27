@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t poppler`.
-FROM oven/bun:1.3.6-slim
+FROM oven/bun:1.3.7-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
