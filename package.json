@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@biomejs/biome": "2.3.14",
+    "@biomejs/biome": "2.3.15",
     "@nx/devkit": "22.5.0",
     "@nx/js": "^22.3.3",
     "@nx/playwright": "22.5.0",
