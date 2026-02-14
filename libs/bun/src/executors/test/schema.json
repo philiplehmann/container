@@ -22,7 +22,7 @@
     "timeout": {
       "type": "number",
       "description": "Set the per-test timeout in milliseconds, default is 5000.",
-      "default": 30000
+      "default": 60000
     },
     "updateSnapshots": {
       "type": "boolean",
