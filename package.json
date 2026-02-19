@@ -24,7 +24,7 @@
     "typescript": "5.9.3"
   },
   "dependencies": {
-    "puppeteer-core": "24.37.3",
+    "puppeteer-core": "24.37.5",
     "zod": "^4.2.1"
   },
   "engines": {
