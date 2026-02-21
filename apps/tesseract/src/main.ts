@@ -11,8 +11,10 @@ httpServer(
       try {
         await imageToText({ input: req, output: res });
       } catch (error) {
-        res.statusCode = 500;
-        res.end(error instanceof Error ? error.message : 'tesseract failed');
+        if (!res.headersSent) {
+          res.statusCode = 500;
+          res.end(error instanceof Error ? error.message : 'tesseract failed');
+        }
       }
     }),
     ...healthEndpoints,
