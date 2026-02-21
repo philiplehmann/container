@@ -33,9 +33,21 @@ export async function streamChildProcess(
   const { end = true } = options ?? {};
   child.stdin.on('error', (error) => {
     console.error(error);
+    if (!output.destroyed) {
+      output.destroy(error);
+    }
+    child.kill();
   });
 
-  await streamInputToWriteable(input, child.stdin, { end: true });
+  try {
+    await streamInputToWriteable(input, child.stdin, { end: true });
+  } catch (error) {
+    if (!output.destroyed) {
+      output.destroy(error instanceof Error ? error : undefined);
+    }
+    child.kill();
+    throw error;
+  }
 
   child.stdout
     .on('error', (error) => {

@@ -8,7 +8,12 @@ httpServer(
   connect(
     post({ path: '/image-to-text' }, async ({ req, res }) => {
       res.setHeader('Content-Type', 'text/plain');
-      imageToText({ input: req, output: res });
+      try {
+        await imageToText({ input: req, output: res });
+      } catch (error) {
+        res.statusCode = 500;
+        res.end(error instanceof Error ? error.message : 'tesseract failed');
+      }
     }),
     ...healthEndpoints,
   ),
