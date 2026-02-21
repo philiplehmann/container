@@ -31,6 +31,15 @@ export async function streamChildProcess(
   options?: StreamChildProcessOptions,
 ): Promise<void> {
   const { end = true } = options ?? {};
+  const stderrChunks: Buffer[] = [];
+  child.stderr.on('data', (chunk) => {
+    stderrChunks.push(Buffer.from(chunk));
+  });
+
+  child.stderr.on('error', (error) => {
+    console.error(error);
+  });
+
   child.stdin.on('error', (error) => {
     console.error(error);
     child.kill();
@@ -40,6 +49,11 @@ export async function streamChildProcess(
     await streamInputToWriteable(input, child.stdin, { end: true });
   } catch (error) {
     child.kill();
+    const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
+    if (stderrOutput) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`${message}: ${stderrOutput}`);
+    }
     throw error;
   }
 
@@ -48,15 +62,6 @@ export async function streamChildProcess(
       console.error(error);
     })
     .pipe(output, { end });
-
-  const stderrChunks: Buffer[] = [];
-  child.stderr.on('data', (chunk) => {
-    stderrChunks.push(Buffer.from(chunk));
-  });
-
-  child.stderr.on('error', (error) => {
-    console.error(error);
-  });
 
   output.on('close', () => {
     child.kill();
