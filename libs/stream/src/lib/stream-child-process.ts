@@ -63,24 +63,32 @@ export async function streamChildProcess(
     })
     .pipe(output, { end });
 
+  let stdoutFinished = false;
+
   output.on('close', () => {
-    child.kill();
+    if (!stdoutFinished) {
+      child.kill();
+    }
   });
 
   // Set up exit listener before awaiting to avoid race condition
-  const exitPromise = new Promise<number | null>((resolve) => {
-    child.on('exit', (code) => {
-      resolve(code);
+  const exitPromise = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>((resolve) => {
+    child.on('exit', (code, signal) => {
+      resolve({ code, signal });
     });
   });
 
   await finished(child.stdout);
+  stdoutFinished = true;
 
   // Wait for the process to exit and check the exit code
-  const exitCode = await exitPromise;
+  const { code, signal } = await exitPromise;
 
-  if (exitCode !== 0) {
+  if (code !== 0) {
     const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
-    throw new Error(`Child process exited with code ${exitCode}${stderrOutput ? `: ${stderrOutput}` : ''}`);
+    if (code === null && signal) {
+      throw new Error(`Child process exited with signal ${signal}${stderrOutput ? `: ${stderrOutput}` : ''}`);
+    }
+    throw new Error(`Child process exited with code ${code}${stderrOutput ? `: ${stderrOutput}` : ''}`);
   }
 }
