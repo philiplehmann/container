@@ -1,6 +1,6 @@
 # MailDev
 
-MailDev is a simple way to test your project's generated emails during development with an easy-to-use web interface that runs on your machine built on top of Node.js. It's perfect for testing email functionality in development environments without actually sending emails.
+MailDev, built on top of Node.js, is a simple way to test your project's generated emails during development with an easy-to-use web interface that runs on your machine. It's perfect for testing email functionality in development environments without actually sending emails.
 
 ## Features
 
@@ -26,7 +26,6 @@ docker run -p 1080:1080 -p 1025:1025 --name maildev-server philiplehmann/maildev
 ### Run with Docker Compose
 
 ```yaml
-version: '3.8'
 services:
   maildev:
     image: philiplehmann/maildev:latest
@@ -286,7 +285,7 @@ docker logs -f maildev-server
 | Real-time Updates | ✅ | ❌ |
 | Attachment Support | ✅ | ✅ |
 | Search Functionality | ✅ | ❌ |
-| Mobile Responsive | ✅ | ❌ |
+| Mobile Responsive | ✅ | ✅ |
 | Memory Usage | Higher | Lower |
 
 ## Contributing
