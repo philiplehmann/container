@@ -24,7 +24,6 @@ docker run -p 3000:3000 --name puppeteer-server philiplehmann/puppeteer:latest
 ### Run with Docker Compose
 
 ```yaml
-version: '3.8'
 services:
   puppeteer:
     image: philiplehmann/puppeteer:latest
@@ -131,7 +130,7 @@ curl -X POST \
 
 ### PDF Options
 
-All Puppeteer PDF options are supported (except `path`). See the [Puppeteer documentation](https://devdocs.io/puppeteer/index#pagepdfoptions) for complete details.
+All Puppeteer PDF options are supported (except `path`). See the [Puppeteer documentation](https://pptr.dev/api/puppeteer.pdfoptions) for complete details.
 
 | Option | Type | Description | Default |
 |--------|------|-------------|---------|
@@ -325,8 +324,9 @@ docker run -p 3000:3000 puppeteer
 
 **Chrome fails to launch:**
 - Ensure sufficient memory is allocated to Docker
-- Try running with `--no-sandbox` flag in production
 - Check Chrome executable permissions
+- If you must use `--no-sandbox`, note it disables Chrome's renderer process isolation and increases attack surface. Only use it when Docker-level isolation is enforced (user namespaces, seccomp, caps) and all input HTML/URLs are validated or sanitized. Avoid `--no-sandbox` for untrusted-input or public-facing deployments.
+- Safer alternatives: increase Docker memory, run with proper sandboxing enabled, or run Chrome in a dedicated minimal-privilege container.
 
 **Memory issues:**
 - Increase Docker memory limits

@@ -22,7 +22,6 @@ docker run -p 1080:1080 -p 1025:1025 --name mailcatcher-server philiplehmann/mai
 ### Run with Docker Compose
 
 ```yaml
-version: '3.8'
 services:
   mailcatcher:
     image: philiplehmann/mailcatcher:latest
@@ -45,8 +44,8 @@ services:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SMTP_PORT` | 1025 | SMTP server port |
-| `HTTP_PORT` | 1080 | Web interface port |
+| `SMTP_PORT` | 1025 | SMTP server port (not used by the current Dockerfile `CMD` in `apps/mailcatcher/Dockerfile`; changes require rebuilding the image or modifying `CMD` to read `SMTP_PORT`) |
+| `HTTP_PORT` | 1080 | Web interface port (not used by the current Dockerfile `CMD` in `apps/mailcatcher/Dockerfile`; changes require rebuilding the image or modifying `CMD` to read `HTTP_PORT`) |
 
 ## Usage
 
