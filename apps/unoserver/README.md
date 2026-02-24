@@ -1,94 +1,144 @@
-# unoserver node wrapper
+# Unoserver Node.js Wrapper
 
-## Run Image
+A containerized Node.js service that provides a REST API for converting office documents using LibreOffice via unoserver.
 
-```
+## Features
+
+- 📄 **Document Conversion** - Convert DOCX, XLSX, PPTX, and more
+- 🖼️ **Image Output** - Export to PNG/JPEG
+- 🐳 **Docker Ready** - Easy deployment with Docker
+- 🔧 **REST API** - Simple HTTP interface
+- ⚙️ **Flexible Options** - Control filters, page ranges, and output behavior
+
+## Quick Start
+
+### Run with Docker
+
+```bash
 docker run --rm -p 3000:3000 --name unoserver philiplehmann/unoserver:latest
 ```
 
-## Convert file
+### Run with Docker Compose
 
-default without a param will create pdf
+```yaml
+services:
+  unoserver:
+    image: philiplehmann/unoserver:latest
+    ports:
+      - "3000:3000"
+    container_name: unoserver
 ```
+
+## API Endpoints
+
+### Convert File
+
+Default behavior (no parameters) converts to PDF.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert'
 ```
 
-convert to pdf
-```
+#### Convert To PDF
+
+```bash
 curl -X POST \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?convertTo=pdf'
 ```
 
-convert to png
-```
+#### Convert To PNG
+
+```bash
 curl -X POST \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.png \
   'http://localhost:3000/convert?convertTo=png'
 ```
 
-convert to jpeg
-```
+#### Convert To JPEG
+
+```bash
 curl -X POST \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.jpeg \
   'http://localhost:3000/convert?convertTo=jpeg'
 ```
 
-inputFilter - The LibreOffice input filter to use (ex 'writer8'), if autodetect fails
-```
+## Options
+
+### `inputFilter`
+
+The LibreOffice input filter to use if autodetect fails (e.g. `writer8`).
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?inputFilter=writer8'
 ```
 
-outputFilter - The export filter to use when converting. It is selected automatically if not specified.
-```
+### `outputFilter`
+
+The export filter to use when converting. Selected automatically if not specified.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?outputFilter=writer_pdf_Export'
 ```
 
-filterOptions - The options to use for the output filter, if not specified, the default options are used.
-```
+### `filterOptions`
+
+Options to use for the output filter. Defaults are used if not specified.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?filterOptions=PageRange=1-2'
 ```
 
-updateIndex - Updates the indexes before conversion. Can be time consuming.
-```
+### `updateIndex`
+
+Update indexes before conversion (may be time consuming).
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?updateIndex=true'
 ```
 
-dontUpdateIndex - Skip updating the indexes.
-```
+### `dontUpdateIndex`
+
+Skip updating indexes.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?dontUpdateIndex=true'
 ```
 
+### `verbose`
 
-verbose - Increase informational output to stderr.
-```
+Increase informational output to stderr.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
   'http://localhost:3000/convert?verbose=true'
 ```
 
+### `quiet`
 
-quiet - Decrease informational output to stderr.
-```
+Decrease informational output to stderr.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
@@ -97,18 +147,21 @@ curl -X POST \
 
 ## Ports
 
-- HTTP 3000
+| Port | Service | Description |
+|------|---------|-------------|
+| 3000 | HTTP | REST API server |
 
+## Local Development
 
-## test locally
+### Start Server
 
-start puppeteer server, will be on port 3000
-```
+```bash
 LIBREOFFICE_EXECUTABLE_PATH="/Applications/LibreOffice.app/Contents/MacOS/soffice" bun nx serve unoserver
 ```
 
-run *-local tests
-```
+### Tests (Local Runner)
+
+```bash
 # run playwright ui tests
 TEST_SERVER_RUNNER=local bun nx e2e-local unoserver
 
@@ -118,3 +171,7 @@ TEST_SERVER_RUNNER=local bun nx bun-test-local unoserver
 # run both, e2e and bun-test
 TEST_SERVER_RUNNER=local bun nx test-local unoserver
 ```
+
+## online test
+
+[![unoserver.api.datage.ch](https://uptime.riwi.dev/api/badge/38/status)](https://unoserver.api.datage.ch/)

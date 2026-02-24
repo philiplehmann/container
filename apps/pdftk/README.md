@@ -1,110 +1,146 @@
-# pdftk node wrapper
+# PDFTK Node.js Wrapper
 
-## Run Image
+A containerized Node.js service that provides a REST API for common PDF operations using PDFTK.
 
-```
+## Features
+
+- 🗜️ **Compress/Uncompress** - Optimize PDF file size
+- 🔐 **Encrypt/Decrypt** - Secure PDFs with passwords and permissions
+- 🧾 **Form Data** - Extract or fill PDF form fields
+- 🐳 **Docker Ready** - Easy deployment with Docker
+- 🔧 **REST API** - Simple HTTP interface
+
+## Quick Start
+
+### Run with Docker
+
+```bash
 docker run -p 3000:3000 --rm --name pdftk philiplehmann/pdftk:latest
 ```
 
-## compress pdf file
+### Run with Docker Compose
 
+```yaml
+services:
+  pdftk:
+    image: philiplehmann/pdftk:latest
+    ports:
+      - "3000:3000"
+    container_name: pdftk
 ```
+
+## API Endpoints
+
+### Compress PDF
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/uncompressed.pdf" \
   'http://localhost:3000/compress'
 ```
 
-## uncompress pdf file
+### Uncompress PDF
 
-```
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/compressed.pdf" \
   'http://localhost:3000/uncompress'
 ```
 
-## encrypt pdf file
+### Encrypt PDF
 
-```
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/file.pdf" \
   'http://localhost:3000/encrypt?password=1234&userPassword=asdf&allow=Printing'
 ```
 
-options:
- - password - String (required)
- - userPassword - String
- - allow - Enum
-   - Printing
-   - DegradedPrinting
-   - ModifyContents
-   - Assembly
-   - CopyContents
-   - ScreenReaders
-   - ModifyAnnotations
-   - FillIn
-   - AllFeatures
+**Options:**
 
-## decrypt pdf file
+- `password` (required) - Owner password
+- `userPassword` - User password
+- `allow` - Permission enum:
+  - `Printing`
+  - `DegradedPrinting`
+  - `ModifyContents`
+  - `Assembly`
+  - `CopyContents`
+  - `ScreenReaders`
+  - `ModifyAnnotations`
+  - `FillIn`
+  - `AllFeatures`
 
-```
+### Decrypt PDF
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/encrypted.pdf" \
   'http://localhost:3000/decrypt?password=1234'
 ```
 
-## data fields pdf file
-returns the pdf form fields as json
+### Get Form Fields (JSON)
 
-```
+Returns PDF form fields as JSON.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/pdf-form.pdf" \
   'http://localhost:3000/data/fields'
 ```
 
-## data dump pdf file
-returns pdf file information as json
+### Get Document Info (JSON)
 
-```
+Returns PDF file information as JSON.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/file.pdf" \
   'http://localhost:3000/data/dump'
 ```
 
-## data fdf pdf file
-returns pdf form fields as fdf format
+### Get Form Fields (FDF)
 
-```
+Returns PDF form fields in FDF format.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/pdf-form.pdf" \
   'http://localhost:3000/data/fdf'
 ```
 
-## form fill pdf file
-fills pdf passed values
+### Fill PDF Form
 
-```
+Fills a PDF with the provided field values.
+
+```bash
 curl -X POST \
   -H 'content-type: application/x-www-form-urlencoded' \
   --data-binary "@path/to/my/pdf-form.pdf" \
   'http://localhost:3000/form/fill?field1=value1&field2=value2'
 ```
 
-arguments:
- - flag - Enum
-   - need_appearances (default)
-   - flatten
-   - replacement_font (additional fontName can be defined)
- - fontName
-  
- - all form fields are passed with the name
+**Arguments:**
+
+- `flag` - Enum:
+  - `need_appearances` (default)
+  - `flatten`
+  - `replacement_font` (requires `fontName`)
+- `fontName` - Additional font name (when using `replacement_font`)
+- All form fields are passed as query parameters by name
 
 ## Ports
 
-- HTTP 3000
+| Port | Service | Description |
+|------|---------|-------------|
+| 3000 | HTTP | REST API server |
+
+## online test
+
+[![pdftk.api.datage.ch](https://uptime.riwi.dev/api/badge/34/status)](https://pdftk.api.datage.ch/)
