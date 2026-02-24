@@ -377,3 +377,7 @@ yarn nx serve puppeteer
 ## License
 
 This project is licensed under the MIT License.
+
+## online test
+
+[![puppeteer.api.datage.ch](https://uptime.riwi.dev/api/badge/36/status)](https://puppeteer.api.datage.ch/)
