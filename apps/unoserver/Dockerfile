@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
-FROM oven/bun:1.3.9-slim
+FROM oven/bun:1.3.10-slim
 
 ARG UNOSERVER_VERSION
 ARG JRE_VERSION
