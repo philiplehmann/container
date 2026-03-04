@@ -28,7 +28,7 @@ runs:
         restore-keys: |
           ${{ inputs.cache-key }}-${{ runner.os }}-${{ runner.arch }}-
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
+      uses: docker/setup-qemu-action@v4
       if: runner.arch != 'ARM64' && inputs.setup-qemu == 'true'
       with:
         platforms: arm64
