@@ -1,5 +1,5 @@
 import type { Readable, Writable } from 'node:stream';
-import { type StreamChildProcessOptions, streamChildProcessToBuffer } from '@container/stream';
+import { type StreamChildProcessOptions, streamChildProcessToBuffer } from '@riwi/stream';
 import { stringOrFirst, toObject } from './helpers/to-object';
 import { type PdftkOptions, pdftk } from './pdftk';
 

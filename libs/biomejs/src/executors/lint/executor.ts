@@ -1,5 +1,5 @@
-import { promiseSpawn } from '@container/docker';
-import { projectRoot as getProjectRoot } from '@container/nx';
+import { promiseSpawn } from '@riwi/docker';
+import { projectRoot as getProjectRoot } from '@riwi/nx';
 import type { Executor } from '@nx/devkit';
 import type { BiomejsExecutorSchema } from './schema';
 

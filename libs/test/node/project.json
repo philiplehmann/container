@@ -5,15 +5,15 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@container/biomejs:lint"
+      "executor": "@riwi/biomejs:lint"
     },
     "test": {
-      "executor": "@container/node:test",
+      "executor": "@riwi/node:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {}
     },
     "typecheck": {
-      "executor": "@container/tsc:typecheck"
+      "executor": "@riwi/tsc:typecheck"
     }
   },
   "tags": []

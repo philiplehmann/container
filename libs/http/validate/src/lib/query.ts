@@ -1,5 +1,5 @@
-import { BadRequest } from '@container/http/error';
-import type { Next, Prefix, ReqRes } from '@container/http/route';
+import { BadRequest } from '@riwi/http/error';
+import type { Next, Prefix, ReqRes } from '@riwi/http/route';
 import type { output, ZodType } from 'zod/v4';
 
 export function validateQuery<RQ extends ReqRes, QuerySchema extends ZodType>(

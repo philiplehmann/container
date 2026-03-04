@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'bun:test';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { currentArch } from '@container/docker';
-import { useTestContainer } from '@container/test/bun';
-import { testRequest } from '@container/test/request';
+import { currentArch } from '@riwi/docker';
+import { useTestContainer } from '@riwi/test/bun';
+import { testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

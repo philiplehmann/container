@@ -1,13 +1,13 @@
-import { libreoffice, schema as schemaLibreoffice } from '@container/binary/libreoffice';
+import { libreoffice, schema as schemaLibreoffice } from '@riwi/binary/libreoffice';
 import {
   ConvertToMimeType as ConvertToMimeTypeUnoserver,
   schema as schemaUnoserver,
   unoconvert,
   unoserver,
-} from '@container/binary/unoserver';
-import { connect, healthEndpoints, post } from '@container/http/route';
-import { httpServer } from '@container/http/server';
-import { middlewareQuery } from '@container/http/validate';
+} from '@riwi/binary/unoserver';
+import { connect, healthEndpoints, post } from '@riwi/http/route';
+import { httpServer } from '@riwi/http/server';
+import { middlewareQuery } from '@riwi/http/validate';
 
 const PORT = process.env.PORT || '3000';
 
