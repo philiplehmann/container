@@ -1,6 +1,6 @@
 import { constants } from 'node:fs';
 import { access, stat } from 'node:fs/promises';
-import { BadRequest } from '@container/http/error';
+import { BadRequest } from '@riwi/http/error';
 
 export async function assertReadableInputFile(inputAbsolutePath: string): Promise<void> {
   try {

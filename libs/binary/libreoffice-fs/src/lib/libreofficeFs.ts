@@ -1,5 +1,5 @@
-import { HttpError } from '@container/http/error';
-import type { NextResponse } from '@container/http/route';
+import { HttpError } from '@riwi/http/error';
+import type { NextResponse } from '@riwi/http/route';
 import { convert } from './convert';
 import type { Schema } from './schema';
 

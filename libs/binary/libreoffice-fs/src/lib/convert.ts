@@ -1,4 +1,4 @@
-import type { Schema as LibreofficeSchema } from '@container/binary/libreoffice';
+import type { Schema as LibreofficeSchema } from '@riwi/binary/libreoffice';
 import { convertWithSerializedWrites, type DirectFsConvertResult } from './directFsConvert';
 import { resolvePathUnderRoot } from './path-safety';
 

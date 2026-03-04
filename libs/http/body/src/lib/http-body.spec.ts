@@ -4,9 +4,9 @@ import type { IncomingMessage } from 'node:http';
 import { dirname, resolve } from 'node:path';
 import type { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
-import { post } from '@container/http/route';
-import { streamToBuffer, streamToString } from '@container/stream';
-import { TestServer } from '@container/test/server';
+import { post } from '@riwi/http/route';
+import { streamToBuffer, streamToString } from '@riwi/stream';
+import { TestServer } from '@riwi/test/server';
 import {
   getContentDispositionName,
   requestToBuffer,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'bun:test';
-import { useTestServer } from '@container/test/bun';
+import { useTestServer } from '@riwi/test/bun';
 import { get } from '../method/get';
 import { routes } from '../routes';
 

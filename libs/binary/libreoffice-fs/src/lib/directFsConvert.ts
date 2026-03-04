@@ -1,4 +1,4 @@
-import { libreoffice } from '@container/binary/libreoffice';
+import { libreoffice } from '@riwi/binary/libreoffice';
 import { mkdir, stat } from 'fs/promises';
 import { dirname } from 'path/posix';
 import { assertReadableInputFile } from './assertReadableInputFile';

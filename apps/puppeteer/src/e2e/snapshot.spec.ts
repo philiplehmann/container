@@ -4,11 +4,11 @@ import { readdir, unlink } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { finished } from 'node:stream/promises';
 import { fileURLToPath } from 'node:url';
-import { currentArch, promiseSpawn } from '@container/docker';
-import { streamToBuffer } from '@container/stream';
-import { streamRequest } from '@container/test/request';
-import { testContainer } from '@container/test/server';
 import { expect, test } from '@playwright/test';
+import { currentArch, promiseSpawn } from '@riwi/docker';
+import { streamToBuffer } from '@riwi/stream';
+import { streamRequest } from '@riwi/test/request';
+import { testContainer } from '@riwi/test/server';
 import type { StartedTestContainer } from 'testcontainers';
 
 const __filename = fileURLToPath(import.meta.url);
