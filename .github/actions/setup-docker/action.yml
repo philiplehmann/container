@@ -58,7 +58,7 @@ runs:
         echo "DOCKER_BUILDKIT_CACHE_TO=type=local,dest=/tmp/.buildx-cache-new,mode=max" >> $GITHUB_ENV
 
     - name: Login to dockerhub
-      uses: docker/login-action@v3
+      uses: docker/login-action@v4
       if: ${{ inputs.docker-username != '' && inputs.docker-password != '' }}
       with:
         username: ${{ inputs.docker-username }}
