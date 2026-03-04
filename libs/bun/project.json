@@ -5,15 +5,30 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@container/biomejs:lint"
+      "executor": "@riwi/biomejs:lint"
     },
     "test": {
-      "executor": "@container/bun:test",
+      "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {}
     },
     "typecheck": {
-      "executor": "@container/tsc:typecheck"
+      "executor": "@riwi/tsc:typecheck"
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/bun",
+        "main": "libs/bun/src/index.ts",
+        "tsConfig": "libs/bun/tsconfig.lib.json",
+        "assets": [
+          "libs/bun/package.json",
+          "libs/bun/executors.json",
+          "libs/bun/src/executors/**/*.json",
+          "libs/bun/README.md"
+        ]
+      }
     }
   },
   "tags": []

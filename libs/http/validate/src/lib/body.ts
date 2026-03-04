@@ -1,6 +1,6 @@
-import { requestToJson } from '@container/http/body';
-import { BadRequest } from '@container/http/error';
-import type { Next, Prefix, ReqRes } from '@container/http/route';
+import { requestToJson } from '@riwi/http/body';
+import { BadRequest } from '@riwi/http/error';
+import type { Next, Prefix, ReqRes } from '@riwi/http/route';
 import type { output, ZodType } from 'zod/v4';
 
 export function validateBody<RQ extends ReqRes, BodySchema extends ZodType>(

@@ -5,7 +5,7 @@ import { access, readdir, rm, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
-import { type InputType, streamInputToWriteable, streamToBuffer } from '@container/stream';
+import { type InputType, streamInputToWriteable, streamToBuffer } from '@riwi/stream';
 import type { Schema } from './schema';
 
 async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {

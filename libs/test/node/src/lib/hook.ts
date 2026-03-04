@@ -1,6 +1,6 @@
 import { after, before } from 'node:test';
-import type { routes } from '@container/http/route';
-import { TestServer } from '@container/test/server';
+import type { routes } from '@riwi/http/route';
+import { TestServer } from '@riwi/test/server';
 
 export const useTestServer = (...testRoutes: Parameters<typeof routes>): TestServer => {
   const server = new TestServer();

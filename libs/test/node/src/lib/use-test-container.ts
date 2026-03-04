@@ -1,5 +1,5 @@
 import { after, before } from 'node:test';
-import { type TestContainerProps, testContainer } from '@container/test/server';
+import { type TestContainerProps, testContainer } from '@riwi/test/server';
 import type { StartedTestContainer } from 'testcontainers';
 
 export interface TestContainerOutput {

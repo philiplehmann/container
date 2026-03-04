@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import type { Writable } from 'node:stream';
-import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@container/stream';
+import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@riwi/stream';
 
 export function imageToText(options: { input: InputType; output: Writable }): Promise<void>;
 export function imageToText(options: { input: InputType }): Promise<Buffer>;

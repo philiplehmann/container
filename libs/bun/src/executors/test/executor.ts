@@ -1,7 +1,7 @@
 import { glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { promiseSpawn } from '@container/docker';
-import { projectRoot } from '@container/nx';
+import { promiseSpawn } from '@riwi/docker';
+import { projectRoot } from '@riwi/nx';
 import type { Executor } from '@nx/devkit';
 import type { NodeTestExecutorSchema } from './schema';
 

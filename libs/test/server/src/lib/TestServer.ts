@@ -1,5 +1,5 @@
 import type { IncomingMessage, Server } from 'node:http';
-import { connect, type routes } from '@container/http/route';
+import { connect, type routes } from '@riwi/http/route';
 import { testServer } from './test-server';
 
 export class TestServer {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test';
-import { currentArch } from '@container/docker';
-import { useTestContainer } from '@container/test/bun';
-import { testRequest } from '@container/test/request';
+import { currentArch } from '@riwi/docker';
+import { useTestContainer } from '@riwi/test/bun';
+import { testRequest } from '@riwi/test/request';
 
 const containerPort = 5000;
 
