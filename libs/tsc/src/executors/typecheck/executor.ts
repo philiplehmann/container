@@ -1,8 +1,8 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
+import type { Executor } from '@nx/devkit';
 import { promiseSpawn } from '@riwi/docker';
 import { projectRoot } from '@riwi/nx';
-import type { Executor } from '@nx/devkit';
 import type { TscTypecheckExecutorSchema } from './schema';
 
 export interface TypecheckExecutorOptions {
@@ -23,8 +23,8 @@ const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
 ) => {
   const root = projectRoot(context);
 
-  if (existsSync(resolve(root, tsconfig))) {
-    for (const config in possibleTsConfigs) {
+  if (!existsSync(resolve(root, tsconfig))) {
+    for (const config of possibleTsConfigs) {
       if (existsSync(resolve(root, config))) {
         tsconfig = config;
         break;
