@@ -67,7 +67,7 @@
   "parallel": 8,
   "release": {
     "projects": ["bun", "biomejs", "tsc", "node", "docker", "helper"],
-    "conventionalCommits": true,
+    "conventionalCommits": {},
     "changelog": {
       "projectChangelogs": true
     }
