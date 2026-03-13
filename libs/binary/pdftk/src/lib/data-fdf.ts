@@ -1,5 +1,5 @@
 import type { Readable, Writable } from 'node:stream';
-import { streamChildProcess } from '@container/stream';
+import { streamChildProcess } from '@riwi/stream';
 import { type PdftkOptions, pdftk } from './pdftk';
 
 export async function dataFdfStream(

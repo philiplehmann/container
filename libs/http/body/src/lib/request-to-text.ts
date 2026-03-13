@@ -1,5 +1,5 @@
 import type { IncomingMessage } from 'node:http';
-import { streamToString } from '@container/stream';
+import { streamToString } from '@riwi/stream';
 import { z } from 'zod/v4';
 import { validateRequestHeaders } from './validate-request-headers';
 

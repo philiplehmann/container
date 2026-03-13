@@ -15,35 +15,35 @@
       "cache": true,
       "inputs": ["default"]
     },
-    "@container/biomejs:lint": {
+    "@riwi/biomejs:lint": {
       "cache": true,
       "inputs": ["default", "{workspaceRoot}/biome.json", "{projectRoot}/biome.json"]
     },
-    "@container/tsc:typecheck": {
+    "@riwi/tsc:typecheck": {
       "cache": true,
       "inputs": ["default", "{workspaceRoot}/tsconfig.base.json"]
     },
-    "@container/node:test": {
+    "@riwi/node:test": {
       "cache": true,
       "inputs": ["default"]
     },
-    "@container/bun:test": {
+    "@riwi/bun:test": {
       "cache": true,
       "inputs": ["default"]
     },
-    "@container/bun:build": {
+    "@riwi/bun:build": {
       "cache": true,
       "inputs": ["default"]
     },
-    "@container/docker:test": {
+    "@riwi/docker:test": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
-    "@container/docker:build": {
+    "@riwi/docker:build": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
-    "@container/docker:run": {
+    "@riwi/docker:run": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     }
@@ -65,6 +65,13 @@
   },
   "defaultBase": "main",
   "parallel": 8,
+  "release": {
+    "projects": ["bun", "biomejs", "tsc", "node", "docker", "helper"],
+    "conventionalCommits": {},
+    "changelog": {
+      "projectChangelogs": true
+    }
+  },
   "plugins": [
     {
       "plugin": "@nx/playwright/plugin",

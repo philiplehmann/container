@@ -1,4 +1,4 @@
-import { HttpError } from '@container/http/error';
+import { HttpError } from '@riwi/http/error';
 import type { HttpMethod, Next, ReqRes, Response } from './http-route';
 import { NoRoute } from './noRoute';
 import { pathMatcher } from './path-matcher';

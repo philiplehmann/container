@@ -1,6 +1,6 @@
 import type { IncomingMessage } from 'node:http';
-import { BadRequest } from '@container/http/error';
-import { streamToJson } from '@container/stream';
+import { BadRequest } from '@riwi/http/error';
+import { streamToJson } from '@riwi/stream';
 import { z } from 'zod/v4';
 import { validateRequestHeaders } from './validate-request-headers';
 

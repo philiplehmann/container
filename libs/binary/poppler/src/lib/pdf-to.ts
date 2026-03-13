@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import type { Writable } from 'node:stream';
-import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@container/stream';
+import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@riwi/stream';
 import type { ConvertTo } from './convert-to';
 
 export function pdfTo(options: { input: InputType; output: Writable; to: ConvertTo }): Promise<void>;

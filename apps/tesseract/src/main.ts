@@ -1,6 +1,6 @@
-import { imageToText } from '@container/binary/tesseract';
-import { connect, healthEndpoints, post } from '@container/http/route';
-import { httpServer } from '@container/http/server';
+import { imageToText } from '@riwi/binary/tesseract';
+import { connect, healthEndpoints, post } from '@riwi/http/route';
+import { httpServer } from '@riwi/http/server';
 
 const PORT = process.env.PORT || '3000';
 

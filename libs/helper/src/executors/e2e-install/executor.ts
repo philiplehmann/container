@@ -1,4 +1,4 @@
-import { promiseSpawn } from '@container/docker';
+import { promiseSpawn } from '@riwi/docker';
 import type { PromiseExecutor } from '@nx/devkit';
 import type { E2EInstallExecutorSchema } from './schema';
 

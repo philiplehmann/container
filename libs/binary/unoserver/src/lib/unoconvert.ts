@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import type { Writable } from 'node:stream';
-import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@container/stream';
+import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@riwi/stream';
 import type { Schema } from './schema';
 
 export function unoconvert(options: { input: InputType; output: Writable } & Schema): void;

@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { currentArch } from '@container/docker';
-import { wait } from '@container/helper';
-import { testRequest } from '@container/test/request';
+import { currentArch } from '@riwi/docker';
+import { wait } from '@riwi/helper';
+import { testRequest } from '@riwi/test/request';
 import { createTransport, type Transporter } from 'nodemailer';
 import { GenericContainer, type StartedTestContainer, Wait } from 'testcontainers';
 
