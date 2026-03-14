@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "@container/source",
+      "name": "@riwi/source",
       "dependencies": {
         "puppeteer-core": "24.40.0",
         "zod": "^4.3.6",

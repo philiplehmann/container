@@ -14,6 +14,22 @@
     },
     "typecheck": {
       "executor": "@riwi/tsc:typecheck"
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "dependsOn": ["^build"],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/docker",
+        "main": "libs/docker/src/index.ts",
+        "tsConfig": "libs/docker/tsconfig.lib.json",
+        "assets": [
+          "libs/docker/package.json",
+          "libs/docker/executors.json",
+          "libs/docker/src/executors/**/*.json",
+          "libs/docker/README.md"
+        ]
+      }
     }
   },
   "tags": []

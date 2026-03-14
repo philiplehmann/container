@@ -10,15 +10,15 @@ export interface TypecheckExecutorOptions {
 }
 
 const possibleTsConfigs = [
-  'tsconfig.spec.json',
-  'tsconfig.base.json',
-  'tsconfig.json',
-  'tsconfig.app.json',
   'tsconfig.lib.json',
+  'tsconfig.app.json',
+  'tsconfig.spec.json',
+  'tsconfig.json',
+  'tsconfig.base.json',
 ];
 
 const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
-  { tsconfig = 'tsconfig.spec.json' },
+  { tsconfig = 'tsconfig.lib.json' },
   context,
 ) => {
   const root = projectRoot(context);

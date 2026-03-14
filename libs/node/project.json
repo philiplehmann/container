@@ -14,6 +14,22 @@
     },
     "typecheck": {
       "executor": "@riwi/tsc:typecheck"
+    },
+    "build": {
+      "executor": "@nx/js:tsc",
+      "dependsOn": ["^build"],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/node",
+        "main": "libs/node/src/index.ts",
+        "tsConfig": "libs/node/tsconfig.lib.json",
+        "assets": [
+          "libs/node/package.json",
+          "libs/node/executors.json",
+          "libs/node/src/executors/**/*.json",
+          "libs/node/README.md"
+        ]
+      }
     }
   },
   "tags": []
