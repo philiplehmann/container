@@ -1,4 +1,6 @@
-import { describe, expect, it } from 'bun:test';
+import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@container/docker';
@@ -259,6 +261,139 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(404);
+        });
+      });
+
+      describe('/direct-fs', async () => {
+        const setupDisabled = useTestContainer({
+          image: `philiplehmann/unoserver:test-${arch}`,
+          containerPort,
+          hook: (container) => {
+            return container.withStartupTimeout(60_000);
+          },
+        });
+
+        it('should return 404 when feature flag is disabled', async () => {
+          const [response] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setupDisabled.port,
+            path: '/direct-fs',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              inputPath: 'incoming/input.doc',
+              outputPath: 'converted/output.pdf',
+            }),
+          });
+
+          expect(response.statusCode).toBe(404);
+        });
+
+        describe('when feature flag is enabled', async () => {
+          let inputRoot = '';
+          let outputRoot = '';
+
+          beforeAll(async () => {
+            inputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-in-'));
+            outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
+
+            const inputFile = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
+            const source = await readFile(inputFile);
+
+            await mkdir(resolve(inputRoot, 'incoming'), { recursive: true });
+            await writeFile(resolve(inputRoot, 'incoming/VorlageBusinessplan.doc'), source, { flush: true });
+          });
+
+          afterAll(async () => {
+            if (inputRoot) {
+              await rm(inputRoot, { recursive: true, force: true });
+            }
+            if (outputRoot) {
+              await rm(outputRoot, { recursive: true, force: true });
+            }
+          });
+
+          const setup = useTestContainer({
+            image: `philiplehmann/unoserver:test-${arch}`,
+            containerPort,
+            env: {
+              ENABLE_FILESYSTEM_PROCESSING_ACCESS: 'true',
+              UNOSERVER_DIRECT_ONLY: 'true',
+            },
+            hook: (container) => {
+              return container.withStartupTimeout(60_000).withBindMounts([
+                { source: inputRoot, target: '/data/in' },
+                { source: outputRoot, target: '/data/out' },
+              ]);
+            },
+            timeout: 90_000,
+          });
+
+          it('should convert file from FS input root to FS output root', async () => {
+            const [response, text] = await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port: setup.port,
+              path: '/direct-fs',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                inputPath: 'incoming/VorlageBusinessplan.doc',
+                outputPath: 'converted/VorlageBusinessplan.pdf',
+                convertTo: 'pdf',
+              }),
+            });
+
+            expect(response.statusCode).toBe(200);
+            const json = JSON.parse(text) as { status: string; outputPath: string; outputBytes: number };
+            expect(json.status).toBe('complete');
+            expect(json.outputPath).toBe('converted/VorlageBusinessplan.pdf');
+            expect(json.outputBytes).toBeGreaterThan(0);
+          });
+
+          it('should reject path traversal', async () => {
+            const [response] = await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port: setup.port,
+              path: '/direct-fs',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                inputPath: '../outside.doc',
+                outputPath: 'converted/out.pdf',
+                convertTo: 'pdf',
+              }),
+            });
+
+            expect(response.statusCode).toBe(400);
+          });
+
+          it('should reject missing input file', async () => {
+            const [response, text] = await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port: setup.port,
+              path: '/direct-fs',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                inputPath: 'incoming/does-not-exist.doc',
+                outputPath: 'converted/out.pdf',
+                convertTo: 'pdf',
+              }),
+            });
+
+            expect(response.statusCode).toBe(400);
+            const json = JSON.parse(text) as { status: string; message: string };
+            expect(json.status).toBe('error');
+            expect(json.message).toContain('Input file not found or not readable');
+          });
         });
       });
     });
