@@ -49,5 +49,3 @@ test-results
 
 # running puppeteer locally
 chromium-data
-
-*.md
