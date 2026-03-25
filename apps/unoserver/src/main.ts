@@ -18,6 +18,9 @@ const ENABLE_FILESYSTEM_PROCESSING_ACCESS = process.env.ENABLE_FILESYSTEM_PROCES
 const FS_INPUT_ROOT = process.env.FS_INPUT_ROOT || '/data/in';
 const FS_OUTPUT_ROOT = process.env.FS_OUTPUT_ROOT || '/data/out';
 
+// Track pending writes per output path to serialize concurrent requests
+const pendingWrites = new Map<string, Promise<void>>();
+
 const main = async () => {
   if (process.env.UNOSERVER_DIRECT_ONLY !== 'true') {
     await unoserver();
@@ -37,13 +40,26 @@ const main = async () => {
     try {
       const inputAbsolutePath = resolvePathUnderRoot(FS_INPUT_ROOT, body.inputPath, 'inputPath');
       const outputAbsolutePath = resolvePathUnderRoot(FS_OUTPUT_ROOT, body.outputPath, 'outputPath');
-      const { outputBytes, durationMs } = await directFsConvert({
-        inputAbsolutePath,
-        outputAbsolutePath,
-        convertTo: body.convertTo,
-        outputFilter: body.outputFilter,
-        filterOptions: body.filterOptions,
-      });
+
+      // Wait for any pending write to the same output path to complete
+      const previousWrite = pendingWrites.get(outputAbsolutePath);
+      const currentWrite = (async () => {
+        if (previousWrite) {
+          await previousWrite;
+        }
+        const result = await directFsConvert({
+          inputAbsolutePath,
+          outputAbsolutePath,
+          convertTo: body.convertTo,
+          outputFilter: body.outputFilter,
+          filterOptions: body.filterOptions,
+        });
+        return result;
+      })();
+
+      pendingWrites.set(outputAbsolutePath, currentWrite);
+      let { outputBytes, durationMs } = await currentWrite;
+      pendingWrites.delete(outputAbsolutePath);
 
       return {
         statusCode: 200,
@@ -58,7 +74,11 @@ const main = async () => {
       };
     } catch (error) {
       const statusCode = error instanceof HttpError ? error.status : 500;
-      const message = error instanceof Error ? error.message : 'unknown error';
+      const message = error instanceof HttpError ? error.message : 'internal server error';
+
+      if (!(error instanceof HttpError)) {
+        console.error('Unhandled error in directFsRoute:', error);
+      }
 
       return {
         statusCode,

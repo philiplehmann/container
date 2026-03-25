@@ -348,7 +348,14 @@ describe('unoserver', () => {
             });
 
             expect(response.statusCode).toBe(200);
-            const json = JSON.parse(text) as { status: string; outputPath: string; outputBytes: number };
+            interface DirectFsResponse {
+              status: string;
+              inputPath: string;
+              outputPath: string;
+              outputBytes: number;
+              durationMs: number;
+            }
+            const json = JSON.parse(text) as DirectFsResponse;
             expect(json.status).toBe('complete');
             expect(json.outputPath).toBe('converted/VorlageBusinessplan.pdf');
             expect(json.outputBytes).toBeGreaterThan(0);
