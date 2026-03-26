@@ -36,6 +36,7 @@
       "@container/binary/tesseract": ["libs/binary/tesseract/src/index.ts"],
       "@container/binary/unoserver": ["libs/binary/unoserver/src/index.ts"],
       "@container/binary/libreoffice": ["libs/binary/libreoffice/src/index.ts"],
+      "@container/binary/libreoffice-fs": ["libs/binary/libreoffice-fs/src/index.ts"],
       "@container/biomejs": ["libs/biomejs/src/index.ts"],
       "@container/bun": ["libs/bun/src/index.ts"],
       "@container/docker": ["libs/docker/src/index.ts"],

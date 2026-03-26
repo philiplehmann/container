@@ -1,5 +1,5 @@
-import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { afterAll, describe, expect, it } from 'bun:test';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -265,51 +265,44 @@ describe('unoserver', () => {
       });
 
       describe('/direct-fs', async () => {
-        const setupDisabled = useTestContainer({
-          image: `philiplehmann/unoserver:test-${arch}`,
-          containerPort,
-          hook: (container) => {
-            return container.withStartupTimeout(60_000);
-          },
-        });
-
-        it('should return 404 when feature flag is disabled', async () => {
-          const [response] = await testRequest({
-            method: 'POST',
-            host: 'localhost',
-            port: setupDisabled.port,
-            path: '/direct-fs',
-            headers: {
-              'content-type': 'application/json',
+        describe('when feature flag is disabled', async () => {
+          const setupDisabled = useTestContainer({
+            image: `philiplehmann/unoserver:test-${arch}`,
+            containerPort,
+            env: {
+              UNOSERVER_DIRECT_ONLY: 'true',
             },
-            body: JSON.stringify({
-              inputPath: 'incoming/input.doc',
-              outputPath: 'converted/output.pdf',
-            }),
+            hook: (container) => {
+              return container.withStartupTimeout(60_000);
+            },
           });
 
-          expect(response.statusCode).toBe(404);
+          it('should return 404 when feature flag is disabled', async () => {
+            const [response] = await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port: setupDisabled.port,
+              path: '/direct-fs',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                inputPath: 'VorlageBusinessplan.doc',
+                outputPath: 'converted/VorlageBusinessplan.pdf',
+              }),
+            });
+
+            expect(response.statusCode).toBe(404);
+          });
         });
 
         describe('when feature flag is enabled', async () => {
-          let inputRoot = '';
+          const inputRoot = resolve(__dirname, 'assets');
           let outputRoot = '';
 
-          beforeAll(async () => {
-            inputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-in-'));
-            outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
-
-            const inputFile = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-            const source = await readFile(inputFile);
-
-            await mkdir(resolve(inputRoot, 'incoming'), { recursive: true });
-            await writeFile(resolve(inputRoot, 'incoming/VorlageBusinessplan.doc'), source, { flush: true });
-          });
+          outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
 
           afterAll(async () => {
-            if (inputRoot) {
-              await rm(inputRoot, { recursive: true, force: true });
-            }
             if (outputRoot) {
               await rm(outputRoot, { recursive: true, force: true });
             }
@@ -319,7 +312,7 @@ describe('unoserver', () => {
             image: `philiplehmann/unoserver:test-${arch}`,
             containerPort,
             env: {
-              ENABLE_FILESYSTEM_PROCESSING_ACCESS: 'true',
+              FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS: 'true',
               UNOSERVER_DIRECT_ONLY: 'true',
             },
             hook: (container) => {
@@ -341,7 +334,7 @@ describe('unoserver', () => {
                 'content-type': 'application/json',
               },
               body: JSON.stringify({
-                inputPath: 'incoming/VorlageBusinessplan.doc',
+                inputPath: 'VorlageBusinessplan.doc',
                 outputPath: 'converted/VorlageBusinessplan.pdf',
                 convertTo: 'pdf',
               }),
@@ -390,7 +383,7 @@ describe('unoserver', () => {
                 'content-type': 'application/json',
               },
               body: JSON.stringify({
-                inputPath: 'incoming/does-not-exist.doc',
+                inputPath: 'does-not-exist.doc',
                 outputPath: 'converted/out.pdf',
                 convertTo: 'pdf',
               }),

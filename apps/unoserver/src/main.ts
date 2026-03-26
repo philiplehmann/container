@@ -6,23 +6,16 @@ import {
   unoserver,
 } from '@container/binary/unoserver';
 import { connect, healthEndpoints, post } from '@container/http/route';
-import { HttpError } from '@container/http/error';
 import { httpServer } from '@container/http/server';
-import { middlewareBody, middlewareQuery } from '@container/http/validate';
-import { directFsConvert } from './lib/direct-fs-convert';
-import { resolvePathUnderRoot } from './lib/path-safety';
-import { directFsBodySchema } from './schema/direct-fs';
+import { middlewareQuery } from '@container/http/validate';
+import { createDirectFsRoute } from './lib/direct-fs-convert';
 
 const PORT = process.env.PORT || '3000';
-const ENABLE_FILESYSTEM_PROCESSING_ACCESS = process.env.ENABLE_FILESYSTEM_PROCESSING_ACCESS === 'true';
-const FS_INPUT_ROOT = process.env.FS_INPUT_ROOT || '/data/in';
-const FS_OUTPUT_ROOT = process.env.FS_OUTPUT_ROOT || '/data/out';
-
-// Track pending writes per output path to serialize concurrent requests
-const pendingWrites = new Map<string, Promise<void>>();
+const DIRECT_ONLY = process.env.UNOSERVER_DIRECT_ONLY === 'true';
+const FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS = process.env.FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS === 'true';
 
 const main = async () => {
-  if (process.env.UNOSERVER_DIRECT_ONLY !== 'true') {
+  if (!DIRECT_ONLY) {
     await unoserver();
   }
 
@@ -36,65 +29,12 @@ const main = async () => {
 
     await libreoffice({ input: req, output: res, ...query });
   });
-  const directFsRoute = post('/direct-fs', middlewareBody(directFsBodySchema), async ({ body }) => {
-    try {
-      const inputAbsolutePath = resolvePathUnderRoot(FS_INPUT_ROOT, body.inputPath, 'inputPath');
-      const outputAbsolutePath = resolvePathUnderRoot(FS_OUTPUT_ROOT, body.outputPath, 'outputPath');
-
-      // Wait for any pending write to the same output path to complete
-      const previousWrite = pendingWrites.get(outputAbsolutePath);
-      const currentWrite = (async () => {
-        if (previousWrite) {
-          await previousWrite;
-        }
-        const result = await directFsConvert({
-          inputAbsolutePath,
-          outputAbsolutePath,
-          convertTo: body.convertTo,
-          outputFilter: body.outputFilter,
-          filterOptions: body.filterOptions,
-        });
-        return result;
-      })();
-
-      pendingWrites.set(outputAbsolutePath, currentWrite);
-      let { outputBytes, durationMs } = await currentWrite;
-      pendingWrites.delete(outputAbsolutePath);
-
-      return {
-        statusCode: 200,
-        contentType: 'application/json',
-        body: {
-          status: 'complete',
-          inputPath: body.inputPath,
-          outputPath: body.outputPath,
-          outputBytes,
-          durationMs,
-        },
-      };
-    } catch (error) {
-      const statusCode = error instanceof HttpError ? error.status : 500;
-      const message = error instanceof HttpError ? error.message : 'internal server error';
-
-      if (!(error instanceof HttpError)) {
-        console.error('Unhandled error in directFsRoute:', error);
-      }
-
-      return {
-        statusCode,
-        contentType: 'application/json',
-        body: {
-          status: 'error',
-          message,
-        },
-      };
-    }
-  });
+  const directFsRoute = createDirectFsRoute();
 
   httpServer(
     connect(
-      ...(ENABLE_FILESYSTEM_PROCESSING_ACCESS ? [directFsRoute] : []),
-      ...(process.env.UNOSERVER_DIRECT_ONLY === 'true' ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
+      ...(FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS ? [directFsRoute] : []),
+      ...(DIRECT_ONLY ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
       ...healthEndpoints,
     ),
     { port: PORT, name: 'unoserver' },

@@ -1,61 +1,75 @@
-import { constants, createReadStream, createWriteStream } from 'node:fs';
-import { access, mkdir, stat } from 'node:fs/promises';
-import { dirname } from 'node:path';
-import { type Schema as LibreofficeSchema, libreoffice } from '@container/binary/libreoffice';
-import { BadRequest } from '@container/http/error';
+import { post, type RouteHandler } from '@container/http/route';
+import type { NextResponse } from '@container/http/route';
+import { middlewareBody } from '@container/http/validate';
+import {
+  handleDirectFsConvert,
+  type DirectFsConvertRequestOptions,
+} from '@container/binary/libreoffice-fs';
+import { HttpError } from '@container/http/error';
+import type { DirectFsBodySchema } from '../schema/direct-fs';
+import { directFsBodySchema } from '../schema/direct-fs';
 
-export interface DirectFsConvertOptions {
-  inputAbsolutePath: string;
-  outputAbsolutePath: string;
-  convertTo: LibreofficeSchema['convertTo'];
-  outputFilter?: LibreofficeSchema['outputFilter'];
-  filterOptions?: LibreofficeSchema['filterOptions'];
+export interface HandleDirectFsRouteOptions {
+  body: DirectFsBodySchema;
+  inputRoot: string;
+  outputRoot: string;
 }
 
-export interface DirectFsConvertResult {
-  outputBytes: number;
-  durationMs: number;
-}
-
-async function assertReadableInputFile(inputAbsolutePath: string): Promise<void> {
+export async function handleDirectFsRoute({
+  body,
+  inputRoot,
+  outputRoot,
+}: HandleDirectFsRouteOptions): Promise<NextResponse> {
   try {
-    await access(inputAbsolutePath, constants.R_OK);
-    const inputStats = await stat(inputAbsolutePath);
-    if (!inputStats.isFile()) {
-      throw new BadRequest('Input path must point to a file');
-    }
+    const { outputBytes, durationMs } = await handleDirectFsConvert({
+      inputRoot,
+      outputRoot,
+      inputPath: body.inputPath,
+      outputPath: body.outputPath,
+      convertTo: body.convertTo,
+      outputFilter: body.outputFilter,
+      filterOptions: body.filterOptions,
+    });
+
+    return {
+      statusCode: 200,
+      contentType: 'application/json',
+      body: {
+        status: 'complete',
+        inputPath: body.inputPath,
+        outputPath: body.outputPath,
+        outputBytes,
+        durationMs,
+      },
+    };
   } catch (error) {
-    if (error instanceof BadRequest) {
-      throw error;
+    const statusCode = error instanceof HttpError ? error.status : 500;
+    const message = error instanceof HttpError ? error.message : 'internal server error';
+
+    if (!(error instanceof HttpError)) {
+      console.error('Unhandled error in directFsRoute:', error);
     }
-    throw new BadRequest('Input file not found or not readable');
+
+    return {
+      statusCode,
+      contentType: 'application/json',
+      body: {
+        status: 'error',
+        message,
+      },
+    };
   }
 }
 
-export async function directFsConvert({
-  inputAbsolutePath,
-  outputAbsolutePath,
-  convertTo,
-  outputFilter,
-  filterOptions,
-}: DirectFsConvertOptions): Promise<DirectFsConvertResult> {
-  await assertReadableInputFile(inputAbsolutePath);
-  await mkdir(dirname(outputAbsolutePath), { recursive: true });
-
-  const startedAt = Date.now();
-
-  await libreoffice({
-    input: createReadStream(inputAbsolutePath),
-    output: createWriteStream(outputAbsolutePath),
-    convertTo,
-    outputFilter,
-    filterOptions,
+export function createDirectFsRoute(
+  inputRoot: string = process.env.FS_INPUT_ROOT || '/data/in',
+  outputRoot: string = process.env.FS_OUTPUT_ROOT || '/data/out',
+): ReturnType<typeof post> {
+  return post('/direct-fs', middlewareBody(directFsBodySchema), async ({ body }) => {
+    return await handleDirectFsRoute({
+      body,
+      inputRoot,
+      outputRoot,
+    });
   });
-
-  const outputStats = await stat(outputAbsolutePath);
-
-  return {
-    outputBytes: outputStats.size,
-    durationMs: Date.now() - startedAt,
-  };
 }
