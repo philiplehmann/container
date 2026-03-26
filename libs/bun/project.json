@@ -18,6 +18,7 @@
     "build": {
       "executor": "@nx/js:tsc",
       "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/bun",
