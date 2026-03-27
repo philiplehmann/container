@@ -1,7 +1,7 @@
 import { ConvertTo } from '@container/binary/libreoffice';
 import { z } from 'zod/v4';
 
-export const directFsBodySchema = z
+export const schema = z
   .strictObject({
     inputPath: z.string().min(1),
     outputPath: z.string().min(1),
@@ -22,4 +22,4 @@ export const directFsBodySchema = z
     },
   );
 
-export type DirectFsBodySchema = z.infer<typeof directFsBodySchema>;
+export type Schema = z.infer<typeof schema>;
