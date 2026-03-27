@@ -1,3 +1,3 @@
-export type { DirectFsConvertOptions, DirectFsConvertRequestOptions, DirectFsConvertResult } from './lib/convert';
-export { convertWithSerializedWrites, directFsConvert, handleDirectFsConvert } from './lib/convert';
-export { resolvePathUnderRoot } from './lib/path-safety';
+export { libreofficeFs } from './lib/libreofficeFs';
+export type { Schema } from './lib/schema';
+export { schema } from './lib/schema';

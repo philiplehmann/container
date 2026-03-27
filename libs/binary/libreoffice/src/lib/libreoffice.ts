@@ -50,7 +50,7 @@ const moveFile = async (sourcePath: string, targetPath: string): Promise<void> =
   }
 };
 
-export async function libreoffice(options: { input: Readable; output: Writable | string } & Schema): Promise<undefined>;
+export async function libreoffice(options: { input: Readable; output: Writable } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: string; output: string } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: Buffer; output: string } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: Buffer | string } & Schema): Promise<Buffer>;
@@ -142,7 +142,10 @@ export async function libreoffice({
       throw new Error(`Converted file not found in ${outDir}`);
     }
     const convertedFilePath = `${outDir}/${convertedFile}`;
-    if (outputAbsolutePath) {
+    if (typeof output === 'string') {
+      if (!outputAbsolutePath) {
+        throw new Error('output path not found');
+      }
       await moveFile(convertedFilePath, outputAbsolutePath);
       return;
     }
