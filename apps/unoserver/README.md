@@ -31,7 +31,7 @@ services:
 
 ## API Endpoints
 
-Default behavior remains unchanged: only `/convert` and `/direct` are available unless `ENABLE_FILESYSTEM_PROCESSING_ACCESS=true` is explicitly set.
+Default behavior remains unchanged: only `/convert` and `/direct` are available unless `UNOSERVER_FS_ENABLE=true` is explicitly set.
 
 ### Convert File
 
@@ -70,7 +70,7 @@ curl -X POST \
 
 ### Direct Filesystem Conversion (Optional)
 
-This endpoint is disabled by default and only available when `ENABLE_FILESYSTEM_PROCESSING_ACCESS=true`.
+This endpoint is disabled by default and only available when `UNOSERVER_FS_ENABLE=true`.
 
 - Endpoint: `POST /direct-fs`
 - Content type: `application/json`
@@ -81,9 +81,9 @@ This endpoint is disabled by default and only available when `ENABLE_FILESYSTEM_
 | Variable | Default | Description |
 |------|------|-------------|
 | `PORT` | `3000` | HTTP service port |
-| `ENABLE_FILESYSTEM_PROCESSING_ACCESS` | `false` | Enables `POST /direct-fs` when set to `true` |
-| `FS_INPUT_ROOT` | `/data/in` | Root folder for reading input files |
-| `FS_OUTPUT_ROOT` | `/data/out` | Root folder for writing output files |
+| `UNOSERVER_FS_ENABLE` | `false` | Enables `POST /direct-fs` when set to `true` |
+| `UNOSERVER_FS_INPUT_ROOT` | `/data/in` | Root folder for reading input files |
+| `UNOSERVER_FS_OUTPUT_ROOT` | `/data/out` | Root folder for writing output files |
 
 #### Docker Run with Mounted Input/Output Roots
 
@@ -94,9 +94,10 @@ cp apps/unoserver/src/test/assets/dummy.docx "$PWD/tmp/in/dummy.docx"
 docker run --rm \
   -p 3000:3000 \
   --name unoserver-direct-fs \
-  -e ENABLE_FILESYSTEM_PROCESSING_ACCESS=true \
-  -e FS_INPUT_ROOT=/data/in \
-  -e FS_OUTPUT_ROOT=/data/out \
+  -e UNOSERVER_DIRECT_ONLY=true \
+  -e UNOSERVER_FS_ENABLE=true \
+  -e UNOSERVER_FS_INPUT_ROOT=/data/in \
+  -e UNOSERVER_FS_OUTPUT_ROOT=/data/out \/
   -v "$PWD/tmp/in:/data/in" \
   -v "$PWD/tmp/out:/data/out" \
   philiplehmann/unoserver:latest

@@ -12,7 +12,7 @@ import { createDirectFsRoute } from './lib/direct-fs-convert';
 
 const PORT = process.env.PORT || '3000';
 const DIRECT_ONLY = process.env.UNOSERVER_DIRECT_ONLY === 'true';
-const FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS = process.env.FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS === 'true';
+const FS_ENABLE = process.env.UNOSERVER_FS_ENABLE === 'true';
 
 const main = async () => {
   if (!DIRECT_ONLY) {
@@ -29,11 +29,9 @@ const main = async () => {
 
     await libreoffice({ input: req, output: res, ...query });
   });
-  const directFsRoute = createDirectFsRoute();
-
   httpServer(
     connect(
-      ...(FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS ? [directFsRoute] : []),
+      ...(FS_ENABLE ? [createDirectFsRoute()] : []),
       ...(DIRECT_ONLY ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
       ...healthEndpoints,
     ),

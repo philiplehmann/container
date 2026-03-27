@@ -1,11 +1,8 @@
-import { post, type RouteHandler } from '@container/http/route';
-import type { NextResponse } from '@container/http/route';
-import { middlewareBody } from '@container/http/validate';
-import {
-  handleDirectFsConvert,
-  type DirectFsConvertRequestOptions,
-} from '@container/binary/libreoffice-fs';
+import { handleDirectFsConvert } from '@container/binary/libreoffice-fs';
 import { HttpError } from '@container/http/error';
+import type { NextResponse } from '@container/http/route';
+import { post } from '@container/http/route';
+import { middlewareBody } from '@container/http/validate';
 import type { DirectFsBodySchema } from '../schema/direct-fs';
 import { directFsBodySchema } from '../schema/direct-fs';
 
@@ -62,8 +59,8 @@ export async function handleDirectFsRoute({
 }
 
 export function createDirectFsRoute(
-  inputRoot: string = process.env.FS_INPUT_ROOT || '/data/in',
-  outputRoot: string = process.env.FS_OUTPUT_ROOT || '/data/out',
+  inputRoot: string = process.env.UNOSERVER_FS_INPUT_ROOT || '/data/in',
+  outputRoot: string = process.env.UNOSERVER_FS_OUTPUT_ROOT || '/data/out',
 ): ReturnType<typeof post> {
   return post('/direct-fs', middlewareBody(directFsBodySchema), async ({ body }) => {
     return await handleDirectFsRoute({

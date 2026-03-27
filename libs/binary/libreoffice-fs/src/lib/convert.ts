@@ -63,9 +63,7 @@ export async function directFsConvert({
 
 const pendingWrites = new Map<string, Promise<DirectFsConvertResult>>();
 
-export async function convertWithSerializedWrites(
-  options: DirectFsConvertOptions,
-): Promise<DirectFsConvertResult> {
+export async function convertWithSerializedWrites(options: DirectFsConvertOptions): Promise<DirectFsConvertResult> {
   const previousWrite = pendingWrites.get(options.outputAbsolutePath);
   const currentWrite = (async () => {
     if (previousWrite) {
@@ -96,9 +94,7 @@ export interface DirectFsConvertRequestOptions {
   filterOptions?: LibreofficeSchema['filterOptions'];
 }
 
-export async function handleDirectFsConvert(
-  options: DirectFsConvertRequestOptions,
-): Promise<DirectFsConvertResult> {
+export async function handleDirectFsConvert(options: DirectFsConvertRequestOptions): Promise<DirectFsConvertResult> {
   const inputAbsolutePath = resolvePathUnderRoot(options.inputRoot, options.inputPath, 'inputPath');
   const outputAbsolutePath = resolvePathUnderRoot(options.outputRoot, options.outputPath, 'outputPath');
 

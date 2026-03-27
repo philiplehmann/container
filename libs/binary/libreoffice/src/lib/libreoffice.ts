@@ -28,6 +28,28 @@ async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
   }
 }
 
+const moveFile = async (sourcePath: string, targetPath: string): Promise<void> => {
+  const sourceAbsolutePath = resolve(sourcePath);
+  const targetAbsolutePath = resolve(targetPath);
+
+  if (sourceAbsolutePath === targetAbsolutePath) {
+    return;
+  }
+
+  await mkdir(dirname(targetAbsolutePath), { recursive: true });
+
+  try {
+    await rename(sourceAbsolutePath, targetAbsolutePath);
+  } catch (error) {
+    const errorWithCode = error as NodeJS.ErrnoException;
+    if (errorWithCode.code !== 'EXDEV') {
+      throw error;
+    }
+    await copyFile(sourceAbsolutePath, targetAbsolutePath);
+    await unlink(sourceAbsolutePath);
+  }
+};
+
 export async function libreoffice(options: { input: Readable; output: Writable } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: string; output: string } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: Buffer | string } & Schema): Promise<Buffer>;
@@ -48,28 +70,6 @@ export async function libreoffice({
   const inFile = filesystemMode ? input : `${tmpdir()}/${randomUUID()}`;
   const outDir = filesystemMode ? dirname(resolve(output)) : `${tmpdir()}/${randomUUID()}`;
   const userInstallationDir = `${tmpdir()}/${randomUUID()}`;
-
-  const moveFile = async (sourcePath: string, targetPath: string): Promise<void> => {
-    const sourceAbsolutePath = resolve(sourcePath);
-    const targetAbsolutePath = resolve(targetPath);
-
-    if (sourceAbsolutePath === targetAbsolutePath) {
-      return;
-    }
-
-    await mkdir(dirname(targetAbsolutePath), { recursive: true });
-
-    try {
-      await rename(sourceAbsolutePath, targetAbsolutePath);
-    } catch (error) {
-      const errorWithCode = error as NodeJS.ErrnoException;
-      if (errorWithCode.code !== 'EXDEV') {
-        throw error;
-      }
-      await copyFile(sourceAbsolutePath, targetAbsolutePath);
-      await unlink(sourceAbsolutePath);
-    }
-  };
 
   try {
     if (filesystemMode) {

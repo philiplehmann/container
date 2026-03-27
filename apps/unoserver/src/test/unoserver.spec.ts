@@ -298,9 +298,7 @@ describe('unoserver', () => {
 
         describe('when feature flag is enabled', async () => {
           const inputRoot = resolve(__dirname, 'assets');
-          let outputRoot = '';
-
-          outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
+          const outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
 
           afterAll(async () => {
             if (outputRoot) {
@@ -312,7 +310,7 @@ describe('unoserver', () => {
             image: `philiplehmann/unoserver:test-${arch}`,
             containerPort,
             env: {
-              FS_ENABLE_FILESYSTEM_PROCESSING_ACCESS: 'true',
+              UNOSERVER_FS_ENABLE: 'true',
               UNOSERVER_DIRECT_ONLY: 'true',
             },
             hook: (container) => {
