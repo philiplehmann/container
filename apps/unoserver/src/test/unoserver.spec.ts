@@ -1,4 +1,5 @@
 import { afterAll, describe, expect, it } from 'bun:test';
+import { execSync } from 'node:child_process';
 import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, resolve } from 'node:path';
@@ -151,7 +152,7 @@ describe('unoserver', () => {
       });
 
       describe('/direct', async () => {
-        const setup = await useTestContainer({
+        const setup = useTestContainer({
           image: `philiplehmann/unoserver:test-${arch}`,
           containerPort,
           hook: (container) => {
@@ -299,11 +300,15 @@ describe('unoserver', () => {
 
         describe('when feature flag is enabled', async () => {
           const inputRoot = resolve(__dirname, 'assets');
-          const outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
+          let outputRoot = '';
 
           afterAll(async () => {
             if (outputRoot) {
-              await rm(outputRoot, { recursive: true, force: true });
+              try {
+                await rm(outputRoot, { recursive: true, force: true });
+              } catch (e) {
+                console.error(e);
+              }
             }
           });
 
@@ -314,7 +319,9 @@ describe('unoserver', () => {
               UNOSERVER_FS_ENABLE: 'true',
               UNOSERVER_DIRECT_ONLY: 'true',
             },
-            hook: (container) => {
+            hook: async (container) => {
+              outputRoot = await mkdtemp(resolve(tmpdir(), 'unoserver-out-'));
+              execSync(`chmod 777 "${outputRoot}"`);
               return container.withStartupTimeout(60_000).withBindMounts([
                 { source: inputRoot, target: '/data/in' },
                 { source: outputRoot, target: '/data/out' },

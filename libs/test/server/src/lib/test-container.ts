@@ -8,7 +8,7 @@ export interface TestContainerProps {
   healthPort?: number;
   healthStatusCode?: number;
   env?: Environment;
-  hook?: (container: GenericContainer) => GenericContainer;
+  hook?: (container: GenericContainer) => GenericContainer | Promise<GenericContainer>;
 }
 
 export const testContainer = async ({
@@ -28,7 +28,7 @@ export const testContainer = async ({
     .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode));
 
   if (hook) {
-    genericContainer = hook(genericContainer);
+    genericContainer = await hook(genericContainer);
   }
 
   const container = await genericContainer.start();
