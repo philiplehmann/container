@@ -21,7 +21,7 @@
     "nx": "22.6.2",
     "playwright": "1.58.2",
     "testcontainers": "11.13.0",
-    "typescript": "5.9.3"
+    "typescript": "6.0.2"
   },
   "dependencies": {
     "puppeteer-core": "24.40.0",
