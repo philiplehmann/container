@@ -50,7 +50,7 @@ jobs:
         run: bun install
 
       - name: setup nx shas
-        uses: nrwl/nx-set-shas@v4
+        uses: nrwl/nx-set-shas@v5
 
       - name: Get affected projects and targets
         id: get-affected

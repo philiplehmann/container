@@ -72,5 +72,6 @@
         "targetName": "e2e"
       }
     }
-  ]
+  ],
+  "analytics": false
 }
