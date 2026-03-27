@@ -8,11 +8,14 @@ import {
 import { connect, healthEndpoints, post } from '@container/http/route';
 import { httpServer } from '@container/http/server';
 import { middlewareQuery } from '@container/http/validate';
+import { createDirectFsRoute } from './lib/direct-fs-convert';
 
 const PORT = process.env.PORT || '3000';
+const DIRECT_ONLY = process.env.UNOSERVER_DIRECT_ONLY === 'true';
+const FS_ENABLE = process.env.UNOSERVER_FS_ENABLE === 'true';
 
 const main = async () => {
-  if (process.env.UNOSERVER_DIRECT_ONLY !== 'true') {
+  if (!DIRECT_ONLY) {
     await unoserver();
   }
 
@@ -26,10 +29,10 @@ const main = async () => {
 
     await libreoffice({ input: req, output: res, ...query });
   });
-
   httpServer(
     connect(
-      ...(process.env.UNOSERVER_DIRECT_ONLY === 'true' ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
+      ...(FS_ENABLE ? [createDirectFsRoute()] : []),
+      ...(DIRECT_ONLY ? [libreofficeRoute] : [unoconvertRoute, libreofficeRoute]),
       ...healthEndpoints,
     ),
     { port: PORT, name: 'unoserver' },

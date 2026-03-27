@@ -31,6 +31,8 @@ services:
 
 ## API Endpoints
 
+Default behavior remains unchanged: only `/convert` and `/direct` are available unless `UNOSERVER_FS_ENABLE=true` is explicitly set.
+
 ### Convert File
 
 Default behavior (no parameters) converts to PDF.
@@ -64,6 +66,75 @@ curl -X POST \
 curl -X POST \
   --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.jpeg \
   'http://localhost:3000/convert?convertTo=jpeg'
+```
+
+### Direct Filesystem Conversion (Optional)
+
+This endpoint is disabled by default and only available when `UNOSERVER_FS_ENABLE=true`.
+
+- Endpoint: `POST /direct-fs`
+- Content type: `application/json`
+- Input and output paths must be relative paths under configured roots.
+
+#### Environment Variables
+
+| Variable | Default | Description |
+|------|------|-------------|
+| `PORT` | `3000` | HTTP service port |
+| `UNOSERVER_FS_ENABLE` | `false` | Enables `POST /direct-fs` when set to `true` |
+| `UNOSERVER_FS_INPUT_ROOT` | `/data/in` | Root folder for reading input files |
+| `UNOSERVER_FS_OUTPUT_ROOT` | `/data/out` | Root folder for writing output files |
+
+#### Docker Run with Mounted Input/Output Roots
+
+```bash
+mkdir -p "$PWD/tmp/in" "$PWD/tmp/out"
+cp apps/unoserver/src/test/assets/dummy.docx "$PWD/tmp/in/dummy.docx"
+
+docker run --rm \
+  -p 3000:3000 \
+  --name unoserver-direct-fs \
+  -e UNOSERVER_DIRECT_ONLY=true \
+  -e UNOSERVER_FS_ENABLE=true \
+  -e UNOSERVER_FS_INPUT_ROOT=/data/in \
+  -e UNOSERVER_FS_OUTPUT_ROOT=/data/out \/
+  -v "$PWD/tmp/in:/data/in" \
+  -v "$PWD/tmp/out:/data/out" \
+  philiplehmann/unoserver:latest
+```
+
+#### Request Example
+
+```bash
+curl -X POST \
+  -H 'content-type: application/json' \
+  -d '{
+    "inputPath": "dummy.docx",
+    "outputPath": "dummy.pdf",
+    "convertTo": "pdf"
+  }' \
+  'http://localhost:3000/direct-fs'
+```
+
+#### Success Response Example
+
+```json
+{
+  "status": "complete",
+  "inputPath": "dummy.docx",
+  "outputPath": "dummy.pdf",
+  "outputBytes": 133742,
+  "durationMs": 947
+}
+```
+
+#### Error Response Example
+
+```json
+{
+  "status": "error",
+  "message": "inputPath must resolve within configured root"
+}
 ```
 
 ## Options

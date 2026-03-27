@@ -1,0 +1,20 @@
+{
+  "name": "binary-libreoffice-fs",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/binary/libreoffice-fs/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@container/biomejs:lint"
+    },
+    "test": {
+      "executor": "@container/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {}
+    },
+    "typecheck": {
+      "executor": "@container/tsc:typecheck"
+    }
+  },
+  "tags": []
+}

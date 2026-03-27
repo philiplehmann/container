@@ -1,8 +1,9 @@
 import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { constants, createReadStream, createWriteStream, existsSync } from 'node:fs';
-import { access, readdir, rm, unlink } from 'node:fs/promises';
+import { access, copyFile, mkdir, readdir, rename, rm, unlink } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
+import { basename, dirname, extname, resolve } from 'node:path';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import { type InputType, streamInputToWriteable, streamToBuffer } from '@container/stream';
@@ -27,7 +28,31 @@ async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
   }
 }
 
-export async function libreoffice(options: { input: Readable; output: Writable } & Schema): Promise<undefined>;
+const moveFile = async (sourcePath: string, targetPath: string): Promise<void> => {
+  const sourceAbsolutePath = resolve(sourcePath);
+  const targetAbsolutePath = resolve(targetPath);
+
+  if (sourceAbsolutePath === targetAbsolutePath) {
+    return;
+  }
+
+  await mkdir(dirname(targetAbsolutePath), { recursive: true });
+
+  try {
+    await rename(sourceAbsolutePath, targetAbsolutePath);
+  } catch (error) {
+    const errorWithCode = error as NodeJS.ErrnoException;
+    if (errorWithCode.code !== 'EXDEV') {
+      throw error;
+    }
+    await copyFile(sourceAbsolutePath, targetAbsolutePath);
+    await unlink(sourceAbsolutePath);
+  }
+};
+
+export async function libreoffice(options: { input: Readable; output: Writable | string } & Schema): Promise<undefined>;
+export async function libreoffice(options: { input: string; output: string } & Schema): Promise<undefined>;
+export async function libreoffice(options: { input: Buffer; output: string } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: Buffer | string } & Schema): Promise<Buffer>;
 export async function libreoffice({
   input,
@@ -37,16 +62,31 @@ export async function libreoffice({
   filterOptions,
 }: {
   input: InputType;
-  output?: Writable;
+  output?: Writable | string;
 } & Schema): Promise<undefined | Buffer> {
   if (filterOptions && !outputFilter) {
     throw new Error('filterOptions requires outputFilter');
   }
-  const inFile = `${tmpdir()}/${randomUUID()}`;
-  const outDir = `${tmpdir()}/${randomUUID()}`;
+  const filesystemMode = typeof input === 'string' && typeof output === 'string';
+  const inputAbsolutePath = filesystemMode ? resolve(input) : undefined;
+  const outputAbsolutePath = typeof output === 'string' ? resolve(output) : undefined;
+  if (inputAbsolutePath && outputAbsolutePath && inputAbsolutePath === outputAbsolutePath) {
+    throw new Error('input and output paths must be different');
+  }
+  const inFile = inputAbsolutePath ?? `${tmpdir()}/${randomUUID()}`;
+  const outDir =
+    filesystemMode && outputAbsolutePath
+      ? resolve(dirname(outputAbsolutePath), `.libreoffice-${randomUUID()}`)
+      : `${tmpdir()}/${randomUUID()}`;
+  const userInstallationDir = `${tmpdir()}/${randomUUID()}`;
 
   try {
-    await streamInputToWriteable(input, createWriteStream(inFile), { end: true });
+    if (filesystemMode) {
+      await access(inFile, constants.R_OK);
+    } else {
+      await streamInputToWriteable(input, createWriteStream(inFile), { end: true });
+    }
+    await mkdir(outDir, { recursive: true });
 
     try {
       await access(process.env.LIBREOFFICE_EXECUTABLE_PATH ?? 'libreoffice', constants.X_OK);
@@ -63,7 +103,7 @@ export async function libreoffice({
       '--nologo',
       '--nofirststartwizard',
       '--norestore',
-      `-env:UserInstallation=file://${tmpdir()}/${randomUUID()}`,
+      `-env:UserInstallation=file://${userInstallationDir}`,
       '--convert-to',
       `${convertTo}${outputFilter ? `:${outputFilter}${filterOptions ? `:${Array.isArray(filterOptions) ? filterOptions.join(',') : filterOptions}` : ''}` : ''}`,
       '--outdir',
@@ -94,12 +134,18 @@ export async function libreoffice({
       });
     });
 
+    const expectedConvertedFile = `${basename(inFile, extname(inFile))}.${convertTo}`;
     const files = await readdir(outDir);
-    const convertedFile = files.find((file) => file.endsWith(`.${convertTo}`));
+    const convertedFile =
+      files.find((file) => file === expectedConvertedFile) ?? files.find((file) => file.endsWith(`.${convertTo}`));
     if (!convertedFile) {
       throw new Error(`Converted file not found in ${outDir}`);
     }
     const convertedFilePath = `${outDir}/${convertedFile}`;
+    if (outputAbsolutePath) {
+      await moveFile(convertedFilePath, outputAbsolutePath);
+      return;
+    }
     if (output) {
       await finished(createReadStream(convertedFilePath).pipe(output));
       return;
@@ -108,7 +154,10 @@ export async function libreoffice({
 
     return buffer;
   } finally {
-    await cleanup(inFile, 'file');
+    if (!filesystemMode) {
+      await cleanup(inFile, 'file');
+    }
     await cleanup(outDir, 'dir');
+    await cleanup(userInstallationDir, 'dir');
   }
 }
