@@ -26,7 +26,7 @@
         "nx": "22.6.2",
         "playwright": "1.58.2",
         "testcontainers": "11.13.0",
-        "typescript": "5.9.3",
+        "typescript": "6.0.2",
       },
     },
   },
@@ -1411,7 +1411,7 @@
 
     "typed-query-selector": ["typed-query-selector@2.12.1", "", {}, "sha512-uzR+FzI8qrUEIu96oaeBJmd9E7CFEiQ3goA5qCVgc4s5llSubcfGHq9yUstZx/k4s9dXHVKsE35YWoFyvEqEHA=="],
 
-    "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
+    "typescript": ["typescript@6.0.2", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ=="],
 
     "undici": ["undici@7.24.4", "", {}, "sha512-BM/JzwwaRXxrLdElV2Uo6cTLEjhSb3WXboncJamZ15NgUURmvlXvxa6xkwIOILIjPNo9i8ku136ZvWV0Uly8+w=="],
 
@@ -1510,6 +1510,8 @@
     "@istanbuljs/load-nyc-config/resolve-from": ["resolve-from@5.0.0", "", {}, "sha512-qYg9KP24dD5qka9J47d0aVky0N+b4fTU89LN9iDnjB5waksiC49rvMB0PrUJQGoTmH50XPiqOvAjDfaijGxYZw=="],
 
     "@nx/eslint/@nx/js": ["@nx/js@22.6.2", "", { "dependencies": { "@babel/core": "^7.23.2", "@babel/plugin-proposal-decorators": "^7.22.7", "@babel/plugin-transform-class-properties": "^7.22.5", "@babel/plugin-transform-runtime": "^7.23.2", "@babel/preset-env": "^7.23.2", "@babel/preset-typescript": "^7.22.5", "@babel/runtime": "^7.22.6", "@nx/devkit": "22.6.2", "@nx/workspace": "22.6.2", "@zkochan/js-yaml": "0.0.7", "babel-plugin-const-enum": "^1.0.1", "babel-plugin-macros": "^3.1.0", "babel-plugin-transform-typescript-metadata": "^0.3.1", "chalk": "^4.1.0", "columnify": "^1.6.0", "detect-port": "^1.5.1", "ignore": "^5.0.4", "js-tokens": "^4.0.0", "jsonc-parser": "3.2.0", "npm-run-path": "^4.0.1", "picocolors": "^1.1.0", "picomatch": "4.0.2", "semver": "^7.6.3", "source-map-support": "0.5.19", "tinyglobby": "^0.2.12", "tslib": "^2.3.0" }, "peerDependencies": { "verdaccio": "^6.0.5" }, "optionalPeers": ["verdaccio"] }, "sha512-KYw/B9WektFxEig0gcybyv87eXBuOZFR89ITj6TxoH21iYS1jPsvU+p459IcIaraOsyQjTv7OU8NCoM4fL2foQ=="],
+
+    "@nx/eslint/typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 
     "@nx/jest/@nx/js": ["@nx/js@22.6.2", "", { "dependencies": { "@babel/core": "^7.23.2", "@babel/plugin-proposal-decorators": "^7.22.7", "@babel/plugin-transform-class-properties": "^7.22.5", "@babel/plugin-transform-runtime": "^7.23.2", "@babel/preset-env": "^7.23.2", "@babel/preset-typescript": "^7.22.5", "@babel/runtime": "^7.22.6", "@nx/devkit": "22.6.2", "@nx/workspace": "22.6.2", "@zkochan/js-yaml": "0.0.7", "babel-plugin-const-enum": "^1.0.1", "babel-plugin-macros": "^3.1.0", "babel-plugin-transform-typescript-metadata": "^0.3.1", "chalk": "^4.1.0", "columnify": "^1.6.0", "detect-port": "^1.5.1", "ignore": "^5.0.4", "js-tokens": "^4.0.0", "jsonc-parser": "3.2.0", "npm-run-path": "^4.0.1", "picocolors": "^1.1.0", "picomatch": "4.0.2", "semver": "^7.6.3", "source-map-support": "0.5.19", "tinyglobby": "^0.2.12", "tslib": "^2.3.0" }, "peerDependencies": { "verdaccio": "^6.0.5" }, "optionalPeers": ["verdaccio"] }, "sha512-KYw/B9WektFxEig0gcybyv87eXBuOZFR89ITj6TxoH21iYS1jPsvU+p459IcIaraOsyQjTv7OU8NCoM4fL2foQ=="],
 
