@@ -50,8 +50,9 @@ const moveFile = async (sourcePath: string, targetPath: string): Promise<void> =
   }
 };
 
-export async function libreoffice(options: { input: Readable; output: Writable } & Schema): Promise<undefined>;
+export async function libreoffice(options: { input: Readable; output: Writable | string } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: string; output: string } & Schema): Promise<undefined>;
+export async function libreoffice(options: { input: Buffer; output: string } & Schema): Promise<undefined>;
 export async function libreoffice(options: { input: Buffer | string } & Schema): Promise<Buffer>;
 export async function libreoffice({
   input,
@@ -67,8 +68,12 @@ export async function libreoffice({
     throw new Error('filterOptions requires outputFilter');
   }
   const filesystemMode = typeof input === 'string' && typeof output === 'string';
+  const inputAbsolutePath = filesystemMode ? resolve(input) : undefined;
   const outputAbsolutePath = typeof output === 'string' ? resolve(output) : undefined;
-  const inFile = filesystemMode ? input : `${tmpdir()}/${randomUUID()}`;
+  if (inputAbsolutePath && outputAbsolutePath && inputAbsolutePath === outputAbsolutePath) {
+    throw new Error('input and output paths must be different');
+  }
+  const inFile = inputAbsolutePath ?? `${tmpdir()}/${randomUUID()}`;
   const outDir =
     filesystemMode && outputAbsolutePath
       ? resolve(dirname(outputAbsolutePath), `.libreoffice-${randomUUID()}`)
