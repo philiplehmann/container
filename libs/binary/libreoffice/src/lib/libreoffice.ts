@@ -67,17 +67,21 @@ export async function libreoffice({
     throw new Error('filterOptions requires outputFilter');
   }
   const filesystemMode = typeof input === 'string' && typeof output === 'string';
+  const outputAbsolutePath = typeof output === 'string' ? resolve(output) : undefined;
   const inFile = filesystemMode ? input : `${tmpdir()}/${randomUUID()}`;
-  const outDir = filesystemMode ? dirname(resolve(output)) : `${tmpdir()}/${randomUUID()}`;
+  const outDir =
+    filesystemMode && outputAbsolutePath
+      ? resolve(dirname(outputAbsolutePath), `.libreoffice-${randomUUID()}`)
+      : `${tmpdir()}/${randomUUID()}`;
   const userInstallationDir = `${tmpdir()}/${randomUUID()}`;
 
   try {
     if (filesystemMode) {
       await access(inFile, constants.R_OK);
-      await mkdir(outDir, { recursive: true });
     } else {
       await streamInputToWriteable(input, createWriteStream(inFile), { end: true });
     }
+    await mkdir(outDir, { recursive: true });
 
     try {
       await access(process.env.LIBREOFFICE_EXECUTABLE_PATH ?? 'libreoffice', constants.X_OK);
@@ -133,8 +137,8 @@ export async function libreoffice({
       throw new Error(`Converted file not found in ${outDir}`);
     }
     const convertedFilePath = `${outDir}/${convertedFile}`;
-    if (typeof output === 'string') {
-      await moveFile(convertedFilePath, output);
+    if (outputAbsolutePath) {
+      await moveFile(convertedFilePath, outputAbsolutePath);
       return;
     }
     if (output) {
@@ -147,8 +151,8 @@ export async function libreoffice({
   } finally {
     if (!filesystemMode) {
       await cleanup(inFile, 'file');
-      await cleanup(outDir, 'dir');
     }
+    await cleanup(outDir, 'dir');
     await cleanup(userInstallationDir, 'dir');
   }
 }

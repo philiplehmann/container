@@ -270,6 +270,7 @@ describe('unoserver', () => {
             image: `philiplehmann/unoserver:test-${arch}`,
             containerPort,
             env: {
+              UNOSERVER_FS_ENABLE: 'false',
               UNOSERVER_DIRECT_ONLY: 'true',
             },
             hook: (container) => {
@@ -363,6 +364,25 @@ describe('unoserver', () => {
               },
               body: JSON.stringify({
                 inputPath: '../outside.doc',
+                outputPath: 'converted/out.pdf',
+                convertTo: 'pdf',
+              }),
+            });
+
+            expect(response.statusCode).toBe(400);
+          });
+
+          it('should reject absolute input path', async () => {
+            const [response] = await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port: setup.port,
+              path: '/direct-fs',
+              headers: {
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                inputPath: '/etc/passwd',
                 outputPath: 'converted/out.pdf',
                 convertTo: 'pdf',
               }),
