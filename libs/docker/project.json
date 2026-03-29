@@ -16,19 +16,20 @@
       "executor": "@riwi/tsc:typecheck"
     },
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@riwi/bun:build",
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/docker",
-        "main": "libs/docker/src/index.ts",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "generatePackageJson": true,
         "tsConfig": "libs/docker/tsconfig.lib.json",
         "assets": [
           "libs/docker/package.json",
           "libs/docker/executors.json",
           "libs/docker/src/executors/**/*.json",
           "libs/docker/README.md"
-        ]
+        ],
+        "packages": "external"
       }
     }
   },

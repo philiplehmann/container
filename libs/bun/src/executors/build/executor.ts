@@ -1,3 +1,4 @@
+import { copyFile, glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { Executor } from '@nx/devkit';
 import { copyPackageJson, createEntryPoints } from '@nx/js';
@@ -6,11 +7,13 @@ import { projectRoot as getProjectRoot, replacePlaceholders } from '@riwi/nx';
 import type { BunBuildExecutorSchema } from './schema';
 
 const bunBuildExecutor: Executor<BunBuildExecutorSchema> = async (
-  { entrypoints, outdir, target, format, packages },
+  { entrypoints, outdir, target, format, packages, assets },
   context,
 ) => {
   const replace = replacePlaceholders(context);
   const projectRoot = getProjectRoot(context);
+  const globEntrypoints = await Array.fromAsync(glob(entrypoints.map(replace)));
+  const globAssets = await Array.fromAsync(glob((assets ?? []).map(replace)));
 
   const args = [
     'build',
@@ -24,13 +27,26 @@ const bunBuildExecutor: Executor<BunBuildExecutorSchema> = async (
     packages,
     '--root',
     resolve(projectRoot),
-    ...entrypoints.map(replace),
+    ...globEntrypoints,
   ];
   try {
     await promiseSpawn('bun', args, {
       cwd: context.root,
       env: process.env,
     });
+  } catch (e) {
+    if (e instanceof Error) {
+      console.error(e.message);
+    }
+    return { success: false };
+  }
+
+  try {
+    await Promise.all(
+      globAssets.map((asset) => {
+        return copyFile(resolve(context.root, asset), resolve(replace(outdir), asset.replace(`${projectRoot}/`, '')));
+      }),
+    );
   } catch (e) {
     if (e instanceof Error) {
       console.error(e.message);

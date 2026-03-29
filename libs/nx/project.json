@@ -16,15 +16,15 @@
       "executor": "@riwi/tsc:typecheck"
     },
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@riwi/bun:build",
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/nx",
-        "main": "libs/nx/src/index.ts",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
         "generatePackageJson": true,
         "tsConfig": "libs/nx/tsconfig.lib.json",
-        "assets": ["libs/nx/package.json", "libs/nx/README.md"]
+        "assets": ["libs/nx/package.json", "libs/nx/README.md"],
+        "packages": "external"
       }
     }
   },

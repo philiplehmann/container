@@ -25,15 +25,15 @@
     },
     "@riwi/node:test": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["default", "^production"]
     },
     "@riwi/bun:test": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["default", "^production"]
     },
     "@riwi/bun:build": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["production", "^production"]
     },
     "@riwi/docker:test": {
       "cache": false,

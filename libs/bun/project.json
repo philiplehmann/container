@@ -16,20 +16,21 @@
       "executor": "@riwi/tsc:typecheck"
     },
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@riwi/bun:build",
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/bun",
-        "main": "libs/bun/src/index.ts",
         "tsConfig": "libs/bun/tsconfig.lib.json",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "generatePackageJson": true,
         "assets": [
           "libs/bun/package.json",
           "libs/bun/executors.json",
           "libs/bun/src/executors/**/*.json",
           "libs/bun/README.md"
-        ]
+        ],
+        "packages": "external"
       }
     }
   },

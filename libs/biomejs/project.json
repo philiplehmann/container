@@ -16,19 +16,20 @@
       "executor": "@riwi/tsc:typecheck"
     },
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@riwi/bun:build",
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/biomejs",
-        "main": "libs/biomejs/src/index.ts",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "generatePackageJson": true,
         "tsConfig": "libs/biomejs/tsconfig.lib.json",
         "assets": [
           "libs/biomejs/package.json",
           "libs/biomejs/executors.json",
           "libs/biomejs/src/executors/**/*.json",
           "libs/biomejs/README.md"
-        ]
+        ],
+        "packages": "external"
       }
     }
   },

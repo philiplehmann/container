@@ -51,3 +51,6 @@ test-results
 chromium-data
 
 *.md
+
+.claude/worktrees
+.claude/settings.local.json

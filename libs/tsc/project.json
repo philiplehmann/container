@@ -16,19 +16,20 @@
       "executor": "@riwi/tsc:typecheck"
     },
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@riwi/bun:build",
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/tsc",
-        "main": "libs/tsc/src/index.ts",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "generatePackageJson": true,
         "tsConfig": "libs/tsc/tsconfig.lib.json",
         "assets": [
           "libs/tsc/package.json",
           "libs/tsc/executors.json",
           "libs/tsc/src/executors/**/*.json",
           "libs/tsc/README.md"
-        ]
+        ],
+        "packages": "external"
       }
     }
   },
