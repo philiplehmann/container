@@ -8,7 +8,6 @@
     "noEmit": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "importHelpers": true,
     "target": "esnext",
     "module": "preserve",
     "moduleDetection": "force",
@@ -25,7 +24,8 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "types": ["bun"],
-
+    "baseUrl": "",
+    "ignoreDeprecations": "6.0",
     "rootDir": ".",
     "paths": {
       "@riwi/binary/pdftk": ["./libs/binary/pdftk/src/index.ts"],

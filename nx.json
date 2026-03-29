@@ -46,6 +46,11 @@
     "@riwi/docker:run": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
+    },
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
     }
   },
   "namedInputs": {

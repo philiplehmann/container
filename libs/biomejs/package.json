@@ -17,5 +17,8 @@
     "executors.json",
     "src/**/*",
     "README.md"
-  ]
+  ],
+  "peerDependencies": {
+    "@biomejs/biome": ">= 2.4.0"
+  }
 }
