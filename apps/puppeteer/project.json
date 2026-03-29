@@ -72,7 +72,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/puppeteer:auto"],
-        "file": "apps/puppeteer/Dockerfile"
+        "file": "apps/puppeteer/Dockerfile",
+        "versionSource": "packageJson",
+        "versionSourcePackage": "puppeteer-core"
       }
     },
     "docker-run": {

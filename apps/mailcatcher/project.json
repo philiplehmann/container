@@ -29,7 +29,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/mailcatcher:auto"],
-        "file": "apps/mailcatcher/Dockerfile"
+        "file": "apps/mailcatcher/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "MAILCATCHER_VERSION"
       }
     },
     "docker-run": {

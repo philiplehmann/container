@@ -40,7 +40,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/tesseract:auto"],
-        "file": "apps/tesseract/Dockerfile"
+        "file": "apps/tesseract/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "TESSERACT_VERSION"
       }
     },
     "docker-run": {

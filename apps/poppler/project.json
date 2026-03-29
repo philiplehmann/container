@@ -40,7 +40,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/poppler-server:auto"],
-        "file": "apps/poppler/Dockerfile"
+        "file": "apps/poppler/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "POPPLER_VERSION"
       }
     },
     "docker-run": {

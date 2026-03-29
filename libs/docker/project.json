@@ -10,7 +10,9 @@
     "test": {
       "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {}
+      "options": {
+        "include": "**/*.{spec,test}.ts"
+      }
     },
     "typecheck": {
       "executor": "@riwi/tsc:typecheck"

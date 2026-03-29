@@ -49,7 +49,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/unoserver:auto"],
-        "file": "apps/unoserver/Dockerfile"
+        "file": "apps/unoserver/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "UNOSERVER_VERSION"
       }
     },
     "docker-run": {

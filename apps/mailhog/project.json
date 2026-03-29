@@ -29,7 +29,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/mailhog:auto"],
-        "file": "apps/mailhog/Dockerfile"
+        "file": "apps/mailhog/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "MAILHOG_VERSION"
       }
     },
     "docker-run": {

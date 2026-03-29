@@ -29,7 +29,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/maildev:auto"],
-        "file": "apps/maildev/Dockerfile"
+        "file": "apps/maildev/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "MAILHOG_VERSION"
       }
     },
     "docker-run": {

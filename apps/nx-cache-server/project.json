@@ -30,7 +30,9 @@
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/nx-cache-server:auto"],
-        "file": "apps/nx-cache-server/Dockerfile"
+        "file": "apps/nx-cache-server/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "NX_CACHE_SERVER_VERSION"
       }
     },
     "docker-run": {

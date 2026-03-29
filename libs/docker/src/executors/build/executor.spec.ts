@@ -7,6 +7,8 @@ const options: DockerBuildExecutorSchema = {
   platforms: [currentArch()],
   file: 'Dockerfile',
   tags: ['https://ghcr.io/philiplehmann/container/build:test'],
+  versionSource: 'custom',
+  versionFormat: '${YY_MM_DD}',
 };
 
 describe.skip('DockerBuild Executor', () => {
