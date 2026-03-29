@@ -20,7 +20,7 @@
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/node",
+        "outputPath": "dist/{projectRoot}",
         "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
         "generatePackageJson": true,
         "tsConfig": "libs/node/tsconfig.lib.json",

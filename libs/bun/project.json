@@ -21,6 +21,7 @@
       "inputs": ["production", "^production"],
       "outputs": ["{options.outputPath}"],
       "options": {
+        "outputPath": "dist/{projectRoot}",
         "tsConfig": "libs/bun/tsconfig.lib.json",
         "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
         "generatePackageJson": true,

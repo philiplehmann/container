@@ -20,7 +20,8 @@
       "dependsOn": ["^build"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "outputPath": "dist/{projectRoot}",
+        "entrypoints": ["{projectRoot}/src/index.ts"],
         "generatePackageJson": true,
         "tsConfig": "libs/nx/tsconfig.lib.json",
         "assets": ["libs/nx/package.json", "libs/nx/README.md"],
