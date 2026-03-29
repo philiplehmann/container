@@ -1,2 +1,3 @@
-export * from './lib/project-root';
-export * from './lib/replace-placeholders';
+export { projectRoot } from './lib/project-root';
+export { promiseSpawn } from './lib/promise-spawn';
+export { replacePlaceholders } from './lib/replace-placeholders';

@@ -1,5 +1,5 @@
+import { promiseSpawn } from '@riwi/nx';
 import { type DockerPlatform, dockerSpawn, envForDockerFile } from './docker-helper';
-import { promiseSpawn } from './promise-spawn';
 
 export async function dockerBuildxBuild({
   platforms,

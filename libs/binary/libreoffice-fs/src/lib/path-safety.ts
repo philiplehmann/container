@@ -1,5 +1,5 @@
 import { isAbsolute, resolve, sep } from 'node:path';
-import { BadRequest } from '@container/http/error';
+import { BadRequest } from '@riwi/http/error';
 
 export function resolvePathUnderRoot(root: string, inputPath: string, fieldName: string): string {
   if (isAbsolute(inputPath)) {

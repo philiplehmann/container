@@ -1,5 +1,4 @@
 import type { ExecutorContext } from '@nx/devkit';
-import { getCwd } from 'nx/src/utils/path';
 
 export const projectRoot = (context: ExecutorContext): string => {
   if (context.projectName && context.projectGraph) {
@@ -11,5 +10,5 @@ export const projectRoot = (context: ExecutorContext): string => {
   if (context.root) {
     return context.root;
   }
-  return getCwd();
+  return process.cwd();
 };

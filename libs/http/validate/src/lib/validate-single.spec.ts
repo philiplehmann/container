@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'bun:test';
-import { get, post } from '@container/http/route';
-import { useTestServer } from '@container/test/bun';
+import { get, post } from '@riwi/http/route';
+import { useTestServer } from '@riwi/test/bun';
 import { z } from 'zod/v4';
 import { middlewareBody, nextBody } from './body';
 import { middlewareQuery, nextQuery } from './query';
 
 const schema = z.strictObject({ key: z.string() });
+type SchemaInput = z.infer<typeof schema>;
 
 describe('validate-single', () => {
   describe('middlewareBody', () => {
@@ -39,7 +40,7 @@ describe('validate-single', () => {
     const server = useTestServer(
       post(
         '/http-validate/single/validateBody',
-        nextBody(schema, ({ body }) => {
+        nextBody(schema, ({ body }: { body: SchemaInput }) => {
           return { statusCode: 200, body };
         }),
       ),
@@ -91,7 +92,7 @@ describe('validate-single', () => {
     const server = useTestServer(
       get(
         '/http-validate/single/validateQuery',
-        nextQuery(schema, ({ query }) => {
+        nextQuery(schema, ({ query }: { query: SchemaInput }) => {
           return { statusCode: 200, body: query };
         }),
       ),

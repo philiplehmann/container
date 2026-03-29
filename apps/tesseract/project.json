@@ -5,29 +5,29 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@container/bun:build",
+      "executor": "@riwi/bun:build",
       "options": {
         "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
-      "executor": "@container/bun:serve"
+      "executor": "@riwi/bun:serve"
     },
     "lint": {
-      "executor": "@container/biomejs:lint",
+      "executor": "@riwi/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
     "typecheck": {
-      "executor": "@container/tsc:typecheck"
+      "executor": "@riwi/tsc:typecheck"
     },
     "docker-test": {
-      "executor": "@container/bun:test",
+      "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-build-test"],
       "options": {}
     },
     "docker-build-test": {
-      "executor": "@container/docker:test",
+      "executor": "@riwi/docker:test",
       "dependsOn": ["build"],
       "options": {
         "tag": "philiplehmann/tesseract:test",
@@ -35,16 +35,18 @@
       }
     },
     "docker-push": {
-      "executor": "@container/docker:build",
+      "executor": "@riwi/docker:build",
       "dependsOn": ["build"],
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/tesseract:auto"],
-        "file": "apps/tesseract/Dockerfile"
+        "file": "apps/tesseract/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "TESSERACT_VERSION"
       }
     },
     "docker-run": {
-      "executor": "@container/docker:run",
+      "executor": "@riwi/docker:run",
       "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/tesseract:run",

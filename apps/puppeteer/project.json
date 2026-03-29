@@ -6,29 +6,29 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@container/bun:build",
+      "executor": "@riwi/bun:build",
       "options": {
         "entrypoints": ["{projectRoot}/src/main.ts"]
       }
     },
     "serve": {
-      "executor": "@container/bun:serve"
+      "executor": "@riwi/bun:serve"
     },
     "lint": {
-      "executor": "@container/biomejs:lint",
+      "executor": "@riwi/biomejs:lint",
       "outputs": ["{options.outputFile}"]
     },
     "typecheck": {
-      "executor": "@container/tsc:typecheck"
+      "executor": "@riwi/tsc:typecheck"
     },
     "docker-test": {
-      "executor": "@container/bun:test",
+      "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-build-test"],
       "options": {}
     },
     "local-test": {
-      "executor": "@container/bun:test",
+      "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "env": {
@@ -37,7 +37,7 @@
       }
     },
     "e2e-install": {
-      "executor": "@container/helper:e2e-install",
+      "executor": "@riwi/helper:e2e-install",
       "options": {}
     },
     "docker-e2e": {
@@ -59,7 +59,7 @@
       }
     },
     "docker-build-test": {
-      "executor": "@container/docker:test",
+      "executor": "@riwi/docker:test",
       "dependsOn": ["build"],
       "options": {
         "tag": "philiplehmann/puppeteer:test",
@@ -67,16 +67,18 @@
       }
     },
     "docker-push": {
-      "executor": "@container/docker:build",
+      "executor": "@riwi/docker:build",
       "dependsOn": ["build"],
       "options": {
         "platforms": ["amd64", "arm64"],
         "tags": ["philiplehmann/puppeteer:auto"],
-        "file": "apps/puppeteer/Dockerfile"
+        "file": "apps/puppeteer/Dockerfile",
+        "versionSource": "packageJson",
+        "versionSourcePackage": "puppeteer-core"
       }
     },
     "docker-run": {
-      "executor": "@container/docker:run",
+      "executor": "@riwi/docker:run",
       "dependsOn": ["build"],
       "options": {
         "image": "philiplehmann/puppeteer:run",

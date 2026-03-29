@@ -19,6 +19,19 @@
     },
     "file": {
       "type": "string"
+    },
+    "versionSource": {
+      "type": "string",
+      "enum": ["env", "packageJson", "custom"]
+    },
+    "versionSourceEnv": {
+      "type": "string"
+    },
+    "versionSourcePackage": {
+      "type": "string"
+    },
+    "versionFormat": {
+      "type": "string"
     }
   },
   "required": []

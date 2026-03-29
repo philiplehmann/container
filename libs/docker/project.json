@@ -5,15 +5,35 @@
   "projectType": "library",
   "targets": {
     "lint": {
-      "executor": "@container/biomejs:lint"
+      "executor": "@riwi/biomejs:lint"
     },
     "test": {
-      "executor": "@container/bun:test",
+      "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {}
+      "options": {
+        "include": "**/*.{spec,test}.ts"
+      }
     },
     "typecheck": {
-      "executor": "@container/tsc:typecheck"
+      "executor": "@riwi/tsc:typecheck"
+    },
+    "build": {
+      "executor": "@riwi/bun:build",
+      "dependsOn": ["^build"],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/{projectRoot}",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "generatePackageJson": true,
+        "tsConfig": "libs/docker/tsconfig.lib.json",
+        "assets": [
+          "libs/docker/package.json",
+          "libs/docker/executors.json",
+          "libs/docker/src/executors/**/*.json",
+          "libs/docker/README.md"
+        ],
+        "packages": "external"
+      }
     }
   },
   "tags": []

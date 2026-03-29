@@ -1,6 +1,5 @@
-import { promiseSpawn } from '@container/docker';
-import { replacePlaceholders } from '@container/nx';
 import type { Executor } from '@nx/devkit';
+import { promiseSpawn, replacePlaceholders } from '@riwi/nx';
 import type { BunServeExecutorSchema } from './schema';
 
 const bunBuildExecutor: Executor<BunServeExecutorSchema> = async ({ entrypoint }, context) => {

@@ -13,6 +13,13 @@
       },
       "default": ["{projectRoot}/src/index.ts"]
     },
+    "assets": {
+      "type": "array",
+      "description": "list of assets to include in the build",
+      "items": {
+        "type": "string"
+      }
+    },
     "outdir": {
       "type": "string",
       "description": "Output directory for the build",

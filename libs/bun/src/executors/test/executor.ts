@@ -1,8 +1,7 @@
 import { glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { promiseSpawn } from '@container/docker';
-import { projectRoot } from '@container/nx';
 import type { Executor } from '@nx/devkit';
+import { projectRoot, promiseSpawn } from '@riwi/nx';
 import type { NodeTestExecutorSchema } from './schema';
 
 const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> => {

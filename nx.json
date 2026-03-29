@@ -15,37 +15,43 @@
       "cache": true,
       "inputs": ["default"]
     },
-    "@container/biomejs:lint": {
+    "@riwi/biomejs:lint": {
       "cache": true,
       "inputs": ["default", "{workspaceRoot}/biome.json", "{projectRoot}/biome.json"]
     },
-    "@container/tsc:typecheck": {
+    "@riwi/tsc:typecheck": {
       "cache": true,
       "inputs": ["default", "{workspaceRoot}/tsconfig.base.json"]
     },
-    "@container/node:test": {
+    "@riwi/node:test": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["default", "^production"]
     },
-    "@container/bun:test": {
+    "@riwi/bun:test": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["default", "^production"]
     },
-    "@container/bun:build": {
+    "@riwi/bun:build": {
       "cache": true,
-      "inputs": ["default"]
+      "inputs": ["production", "^production"]
     },
-    "@container/docker:test": {
+    "@riwi/docker:test": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
-    "@container/docker:build": {
+    "@riwi/docker:build": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
-    "@container/docker:run": {
+    "@riwi/docker:run": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
+    },
+    "nx-release-publish": {
+      "dependsOn": ["^build"],
+      "options": {
+        "packageRoot": "dist/{projectRoot}"
+      }
     }
   },
   "namedInputs": {
@@ -61,10 +67,17 @@
     "sharedGlobals": ["{workspaceRoot}/bun.lock", "{workspaceRoot}/.github/**/*"]
   },
   "cli": {
-    "packageManager": "bun"
+    "packageManager": "npm"
   },
   "defaultBase": "main",
   "parallel": 8,
+  "release": {
+    "projects": ["bun", "biomejs", "tsc", "node", "docker", "nx"],
+    "conventionalCommits": {},
+    "changelog": {
+      "projectChangelogs": true
+    }
+  },
   "plugins": [
     {
       "plugin": "@nx/playwright/plugin",

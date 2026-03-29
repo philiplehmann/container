@@ -1,4 +1,4 @@
-import { ConvertTo } from '@container/binary/libreoffice';
+import { ConvertTo } from '@riwi/binary/libreoffice';
 import { z } from 'zod/v4';
 
 export const schema = z

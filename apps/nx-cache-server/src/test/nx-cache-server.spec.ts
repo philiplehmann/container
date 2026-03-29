@@ -22,8 +22,9 @@ import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { currentArch, promiseSpawn } from '@container/docker';
-import { testRequest } from '@container/test/request';
+import { currentArch } from '@riwi/docker';
+import { promiseSpawn } from '@riwi/nx';
+import { testRequest } from '@riwi/test/request';
 import { GenericContainer, Network, type StartedNetwork, type StartedTestContainer, Wait } from 'testcontainers';
 
 describe('nx-cache-server', () => {

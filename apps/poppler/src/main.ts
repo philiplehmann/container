@@ -1,6 +1,6 @@
-import { ConvertTo, pdfTo } from '@container/binary/poppler';
-import { connect, healthEndpoints, post } from '@container/http/route';
-import { httpServer } from '@container/http/server';
+import { ConvertTo, pdfTo } from '@riwi/binary/poppler';
+import { connect, healthEndpoints, post } from '@riwi/http/route';
+import { httpServer } from '@riwi/http/server';
 
 const PORT = process.env.PORT || '3000';
 

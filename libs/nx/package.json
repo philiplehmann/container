@@ -1,0 +1,19 @@
+{
+  "name": "@riwi/nx",
+  "version": "0.1.0",
+  "dependencies": {},
+  "type": "module",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/**/*",
+    "README.md"
+  ]
+}
