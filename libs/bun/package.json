@@ -1,6 +1,6 @@
 {
   "name": "@riwi/bun",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "type": "module",
   "main": "./src/index.js",
   "typings": "./src/index.d.ts",
