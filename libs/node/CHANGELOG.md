@@ -1,3 +1,11 @@
+## 0.0.3 (2026-03-29)
+
+### 🩹 Fixes
+
+- **deps:** update dependency puppeteer-core to v24.40.0 ([500679b](https://github.com/philiplehmann/container/commit/500679b))
+- **deps:** update dependency puppeteer-core to v24.39.1 ([2388dd2](https://github.com/philiplehmann/container/commit/2388dd2))
+- **deps:** update dependency puppeteer-core to v24.39.0 ([631a6e9](https://github.com/philiplehmann/container/commit/631a6e9))
+
 ## 0.0.2 (2026-03-14)
 
 ### 🚀 Features
