@@ -1,6 +1,6 @@
 {
   "name": "@riwi/biomejs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "dependencies": {},
   "type": "module",
   "main": "./src/index.js",
