@@ -1,0 +1,9 @@
+{
+  "mcp": {
+    "nx-mcp": {
+      "type": "local",
+      "command": ["bun", "nx", "mcp"],
+      "enabled": true
+    }
+  }
+}
