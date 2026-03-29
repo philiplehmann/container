@@ -48,6 +48,7 @@
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
     },
     "nx-release-publish": {
+      "dependsOn": ["^build"],
       "options": {
         "packageRoot": "dist/{projectRoot}"
       }
