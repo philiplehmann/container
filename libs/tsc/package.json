@@ -1,6 +1,6 @@
 {
   "name": "@riwi/tsc",
-  "version": "0.0.10",
+  "version": "0.1.0",
   "dependencies": {},
   "type": "module",
   "main": "./src/index.js",
