@@ -1,9 +1,9 @@
 import { existsSync } from 'node:fs';
 import { glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import type { Executor } from '@nx/devkit';
 import { promiseSpawn } from '@riwi/docker';
 import { projectRoot } from '@riwi/nx';
-import type { Executor } from '@nx/devkit';
 import type { NodeTestExecutorSchema } from './schema';
 
 const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> => {

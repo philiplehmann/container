@@ -1,8 +1,8 @@
 import { resolve } from 'node:path';
-import { promiseSpawn } from '@riwi/docker';
-import { projectRoot as getProjectRoot, replacePlaceholders } from '@riwi/nx';
 import type { Executor } from '@nx/devkit';
 import { copyPackageJson, createEntryPoints } from '@nx/js';
+import { promiseSpawn } from '@riwi/docker';
+import { projectRoot as getProjectRoot, replacePlaceholders } from '@riwi/nx';
 import type { BunBuildExecutorSchema } from './schema';
 
 const bunBuildExecutor: Executor<BunBuildExecutorSchema> = async (

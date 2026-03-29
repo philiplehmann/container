@@ -1,5 +1,5 @@
-import { promiseSpawn } from '@riwi/docker';
 import type { PromiseExecutor } from '@nx/devkit';
+import { promiseSpawn } from '@riwi/docker';
 import type { E2EInstallExecutorSchema } from './schema';
 
 const runExecutor: PromiseExecutor<E2EInstallExecutorSchema> = async () => {
