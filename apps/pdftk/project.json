@@ -24,7 +24,9 @@
       "executor": "@riwi/bun:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["docker-build-test"],
-      "options": {}
+      "options": {
+        "maxConcurrency": 1
+      }
     },
     "local-test": {
       "executor": "@riwi/bun:test",
