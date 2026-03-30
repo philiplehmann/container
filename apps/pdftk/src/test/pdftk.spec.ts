@@ -50,6 +50,30 @@ describe('pdftk', () => {
         });
       });
 
+      describe.skip('compress parallel', async () => {
+        it('pdf file reduces in size', async () => {
+          const file = resolve(__dirname, 'assets/uncompressed.pdf');
+          const stats = statSync(file);
+          const responses = await Promise.all(
+            Array.from({ length: 20 }).map(() =>
+              streamRequest({
+                method: 'POST',
+                host: 'localhost',
+                port: setup.port,
+                path: '/compress',
+                headers: { 'Content-Type': 'application/pdf' },
+                file,
+              }),
+            ),
+          );
+          for (const response of responses) {
+            expectStatusOk(response.statusCode);
+            const size1 = await streamLength(response);
+            expect(stats.size > size1).toBeTruthy();
+          }
+        });
+      });
+
       describe('uncompress', () => {
         it('pdf file increases in size', async () => {
           const file = resolve(__dirname, 'assets/compressed.pdf');
