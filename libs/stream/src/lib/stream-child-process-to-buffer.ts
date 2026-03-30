@@ -1,5 +1,5 @@
 import type { ChildProcessWithoutNullStreams } from 'node:child_process';
-import { type InputType, streamInputToWriteable } from './stream-child-process';
+import { type InputType, isEpipeError, streamInputToWriteable } from './stream-child-process';
 import { streamToBuffer } from './stream-to-buffer';
 
 export async function streamChildProcessToBuffer(
@@ -19,8 +19,9 @@ export async function streamChildProcessToBuffer(
   });
 
   child.stdin.on('error', (error) => {
-    console.error(error);
-    child.kill();
+    if (!isEpipeError(error)) {
+      console.error(error);
+    }
   });
 
   const exitPromise = new Promise<{ code: number | null; signal: NodeJS.Signals | null }>((resolve) => {
@@ -30,6 +31,9 @@ export async function streamChildProcessToBuffer(
   });
 
   const inputPromise = streamInputToWriteable(input, child.stdin, { end: true }).catch((error) => {
+    if (isEpipeError(error)) {
+      return;
+    }
     child.kill();
     throw error;
   });
