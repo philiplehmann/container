@@ -1,4 +1,5 @@
 import { imageToText } from '@riwi/binary/tesseract';
+import { handleRouteError } from '@riwi/http/error';
 import { connect, healthEndpoints, post } from '@riwi/http/route';
 import { httpServer } from '@riwi/http/server';
 
@@ -11,10 +12,7 @@ httpServer(
       try {
         await imageToText({ input: req, output: res });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'tesseract failed');
-        }
+        handleRouteError(res, error, 'tesseract failed');
       }
     }),
     ...healthEndpoints,

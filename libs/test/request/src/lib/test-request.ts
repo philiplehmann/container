@@ -6,10 +6,12 @@ import { streamToString } from '@riwi/stream';
 export const streamRequest = async ({
   file,
   body,
+  timeout = 30_000,
   ...requestParams
 }: RequestOptions & {
   file?: string;
   body?: string | Buffer | Readable | ReadStream;
+  timeout?: number;
 }): Promise<IncomingMessage> => {
   return new Promise((resolve, reject) => {
     const req = request({ host: 'localhost', pathname: '/', ...requestParams }, async (response) => {
@@ -19,12 +21,28 @@ export const streamRequest = async ({
         reject(e);
       }
     });
+
+    req.on('error', (error) => {
+      reject(error);
+    });
+
+    req.setTimeout(timeout, () => {
+      req.destroy(new Error(`Request timed out after ${timeout}ms`));
+    });
+
     if (file) {
-      createReadStream(file).pipe(req, { end: true });
+      const stream = createReadStream(file);
+      stream.on('error', (error) => {
+        req.destroy(error);
+      });
+      stream.pipe(req, { end: true });
     } else if (typeof body === 'string' || Buffer.isBuffer(body)) {
       req.write(body);
       req.end();
     } else if (body instanceof Readable) {
+      body.on('error', (error: Error) => {
+        req.destroy(error);
+      });
       body.pipe(req, { end: true });
     } else {
       req.end();
@@ -35,12 +53,14 @@ export const streamRequest = async ({
 export const testRequest = async ({
   file,
   body,
+  timeout,
   ...requestParams
 }: RequestOptions & {
   file?: string;
   body?: string | Buffer | Readable | ReadStream;
+  timeout?: number;
 }): Promise<[IncomingMessage, string]> => {
-  const response = await streamRequest({ file, body, ...requestParams });
+  const response = await streamRequest({ file, body, timeout, ...requestParams });
   const text = await streamToString(response);
   return [response, text];
 };
