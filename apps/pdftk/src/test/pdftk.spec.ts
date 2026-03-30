@@ -3,6 +3,7 @@ import { readFileSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
+import { wait } from '@riwi/helper';
 import { streamLength, streamToBuffer } from '@riwi/stream';
 import { createProcessEndpointsDisabledTest, createProcessEndpointTests, useTestContainer } from '@riwi/test/bun';
 import { beautifyJson, streamRequest, testRequest } from '@riwi/test/request';
@@ -21,6 +22,8 @@ const assertSnapshot = (actual: string, relativePath: string): void => {
 const expectStatusOk = (statusCode: number | undefined): void => {
   expect(statusCode).toBe(200);
 };
+
+const requestSettleDelayMs = 75;
 
 describe('pdftk', () => {
   [currentArch()].forEach((arch) => {
@@ -45,6 +48,7 @@ describe('pdftk', () => {
           });
           expectStatusOk(response.statusCode);
           const size = await streamLength(response);
+          await wait(requestSettleDelayMs);
 
           expect(stats.size).toBeGreaterThan(size);
         });
@@ -88,6 +92,7 @@ describe('pdftk', () => {
           });
           expectStatusOk(response.statusCode);
           const size = await streamLength(response);
+          await wait(requestSettleDelayMs);
 
           expect(stats.size).toBeLessThan(size);
         });
@@ -107,6 +112,7 @@ describe('pdftk', () => {
           expectStatusOk(encryptResponse.statusCode);
 
           const encryptedPdf = await streamToBuffer(encryptResponse);
+          await wait(requestSettleDelayMs);
           const [decryptResponse, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
@@ -116,6 +122,7 @@ describe('pdftk', () => {
             body: encryptedPdf,
           });
           expectStatusOk(decryptResponse.statusCode);
+          await wait(requestSettleDelayMs);
 
           expect(text.includes('/Encrypt')).toBeFalsy();
         });
@@ -133,6 +140,7 @@ describe('pdftk', () => {
           expectStatusOk(encryptResponse.statusCode);
 
           const encryptedPdf = await streamToBuffer(encryptResponse);
+          await wait(requestSettleDelayMs);
           const [decryptResponse, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
@@ -142,6 +150,7 @@ describe('pdftk', () => {
             body: encryptedPdf,
           });
           expectStatusOk(decryptResponse.statusCode);
+          await wait(requestSettleDelayMs);
 
           expect(text.includes('/Encrypt')).toBeFalsy();
         });
@@ -159,6 +168,7 @@ describe('pdftk', () => {
           expectStatusOk(encryptResponse.statusCode);
 
           const encryptedPdf = await streamToBuffer(encryptResponse);
+          await wait(requestSettleDelayMs);
           const [decryptResponse, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
@@ -168,6 +178,7 @@ describe('pdftk', () => {
             body: encryptedPdf,
           });
           expectStatusOk(decryptResponse.statusCode);
+          await wait(requestSettleDelayMs);
 
           expect(text.includes('/Encrypt')).toBeFalsy();
         });
@@ -185,6 +196,7 @@ describe('pdftk', () => {
             file,
           });
           expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           expect(text).not.toInclude('/Encrypt');
         });
@@ -202,6 +214,7 @@ describe('pdftk', () => {
             file,
           });
           expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           assertSnapshot(beautifyJson(text), './snapshots/dataFields.json');
         });
@@ -219,6 +232,7 @@ describe('pdftk', () => {
             file,
           });
           expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           assertSnapshot(beautifyJson(text), './snapshots/dataDump.json');
         });
@@ -236,6 +250,7 @@ describe('pdftk', () => {
             file,
           });
           expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           assertSnapshot(text, './snapshots/dataFdf.fdf');
         });
@@ -269,6 +284,7 @@ describe('pdftk', () => {
           expectStatusOk(response.statusCode);
 
           const pdf = await streamToBuffer(response);
+          await wait(requestSettleDelayMs);
 
           const [dataFieldsResponse, text] = await testRequest({
             method: 'POST',
@@ -279,6 +295,7 @@ describe('pdftk', () => {
             body: pdf,
           });
           expectStatusOk(dataFieldsResponse.statusCode);
+          await wait(requestSettleDelayMs);
           assertSnapshot(beautifyJson(text), './snapshots/formFill.json');
         });
       });
