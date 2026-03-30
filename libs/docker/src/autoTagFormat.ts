@@ -1,6 +1,20 @@
 import type { ProjectGraph } from '@nx/devkit';
 import { createTags, isAutoTags, versionFromEnv, versionFromPackageJson } from './version';
 
+type AutoTagDeps = {
+  createTags: typeof createTags;
+  isAutoTags: typeof isAutoTags;
+  versionFromEnv: typeof versionFromEnv;
+  versionFromPackageJson: typeof versionFromPackageJson;
+};
+
+const defaultDeps: AutoTagDeps = {
+  createTags,
+  isAutoTags,
+  versionFromEnv,
+  versionFromPackageJson,
+};
+
 const formatDate = (yearLength: 2 | 4 = 2) => {
   const date = new Date();
   const year = date.getFullYear().toString().slice(-yearLength);
@@ -9,34 +23,54 @@ const formatDate = (yearLength: 2 | 4 = 2) => {
 
   return `${year}-${month}-${day}`;
 };
-const formatVersion = (version: string) => version.replace(/^v/, '').split('-').shift() ?? '';
-export const autoTagFormat = ({
-  tags,
-  file,
-  versionSource,
-  versionSourceEnv,
-  versionSourcePackage,
-  versionFormat,
-  projectName,
-  projectGraph,
-}: {
-  tags: string[];
-  file: string;
-  versionSource?: 'env' | 'packageJson' | 'custom';
-  versionSourceEnv?: string;
-  versionSourcePackage?: string;
-  versionFormat?: string;
-  projectName?: string;
-  projectGraph: ProjectGraph;
-}) => {
-  if (isAutoTags(tags)) {
+const formatVersion = (version: string) =>
+  version
+    .replace(/^v/, '')
+    .replace(/^[~^<>=\s]+/, '')
+    .split('-')
+    .shift() ?? '';
+export const autoTagFormat = (
+  {
+    tags,
+    file,
+    versionSource,
+    versionSourceEnv,
+    versionSourcePackage,
+    versionFormat,
+    projectName,
+    root,
+    projectGraph,
+  }: {
+    tags: string[];
+    file: string;
+    versionSource?: 'env' | 'packageJson' | 'custom';
+    versionSourceEnv?: string;
+    versionSourcePackage?: string;
+    versionFormat?: string;
+    projectName?: string;
+    root: string;
+    projectGraph: ProjectGraph;
+  },
+  deps: AutoTagDeps = defaultDeps,
+) => {
+  const {
+    createTags: createTagsImpl,
+    isAutoTags: isAutoTagsImpl,
+    versionFromEnv: versionFromEnvImpl,
+    versionFromPackageJson: versionFromPackageJsonImpl,
+  } = deps;
+
+  if (isAutoTagsImpl(tags)) {
     if (versionSource === 'env') {
       if (!versionSourceEnv) throw new Error('versionSourceEnv is required when versionSource is env');
-      return createTags(tags, formatVersion(versionFromEnv(file, versionSourceEnv)));
+      return createTagsImpl(tags, formatVersion(versionFromEnvImpl(file, versionSourceEnv)));
     }
     if (versionSource === 'packageJson') {
       if (!versionSourcePackage) throw new Error('versionSourcePackage is required when versionSource is packageJson');
-      return createTags(tags, formatVersion(versionFromPackageJson(versionSourcePackage, { projectGraph })));
+      return createTagsImpl(
+        tags,
+        formatVersion(versionFromPackageJsonImpl(versionSourcePackage, { projectGraph, root })),
+      );
     }
     if (versionSource === 'custom') {
       if (!versionFormat) throw new Error('versionSourcePackage is required when versionSource is packageJson');
@@ -54,7 +88,7 @@ export const autoTagFormat = ({
         // use env value when present and non-empty, otherwise fallback to default
         return value !== undefined && value !== null && String(value) !== '' ? String(value) : defaultValue;
       });
-      return createTags(tags, formatted);
+      return createTagsImpl(tags, formatted);
     }
     throw new Error('versionSource must be one of: env, packageJson, custom if tag is auto');
   }

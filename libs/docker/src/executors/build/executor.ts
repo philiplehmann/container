@@ -5,7 +5,7 @@ import type { DockerBuildExecutorSchema } from './schema';
 
 const runExecutor: Executor<DockerBuildExecutorSchema> = async (
   { file, tags = [], platforms, versionSource, versionSourceEnv, versionSourcePackage, versionFormat },
-  { projectName, projectGraph },
+  { projectName, projectGraph, root },
 ) => {
   tags = autoTagFormat({
     tags,
@@ -15,6 +15,7 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
     versionSourcePackage,
     versionFormat,
     projectName,
+    root,
     projectGraph,
   });
   try {

@@ -1,13 +1,43 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import type { ExecutorContext } from '@nx/devkit';
 import { envForDockerFile } from './docker-helper';
 
 export const versionFromPackageJson = (
   packageName: string,
-  { projectGraph }: Pick<ExecutorContext, 'projectGraph'>,
+  { projectGraph, root }: Pick<ExecutorContext, 'projectGraph' | 'root'>,
 ) => {
-  const { version } = projectGraph?.externalNodes?.[`npm:${packageName}`]?.data ?? {};
-  if (!version) throw new Error(`can not find ${packageName} version`);
-  return version;
+  const externalNodes = projectGraph?.externalNodes ?? {};
+  const directVersion = externalNodes[`npm:${packageName}`]?.data?.version;
+
+  if (directVersion) return directVersion;
+
+  const externalNodeEntry = Object.entries(externalNodes).find(([nodeName]) =>
+    nodeName.startsWith(`npm:${packageName}@`),
+  );
+  const externalNodeVersion = externalNodeEntry?.[1]?.data?.version;
+
+  if (externalNodeVersion) return externalNodeVersion;
+
+  const packageJsonPath = join(root, 'package.json');
+  if (existsSync(packageJsonPath)) {
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as {
+      dependencies?: Record<string, string>;
+      devDependencies?: Record<string, string>;
+      peerDependencies?: Record<string, string>;
+      optionalDependencies?: Record<string, string>;
+    };
+
+    const manifestVersion =
+      packageJson.dependencies?.[packageName] ??
+      packageJson.devDependencies?.[packageName] ??
+      packageJson.peerDependencies?.[packageName] ??
+      packageJson.optionalDependencies?.[packageName];
+
+    if (manifestVersion) return manifestVersion;
+  }
+
+  throw new Error(`can not find ${packageName} version`);
 };
 
 export const versionFromEnv = (dockerFile: string, env: string, parser: (version: string) => string = (v) => v) => {
