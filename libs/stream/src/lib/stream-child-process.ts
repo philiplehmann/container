@@ -50,7 +50,9 @@ export async function streamChildProcess(
   });
 
   child.stdin.on('error', (error) => {
-    console.error(error);
+    if ((error as NodeJS.ErrnoException).code !== 'EPIPE') {
+      console.error(error);
+    }
     child.kill();
   });
 

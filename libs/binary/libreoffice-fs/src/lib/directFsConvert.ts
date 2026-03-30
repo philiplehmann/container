@@ -1,6 +1,6 @@
-import { libreoffice } from '@riwi/binary/libreoffice';
 import { mkdir, stat } from 'node:fs/promises';
 import { dirname } from 'node:path';
+import { libreoffice } from '@riwi/binary/libreoffice';
 import { assertReadableInputFile } from './assertReadableInputFile';
 import type { DirectFsConvertOptions } from './convert';
 

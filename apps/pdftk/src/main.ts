@@ -11,6 +11,7 @@ import {
   formFillStream,
   uncompressStream,
 } from '@riwi/binary/pdftk';
+import { handleRouteError } from '@riwi/http/error';
 import { connect, healthEndpoints, post, processEndpoints } from '@riwi/http/route';
 import { httpServer } from '@riwi/http/server';
 import { middlewareQuery } from '@riwi/http/validate';
@@ -30,20 +31,14 @@ httpServer(
       try {
         await compressStream({ input: req, output: res });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'pdftk failed');
-        }
+        handleRouteError(res, error, 'pdftk failed');
       }
     }),
     post({ path: '/uncompress' }, async ({ req, res }) => {
       try {
         await uncompressStream({ input: req, output: res });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'pdftk failed');
-        }
+        handleRouteError(res, error, 'pdftk failed');
       }
     }),
     post(
@@ -53,10 +48,7 @@ httpServer(
         try {
           await encryptStream({ input: req, output: res, password, userPassword, allow });
         } catch (error) {
-          if (!res.headersSent) {
-            res.statusCode = 500;
-            res.end(error instanceof Error ? error.message : 'pdftk failed');
-          }
+          handleRouteError(res, error, 'pdftk failed');
         }
       },
     ),
@@ -64,30 +56,21 @@ httpServer(
       try {
         await decryptStream({ input: req, output: res, password });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'pdftk failed');
-        }
+        handleRouteError(res, error, 'pdftk failed');
       }
     }),
     post({ path: '/data/fields' }, async ({ req, res }) => {
       try {
         await dataFieldsStream({ input: req, output: res });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'pdftk failed');
-        }
+        handleRouteError(res, error, 'pdftk failed');
       }
     }),
     post({ path: '/data/dump' }, async ({ req, res }) => {
       try {
         await dataDumpStream({ input: req, output: res });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'pdftk failed');
-        }
+        handleRouteError(res, error, 'pdftk failed');
       }
     }),
     // post({ path: '/data/annots' }, async ({ req, res }) => {
@@ -109,10 +92,7 @@ httpServer(
         try {
           await formFillStream({ input: req, output: res, flag, fontName, data });
         } catch (error) {
-          if (!res.headersSent) {
-            res.statusCode = 500;
-            res.end(error instanceof Error ? error.message : 'pdftk failed');
-          }
+          handleRouteError(res, error, 'pdftk failed');
         }
       },
     ),
@@ -120,10 +100,7 @@ httpServer(
       try {
         await dataFdfStream({ input: req, output: res });
       } catch (error) {
-        if (!res.headersSent) {
-          res.statusCode = 500;
-          res.end(error instanceof Error ? error.message : 'pdftk failed');
-        }
+        handleRouteError(res, error, 'pdftk failed');
       }
     }),
     ...healthEndpoints,
