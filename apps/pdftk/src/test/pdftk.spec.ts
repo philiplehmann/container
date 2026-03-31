@@ -28,7 +28,7 @@ const requestSettleDelayMs = 75;
 describe('pdftk', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, () => {
-      const setup = useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
+      const setup = useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort, type: 'each' });
 
       describe('compress', async () => {
         it('pdf file reduces in size', async () => {
