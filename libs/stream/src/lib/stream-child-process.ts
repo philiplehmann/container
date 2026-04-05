@@ -8,6 +8,36 @@ export interface StreamChildProcessOptions {
   end?: boolean;
 }
 
+export const isEpipeError = (error: unknown): boolean => {
+  return (error as NodeJS.ErrnoException | undefined)?.code === 'EPIPE';
+};
+
+const writeToWritable = (writable: Writable, chunk: string | Buffer): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    writable.write(chunk, (error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve();
+    });
+  });
+};
+
+const endWritable = (writable: Writable): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const onError = (error: Error) => {
+      writable.off('error', onError);
+      reject(error);
+    };
+    writable.on('error', onError);
+    writable.end(() => {
+      writable.off('error', onError);
+      resolve();
+    });
+  });
+};
+
 export async function streamInputToWriteable(
   input: InputType,
   writable: Writable,
@@ -15,9 +45,9 @@ export async function streamInputToWriteable(
 ): Promise<void> {
   const { end = true } = options ?? {};
   if (typeof input === 'string' || Buffer.isBuffer(input)) {
-    writable.write(input);
+    await writeToWritable(writable, input);
     if (end) {
-      writable.end();
+      await endWritable(writable);
     }
   } else {
     await finished(input.pipe(writable, { end }));
@@ -41,21 +71,10 @@ export async function streamChildProcess(
   });
 
   child.stdin.on('error', (error) => {
-    console.error(error);
-    child.kill();
-  });
-
-  try {
-    await streamInputToWriteable(input, child.stdin, { end: true });
-  } catch (error) {
-    child.kill();
-    const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
-    if (stderrOutput) {
-      const message = error instanceof Error ? error.message : String(error);
-      throw new Error(`${message}: ${stderrOutput}`);
+    if (!isEpipeError(error)) {
+      console.error(error);
     }
-    throw error;
-  }
+  });
 
   child.stdout
     .on('error', (error) => {
@@ -78,17 +97,47 @@ export async function streamChildProcess(
     });
   });
 
-  await finished(child.stdout);
-  stdoutFinished = true;
+  const inputPromise = streamInputToWriteable(input, child.stdin, { end: true }).catch((error) => {
+    if (isEpipeError(error)) {
+      return;
+    }
+    child.kill();
+    throw error;
+  });
 
-  // Wait for the process to exit and check the exit code
-  const { code, signal } = await exitPromise;
+  const stdoutPromise = finished(child.stdout).then(() => {
+    stdoutFinished = true;
+  });
+
+  const [inputResult, stdoutResult, exitResult] = await Promise.allSettled([inputPromise, stdoutPromise, exitPromise]);
+  const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
+
+  if (inputResult.status === 'rejected') {
+    const message = inputResult.reason instanceof Error ? inputResult.reason.message : String(inputResult.reason);
+    if (stderrOutput) {
+      throw new Error(`${message}: ${stderrOutput}`);
+    }
+    throw inputResult.reason;
+  }
+
+  if (exitResult.status === 'rejected') {
+    throw exitResult.reason;
+  }
+
+  const { code, signal } = exitResult.value;
 
   if (code !== 0) {
-    const stderrOutput = Buffer.concat(stderrChunks).toString('utf-8');
     if (code === null && signal) {
       throw new Error(`Child process exited with signal ${signal}${stderrOutput ? `: ${stderrOutput}` : ''}`);
     }
     throw new Error(`Child process exited with code ${code}${stderrOutput ? `: ${stderrOutput}` : ''}`);
+  }
+
+  if (stdoutResult.status === 'rejected') {
+    const message = stdoutResult.reason instanceof Error ? stdoutResult.reason.message : String(stdoutResult.reason);
+    if (stderrOutput) {
+      throw new Error(`${message}: ${stderrOutput}`);
+    }
+    throw stdoutResult.reason;
   }
 }

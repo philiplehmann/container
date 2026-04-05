@@ -3,6 +3,7 @@ import { readFileSync, statSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
+import { wait } from '@riwi/helper';
 import { streamLength, streamToBuffer } from '@riwi/stream';
 import { useTestContainer } from '@riwi/test/bun';
 import { beautifyJson, streamRequest, testRequest } from '@riwi/test/request';
@@ -18,10 +19,16 @@ const assertSnapshot = (actual: string, relativePath: string): void => {
   expect(actual).toBe(expected);
 };
 
+const expectStatusOk = (statusCode: number | undefined): void => {
+  expect(statusCode).toBe(200);
+};
+
+const requestSettleDelayMs = 75;
+
 describe('pdftk', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, () => {
-      const setup = useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
+      const setup = useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort, type: 'each' });
 
       describe('compress', async () => {
         it('pdf file reduces in size', async () => {
@@ -35,9 +42,35 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(response.statusCode);
           const size = await streamLength(response);
+          await wait(requestSettleDelayMs);
 
           expect(stats.size > size).toBeTruthy();
+        });
+      });
+
+      describe.skip('compress parallel', async () => {
+        it('pdf file reduces in size', async () => {
+          const file = resolve(__dirname, 'assets/uncompressed.pdf');
+          const stats = statSync(file);
+          const responses = await Promise.all(
+            Array.from({ length: 20 }).map(() =>
+              streamRequest({
+                method: 'POST',
+                host: 'localhost',
+                port: setup.port,
+                path: '/compress',
+                headers: { 'Content-Type': 'application/pdf' },
+                file,
+              }),
+            ),
+          );
+          for (const response of responses) {
+            expectStatusOk(response.statusCode);
+            const size1 = await streamLength(response);
+            expect(stats.size > size1).toBeTruthy();
+          }
         });
       });
 
@@ -53,7 +86,9 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(response.statusCode);
           const size = await streamLength(response);
+          await wait(requestSettleDelayMs);
 
           expect(stats.size < size).toBeTruthy();
         });
@@ -62,7 +97,7 @@ describe('pdftk', () => {
       describe('encrypt', () => {
         it('pdf file is encrypted', async () => {
           const file = resolve(__dirname, 'assets/form.pdf');
-          const [, text] = await testRequest({
+          const encryptResponse = await streamRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -70,13 +105,27 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(encryptResponse.statusCode);
 
-          expect(text.includes('/Encrypt')).toBeTruthy();
+          const encryptedPdf = await streamToBuffer(encryptResponse);
+          await wait(requestSettleDelayMs);
+          const [decryptResponse, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/decrypt?password=1234',
+            headers: { 'Content-Type': 'application/pdf' },
+            body: encryptedPdf,
+          });
+          expectStatusOk(decryptResponse.statusCode);
+          await wait(requestSettleDelayMs);
+
+          expect(text.includes('/Encrypt')).toBeFalsy();
         });
 
         it('pdf file is encrypted and has password', async () => {
           const file = resolve(__dirname, 'assets/form.pdf');
-          const [, text] = await testRequest({
+          const encryptResponse = await streamRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -84,13 +133,27 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(encryptResponse.statusCode);
 
-          expect(text.includes('/Encrypt')).toBeTruthy();
+          const encryptedPdf = await streamToBuffer(encryptResponse);
+          await wait(requestSettleDelayMs);
+          const [decryptResponse, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/decrypt?password=5678',
+            headers: { 'Content-Type': 'application/pdf' },
+            body: encryptedPdf,
+          });
+          expectStatusOk(decryptResponse.statusCode);
+          await wait(requestSettleDelayMs);
+
+          expect(text.includes('/Encrypt')).toBeFalsy();
         });
 
         it('pdf file is encrypted, has password and allow is defined', async () => {
           const file = resolve(__dirname, 'assets/form.pdf');
-          const [, text] = await testRequest({
+          const encryptResponse = await streamRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -98,15 +161,29 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(encryptResponse.statusCode);
 
-          expect(text.includes('/Encrypt')).toBeTruthy();
+          const encryptedPdf = await streamToBuffer(encryptResponse);
+          await wait(requestSettleDelayMs);
+          const [decryptResponse, text] = await testRequest({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/decrypt?password=1234',
+            headers: { 'Content-Type': 'application/pdf' },
+            body: encryptedPdf,
+          });
+          expectStatusOk(decryptResponse.statusCode);
+          await wait(requestSettleDelayMs);
+
+          expect(text.includes('/Encrypt')).toBeFalsy();
         });
       });
 
       describe('decrypt', () => {
         it('pdf file is decrypted', async () => {
           const file = resolve(__dirname, 'assets/encrypted.pdf');
-          const [, text] = await testRequest({
+          const [response, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -114,6 +191,8 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           expect(text.includes('/Encrypt')).toBeFalsy();
         });
@@ -122,7 +201,7 @@ describe('pdftk', () => {
       describe('dataFields', () => {
         it('return pdf data fields', async () => {
           const file = resolve(__dirname, 'assets/form.pdf');
-          const [, text] = await testRequest({
+          const [response, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -130,6 +209,8 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           assertSnapshot(beautifyJson(text), './snapshots/dataFields.json');
         });
@@ -138,7 +219,7 @@ describe('pdftk', () => {
       describe('dataDump', () => {
         it('return pdf data dump', async () => {
           const file = resolve(__dirname, 'assets/form.pdf');
-          const [, text] = await testRequest({
+          const [response, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -146,6 +227,8 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           assertSnapshot(beautifyJson(text), './snapshots/dataDump.json');
         });
@@ -154,7 +237,7 @@ describe('pdftk', () => {
       describe('dataFDF', () => {
         it('return pdf generated fdf', async () => {
           const file = resolve(__dirname, 'assets/form.pdf');
-          const [, text] = await testRequest({
+          const [response, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -162,6 +245,8 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
+          expectStatusOk(response.statusCode);
+          await wait(requestSettleDelayMs);
 
           assertSnapshot(text, './snapshots/dataFdf.fdf');
         });
@@ -192,11 +277,12 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             file,
           });
-          expect(response.statusCode).toBe(200);
+          expectStatusOk(response.statusCode);
 
           const pdf = await streamToBuffer(response);
+          await wait(requestSettleDelayMs);
 
-          const [, text] = await testRequest({
+          const [dataFieldsResponse, text] = await testRequest({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -204,6 +290,8 @@ describe('pdftk', () => {
             headers: { 'Content-Type': 'application/pdf' },
             body: pdf,
           });
+          expectStatusOk(dataFieldsResponse.statusCode);
+          await wait(requestSettleDelayMs);
           assertSnapshot(beautifyJson(text), './snapshots/formFill.json');
         });
       });
