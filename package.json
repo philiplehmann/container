@@ -20,7 +20,7 @@
     "nodemailer": "8.0.4",
     "nx": "22.6.4",
     "playwright": "1.59.1",
-    "testcontainers": "11.13.0",
+    "testcontainers": "11.14.0",
     "typescript": "6.0.2"
   },
   "dependencies": {
