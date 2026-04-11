@@ -15,7 +15,7 @@ export const isEpipeError = (error: unknown): boolean => {
   return (error as NodeJS.ErrnoException | undefined)?.code === 'EPIPE';
 };
 
-const writeToWritable = (writable: Writable, chunk: string | Buffer): Promise<void> => {
+export const writeToWritable = (writable: Writable, chunk: string | Buffer): Promise<void> => {
   return new Promise((resolve, reject) => {
     writable.write(chunk, (error) => {
       if (error) {
@@ -27,7 +27,7 @@ const writeToWritable = (writable: Writable, chunk: string | Buffer): Promise<vo
   });
 };
 
-const endWritable = (writable: Writable): Promise<void> => {
+export const endWritable = (writable: Writable): Promise<void> => {
   return new Promise((resolve, reject) => {
     const onError = (error: Error) => {
       writable.off('error', onError);

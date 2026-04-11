@@ -32,7 +32,7 @@ describe('pdftk', () => {
         image: `philiplehmann/pdftk:test-${arch}`,
         containerPort,
         env: { PDFTK_PROCESS_ENABLED: 'true' },
-        type: 'each'
+        type: 'each',
       });
 
       describe('compress', async () => {
