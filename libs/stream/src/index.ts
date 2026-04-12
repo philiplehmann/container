@@ -1,3 +1,4 @@
+export * from './lib/process-tracker';
 export * from './lib/stream-child-process';
 export * from './lib/stream-child-process-to-buffer';
 export * from './lib/stream-includes';

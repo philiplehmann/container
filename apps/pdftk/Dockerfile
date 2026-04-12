@@ -34,6 +34,7 @@ ARG JRE_VERSION
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
+ENV PDFTK_PROCESS_ENABLED=false
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 

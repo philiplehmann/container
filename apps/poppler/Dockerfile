@@ -20,6 +20,7 @@ WORKDIR /app
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
+ENV POPPLER_PROCESS_ENABLED=false
 
 COPY dist/apps/poppler poppler
 

@@ -1,8 +1,9 @@
 import { ConvertTo, pdfTo } from '@riwi/binary/poppler';
-import { connect, healthEndpoints, post } from '@riwi/http/route';
+import { connect, healthEndpoints, post, processEndpoints } from '@riwi/http/route';
 import { httpServer } from '@riwi/http/server';
 
 const PORT = process.env.PORT || '3000';
+const PROCESS_ENABLED = process.env.POPPLER_PROCESS_ENABLED === 'true';
 
 httpServer(
   connect(
@@ -17,6 +18,7 @@ httpServer(
       return pdfTo({ input: req, output: res, to: ConvertTo.html });
     }),
     ...healthEndpoints,
+    ...(PROCESS_ENABLED ? processEndpoints : []),
   ),
   { port: PORT, name: 'poppler' },
 );

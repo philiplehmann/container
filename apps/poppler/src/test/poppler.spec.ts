@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { testRequest } from '@riwi/test/request';
+import { createProcessEndpointsDisabledTest, createProcessEndpointTests, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -12,7 +12,11 @@ const containerPort = 5000;
 describe('poppler', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
-      const setup = await useTestContainer({ image: `philiplehmann/poppler-server:test-${arch}`, containerPort });
+      const setup = await useTestContainer({
+        image: `philiplehmann/poppler-server:test-${arch}`,
+        containerPort,
+        env: { POPPLER_PROCESS_ENABLED: 'true' },
+      });
 
       it('should convert PDF to text', async () => {
         const file = resolve(__dirname, 'assets/dummy.pdf');
@@ -44,6 +48,32 @@ describe('poppler', () => {
         expect(text.includes('Dummy PDF file')).toBeTruthy();
         expect(text.toLowerCase().includes('<!doctype html>')).toBeTruthy();
       });
+
+      describe('process management', () => {
+        createProcessEndpointTests(
+          () => setup.port,
+          async (port) => {
+            const file = resolve(__dirname, 'assets/dummy.pdf');
+            await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port,
+              path: '/pdf-to-text',
+              headers: { 'Content-Type': 'application/pdf' },
+              file,
+            });
+          },
+        );
+      });
+    });
+
+    describe(`arch: ${arch} - process endpoints disabled`, async () => {
+      const setup = await useTestContainer({
+        image: `philiplehmann/poppler-server:test-${arch}`,
+        containerPort,
+      });
+
+      createProcessEndpointsDisabledTest(() => setup.port);
     });
   });
 });

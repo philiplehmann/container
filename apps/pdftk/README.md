@@ -141,6 +141,53 @@ curl -X POST \
 |------|---------|-------------|
 | 3000 | HTTP | REST API server |
 
+## Process Management
+
+The service includes endpoints for monitoring and managing running child processes.
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PROCESS_RETENTION_MS` | `3600000` | How long to keep completed processes (1 hour) |
+| `PROCESS_MAX_COMPLETED` | `1000` | Maximum number of completed processes to retain |
+
+### List Processes
+
+```bash
+# List all processes
+curl 'http://localhost:3000/processes'
+
+# Filter by status (running, completed, failed, killed)
+curl 'http://localhost:3000/processes?status=running'
+```
+
+### Get Process Details
+
+```bash
+curl 'http://localhost:3000/processes/{process-uuid}'
+```
+
+### Kill a Process
+
+```bash
+# Kill with SIGTERM (default)
+curl -X DELETE 'http://localhost:3000/processes/{process-uuid}'
+
+# Kill with specific signal
+curl -X DELETE 'http://localhost:3000/processes/{process-uuid}?signal=SIGKILL'
+```
+
+### Clear Completed Processes
+
+```bash
+# Clear all completed processes
+curl -X DELETE 'http://localhost:3000/processes'
+
+# Clear processes older than 1 minute
+curl -X DELETE 'http://localhost:3000/processes?olderThan=60000'
+```
+
 ## online test
 
 [![pdftk.api.datage.ch](https://uptime.riwi.dev/api/badge/34/status)](https://pdftk.api.datage.ch/)

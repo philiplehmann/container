@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { testRequest } from '@riwi/test/request';
+import { createProcessEndpointsDisabledTest, createProcessEndpointTests, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,7 +15,11 @@ const expectText =
 describe('tesseract', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, async () => {
-      const setup = useTestContainer({ image: `philiplehmann/tesseract:test-${arch}`, containerPort });
+      const setup = useTestContainer({
+        image: `philiplehmann/tesseract:test-${arch}`,
+        containerPort,
+        env: { TESSERACT_PROCESS_ENABLED: 'true' },
+      });
 
       for (const type of ['gif', 'jpg', 'png', 'tiff', 'webp']) {
         it(`should convert ${type} to text`, async () => {
@@ -35,6 +39,32 @@ describe('tesseract', () => {
           );
         });
       }
+
+      describe('process management', () => {
+        createProcessEndpointTests(
+          () => setup.port,
+          async (port) => {
+            const file = resolve(__dirname, 'assets/dummy_image.png');
+            await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port,
+              path: '/image-to-text',
+              headers: { 'Content-Type': 'image/png' },
+              file,
+            });
+          },
+        );
+      });
+    });
+
+    describe(`arch: ${arch} - process endpoints disabled`, async () => {
+      const setup = useTestContainer({
+        image: `philiplehmann/tesseract:test-${arch}`,
+        containerPort,
+      });
+
+      createProcessEndpointsDisabledTest(() => setup.port);
     });
   });
 });

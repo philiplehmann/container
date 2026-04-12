@@ -84,6 +84,8 @@ This endpoint is disabled by default and only available when `UNOSERVER_FS_ENABL
 | `UNOSERVER_FS_ENABLE` | `false` | Enables `POST /direct-fs` when set to `true` |
 | `UNOSERVER_FS_INPUT_ROOT` | `/data/in` | Root folder for reading input files |
 | `UNOSERVER_FS_OUTPUT_ROOT` | `/data/out` | Root folder for writing output files |
+| `PROCESS_RETENTION_MS` | `3600000` | How long to keep completed processes (1 hour) |
+| `PROCESS_MAX_COMPLETED` | `1000` | Maximum number of completed processes to retain |
 
 #### Docker Run with Mounted Input/Output Roots
 
@@ -241,6 +243,46 @@ TEST_SERVER_RUNNER=local bun nx bun-test-local unoserver
 
 # run both, e2e and bun-test
 TEST_SERVER_RUNNER=local bun nx test-local unoserver
+```
+
+## Process Management
+
+The service includes endpoints for monitoring and managing running child processes.
+
+### List Processes
+
+```bash
+# List all processes
+curl 'http://localhost:3000/processes'
+
+# Filter by status (running, completed, failed, killed)
+curl 'http://localhost:3000/processes?status=running'
+```
+
+### Get Process Details
+
+```bash
+curl 'http://localhost:3000/processes/{process-uuid}'
+```
+
+### Kill a Process
+
+```bash
+# Kill with SIGTERM (default)
+curl -X DELETE 'http://localhost:3000/processes/{process-uuid}'
+
+# Kill with specific signal
+curl -X DELETE 'http://localhost:3000/processes/{process-uuid}?signal=SIGKILL'
+```
+
+### Clear Completed Processes
+
+```bash
+# Clear all completed processes
+curl -X DELETE 'http://localhost:3000/processes'
+
+# Clear processes older than 1 minute
+curl -X DELETE 'http://localhost:3000/processes?olderThan=60000'
 ```
 
 ## online test
