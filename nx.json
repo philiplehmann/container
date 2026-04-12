@@ -67,7 +67,7 @@
     "sharedGlobals": ["{workspaceRoot}/bun.lock", "{workspaceRoot}/.github/**/*"]
   },
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "bun"
   },
   "defaultBase": "main",
   "parallel": 8,
