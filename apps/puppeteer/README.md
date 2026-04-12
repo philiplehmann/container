@@ -249,7 +249,7 @@ docker run -p 3000:3000 philiplehmann/puppeteer:latest
 export PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
 # Start the development server
-yarn nx serve puppeteer
+bun x nx serve puppeteer
 ```
 
 The server will be available at `http://localhost:3000`
@@ -262,18 +262,18 @@ The server will be available at `http://localhost:3000`
 export TEST_SERVER_RUNNER=local
 
 # Run end-to-end tests with Playwright
-yarn nx e2e-local puppeteer
+bun x nx e2e-local puppeteer
 
 # Run unit tests with Vitest  
-yarn nx vitest-local puppeteer
+bun x nx vitest-local puppeteer
 
 # Run both test suites
-yarn nx test-local puppeteer
+bun x nx test-local puppeteer
 ```
 
 #### Update Test Snapshots
 ```bash
-yarn nx e2e puppeteer --update-snapshots
+bun x nx e2e puppeteer --update-snapshots
 ```
 
 ### Building and Deployment
@@ -348,7 +348,7 @@ docker run -p 3000:3000 puppeteer
 Enable debug logging by setting:
 ```bash
 export DEBUG="puppeteer:*"
-yarn nx serve puppeteer
+bun x nx serve puppeteer
 ```
 
 ## Performance Tips

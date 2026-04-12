@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/nx-cache-server/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "lint": {
       "executor": "@riwi/biomejs:lint",
@@ -44,6 +45,5 @@
         "port": ["3000"]
       }
     }
-  },
-  "tags": []
+  }
 }

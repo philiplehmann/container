@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/unoserver/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@riwi/bun:build",
@@ -63,6 +64,5 @@
         "port": ["3000"]
       }
     }
-  },
-  "tags": []
+  }
 }

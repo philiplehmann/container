@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/tesseract/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@riwi/bun:build",
@@ -54,6 +55,5 @@
         "port": ["3000"]
       }
     }
-  },
-  "tags": []
+  }
 }

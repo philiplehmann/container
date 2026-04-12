@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/maildev/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "lint": {
       "executor": "@riwi/biomejs:lint",
@@ -42,6 +43,5 @@
         "port": ["1025", "1080"]
       }
     }
-  },
-  "tags": []
+  }
 }

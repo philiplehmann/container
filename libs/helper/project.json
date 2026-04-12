@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/helper/src",
   "projectType": "library",
+  "tags": [],
   "targets": {
     "lint": {
       "executor": "@riwi/biomejs:lint"
@@ -15,6 +16,5 @@
     "typecheck": {
       "executor": "@riwi/tsc:typecheck"
     }
-  },
-  "tags": []
+  }
 }
