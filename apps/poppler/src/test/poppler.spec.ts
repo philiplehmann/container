@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { testRequest } from '@riwi/test/request';
+import { createProcessEndpointTests, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -43,6 +43,23 @@ describe('poppler', () => {
         expect(response.statusCode).toBe(200);
         expect(text.includes('Dummy PDF file')).toBeTruthy();
         expect(text.toLowerCase().includes('<!doctype html>')).toBeTruthy();
+      });
+
+      describe('process management', () => {
+        createProcessEndpointTests(
+          () => setup.port,
+          async (port) => {
+            const file = resolve(__dirname, 'assets/dummy.pdf');
+            await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port,
+              path: '/pdf-to-text',
+              headers: { 'Content-Type': 'application/pdf' },
+              file,
+            });
+          },
+        );
       });
     });
   });

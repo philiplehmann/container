@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { testRequest } from '@riwi/test/request';
+import { createProcessEndpointTests, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,6 +35,23 @@ describe('tesseract', () => {
           );
         });
       }
+
+      describe('process management', () => {
+        createProcessEndpointTests(
+          () => setup.port,
+          async (port) => {
+            const file = resolve(__dirname, 'assets/dummy_image.png');
+            await testRequest({
+              method: 'POST',
+              host: 'localhost',
+              port,
+              path: '/image-to-text',
+              headers: { 'Content-Type': 'image/png' },
+              file,
+            });
+          },
+        );
+      });
     });
   });
 });

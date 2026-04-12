@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { streamLength, streamToBuffer } from '@riwi/stream';
 import { useTestContainer } from '@riwi/test/bun';
-import { beautifyJson, streamRequest, testRequest } from '@riwi/test/request';
+import { beautifyJson, createProcessEndpointTests, streamRequest, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -206,6 +206,23 @@ describe('pdftk', () => {
           });
           assertSnapshot(beautifyJson(text), './snapshots/formFill.json');
         });
+      });
+
+      describe('process management', () => {
+        createProcessEndpointTests(
+          () => setup.port,
+          async (port) => {
+            const file = resolve(__dirname, 'assets/compressed.pdf');
+            await streamRequest({
+              method: 'POST',
+              host: 'localhost',
+              port,
+              path: '/compress',
+              headers: { 'Content-Type': 'application/pdf' },
+              file,
+            });
+          },
+        );
       });
     });
   });
