@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { createProcessEndpointTests, testRequest } from '@riwi/test/request';
+import { createProcessEndpointsDisabledTest, createProcessEndpointTests, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,6 +16,7 @@ describe('unoserver', () => {
         const setup = useTestContainer({
           image: `philiplehmann/unoserver:test-${arch}`,
           containerPort,
+          env: { UNOSERVER_PROCESS_ENABLED: 'true' },
           hook: (container) => {
             return container.withStartupTimeout(60_000);
           },
@@ -37,6 +38,19 @@ describe('unoserver', () => {
             },
           );
         });
+      });
+
+      describe('process endpoints disabled', async () => {
+        const setup = useTestContainer({
+          image: `philiplehmann/unoserver:test-${arch}`,
+          containerPort,
+          hook: (container) => {
+            return container.withStartupTimeout(60_000);
+          },
+          timeout: 90_000,
+        });
+
+        createProcessEndpointsDisabledTest(() => setup.port);
       });
     });
   });

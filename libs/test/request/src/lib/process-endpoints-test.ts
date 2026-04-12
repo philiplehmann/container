@@ -33,6 +33,25 @@ interface ClearProcessesResponse {
 const NON_EXISTENT_UUID = '00000000-0000-0000-0000-000000000000';
 
 /**
+ * Creates a test that verifies process endpoints are disabled (return 404).
+ * Call this inside a describe() block after the container is set up.
+ *
+ * @param getPort - Function that returns the current test container port
+ */
+export const createProcessEndpointsDisabledTest = (getPort: () => number): void => {
+  it('should return 404 when process endpoints are disabled', async () => {
+    const [response] = await testRequest({
+      method: 'GET',
+      host: 'localhost',
+      port: getPort(),
+      path: '/processes',
+    });
+
+    expect(response.statusCode).toBe(404);
+  });
+};
+
+/**
  * Creates a test suite for process management endpoints.
  * Call this inside a describe() block after the container is set up.
  *

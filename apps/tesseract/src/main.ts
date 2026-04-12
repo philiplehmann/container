@@ -3,6 +3,7 @@ import { connect, healthEndpoints, post, processEndpoints } from '@riwi/http/rou
 import { httpServer } from '@riwi/http/server';
 
 const PORT = process.env.PORT || '3000';
+const PROCESS_ENABLED = process.env.TESSERACT_PROCESS_ENABLED === 'true';
 
 httpServer(
   connect(
@@ -18,7 +19,7 @@ httpServer(
       }
     }),
     ...healthEndpoints,
-    ...processEndpoints,
+    ...(PROCESS_ENABLED ? processEndpoints : []),
   ),
   { port: PORT, name: 'tesseract' },
 );

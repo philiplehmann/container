@@ -5,7 +5,13 @@ import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { streamLength, streamToBuffer } from '@riwi/stream';
 import { useTestContainer } from '@riwi/test/bun';
-import { beautifyJson, createProcessEndpointTests, streamRequest, testRequest } from '@riwi/test/request';
+import {
+  beautifyJson,
+  createProcessEndpointsDisabledTest,
+  createProcessEndpointTests,
+  streamRequest,
+  testRequest,
+} from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,7 +27,11 @@ const assertSnapshot = (actual: string, relativePath: string): void => {
 describe('pdftk', () => {
   [currentArch()].forEach((arch) => {
     describe(`arch: ${arch}`, () => {
-      const setup = useTestContainer({ image: `philiplehmann/pdftk:test-${arch}`, containerPort });
+      const setup = useTestContainer({
+        image: `philiplehmann/pdftk:test-${arch}`,
+        containerPort,
+        env: { PDFTK_PROCESS_ENABLED: 'true' },
+      });
 
       describe('compress', async () => {
         it('pdf file reduces in size', async () => {
@@ -224,6 +234,15 @@ describe('pdftk', () => {
           },
         );
       });
+    });
+
+    describe(`arch: ${arch} - process endpoints disabled`, () => {
+      const setup = useTestContainer({
+        image: `philiplehmann/pdftk:test-${arch}`,
+        containerPort,
+      });
+
+      createProcessEndpointsDisabledTest(() => setup.port);
     });
   });
 });

@@ -16,6 +16,7 @@ import { httpServer } from '@riwi/http/server';
 import { middlewareQuery } from '@riwi/http/validate';
 
 const PORT = process.env.PORT || '3000';
+const PROCESS_ENABLED = process.env.PDFTK_PROCESS_ENABLED === 'true';
 
 httpServer(
   connect(
@@ -120,7 +121,7 @@ httpServer(
       }
     }),
     ...healthEndpoints,
-    ...processEndpoints,
+    ...(PROCESS_ENABLED ? processEndpoints : []),
   ),
   { port: PORT, name: 'pdftk' },
 );
