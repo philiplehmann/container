@@ -13,14 +13,24 @@ interface ProcessInfo {
   signal?: string;
 }
 
+interface ProcessSummary {
+  running: number;
+  completed: number;
+  failed: number;
+  killed: number;
+}
+
 interface ProcessListResponse {
   processes: ProcessInfo[];
-  total: number;
+  summary: ProcessSummary;
 }
 
 interface ClearProcessesResponse {
   cleared: number;
 }
+
+// Valid UUID that doesn't exist
+const NON_EXISTENT_UUID = '00000000-0000-0000-0000-000000000000';
 
 /**
  * Creates a test suite for process management endpoints.
@@ -44,9 +54,12 @@ export const createProcessEndpointTests = (
     expect(response.statusCode).toBe(200);
     const json = JSON.parse(text) as ProcessListResponse;
     expect(json).toHaveProperty('processes');
-    expect(json).toHaveProperty('total');
+    expect(json).toHaveProperty('summary');
     expect(Array.isArray(json.processes)).toBe(true);
-    expect(typeof json.total).toBe('number');
+    expect(typeof json.summary.running).toBe('number');
+    expect(typeof json.summary.completed).toBe('number');
+    expect(typeof json.summary.failed).toBe('number');
+    expect(typeof json.summary.killed).toBe('number');
   });
 
   it('should show process after triggering an operation', async () => {
@@ -63,7 +76,6 @@ export const createProcessEndpointTests = (
 
     expect(response.statusCode).toBe(200);
     const json = JSON.parse(text) as ProcessListResponse;
-    expect(json.total).toBeGreaterThan(0);
     expect(json.processes.length).toBeGreaterThan(0);
 
     const process = json.processes[0];
@@ -135,7 +147,7 @@ export const createProcessEndpointTests = (
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: '/processes/non-existent-uuid',
+      path: `/processes/${NON_EXISTENT_UUID}`,
     });
 
     expect(response.statusCode).toBe(404);
@@ -177,7 +189,7 @@ export const createProcessEndpointTests = (
       method: 'DELETE',
       host: 'localhost',
       port: getPort(),
-      path: '/processes/non-existent-uuid',
+      path: `/processes/${NON_EXISTENT_UUID}`,
     });
 
     expect(response.statusCode).toBe(404);

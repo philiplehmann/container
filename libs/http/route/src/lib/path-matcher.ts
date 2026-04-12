@@ -13,7 +13,11 @@ export const pathMatcher = <T extends string>(
       if (internalPath[0] !== path) {
         return null;
       }
-    } else if (internalPath[0]) {
+    } else {
+      // Regex path - require a matching segment
+      if (!internalPath[0]) {
+        return null;
+      }
       const match = internalPath[0].match(path);
       if (!match) {
         return null;
@@ -21,6 +25,10 @@ export const pathMatcher = <T extends string>(
       params[name ?? 'missing'] = internalPath[0];
     }
     internalPath = internalPath.slice(1);
+  }
+  // Ensure all URL segments were consumed - no trailing segments allowed
+  if (internalPath.length > 0) {
+    return null;
   }
   return params;
 };
