@@ -3,7 +3,7 @@
   "mcp": {
     "nx-mcp": {
       "type": "local",
-      "command": ["bun", "nx", "mcp"],
+      "command": ["bun", "x", "nx", "mcp"],
       "enabled": true
     }
   }

@@ -50,7 +50,5 @@ test-results
 # running puppeteer locally
 chromium-data
 
-*.md
-
 .claude/worktrees
 .claude/settings.local.json
