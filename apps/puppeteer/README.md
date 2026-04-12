@@ -258,22 +258,16 @@ The server will be available at `http://localhost:3000`
 
 #### Run All Tests Locally
 ```bash
-# Set environment for local testing
-export TEST_SERVER_RUNNER=local
-
 # Run end-to-end tests with Playwright
-bun x nx e2e-local puppeteer
+bun x nx local-e2e puppeteer
 
 # Run unit tests with Vitest  
-bun x nx vitest-local puppeteer
-
-# Run both test suites
-bun x nx test-local puppeteer
+bun x nx local-test puppeteer
 ```
 
 #### Update Test Snapshots
 ```bash
-bun x nx e2e puppeteer --update-snapshots
+bun x nx local-e2e puppeteer --update-snapshots
 ```
 
 ### Building and Deployment
