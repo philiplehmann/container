@@ -6,7 +6,7 @@ import {
   unoconvert,
   unoserver,
 } from '@riwi/binary/unoserver';
-import { connect, healthEndpoints, post } from '@riwi/http/route';
+import { connect, healthEndpoints, post, processEndpoints } from '@riwi/http/route';
 import { httpServer } from '@riwi/http/server';
 import { middlewareBody, middlewareQuery } from '@riwi/http/validate';
 
@@ -46,6 +46,7 @@ const main = async () => {
       ...(FS_ENABLE ? [libreofficeFsRoute()] : []),
       ...(DIRECT_ONLY ? [libreofficeRoute()] : [unoconvertRoute(), libreofficeRoute()]),
       ...healthEndpoints,
+      ...processEndpoints,
     ),
     { port: PORT, name: 'unoserver' },
   );

@@ -11,7 +11,7 @@ import {
   formFillStream,
   uncompressStream,
 } from '@riwi/binary/pdftk';
-import { connect, healthEndpoints, post } from '@riwi/http/route';
+import { connect, healthEndpoints, post, processEndpoints } from '@riwi/http/route';
 import { httpServer } from '@riwi/http/server';
 import { middlewareQuery } from '@riwi/http/validate';
 
@@ -120,6 +120,7 @@ httpServer(
       }
     }),
     ...healthEndpoints,
+    ...processEndpoints,
   ),
   { port: PORT, name: 'pdftk' },
 );

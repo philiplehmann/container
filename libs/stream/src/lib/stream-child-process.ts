@@ -1,11 +1,14 @@
 import type { ChildProcessWithoutNullStreams } from 'node:child_process';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
+import { processTracker } from './process-tracker';
 
 export type InputType = Readable | Buffer | string;
 
 export interface StreamChildProcessOptions {
   end?: boolean;
+  /** Enable process tracking. Default: true */
+  track?: boolean;
 }
 
 export async function streamInputToWriteable(
@@ -30,7 +33,13 @@ export async function streamChildProcess(
   child: ChildProcessWithoutNullStreams,
   options?: StreamChildProcessOptions,
 ): Promise<void> {
-  const { end = true } = options ?? {};
+  const { end = true, track = true } = options ?? {};
+
+  // Register for tracking
+  if (track) {
+    processTracker.register(child);
+  }
+
   const stderrChunks: Buffer[] = [];
   child.stderr.on('data', (chunk) => {
     stderrChunks.push(Buffer.from(chunk));

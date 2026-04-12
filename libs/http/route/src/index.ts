@@ -5,5 +5,6 @@ export * from './lib/method/get';
 export * from './lib/method/patch';
 export * from './lib/method/post';
 export * from './lib/method/put';
+export * from './lib/process-endpoints';
 export * from './lib/route';
 export * from './lib/routes';
