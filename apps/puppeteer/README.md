@@ -307,10 +307,10 @@ docker run -p 3000:3000 puppeteer
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PORT` | 3000 | Server port |
-| `NODE_ENV` | development | Node.js environment |
-| `PUPPETEER_EXECUTABLE_PATH` | | Custom Chrome executable path |
-| `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD` | | Skip Chromium download |
+| `PORT` | `3000` | HTTP service port |
+| `NODE_ENV` | `production` | Node.js runtime environment |
+| `PUPPETEER_EXECUTABLE_PATH` | `/usr/bin/chromium` | Chromium executable path inside the container |
+| `LANG` | `en_US.UTF-8` | Locale used by Chromium and rendering |
 
 ## Troubleshooting
 

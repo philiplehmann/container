@@ -43,3 +43,17 @@ Refer to the official documentation for setup details and client configuration:
 | Port | Service | Description |
 |------|---------|-------------|
 | 3000 | HTTP | Remote cache server |
+
+## Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PORT` | `3000` | HTTP service port |
+| `S3_BUCKET_NAME` | - | S3 bucket used to store cache artifacts (required) |
+| `SERVICE_ACCESS_TOKEN` | - | Bearer token required to authenticate requests (required) |
+| `AWS_ACCESS_KEY_ID` | auto-discovery | AWS access key ID for S3 access |
+| `AWS_SECRET_ACCESS_KEY` | auto-discovery | AWS secret access key for S3 access |
+| `AWS_SESSION_TOKEN` | auto-discovery | AWS session token for temporary credentials |
+| `AWS_REGION` | auto-discovery | AWS region for S3 requests |
+| `S3_ENDPOINT_URL` | - | Custom endpoint for S3-compatible storage (for example MinIO) |
+| `S3_TIMEOUT` | `30` | S3 operation timeout in seconds |

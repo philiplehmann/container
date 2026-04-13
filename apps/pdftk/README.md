@@ -149,6 +149,7 @@ The service includes endpoints for monitoring and managing running child process
 
 | Variable | Default | Description |
 |----------|---------|-------------|
+| `PORT` | `3000` | HTTP service port |
 | `PDFTK_PROCESS_ENABLED` | `false` | Enables `/processes` endpoints when set to `true` |
 | `PDFTK_PROCESS_RETENTION_MS` | `3600000` | How long to keep completed processes (1 hour) |
 | `PDFTK_PROCESS_MAX_COMPLETED` | `1000` | Maximum number of completed processes to retain |

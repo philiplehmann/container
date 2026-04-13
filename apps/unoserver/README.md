@@ -81,6 +81,7 @@ This endpoint is disabled by default and only available when `UNOSERVER_FS_ENABL
 | Variable | Default | Description |
 |------|------|-------------|
 | `PORT` | `3000` | HTTP service port |
+| `UNOSERVER_DIRECT_ONLY` | `false` | Runs only direct LibreOffice conversion mode when set to `true` |
 | `UNOSERVER_FS_ENABLE` | `false` | Enables `POST /direct-fs` when set to `true` |
 | `UNOSERVER_FS_INPUT_ROOT` | `/data/in` | Root folder for reading input files |
 | `UNOSERVER_FS_OUTPUT_ROOT` | `/data/out` | Root folder for writing output files |
