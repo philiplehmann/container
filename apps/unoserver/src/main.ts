@@ -16,6 +16,12 @@ const FS_ENABLE = process.env.UNOSERVER_FS_ENABLE === 'true';
 const FS_INPUT_ROOT = process.env.UNOSERVER_FS_INPUT_ROOT || '/data/in';
 const FS_OUTPUT_ROOT = process.env.UNOSERVER_FS_OUTPUT_ROOT || '/data/out';
 const PROCESS_ENABLED = process.env.UNOSERVER_PROCESS_ENABLED === 'true';
+const PROCESS_RETENTION_MS = process.env.UNOSERVER_PROCESS_RETENTION_MS
+  ? Number.parseInt(process.env.UNOSERVER_PROCESS_RETENTION_MS, 10)
+  : undefined;
+const PROCESS_MAX_COMPLETED = process.env.UNOSERVER_PROCESS_MAX_COMPLETED
+  ? Number.parseInt(process.env.UNOSERVER_PROCESS_MAX_COMPLETED, 10)
+  : undefined;
 
 const main = async () => {
   if (!DIRECT_ONLY) {
@@ -47,7 +53,12 @@ const main = async () => {
       ...(FS_ENABLE ? [libreofficeFsRoute()] : []),
       ...(DIRECT_ONLY ? [libreofficeRoute()] : [unoconvertRoute(), libreofficeRoute()]),
       ...healthEndpoints,
-      ...(PROCESS_ENABLED ? processEndpoints : []),
+      ...(PROCESS_ENABLED
+        ? processEndpoints({
+            retentionMs: PROCESS_RETENTION_MS,
+            maxCompleted: PROCESS_MAX_COMPLETED,
+          })
+        : []),
     ),
     { port: PORT, name: 'unoserver' },
   );

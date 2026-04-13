@@ -4,6 +4,12 @@ import { httpServer } from '@riwi/http/server';
 
 const PORT = process.env.PORT || '3000';
 const PROCESS_ENABLED = process.env.POPPLER_PROCESS_ENABLED === 'true';
+const PROCESS_RETENTION_MS = process.env.POPPLER_PROCESS_RETENTION_MS
+  ? Number.parseInt(process.env.POPPLER_PROCESS_RETENTION_MS, 10)
+  : undefined;
+const PROCESS_MAX_COMPLETED = process.env.POPPLER_PROCESS_MAX_COMPLETED
+  ? Number.parseInt(process.env.POPPLER_PROCESS_MAX_COMPLETED, 10)
+  : undefined;
 
 httpServer(
   connect(
@@ -18,7 +24,12 @@ httpServer(
       return pdfTo({ input: req, output: res, to: ConvertTo.html });
     }),
     ...healthEndpoints,
-    ...(PROCESS_ENABLED ? processEndpoints : []),
+    ...(PROCESS_ENABLED
+      ? processEndpoints({
+          retentionMs: PROCESS_RETENTION_MS,
+          maxCompleted: PROCESS_MAX_COMPLETED,
+        })
+      : []),
   ),
   { port: PORT, name: 'poppler' },
 );

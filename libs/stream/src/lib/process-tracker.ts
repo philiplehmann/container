@@ -16,9 +16,9 @@ export interface TrackedProcess {
 }
 
 export interface ProcessTrackerConfig {
-  /** How long to keep completed processes in milliseconds. Default: env PROCESS_RETENTION_MS or 3600000 (1 hour) */
+  /** How long to keep completed processes in milliseconds. Default: 3600000 (1 hour) */
   retentionMs?: number;
-  /** Maximum number of completed processes to retain. Default: env PROCESS_MAX_COMPLETED or 1000 */
+  /** Maximum number of completed processes to retain. Default: 1000 */
   maxCompleted?: number;
 }
 
@@ -39,16 +39,15 @@ export class ProcessTracker {
 
   constructor(config?: ProcessTrackerConfig) {
     this.config = {
-      retentionMs:
-        config?.retentionMs ??
-        (process.env.PROCESS_RETENTION_MS
-          ? Number.parseInt(process.env.PROCESS_RETENTION_MS, 10)
-          : DEFAULT_RETENTION_MS),
-      maxCompleted:
-        config?.maxCompleted ??
-        (process.env.PROCESS_MAX_COMPLETED
-          ? Number.parseInt(process.env.PROCESS_MAX_COMPLETED, 10)
-          : DEFAULT_MAX_COMPLETED),
+      retentionMs: config?.retentionMs ?? DEFAULT_RETENTION_MS,
+      maxCompleted: config?.maxCompleted ?? DEFAULT_MAX_COMPLETED,
+    };
+  }
+
+  setConfig(config: ProcessTrackerConfig): void {
+    this.config = {
+      retentionMs: config.retentionMs ?? this.config.retentionMs,
+      maxCompleted: config.maxCompleted ?? this.config.maxCompleted,
     };
   }
 
@@ -267,3 +266,7 @@ export class ProcessTracker {
 
 /** Default singleton process tracker with environment-based configuration */
 export const processTracker = new ProcessTracker();
+
+export const configureProcessTracker = (config: ProcessTrackerConfig): void => {
+  processTracker.setConfig(config);
+};
