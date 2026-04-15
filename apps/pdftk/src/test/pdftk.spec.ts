@@ -4,14 +4,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { streamLength, streamToBuffer } from '@riwi/stream';
-import { useTestContainer } from '@riwi/test/bun';
-import {
-  beautifyJson,
-  createProcessEndpointsDisabledTest,
-  createProcessEndpointTests,
-  streamRequest,
-  testRequest,
-} from '@riwi/test/request';
+import { createProcessEndpointsDisabledTest, createProcessEndpointTests, useTestContainer } from '@riwi/test/bun';
+import { beautifyJson, streamRequest, testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

@@ -1,5 +1,5 @@
 import { expect, it } from 'bun:test';
-import { testRequest } from './test-request';
+import { testRequest } from '@riwi/test/request';
 
 interface ProcessInfo {
   id: string;
