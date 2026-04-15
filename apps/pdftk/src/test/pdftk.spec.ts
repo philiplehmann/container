@@ -41,7 +41,7 @@ describe('pdftk', () => {
           });
           const size = await streamLength(response);
 
-          expect(stats.size > size).toBeTruthy();
+          expect(stats.size).toBeGreaterThan(size);
         });
       });
 
@@ -59,7 +59,7 @@ describe('pdftk', () => {
           });
           const size = await streamLength(response);
 
-          expect(stats.size < size).toBeTruthy();
+          expect(stats.size).toBeLessThan(size);
         });
       });
 
@@ -75,7 +75,7 @@ describe('pdftk', () => {
             file,
           });
 
-          expect(text.includes('/Encrypt')).toBeTruthy();
+          expect(text).toInclude('/Encrypt');
         });
 
         it('pdf file is encrypted and has password', async () => {
@@ -89,7 +89,7 @@ describe('pdftk', () => {
             file,
           });
 
-          expect(text.includes('/Encrypt')).toBeTruthy();
+          expect(text).toInclude('/Encrypt');
         });
 
         it('pdf file is encrypted, has password and allow is defined', async () => {
@@ -103,7 +103,7 @@ describe('pdftk', () => {
             file,
           });
 
-          expect(text.includes('/Encrypt')).toBeTruthy();
+          expect(text).toInclude('/Encrypt');
         });
       });
 
@@ -119,7 +119,7 @@ describe('pdftk', () => {
             file,
           });
 
-          expect(text.includes('/Encrypt')).toBeFalsy();
+          expect(text).not.toInclude('/Encrypt');
         });
       });
 
