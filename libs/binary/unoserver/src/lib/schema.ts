@@ -12,6 +12,7 @@ export const schema = z
     inputFilter: z.string().optional(),
     outputFilter: z.string().optional(),
     filterOptions: z.union([z.string(), z.array(z.string())]).optional(),
+    timeoutMs: z.coerce.number().int().positive().optional(),
     updateIndex: booleanLiteral,
     dontUpdateIndex: booleanLiteral,
     verbose: booleanLiteral,

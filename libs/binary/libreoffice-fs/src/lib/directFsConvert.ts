@@ -17,6 +17,7 @@ export async function directFsConvert({
   convertTo,
   outputFilter,
   filterOptions,
+  timeoutMs,
 }: DirectFsConvertOptions): Promise<DirectFsConvertResult> {
   await assertReadableInputFile(inputAbsolutePath);
   await mkdir(dirname(outputAbsolutePath), { recursive: true });
@@ -29,6 +30,7 @@ export async function directFsConvert({
     convertTo,
     outputFilter,
     filterOptions,
+    timeoutMs,
   });
 
   const outputStats = await stat(outputAbsolutePath);

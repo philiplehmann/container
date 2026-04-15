@@ -8,6 +8,7 @@ export interface DirectFsConvertOptions {
   convertTo: LibreofficeSchema['convertTo'];
   outputFilter?: LibreofficeSchema['outputFilter'];
   filterOptions?: LibreofficeSchema['filterOptions'];
+  timeoutMs?: LibreofficeSchema['timeoutMs'];
 }
 
 export interface ConvertOptions {
@@ -18,6 +19,7 @@ export interface ConvertOptions {
   convertTo: LibreofficeSchema['convertTo'];
   outputFilter?: LibreofficeSchema['outputFilter'];
   filterOptions?: LibreofficeSchema['filterOptions'];
+  timeoutMs?: LibreofficeSchema['timeoutMs'];
 }
 
 export async function convert(options: ConvertOptions): Promise<DirectFsConvertResult> {
@@ -30,5 +32,6 @@ export async function convert(options: ConvertOptions): Promise<DirectFsConvertR
     convertTo: options.convertTo,
     outputFilter: options.outputFilter,
     filterOptions: options.filterOptions,
+    timeoutMs: options.timeoutMs,
   });
 }

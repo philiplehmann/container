@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import type { Writable } from 'node:stream';
-import { type InputType, streamChildProcess, streamChildProcessToBuffer } from '@riwi/stream';
+import { type InputType, processTracker, streamChildProcess, streamChildProcessToBuffer } from '@riwi/stream';
 import type { Schema } from './schema';
 
 export function unoconvert(options: { input: InputType; output: Writable } & Schema): void;
@@ -12,6 +12,7 @@ export function unoconvert({
   inputFilter,
   outputFilter,
   filterOptions,
+  timeoutMs,
   updateIndex,
   dontUpdateIndex,
   verbose,
@@ -44,8 +45,22 @@ export function unoconvert({
 
   // Spawn the unoconvert process with the provided arguments
   const unoconvert = spawn('unoconvert', args);
+  const trackedProcessId = processTracker.register(unoconvert);
+  const timeoutHandle =
+    timeoutMs !== undefined
+      ? setTimeout(() => {
+          processTracker.kill(trackedProcessId, 'SIGKILL');
+        }, timeoutMs)
+      : undefined;
+
+  const clearTimeoutHandle = () => {
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle);
+    }
+  };
+
   if (output) {
-    return streamChildProcess(input, output, unoconvert);
+    return streamChildProcess(input, output, unoconvert, { track: false }).finally(clearTimeoutHandle);
   }
-  return streamChildProcessToBuffer(input, unoconvert);
+  return streamChildProcessToBuffer(input, unoconvert, { track: false }).finally(clearTimeoutHandle);
 }
