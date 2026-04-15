@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, extname, resolve } from 'node:path';
 import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
-import { type InputType, streamInputToWriteable, streamToBuffer } from '@riwi/stream';
+import { type InputType, processTracker, streamInputToWriteable, streamToBuffer } from '@riwi/stream';
 import type { Schema } from './schema';
 
 async function cleanup(filePath: string, type: 'file' | 'dir'): Promise<void> {
@@ -60,10 +60,13 @@ export async function libreoffice({
   convertTo,
   outputFilter,
   filterOptions,
+  timeoutMs,
 }: {
   input: InputType;
   output?: Writable | string;
 } & Schema): Promise<undefined | Buffer> {
+  let trackedProcessId: string | undefined;
+
   if (filterOptions && !outputFilter) {
     throw new Error('filterOptions requires outputFilter');
   }
@@ -111,7 +114,29 @@ export async function libreoffice({
       inFile,
     ]);
 
+    trackedProcessId = processTracker.register(unoconvert);
+    let timedOut = false;
+    const timeoutHandle =
+      timeoutMs !== undefined
+        ? setTimeout(() => {
+            timedOut = true;
+            processTracker.kill(trackedProcessId, 'SIGKILL');
+          }, timeoutMs)
+        : undefined;
+
     await new Promise<void>((resolve, reject) => {
+      let settled = false;
+      const complete = (fn: () => void) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        if (timeoutHandle) {
+          clearTimeout(timeoutHandle);
+        }
+        fn();
+      };
+
       unoconvert.stdout.on('data', (data) => {
         console.info(`libreoffice.stdout: ${data}`);
       });
@@ -122,15 +147,21 @@ export async function libreoffice({
       });
       unoconvert.on('close', (code) => {
         if (code !== 0) {
-          reject(new Error(`LibreOffice conversion failed with exit code ${code}`));
+          complete(() => {
+            if (timedOut && timeoutMs !== undefined) {
+              reject(new Error(`LibreOffice conversion timed out after ${timeoutMs}ms${stderr ? `: ${stderr}` : ''}`));
+              return;
+            }
+            reject(new Error(`LibreOffice conversion failed with exit code ${code}${stderr ? `: ${stderr}` : ''}`));
+          });
         } else if (!existsSync(outDir)) {
-          reject(new Error(`LibreOffice conversion failed, output directory not found: ${outDir}`));
+          complete(() => reject(new Error(`LibreOffice conversion failed, output directory not found: ${outDir}`)));
         } else {
-          resolve();
+          complete(resolve);
         }
       });
       unoconvert.on('error', (error) => {
-        reject(new Error(`LibreOffice process error: ${error.message}: ${stderr}`));
+        complete(() => reject(new Error(`LibreOffice process error: ${error.message}: ${stderr}`)));
       });
     });
 
@@ -156,6 +187,16 @@ export async function libreoffice({
     const buffer = await streamToBuffer(createReadStream(convertedFilePath));
 
     return buffer;
+  } catch (error) {
+    if (trackedProcessId) {
+      const trackedProcess = processTracker.get(trackedProcessId);
+      if (trackedProcess && trackedProcess.status === 'completed') {
+        trackedProcess.status = 'failed';
+        trackedProcess.exitCode = trackedProcess.exitCode ?? 1;
+        trackedProcess.endTime = trackedProcess.endTime ?? new Date();
+      }
+    }
+    throw error;
   } finally {
     if (!filesystemMode) {
       await cleanup(inFile, 'file');

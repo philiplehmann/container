@@ -9,6 +9,7 @@ A containerized Node.js service that provides a REST API for converting office d
 - 🐳 **Docker Ready** - Easy deployment with Docker
 - 🔧 **REST API** - Simple HTTP interface
 - ⚙️ **Flexible Options** - Control filters, page ranges, and output behavior
+- 🧭 **Process Management** - Track, inspect, and terminate conversion processes
 
 ## Quick Start
 
@@ -32,6 +33,8 @@ services:
 ## API Endpoints
 
 Default behavior remains unchanged: only `/convert` and `/direct` are available unless `UNOSERVER_FS_ENABLE=true` is explicitly set.
+
+When process tracking is enabled (`UNOSERVER_PROCESS_ENABLED=true`), conversions triggered through `/convert`, `/direct`, and `/direct-fs` are tracked in `/processes`.
 
 ### Convert File
 
@@ -101,7 +104,7 @@ docker run --rm \
   -e UNOSERVER_DIRECT_ONLY=true \
   -e UNOSERVER_FS_ENABLE=true \
   -e UNOSERVER_FS_INPUT_ROOT=/data/in \
-  -e UNOSERVER_FS_OUTPUT_ROOT=/data/out \/
+  -e UNOSERVER_FS_OUTPUT_ROOT=/data/out \
   -v "$PWD/tmp/in:/data/in" \
   -v "$PWD/tmp/out:/data/out" \
   philiplehmann/unoserver:latest
@@ -115,7 +118,8 @@ curl -X POST \
   -d '{
     "inputPath": "dummy.docx",
     "outputPath": "dummy.pdf",
-    "convertTo": "pdf"
+    "convertTo": "pdf",
+    "timeoutMs": 10000
   }' \
   'http://localhost:3000/direct-fs'
 ```
@@ -220,6 +224,21 @@ curl -X POST \
   'http://localhost:3000/convert?quiet=true'
 ```
 
+### `timeoutMs`
+
+Optional timeout in milliseconds. If the timeout is reached, the conversion process is killed with `SIGKILL` and is reported as `killed` in process management.
+
+Supported on:
+- `/convert` (query parameter)
+- `/direct` (query parameter)
+- `/direct-fs` (JSON body)
+
+```bash
+curl -X POST \
+  --data-binary "@apps/unoserver/src/test/assets/dummy.docx" --output tmp/document.pdf \
+  'http://localhost:3000/convert?timeoutMs=10000'
+```
+
 ## Ports
 
 | Port | Service | Description |
@@ -260,6 +279,10 @@ curl 'http://localhost:3000/processes'
 # Filter by status (running, completed, failed, killed)
 curl 'http://localhost:3000/processes?status=running'
 ```
+
+Timeout behavior:
+- Timed out conversions are force-killed (`SIGKILL`) and appear with `status: killed`
+- Query timed out conversions via `curl 'http://localhost:3000/processes?status=killed'`
 
 ### Get Process Details
 

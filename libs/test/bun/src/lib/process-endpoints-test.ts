@@ -1,6 +1,16 @@
 import { expect, it } from 'bun:test';
 import { testRequest } from '@riwi/test/request';
 
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const tryTrigger = async (trigger: ((port: number) => Promise<void>) | undefined, port: number): Promise<void> => {
+  try {
+    await trigger?.(port);
+  } catch {
+    // Intentionally ignored: failing and timeout scenarios can close connections abruptly.
+  }
+};
+
 interface ProcessInfo {
   id: string;
   command: string;
@@ -61,6 +71,10 @@ export const createProcessEndpointsDisabledTest = (getPort: () => number): void 
 export const createProcessEndpointTests = (
   getPort: () => number,
   triggerProcess: (port: number) => Promise<void>,
+  options?: {
+    triggerFailingProcess?: (port: number) => Promise<void>;
+    triggerTimeoutProcess?: (port: number) => Promise<void>;
+  },
 ): void => {
   it('should list processes (empty initially or with existing)', async () => {
     const [response, text] = await testRequest({
@@ -213,4 +227,112 @@ export const createProcessEndpointTests = (
 
     expect(response.statusCode).toBe(404);
   });
+
+  if (options?.triggerFailingProcess) {
+    it('should track failed processes', async () => {
+      const [beforeResponse, beforeText] = await testRequest({
+        method: 'GET',
+        host: 'localhost',
+        port: getPort(),
+        path: '/processes',
+      });
+      expect(beforeResponse.statusCode).toBe(200);
+      const beforeJson = JSON.parse(beforeText) as ProcessListResponse;
+
+      await tryTrigger(options.triggerFailingProcess, getPort());
+
+      let failedCount = beforeJson.summary.failed;
+      const deadline = Date.now() + 10_000;
+
+      while (Date.now() < deadline) {
+        const [response, text] = await testRequest({
+          method: 'GET',
+          host: 'localhost',
+          port: getPort(),
+          path: '/processes',
+        });
+        expect(response.statusCode).toBe(200);
+        const json = JSON.parse(text) as ProcessListResponse;
+        failedCount = json.summary.failed;
+
+        if (failedCount > beforeJson.summary.failed) {
+          break;
+        }
+
+        await wait(100);
+      }
+
+      expect(failedCount).toBeGreaterThan(beforeJson.summary.failed);
+
+      const [failedResponse, failedText] = await testRequest({
+        method: 'GET',
+        host: 'localhost',
+        port: getPort(),
+        path: '/processes?status=failed',
+      });
+      expect(failedResponse.statusCode).toBe(200);
+
+      const failedJson = JSON.parse(failedText) as ProcessListResponse;
+      expect(failedJson.processes.length).toBeGreaterThan(0);
+
+      for (const process of failedJson.processes) {
+        expect(process.status).toBe('failed');
+        expect(process.endTime).toBeDefined();
+      }
+    });
+  }
+
+  if (options?.triggerTimeoutProcess) {
+    it('should mark timed out process as killed', async () => {
+      const [beforeResponse, beforeText] = await testRequest({
+        method: 'GET',
+        host: 'localhost',
+        port: getPort(),
+        path: '/processes',
+      });
+      expect(beforeResponse.statusCode).toBe(200);
+      const beforeJson = JSON.parse(beforeText) as ProcessListResponse;
+
+      await tryTrigger(options.triggerTimeoutProcess, getPort());
+
+      let killedCount = beforeJson.summary.killed;
+      const deadline = Date.now() + 10_000;
+
+      while (Date.now() < deadline) {
+        const [response, text] = await testRequest({
+          method: 'GET',
+          host: 'localhost',
+          port: getPort(),
+          path: '/processes',
+        });
+        expect(response.statusCode).toBe(200);
+        const json = JSON.parse(text) as ProcessListResponse;
+        killedCount = json.summary.killed;
+
+        if (killedCount > beforeJson.summary.killed) {
+          break;
+        }
+
+        await wait(100);
+      }
+
+      expect(killedCount).toBeGreaterThan(beforeJson.summary.killed);
+
+      const [killedResponse, killedText] = await testRequest({
+        method: 'GET',
+        host: 'localhost',
+        port: getPort(),
+        path: '/processes?status=killed',
+      });
+      expect(killedResponse.statusCode).toBe(200);
+
+      const killedJson = JSON.parse(killedText) as ProcessListResponse;
+      expect(killedJson.processes.length).toBeGreaterThan(0);
+
+      for (const process of killedJson.processes) {
+        expect(process.status).toBe('killed');
+        expect(process.endTime).toBeDefined();
+      }
+    });
+  }
 };

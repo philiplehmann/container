@@ -54,7 +54,6 @@ export class ProcessTracker {
   /**
    * Register a child process for tracking.
    * Extracts command and args from the child process automatically.
-   * @returns The UUID assigned to this process
    */
   register(child: ChildProcessWithoutNullStreams): string {
     // Cleanup old processes before registering new ones
@@ -115,11 +114,12 @@ export class ProcessTracker {
 
   /**
    * Kill a running process.
-   * @param id The process UUID
-   * @param signal The signal to send (default: SIGTERM)
-   * @returns true if the process was found and kill signal was sent
    */
-  kill(id: string, signal: NodeJS.Signals = 'SIGTERM'): boolean {
+  kill(id: string | undefined, signal: NodeJS.Signals = 'SIGTERM'): boolean {
+    if (!id) {
+      return false;
+    }
+
     const child = this.childRefs.get(id);
     const process = this.processes.get(id);
 
@@ -174,8 +174,6 @@ export class ProcessTracker {
 
   /**
    * Clear completed/failed/killed processes.
-   * @param olderThanMs Only clear processes older than this many milliseconds (optional)
-   * @returns The number of processes cleared
    */
   clear(olderThanMs?: number): number {
     let cleared = 0;

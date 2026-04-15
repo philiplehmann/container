@@ -23,6 +23,7 @@ export async function libreofficeFs({
       convertTo: body.convertTo,
       outputFilter: body.outputFilter,
       filterOptions: body.filterOptions,
+      timeoutMs: body.timeoutMs,
     });
 
     return {

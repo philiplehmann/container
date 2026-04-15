@@ -8,6 +8,7 @@ export const schema = z
     convertTo: z.enum(ConvertTo).optional().default(ConvertTo.pdf),
     outputFilter: z.string().optional(),
     filterOptions: z.union([z.string(), z.array(z.string())]).optional(),
+    timeoutMs: z.coerce.number().int().positive().optional(),
   })
   .refine(
     (data) => {
