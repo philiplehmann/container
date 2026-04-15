@@ -1,3 +1,7 @@
+import { randomUUID } from 'node:crypto';
+import { unlink, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { resolve } from 'node:path';
 import type { Readable, Writable } from 'node:stream';
 import { type StreamChildProcessOptions, streamChildProcessToBuffer } from '@riwi/stream';
 import { stringOrFirst, toObject } from './helpers/to-object';
@@ -87,12 +91,24 @@ export async function dataFields(
   { input }: { input: Readable },
   { binary }: PdftkOptions = {},
 ): Promise<DataFieldType[]> {
-  const buffer = await streamChildProcessToBuffer(
-    input,
-    pdftk(['-', 'dump_data_fields_utf8', 'output', '-'], { binary }),
-  );
-  const content = buffer.toString('utf-8');
-  return parseDataFields(content);
+  const tmpFile = resolve(tmpdir(), `${randomUUID()}.pdf`);
+
+  try {
+    await writeFile(tmpFile, input, { flag: 'wx', mode: 0o600 });
+
+    const buffer = await streamChildProcessToBuffer(
+      undefined,
+      pdftk([tmpFile, 'dump_data_fields_utf8', 'output', '-'], { binary }),
+    );
+    const content = buffer.toString('utf-8');
+    return parseDataFields(content);
+  } finally {
+    try {
+      await unlink(tmpFile);
+    } catch {
+      console.error(`Failed to delete temporary file: ${tmpFile}`);
+    }
+  }
 }
 
 export async function dataFieldsStream(

@@ -26,7 +26,7 @@ export async function streamChildProcessToBuffer(
 
   if (typeof input === 'string' || Buffer.isBuffer(input)) {
     child.stdin.end(input);
-  } else {
+  } else if (input) {
     input.pipe(child.stdin, { end: true });
   }
 

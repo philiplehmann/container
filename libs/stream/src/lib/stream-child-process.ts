@@ -3,7 +3,7 @@ import type { Readable, Writable } from 'node:stream';
 import { finished } from 'node:stream/promises';
 import { processTracker } from './process-tracker';
 
-export type InputType = Readable | Buffer | string;
+export type InputType = Readable | Buffer | string | undefined;
 
 export interface StreamChildProcessOptions {
   end?: boolean;
@@ -22,7 +22,7 @@ export async function streamInputToWriteable(
     if (end) {
       writable.end();
     }
-  } else {
+  } else if (input) {
     await finished(input.pipe(writable, { end }));
   }
 }
