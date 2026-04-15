@@ -25,7 +25,13 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
         *) echo "Unsupported platform: ${TARGETPLATFORM}" && exit 1 ;; \
     esac && \
     mkdir /java && \
-    curl -L "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10/OpenJDK25U-jre_${JDK_ARCH}_linux_hotspot_25.0.2_10.tar.gz" | tar --strip-components=1 -C /java -zxivf  -
+    JRE_BASE_URL="https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10" && \
+    JRE_FILE="OpenJDK25U-jre_${JDK_ARCH}_linux_hotspot_25.0.2_10.tar.gz" && \
+    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
+    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \
+    echo "$(cut -d' ' -f1 /tmp/SHA256.txt)  /tmp/${JRE_FILE}" | sha256sum -c - && \
+    tar --strip-components=1 -C /java -zxf "/tmp/${JRE_FILE}" && \
+    rm -f /tmp/SHA256.txt "/tmp/${JRE_FILE}"
 
 FROM oven/bun:1.3.12-slim
 
