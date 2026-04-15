@@ -2,8 +2,8 @@ import { describe } from 'bun:test';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
-import { useTestContainer } from '@riwi/test/bun';
-import { createProcessEndpointsDisabledTest, createProcessEndpointTests, testRequest } from '@riwi/test/request';
+import { createProcessEndpointsDisabledTest, createProcessEndpointTests, useTestContainer } from '@riwi/test/bun';
+import { testRequest } from '@riwi/test/request';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
