@@ -25,12 +25,9 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
         *) echo "Unsupported platform: ${TARGETPLATFORM}" && exit 1 ;; \
     esac && \
     mkdir /java && \
-    curl -L "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.28%2B6/OpenJDK11U-jre_${JDK_ARCH}_linux_hotspot_11.0.28_6.tar.gz" | tar --strip-components=1 -C /java -zxivf  -
-
+    curl -L "https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10/OpenJDK25U-jre_${JDK_ARCH}_linux_hotspot_25.0.2_10.tar.gz" | tar --strip-components=1 -C /java -zxivf  -
 
 FROM oven/bun:1.3.12-slim
-
-ARG JRE_VERSION
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
