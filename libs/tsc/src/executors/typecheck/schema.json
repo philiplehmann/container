@@ -6,7 +6,12 @@
   "type": "object",
   "properties": {
     "tsconfig": {
-      "type": "string"
+      "type": "string",
+      "description": "Path to the tsconfig.json file"
+    },
+    "tsgo": {
+      "type": "boolean",
+      "description": "Use tsgo for type checking"
     }
   },
   "required": []

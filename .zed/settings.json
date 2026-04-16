@@ -2,5 +2,10 @@
   "code_actions_on_format": {
     "source.organizeImports.biome": true,
     "source.fixAll.biome": true
+  },
+  "languages": {
+    "TypeScript": {
+      "language_servers": ["tsgo", "vtsls"]
+    }
   }
 }
