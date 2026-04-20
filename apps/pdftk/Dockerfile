@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/pdftk`.
-FROM oven/bun:1.3.12-slim AS pdftk
+FROM oven/bun:1.3.13-slim AS pdftk
 
 ARG PDFTK_VERSION
 ARG TARGETPLATFORM
@@ -33,7 +33,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     tar --strip-components=1 -C /java -zxf "/tmp/${JRE_FILE}" && \
     rm -f /tmp/SHA256.txt "/tmp/${JRE_FILE}"
 
-FROM oven/bun:1.3.12-slim
+FROM oven/bun:1.3.13-slim
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
