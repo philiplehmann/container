@@ -16,7 +16,7 @@
     "@swc/helpers": "0.5.21",
     "@types/bun": "1.3.14",
     "@types/nodemailer": "8.0.0",
-    "@typescript/native-preview": "7.0.0-dev.20260514.1",
+    "@typescript/native-preview": "7.0.0-dev.20260519.1",
     "esbuild": "0.28.0",
     "nodemailer": "8.0.7",
     "nx": "22.7.2",
