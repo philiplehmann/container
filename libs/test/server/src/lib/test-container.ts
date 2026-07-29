@@ -7,6 +7,7 @@ export interface TestContainerProps {
   healthPath?: string;
   healthPort?: number;
   healthStatusCode?: number;
+  memorySizeMB?: number;
   env?: Environment;
   hook?: (container: GenericContainer) => GenericContainer | Promise<GenericContainer>;
 }
@@ -17,6 +18,7 @@ export const testContainer = async ({
   healthPath = '/health/readiness',
   healthPort = containerPort,
   healthStatusCode = 200,
+  memorySizeMB = 128,
   env,
   hook,
 }: TestContainerProps): Promise<[StartedTestContainer, number]> => {
@@ -25,7 +27,8 @@ export const testContainer = async ({
     .withExposedPorts(containerPort)
     .withUser('1000:1000')
     .withLogConsumer((stream) => stream.pipe(process.stdout))
-    .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode));
+    .withWaitStrategy(Wait.forHttp(healthPath, healthPort).forStatusCode(healthStatusCode))
+    .withSharedMemorySize(memorySizeMB * 1024 * 1024);
 
   if (hook) {
     genericContainer = await hook(genericContainer);
