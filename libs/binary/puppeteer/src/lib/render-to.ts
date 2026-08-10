@@ -9,13 +9,19 @@ export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;
   private isClosing = false;
   private recoveringBrowser?: Promise<Browser>;
+  private recoveringFromBrowser?: Browser;
   private readonly disconnectHandlerBrowsers = new WeakSet<Browser>();
 
-  private recoverBrowser(disconnectedBrowser: Browser, timeout: number): Promise<Browser> {
-    if (this.recoveringBrowser) {
+  private recoverBrowser(
+    disconnectedBrowser: Browser,
+    timeout: number,
+    { reuseInFlight = true }: { reuseInFlight?: boolean } = {},
+  ): Promise<Browser> {
+    if (reuseInFlight && this.recoveringBrowser && this.recoveringFromBrowser === disconnectedBrowser) {
       return this.recoveringBrowser;
     }
-    this.recoveringBrowser = (async () => {
+
+    const recovery = (async () => {
       if (this.isClosing) {
         return disconnectedBrowser;
       }
@@ -23,14 +29,29 @@ export class BrowserToPdfRenderer {
       if (this.isClosing) {
         return disconnectedBrowser;
       }
-      return this.browser({ timeout });
-    })().finally(() => {
-      this.recoveringBrowser = undefined;
+      return this.browser({ timeout, reuseRecovery: false });
+    })();
+
+    this.recoveringBrowser = recovery;
+    this.recoveringFromBrowser = disconnectedBrowser;
+
+    recovery.finally(() => {
+      if (this.recoveringBrowser === recovery) {
+        this.recoveringBrowser = undefined;
+        this.recoveringFromBrowser = undefined;
+      }
     });
-    return this.recoveringBrowser;
+
+    return recovery;
   }
 
-  private async browser({ timeout = 60_000 }: { timeout?: number } = {}): Promise<Browser> {
+  private async browser({
+    timeout = 60_000,
+    reuseRecovery = true,
+  }: {
+    timeout?: number;
+    reuseRecovery?: boolean;
+  } = {}): Promise<Browser> {
     if (!this.launchedBrowser) {
       if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
         throw new Error('PUPPETEER_EXECUTABLE_PATH is required');
@@ -66,7 +87,7 @@ export class BrowserToPdfRenderer {
     }
 
     if (!activeBrowser.connected) {
-      return this.recoverBrowser(activeBrowser, timeout).catch((error: unknown) => {
+      return this.recoverBrowser(activeBrowser, timeout, { reuseInFlight: reuseRecovery }).catch((error: unknown) => {
         const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
         process.stderr.write(`${message}\n`);
         throw error;

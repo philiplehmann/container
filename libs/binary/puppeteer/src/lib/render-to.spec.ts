@@ -107,4 +107,54 @@ describe('BrowserToPdfRenderer', () => {
 
     expect(launchMock).toHaveBeenCalledTimes(1);
   });
+
+  it('starts a new recovery when replacement browser is immediately disconnected', async () => {
+    process.env.PUPPETEER_EXECUTABLE_PATH = '/tmp/chromium';
+
+    const firstBrowser = {
+      connected: true,
+      process: () => undefined,
+      on: mock((_event: string, _handler: () => void | Promise<void>) => {}),
+      close: mock(async () => {
+        firstBrowser.connected = false;
+      }),
+    };
+    const secondBrowser = {
+      connected: false,
+      process: () => undefined,
+      on: mock((_event: string, _handler: () => void | Promise<void>) => {}),
+      close: mock(async () => {
+        secondBrowser.connected = false;
+      }),
+    };
+    const thirdBrowser = {
+      connected: true,
+      process: () => undefined,
+      on: mock((_event: string, _handler: () => void | Promise<void>) => {}),
+      close: mock(async () => {
+        thirdBrowser.connected = false;
+      }),
+    };
+
+    const launchMock = mock(async () => firstBrowser)
+      .mockImplementationOnce(async () => firstBrowser)
+      .mockImplementationOnce(async () => secondBrowser)
+      .mockImplementationOnce(async () => thirdBrowser);
+    mock.module('puppeteer-core', () => ({
+      default: { launch: launchMock },
+    }));
+
+    const { BrowserToPdfRenderer } = await import('./render-to');
+    const renderer = new BrowserToPdfRenderer();
+
+    await renderer.launch();
+    firstBrowser.connected = false;
+
+    const recovered = await (renderer as unknown as { browser: () => Promise<unknown> }).browser();
+
+    expect(recovered).toBe(thirdBrowser);
+    expect(firstBrowser.close).toHaveBeenCalledTimes(1);
+    expect(secondBrowser.close).toHaveBeenCalledTimes(1);
+    expect(launchMock).toHaveBeenCalledTimes(3);
+  });
 });
