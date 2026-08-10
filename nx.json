@@ -23,7 +23,7 @@
       "cache": true,
       "inputs": ["default", "{workspaceRoot}/tsconfig.base.json"],
       "options": {
-        "tsgo": true
+        "tsgo": false
       }
     },
     "@riwi/node:test": {

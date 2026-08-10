@@ -4,10 +4,6 @@ import type { Executor } from '@nx/devkit';
 import { projectRoot, promiseSpawn } from '@riwi/nx';
 import type { TscTypecheckExecutorSchema } from './schema';
 
-export interface TypecheckExecutorOptions {
-  tsConfig: string;
-}
-
 const possibleTsConfigs = [
   'tsconfig.lib.json',
   'tsconfig.app.json',

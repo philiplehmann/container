@@ -1,9 +1,41 @@
 import { copyFile, glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import type { Executor } from '@nx/devkit';
-import { copyPackageJson, createEntryPoints } from '@nx/js';
+import { type Executor, readJsonFile, writeJsonFile } from '@nx/devkit';
 import { projectRoot as getProjectRoot, promiseSpawn, replacePlaceholders } from '@riwi/nx';
 import type { BunBuildExecutorSchema } from './schema';
+
+type PackageJsonExports = {
+  [key: string]: string | { types?: string; default?: string };
+};
+
+type PackageJson = {
+  main?: string;
+  types?: string;
+  typings?: string;
+  exports?: PackageJsonExports;
+};
+
+const patchBuiltPackageJson = (packageJsonPath: string, projectRoot: string, mainEntrypoint: string): void => {
+  const packageJson = readJsonFile<PackageJson>(packageJsonPath);
+  const entryWithoutProjectRoot = mainEntrypoint.replace(`${projectRoot}/`, '');
+  const entryBase = entryWithoutProjectRoot.replace(/\.[cm]?[jt]sx?$/, '');
+  const mainPath = `./${entryBase}.js`;
+  const typesPath = `./${entryBase}.d.ts`;
+
+  packageJson.main = mainPath;
+  packageJson.types = typesPath;
+  packageJson.typings = typesPath;
+  packageJson.exports = {
+    ...(packageJson.exports ?? {}),
+    '.': {
+      types: typesPath,
+      default: mainPath,
+    },
+    './package.json': './package.json',
+  };
+
+  writeJsonFile(packageJsonPath, packageJson);
+};
 
 const bunBuildExecutor: Executor<BunBuildExecutorSchema> = async (
   { entrypoints, outdir, target, format, packages, assets },
@@ -54,18 +86,9 @@ const bunBuildExecutor: Executor<BunBuildExecutorSchema> = async (
   }
 
   try {
-    context.target = context.target || {};
-    context.target.options = context.target.options || {};
-    context.target.options.tsConfig = context.target.options.tsConfig || resolve(projectRoot, 'tsconfig.json');
-    await copyPackageJson(
-      {
-        main: entrypoints[0] || '',
-        outputPath: replace(outdir),
-        additionalEntryPoints: createEntryPoints([], context.root),
-        format: [format === 'esm' ? 'esm' : 'cjs'],
-      },
-      context,
-    );
+    const packageJsonPath = resolve(replace(outdir), 'package.json');
+    const mainEntrypoint = replace(entrypoints[0] ?? `${projectRoot}/src/index.ts`);
+    patchBuiltPackageJson(packageJsonPath, projectRoot, mainEntrypoint);
   } catch (e) {
     if (e instanceof Error) {
       console.error(e.message);
