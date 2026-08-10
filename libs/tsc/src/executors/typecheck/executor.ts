@@ -13,7 +13,7 @@ const possibleTsConfigs = [
 ];
 
 const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
-  { tsconfig = 'tsconfig.lib.json', tsgo = false },
+  { tsconfig = 'tsconfig.lib.json' },
   context,
 ) => {
   const root = projectRoot(context);
@@ -27,7 +27,7 @@ const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
     }
   }
   try {
-    await promiseSpawn(tsgo ? 'tsgo' : 'tsc', ['--noEmit', '-p', resolve(root, tsconfig)], {
+    await promiseSpawn('tsc', ['--noEmit', '-p', resolve(root, tsconfig)], {
       cwd: context.root,
       env: process.env,
     });
