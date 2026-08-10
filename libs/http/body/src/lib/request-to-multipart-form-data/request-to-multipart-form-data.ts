@@ -11,7 +11,7 @@ enum State {
   SEPARATOR = 'SEPARATOR',
 }
 
-export const multipartFormData = z.object({
+const multipartFormData = z.object({
   'content-type': z.string().startsWith('multipart/form-data').and(z.string().includes('boundary=')),
 });
 

@@ -1,12 +1,8 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Executor } from '@nx/devkit';
-import { projectRoot, promiseSpawn } from '@riwi/nx';
+import { projectRoot, promiseSpawn } from '../../../../nx/src/index.ts';
 import type { TscTypecheckExecutorSchema } from './schema';
-
-export interface TypecheckExecutorOptions {
-  tsConfig: string;
-}
 
 const possibleTsConfigs = [
   'tsconfig.lib.json',
@@ -17,7 +13,7 @@ const possibleTsConfigs = [
 ];
 
 const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
-  { tsconfig = 'tsconfig.lib.json', tsgo = false },
+  { tsconfig = 'tsconfig.lib.json' },
   context,
 ) => {
   const root = projectRoot(context);
@@ -31,7 +27,7 @@ const tscTypecheckExecutor: Executor<TscTypecheckExecutorSchema> = async (
     }
   }
   try {
-    await promiseSpawn(tsgo ? 'tsgo' : 'tsc', ['--noEmit', '-p', resolve(root, tsconfig)], {
+    await promiseSpawn('tsc', ['--noEmit', '-p', resolve(root, tsconfig)], {
       cwd: context.root,
       env: process.env,
     });

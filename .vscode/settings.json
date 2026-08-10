@@ -1,5 +1,4 @@
 {
   "editor.defaultFormatter": "biomejs.biome",
-  "nxConsole.generateAiAgentRules": true,
-  "js/ts.experimental.useTsgo": true
+  "nxConsole.generateAiAgentRules": true
 }

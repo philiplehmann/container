@@ -125,6 +125,9 @@ jobs:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
 
+      - name: knip
+        run: bun knip
+
   # Test jobs run in parallel for each affected project and architecture
   test:
     runs-on: ${{ matrix.os }}

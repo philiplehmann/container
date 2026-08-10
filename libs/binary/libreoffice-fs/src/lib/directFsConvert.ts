@@ -11,7 +11,7 @@ export interface DirectFsConvertResult {
   durationMs: number;
 }
 
-export async function directFsConvert({
+async function directFsConvert({
   inputAbsolutePath,
   outputAbsolutePath,
   convertTo,

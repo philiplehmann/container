@@ -1,0 +1,36 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "tags": ["-lintignore"],
+  "workspaces": {
+    ".": {
+      "entry": [
+        "apps/**/src/main.ts",
+        "libs/**/src/index.ts",
+        "libs/**/src/executors/*/executor.ts",
+        "nx.json",
+        "apps/**/project.json",
+        "libs/**/project.json",
+        "libs/**/executors.json",
+        "package.json"
+      ],
+      "project": ["apps/**/src/**/*.ts", "libs/**/src/**/*.ts"]
+    }
+  },
+  "nx": {
+    "config": ["nx.json", "project.json", "{apps,libs}/**/project.json", "libs/**/executors.json", "package.json"]
+  },
+  "ignoreDependencies": [
+    "@riwi/biomejs",
+    "@riwi/tsc",
+    "@riwi/bun",
+    "@riwi/node",
+    "@riwi/docker",
+    "@riwi/helper",
+    "@nx/esbuild",
+    "@biomejs/biome",
+    "@typescript/native",
+    "esbuild",
+    "playwright"
+  ],
+  "ignoreBinaries": ["pdftotext", "pdftohtml", "tesseract", "unoconvert", "unoserver"]
+}

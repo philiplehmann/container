@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import type { Executor } from '@nx/devkit';
-import { projectRoot, promiseSpawn } from '@riwi/nx';
+import { projectRoot, promiseSpawn } from '../../../../nx/src/index.ts';
 import type { NodeTestExecutorSchema } from './schema';
 
 const asyncToArray = async <T>(asyncIterable: AsyncIterable<T>): Promise<T[]> => {
