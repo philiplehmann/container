@@ -30,6 +30,14 @@ export class BrowserToPdfRenderer {
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);
     }
+    const cleanupHandler = async () => {
+      await this.cleanup();
+      return this.browser({ timeout });
+    };
+    this.launchedBrowser.on('disconnected', cleanupHandler);
+    if (!this.launchedBrowser.connected) {
+      return cleanupHandler();
+    }
     return this.launchedBrowser;
   }
 
@@ -41,6 +49,11 @@ export class BrowserToPdfRenderer {
     if (this.launchedBrowser) {
       await this.launchedBrowser.close();
     }
+  }
+
+  private async cleanup(): Promise<void> {
+    await this.launchedBrowser?.close().catch(() => {});
+    this.launchedBrowser = undefined;
   }
 
   public async renderTo(
