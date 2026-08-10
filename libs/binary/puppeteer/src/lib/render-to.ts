@@ -7,6 +7,7 @@ import { ScreenshotType } from './screenshot-type';
 
 export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;
+  private isClosing = false;
   private async browser({ timeout = 60_000 }: { timeout?: number } = {}): Promise<Browser> {
     if (!this.launchedBrowser) {
       if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
@@ -31,6 +32,12 @@ export class BrowserToPdfRenderer {
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);
     }
     const cleanupHandler = async () => {
+      if (this.isClosing) {
+        if (this.launchedBrowser) {
+          return this.launchedBrowser;
+        }
+        throw new Error('browser is closing');
+      }
       await this.cleanup();
       return this.browser({ timeout });
     };
@@ -51,8 +58,11 @@ export class BrowserToPdfRenderer {
   }
 
   public async close(): Promise<void> {
-    if (this.launchedBrowser) {
-      await this.launchedBrowser.close();
+    this.isClosing = true;
+    try {
+      await this.cleanup();
+    } finally {
+      this.isClosing = false;
     }
   }
 
