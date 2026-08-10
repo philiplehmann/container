@@ -8,6 +8,25 @@ import { ScreenshotType } from './screenshot-type';
 export class BrowserToPdfRenderer {
   private launchedBrowser?: Browser;
   private isClosing = false;
+  private recoveringBrowser?: Promise<Browser>;
+  private readonly disconnectHandlerBrowsers = new WeakSet<Browser>();
+
+  private recoverBrowser(disconnectedBrowser: Browser, timeout: number): Promise<Browser> {
+    if (this.recoveringBrowser) {
+      return this.recoveringBrowser;
+    }
+    this.recoveringBrowser = (async () => {
+      if (this.isClosing) {
+        return disconnectedBrowser;
+      }
+      await this.cleanup(disconnectedBrowser);
+      return this.browser({ timeout });
+    })().finally(() => {
+      this.recoveringBrowser = undefined;
+    });
+    return this.recoveringBrowser;
+  }
+
   private async browser({ timeout = 60_000 }: { timeout?: number } = {}): Promise<Browser> {
     if (!this.launchedBrowser) {
       if (process.env.PUPPETEER_EXECUTABLE_PATH === undefined) {
@@ -31,26 +50,26 @@ export class BrowserToPdfRenderer {
       this.launchedBrowser.process()?.stdout?.pipe(process.stdout);
       this.launchedBrowser.process()?.stderr?.pipe(process.stderr);
     }
-    const cleanupHandler = async () => {
-      if (this.isClosing) {
-        if (this.launchedBrowser) {
-          return this.launchedBrowser;
-        }
-        throw new Error('browser is closing');
-      }
-      await this.cleanup();
-      return this.browser({ timeout });
-    };
-    this.launchedBrowser.on('disconnected', () => {
-      cleanupHandler().catch((error: unknown) => {
+
+    const activeBrowser = this.launchedBrowser;
+    if (!this.disconnectHandlerBrowsers.has(activeBrowser)) {
+      this.disconnectHandlerBrowsers.add(activeBrowser);
+      activeBrowser.on('disconnected', () => {
+        this.recoverBrowser(activeBrowser, timeout).catch((error: unknown) => {
+          const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
+          process.stderr.write(`${message}\n`);
+        });
+      });
+    }
+
+    if (!activeBrowser.connected) {
+      return this.recoverBrowser(activeBrowser, timeout).catch((error: unknown) => {
         const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
         process.stderr.write(`${message}\n`);
+        throw error;
       });
-    });
-    if (!this.launchedBrowser.connected) {
-      return cleanupHandler();
     }
-    return this.launchedBrowser;
+    return activeBrowser;
   }
 
   public async launch(): Promise<void> {
@@ -60,15 +79,17 @@ export class BrowserToPdfRenderer {
   public async close(): Promise<void> {
     this.isClosing = true;
     try {
-      await this.cleanup();
+      await this.cleanup(this.launchedBrowser);
     } finally {
       this.isClosing = false;
     }
   }
 
-  private async cleanup(): Promise<void> {
-    await this.launchedBrowser?.close().catch(() => {});
-    this.launchedBrowser = undefined;
+  private async cleanup(browser = this.launchedBrowser): Promise<void> {
+    await browser?.close().catch(() => {});
+    if (browser && this.launchedBrowser === browser) {
+      this.launchedBrowser = undefined;
+    }
   }
 
   public async renderTo(
