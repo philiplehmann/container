@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { copyFile, glob } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { type Executor, readJsonFile, writeJsonFile } from '@nx/devkit';
-import { projectRoot as getProjectRoot, promiseSpawn, replacePlaceholders } from '@riwi/nx';
+import { projectRoot as getProjectRoot, promiseSpawn, replacePlaceholders } from '../../../../nx/src/index.ts';
 import type { BunBuildExecutorSchema } from './schema';
 
 type PackageJsonExports = {

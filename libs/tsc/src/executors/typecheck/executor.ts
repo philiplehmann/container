@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Executor } from '@nx/devkit';
-import { projectRoot, promiseSpawn } from '@riwi/nx';
+import { projectRoot, promiseSpawn } from '../../../../nx/src/index.ts';
 import type { TscTypecheckExecutorSchema } from './schema';
 
 const possibleTsConfigs = [

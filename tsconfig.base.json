@@ -11,6 +11,7 @@
     "target": "esnext",
     "module": "preserve",
     "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "allowJs": true,
     "lib": ["ESNext"],

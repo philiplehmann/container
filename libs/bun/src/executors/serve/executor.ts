@@ -1,5 +1,5 @@
 import type { Executor } from '@nx/devkit';
-import { promiseSpawn, replacePlaceholders } from '@riwi/nx';
+import { promiseSpawn, replacePlaceholders } from '../../../../nx/src/index.ts';
 import type { BunServeExecutorSchema } from './schema';
 
 const bunBuildExecutor: Executor<BunServeExecutorSchema> = async ({ entrypoint }, context) => {

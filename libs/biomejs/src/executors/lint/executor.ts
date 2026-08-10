@@ -1,5 +1,5 @@
 import type { Executor } from '@nx/devkit';
-import { projectRoot as getProjectRoot, promiseSpawn } from '@riwi/nx';
+import { projectRoot as getProjectRoot, promiseSpawn } from '../../../../nx/src/index.ts';
 import type { BiomejsExecutorSchema } from './schema';
 
 const runExecutor: Executor<BiomejsExecutorSchema> = async (

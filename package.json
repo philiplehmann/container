@@ -21,7 +21,7 @@
     "playwright": "1.62.1",
     "testcontainers": "12.1.0",
     "@typescript/native": "npm:typescript@7.0.2",
-    "typescript": "6.0.2"
+    "typescript": "npm:@typescript/typescript6@6.0.2"
   },
   "dependencies": {
     "dotenv": "16.6.1",
