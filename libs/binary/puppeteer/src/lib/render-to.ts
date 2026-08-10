@@ -34,7 +34,12 @@ export class BrowserToPdfRenderer {
       await this.cleanup();
       return this.browser({ timeout });
     };
-    this.launchedBrowser.on('disconnected', cleanupHandler);
+    this.launchedBrowser.on('disconnected', () => {
+      cleanupHandler().catch((error: unknown) => {
+        const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
+        process.stderr.write(`${message}\n`);
+      });
+    });
     if (!this.launchedBrowser.connected) {
       return cleanupHandler();
     }
