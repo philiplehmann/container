@@ -59,4 +59,52 @@ describe('BrowserToPdfRenderer', () => {
 
     expect(launchMock).toHaveBeenCalledTimes(2);
   });
+
+  it('does not relaunch when close interleaves with in-flight recovery cleanup', async () => {
+    process.env.PUPPETEER_EXECUTABLE_PATH = '/tmp/chromium';
+
+    let resolveClose: (() => void) | undefined;
+    const closeGate = new Promise<void>((resolve) => {
+      resolveClose = resolve;
+    });
+
+    const firstBrowser = {
+      connected: true,
+      process: () => undefined,
+      on: mock((_event: string, _handler: () => void | Promise<void>) => {}),
+      close: mock(async () => {
+        firstBrowser.connected = false;
+        await closeGate;
+      }),
+    };
+
+    const launchMock = mock(async () => firstBrowser);
+    mock.module('puppeteer-core', () => ({
+      default: { launch: launchMock },
+    }));
+
+    const { BrowserToPdfRenderer } = await import('./render-to');
+    const renderer = new BrowserToPdfRenderer();
+
+    await renderer.launch();
+    firstBrowser.connected = false;
+
+    const recoveryPromise = (renderer as unknown as { browser: () => Promise<unknown> }).browser();
+    const closePromise = renderer.close();
+
+    let isCloseResolved = false;
+    void closePromise.then(() => {
+      isCloseResolved = true;
+    });
+
+    await Promise.resolve();
+    expect(isCloseResolved).toBe(false);
+
+    resolveClose?.();
+
+    await recoveryPromise;
+    await closePromise;
+
+    expect(launchMock).toHaveBeenCalledTimes(1);
+  });
 });

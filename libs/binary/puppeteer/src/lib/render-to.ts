@@ -20,6 +20,9 @@ export class BrowserToPdfRenderer {
         return disconnectedBrowser;
       }
       await this.cleanup(disconnectedBrowser);
+      if (this.isClosing) {
+        return disconnectedBrowser;
+      }
       return this.browser({ timeout });
     })().finally(() => {
       this.recoveringBrowser = undefined;
@@ -79,7 +82,9 @@ export class BrowserToPdfRenderer {
   public async close(): Promise<void> {
     this.isClosing = true;
     try {
+      await this.recoveringBrowser?.catch(() => {});
       await this.cleanup(this.launchedBrowser);
+      await this.recoveringBrowser?.catch(() => {});
     } finally {
       this.isClosing = false;
     }
