@@ -2,7 +2,7 @@
 # maildev Dockerfile
 #
 
-FROM oven/bun:1.3.14-slim
+FROM oven/bun:1.4.0-slim
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
