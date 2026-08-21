@@ -5,8 +5,9 @@
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "2.5.10",
+    "@libpdf/core": "0.4.1",
     "@nx/devkit": "23.1.1",
-    "@nx/js": "^23.0.0",
+    "@nx/js": "23.1.1",
     "@nx/playwright": "23.1.1",
     "@nx/plugin": "23.1.1",
     "@nx/workspace": "23.1.1",
@@ -20,7 +21,6 @@
     "esbuild": "0.28.2",
     "nodemailer": "9.0.5",
     "nx": "23.1.1",
-    "pdf-lib": "^1.17.1",
     "playwright": "1.62.1",
     "testcontainers": "12.1.0"
   },

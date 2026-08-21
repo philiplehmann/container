@@ -1,6 +1,6 @@
-import { PDFDocument } from 'pdf-lib';
+import { PDF } from '@libpdf/core';
 
-export async function getPageCount(pdfBuffer: Buffer | Uint8Array | ArrayBuffer | string) {
-  const pdfDoc = await PDFDocument.load(pdfBuffer);
-  return pdfDoc.getPageCount();
+export async function getPageCount(pdfBuffer: Uint8Array) {
+  const pdfDoc = await PDF.load(pdfBuffer);
+  return pdfDoc.getPages().length;
 }
