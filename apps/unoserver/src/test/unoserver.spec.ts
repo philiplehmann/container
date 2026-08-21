@@ -3,7 +3,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { testRequest } from '@riwi/test/request';
+import { testRequest, testRequestBuffer } from '@riwi/test/request';
+import { getPageCount } from './getPageCount';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,6 +22,7 @@ describe('unoserver', () => {
           },
           timeout: 90_000,
         });
+
         it('should convert docx to pdf per default', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
           const [response, text] = await testRequest({
@@ -35,9 +37,25 @@ describe('unoserver', () => {
           expect(text.substring(0, 5)).toBe('%PDF-');
         });
 
+        it('should convert pptx to pdf per default', async () => {
+          const file = resolve(__dirname, 'assets/dummy.pptx');
+          const [response, pdfBuffer] = await testRequestBuffer({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: '/convert',
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(10);
+        });
+
         it('should convert docx to pdf with inputFilter/outputFilter/filterOptions', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -46,12 +64,30 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(1);
+        });
+
+        it('should convert pptx to pdf with inputFilter/outputFilter/filterOptions', async () => {
+          const file = resolve(__dirname, 'assets/dummy.pptx');
+          const [response, pdfBuffer] = await testRequestBuffer({
+            method: 'POST',
+            host: 'localhost',
+            port: setup.port,
+            path: `/convert?outputFilter=impress_pdf_Export&filterOptions=${encodeURIComponent('PageRange=1-2')}`,
+            file,
+          });
+
+          expect(response.statusCode).toBe(200);
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(2);
         });
 
         it('should convert docx to pdf with updateIndex', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -60,12 +96,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(1);
         });
 
         it('should convert docx to pdf with dontUpdateIndex', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -74,12 +112,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(1);
         });
 
         it('should convert docx to pdf with verbose', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -88,12 +128,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(1);
         });
 
         it('should convert docx to pdf with quiet', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -102,12 +144,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(1);
         });
 
         it('should convert docx to pdf with convertTo', async () => {
           const file = resolve(__dirname, 'assets/dummy.docx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -116,7 +160,9 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
+
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(1);
         });
 
         it('should convert docx to png with convertTo', async () => {
