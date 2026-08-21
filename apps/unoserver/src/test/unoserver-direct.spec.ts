@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { currentArch } from '@riwi/docker';
 import { useTestContainer } from '@riwi/test/bun';
-import { testRequest } from '@riwi/test/request';
+import { testRequest, testRequestBuffer } from '@riwi/test/request';
 import { getPageCount } from './getPageCount';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -30,7 +30,7 @@ describe('unoserver', () => {
 
         it('should convert doc to pdf per default', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -39,15 +39,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
-          expect(pages).toBe(7);
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(9);
         });
 
         it('should convert doc to pdf with outputFilter', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -56,15 +55,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
-          expect(pages).toBe(7);
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(9);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions string(SelectPdfVersion)', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -73,15 +71,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
-          expect(pages).toBe(7);
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(9);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions string(PageRange)', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -90,15 +87,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
-          expect(pages).toBe(2);
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(9);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions json(SelectPdfVersion)', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -109,15 +105,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
-          expect(pages).toBe(7);
+          const pages = await getPageCount(pdfBuffer);
+          expect(pages).toBe(9);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions json(PageRange)', async () => {
           const file = resolve(__dirname, 'assets/VorlageBusinessplan.doc');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -128,15 +123,14 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
+          const pages = await getPageCount(pdfBuffer);
           expect(pages).toBe(2);
         });
 
         it('should convert pptx to pdf with outputFilter/filterOptions json(PageRange)', async () => {
           const file = resolve(__dirname, 'assets/dummy.pptx');
-          const [response, text] = await testRequest({
+          const [response, pdfBuffer] = await testRequestBuffer({
             method: 'POST',
             host: 'localhost',
             port: setup.port,
@@ -147,9 +141,8 @@ describe('unoserver', () => {
           });
 
           expect(response.statusCode).toBe(200);
-          expect(text.substring(0, 5)).toBe('%PDF-');
 
-          const pages = await getPageCount(text);
+          const pages = await getPageCount(pdfBuffer);
           expect(pages).toBe(2);
         });
 

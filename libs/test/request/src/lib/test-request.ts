@@ -1,7 +1,7 @@
 import { createReadStream, type ReadStream } from 'node:fs';
 import { type IncomingMessage, type RequestOptions, request } from 'node:http';
 import { Readable } from 'node:stream';
-import { streamToString } from '@riwi/stream';
+import { streamToBuffer, streamToString } from '@riwi/stream';
 
 export const streamRequest = async ({
   file,
@@ -43,4 +43,17 @@ export const testRequest = async ({
   const response = await streamRequest({ file, body, ...requestParams });
   const text = await streamToString(response);
   return [response, text];
+};
+
+export const testRequestBuffer = async ({
+  file,
+  body,
+  ...requestParams
+}: RequestOptions & {
+  file?: string;
+  body?: string | Buffer | Readable | ReadStream;
+}): Promise<[IncomingMessage, Buffer]> => {
+  const response = await streamRequest({ file, body, ...requestParams });
+  const buffer = await streamToBuffer(response);
+  return [response, buffer];
 };
