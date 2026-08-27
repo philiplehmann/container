@@ -24,7 +24,7 @@
         "@types/nodemailer": "8.0.1",
         "@typescript/native-preview": "7.0.0-dev.20260707.2",
         "esbuild": "0.28.2",
-        "nodemailer": "9.0.5",
+        "nodemailer": "9.0.6",
         "nx": "23.1.2",
         "playwright": "1.62.1",
         "testcontainers": "12.1.0",
@@ -1238,7 +1238,7 @@
 
     "node-releases": ["node-releases@2.0.27", "", {}, "sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA=="],
 
-    "nodemailer": ["nodemailer@9.0.5", "", {}, "sha512-wvjiKvjczmsN7U/8006JOdXubgBk2XFAbioDMbT+sM7cPs0QrhJTa6KBRX7P5REGGkDcLUz/EarWidb8G8C1jQ=="],
+    "nodemailer": ["nodemailer@9.0.6", "", {}, "sha512-IQUGFdhdGwI9+AWX+FpUt4DLmvFaOjTMEoneTIWX/RXxuy1TdenPwWrvFMSfLkPKl+HQEXWuSAxEMMbPYXtBmg=="],
 
     "normalize-path": ["normalize-path@3.0.0", "", {}, "sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA=="],
 
