@@ -16,6 +16,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
+    ca-certificates \
     curl
 
 # Download architecture-specific binary based on target platform
