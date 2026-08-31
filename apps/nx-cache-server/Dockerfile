@@ -11,9 +11,13 @@ FROM --platform=$BUILDPLATFORM debian:trixie-slim AS builder
 ARG NX_CACHE_SERVER_VERSION
 ARG TARGETPLATFORM
 
-RUN apt-get update && apt-get install -y \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl
 
 # Download architecture-specific binary based on target platform
 RUN ARCH_SUFFIX=$(case ${TARGETPLATFORM} in \
@@ -32,10 +36,13 @@ WORKDIR /nx-cache-server
 
 ENV PORT=3000
 
-RUN apt-get update && apt-get install -y \
+RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
     ca-certificates \
-    libssl3 \
-    && rm -rf /var/lib/apt/lists/*
+    libssl3
 
 RUN useradd -ms /bin/bash -u 1000 nx-cache-server
 

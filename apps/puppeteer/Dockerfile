@@ -24,8 +24,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
                     wget gnupg \
                     dbus dbus-x11 \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-freefont-ttf \
-                    chromium && \
-    rm -rf /var/lib/apt/lists/*
+                    chromium
 
 WORKDIR /app
 

@@ -13,7 +13,11 @@ RUN mkdir -p /root/gocode && \
     GOSUMDB=off GOPATH=/root/gocode GOPROXY=https://proxy.golang.org/cached-only go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
 FROM debian:trixie-slim
-RUN apt-get update && apt-get upgrade --yes
+RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
+    --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && \
+    apt-get update && \
+    apt-get upgrade --yes
 RUN useradd -ms /bin/bash -u 1000 mailhog
 
 COPY --from=builder /root/gocode/bin/MailHog /usr/local/bin/
