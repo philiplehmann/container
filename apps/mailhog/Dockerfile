@@ -2,7 +2,7 @@
 # MailHog Dockerfile
 #
 
-FROM golang:1.26-trixie AS builder
+FROM golang:1.27-trixie AS builder
 
 LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
 
