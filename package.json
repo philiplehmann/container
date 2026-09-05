@@ -15,7 +15,7 @@
     "@swc-node/register": "1.12.1",
     "@swc/core": "1.16.2",
     "@swc/helpers": "0.5.23",
-    "@types/bun": "1.4.0",
+    "@types/bun": "1.4.1",
     "@types/nodemailer": "8.0.1",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "esbuild": "0.28.2",
@@ -29,7 +29,7 @@
     "zod": "4.5.4"
   },
   "engines": {
-    "bun": "1.4.0",
+    "bun": "1.4.1",
     "node": "24.20.0"
   }
 }
