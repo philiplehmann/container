@@ -15,7 +15,7 @@
     "@swc-node/register": "1.12.1",
     "@swc/core": "1.16.2",
     "@swc/helpers": "0.5.23",
-    "@types/bun": "1.4.1",
+    "@types/bun": "1.4.2",
     "@types/nodemailer": "8.0.1",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "esbuild": "0.28.2",
