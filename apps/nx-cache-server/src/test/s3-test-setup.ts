@@ -60,8 +60,6 @@ export async function startNxCacheServerTestSetup({
 
     const configContent = createConfig({
       bucketName,
-      bearerToken1,
-      bearerToken2,
       endpointUrl: storageBackend.endpointUrl,
       region: storageBackend.region,
     });
@@ -95,14 +93,14 @@ export async function startNxCacheServerTestSetup({
       stop: async () => {
         await stopAndRemove(nxCacheContainer);
         await storageBackend?.stop();
-        await network.stop();
+        await stopNetwork(network);
         await rm(configDir, { recursive: true, force: true });
       },
     };
   } catch (error) {
     await stopAndRemove(nxCacheContainer);
     await storageBackend?.stop();
-    await network.stop();
+    await stopNetwork(network);
     await rm(configDir, { recursive: true, force: true });
     throw error;
   }
@@ -205,7 +203,7 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
   const container = await new GenericContainer('chrislusf/seaweedfs:4.37')
     .withNetwork(network)
     .withNetworkAliases(alias)
-    .withCommand(['server', '-s3', '-dir=/data'])
+    .withCommand(['server', '-s3', '-dir=/data', '-ip.bind=0.0.0.0', '-s3.ip.bind=0.0.0.0'])
     .withEnvironment({
       AWS_ACCESS_KEY_ID: accessKeyId,
       AWS_SECRET_ACCESS_KEY: secretAccessKey,
@@ -221,6 +219,14 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
     secretAccessKey,
     bucketName,
     endpointUrl: 'http://127.0.0.1:8333',
+    region: 'us-east-1',
+  });
+  await waitForBucketFromSiblingContainer({
+    network,
+    accessKeyId,
+    secretAccessKey,
+    bucketName,
+    endpointUrl: `http://${alias}:8333`,
     region: 'us-east-1',
   });
 
@@ -251,10 +257,11 @@ async function startGarageBackend({ bucketName, network }: { bucketName: string;
     ])
     .withCommand(['/garage', '-c', '/etc/garage.toml', 'server'])
     .withExposedPorts(3900)
-    .withWaitStrategy(Wait.forListeningPorts())
+    .withWaitStrategy(Wait.forLogMessage(/S3 API server listening on/i))
     .withStartupTimeout(120_000)
     .start();
 
+  await waitForPublishedHttpEndpoint(`http://127.0.0.1:${container.getMappedPort(3900)}`);
   const { accessKeyId, secretAccessKey } = await initializeGarage(container, bucketName);
 
   return {
@@ -285,27 +292,73 @@ async function createBucketWithAwsCli({
   endpointUrl: string;
   region: string;
 }) {
-  await retry(async () => {
-    await execDocker([
-      'run',
-      '--rm',
-      '--network',
-      `container:${container.getId()}`,
-      '-e',
-      `AWS_ACCESS_KEY_ID=${accessKeyId}`,
-      '-e',
-      `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
-      '-e',
-      `AWS_DEFAULT_REGION=${region}`,
-      'amazon/aws-cli',
-      's3api',
-      'create-bucket',
-      '--bucket',
-      bucketName,
-      '--endpoint-url',
-      endpointUrl,
-    ]);
-  });
+  await retry(
+    async () => {
+      await execDocker([
+        'run',
+        '--rm',
+        '--network',
+        `container:${container.getId()}`,
+        '-e',
+        `AWS_ACCESS_KEY_ID=${accessKeyId}`,
+        '-e',
+        `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
+        '-e',
+        `AWS_DEFAULT_REGION=${region}`,
+        'amazon/aws-cli',
+        's3api',
+        'create-bucket',
+        '--bucket',
+        bucketName,
+        '--endpoint-url',
+        endpointUrl,
+      ]);
+    },
+    60,
+    1_000,
+  );
+}
+
+async function waitForBucketFromSiblingContainer({
+  network,
+  accessKeyId,
+  secretAccessKey,
+  bucketName,
+  endpointUrl,
+  region,
+}: {
+  network: StartedNetwork;
+  accessKeyId: string;
+  secretAccessKey: string;
+  bucketName: string;
+  endpointUrl: string;
+  region: string;
+}) {
+  await retry(
+    async () => {
+      await execDocker([
+        'run',
+        '--rm',
+        '--network',
+        network.getName(),
+        '-e',
+        `AWS_ACCESS_KEY_ID=${accessKeyId}`,
+        '-e',
+        `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
+        '-e',
+        `AWS_DEFAULT_REGION=${region}`,
+        'amazon/aws-cli',
+        's3api',
+        'head-bucket',
+        '--bucket',
+        bucketName,
+        '--endpoint-url',
+        endpointUrl,
+      ]);
+    },
+    120,
+    1_000,
+  );
 }
 
 async function initializeGarage(container: StartedTestContainer, bucketName: string) {
@@ -393,14 +446,10 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
 
 function createConfig({
   bucketName,
-  bearerToken1,
-  bearerToken2,
   endpointUrl,
   region = 'us-east-1',
 }: {
   bucketName: string;
-  bearerToken1: string;
-  bearerToken2: string;
   endpointUrl: string;
   region?: string;
 }) {
@@ -455,8 +504,44 @@ function matchOrThrow(output: string, pattern: RegExp, label: string) {
   return match;
 }
 
+async function waitForPublishedHttpEndpoint(url: string) {
+  await retry(
+    async () => {
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(1_000),
+      });
+      response.body?.cancel();
+    },
+    30,
+    500,
+  );
+}
+
 async function stopAndRemove(container: StartedTestContainer | undefined) {
   await container?.stop();
+}
+
+const networkStopRetries = 10;
+const networkStopRetryDelayMs = 500;
+
+async function stopNetwork(network: StartedNetwork) {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < networkStopRetries; attempt++) {
+    try {
+      await network.stop();
+      return;
+    } catch (error) {
+      const message = (error instanceof Error ? error.message : String(error)).toLowerCase();
+      if (!message.includes('active endpoint')) {
+        throw error;
+      }
+      lastError = error;
+      await new Promise((resolve) => setTimeout(resolve, networkStopRetryDelayMs));
+    }
+  }
+
+  throw lastError;
 }
 
 const garageConfig = `metadata_dir = "/var/lib/garage/meta"
