@@ -504,10 +504,13 @@ async function stopAndRemove(container: StartedTestContainer | undefined) {
   await container?.stop();
 }
 
+const networkStopRetries = 10;
+const networkStopRetryDelayMs = 500;
+
 async function stopNetwork(network: StartedNetwork) {
   let lastError: unknown;
 
-  for (let attempt = 0; attempt < 10; attempt++) {
+  for (let attempt = 0; attempt < networkStopRetries; attempt++) {
     try {
       await network.stop();
       return;
@@ -517,7 +520,7 @@ async function stopNetwork(network: StartedNetwork) {
         throw error;
       }
       lastError = error;
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, networkStopRetryDelayMs));
     }
   }
 
