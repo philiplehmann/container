@@ -95,14 +95,14 @@ export async function startNxCacheServerTestSetup({
       stop: async () => {
         await stopAndRemove(nxCacheContainer);
         await storageBackend?.stop();
-        await network.stop();
+        await stopNetwork(network);
         await rm(configDir, { recursive: true, force: true });
       },
     };
   } catch (error) {
     await stopAndRemove(nxCacheContainer);
     await storageBackend?.stop();
-    await network.stop();
+    await stopNetwork(network);
     await rm(configDir, { recursive: true, force: true });
     throw error;
   }
@@ -210,8 +210,7 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
       AWS_ACCESS_KEY_ID: accessKeyId,
       AWS_SECRET_ACCESS_KEY: secretAccessKey,
     })
-    .withExposedPorts(8333)
-    .withWaitStrategy(Wait.forListeningPorts())
+    .withWaitStrategy(Wait.forLogMessage(/Start Seaweed S3 API Server .* at http port 8333/i))
     .withStartupTimeout(120_000)
     .start();
 
@@ -250,8 +249,7 @@ async function startGarageBackend({ bucketName, network }: { bucketName: string;
       },
     ])
     .withCommand(['/garage', '-c', '/etc/garage.toml', 'server'])
-    .withExposedPorts(3900)
-    .withWaitStrategy(Wait.forListeningPorts())
+    .withWaitStrategy(Wait.forLogMessage(/S3 API server listening on/i))
     .withStartupTimeout(120_000)
     .start();
 
@@ -305,7 +303,7 @@ async function createBucketWithAwsCli({
       '--endpoint-url',
       endpointUrl,
     ]);
-  });
+  }, 60, 1_000);
 }
 
 async function initializeGarage(container: StartedTestContainer, bucketName: string) {
@@ -457,6 +455,18 @@ function matchOrThrow(output: string, pattern: RegExp, label: string) {
 
 async function stopAndRemove(container: StartedTestContainer | undefined) {
   await container?.stop();
+}
+
+async function stopNetwork(network: StartedNetwork) {
+  try {
+    await network.stop();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes('has active endpoints')) {
+      return;
+    }
+    throw error;
+  }
 }
 
 const garageConfig = `metadata_dir = "/var/lib/garage/meta"

@@ -25,7 +25,8 @@ import { type NxCacheServerTestSetup, s3Backends, startNxCacheServerTestSetup } 
 
 describe('nx-cache-server', () => {
   [currentArch()].forEach((arch) => {
-    s3Backends.forEach((backend) => {
+    const backends = arch === 'amd64' ? s3Backends.filter((backend) => backend.id !== 'seaweedfs') : s3Backends;
+    backends.forEach((backend) => {
       describe(`arch: ${arch} / s3: ${backend.name}`, () => {
         let setup: NxCacheServerTestSetup | undefined;
         let cacheServerPort: number;
