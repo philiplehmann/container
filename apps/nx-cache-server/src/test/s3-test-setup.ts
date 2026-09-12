@@ -263,6 +263,7 @@ async function startGarageBackend({ bucketName, network }: { bucketName: string;
     .withStartupTimeout(120_000)
     .start();
 
+  await waitForPublishedHttpEndpoint(`http://127.0.0.1:${container.getMappedPort(3900)}`);
   const { accessKeyId, secretAccessKey } = await initializeGarage(container, bucketName);
 
   return {
@@ -499,6 +500,15 @@ function matchOrThrow(output: string, pattern: RegExp, label: string) {
     throw new Error(`Unable to parse ${label} from Garage output:\n${output}`);
   }
   return match;
+}
+
+async function waitForPublishedHttpEndpoint(url: string) {
+  await retry(async () => {
+    const response = await fetch(url, {
+      signal: AbortSignal.timeout(1_000),
+    });
+    response.body?.cancel();
+  }, 30, 500);
 }
 
 async function stopAndRemove(container: StartedTestContainer | undefined) {
