@@ -60,8 +60,6 @@ export async function startNxCacheServerTestSetup({
 
     const configContent = createConfig({
       bucketName,
-      bearerToken1,
-      bearerToken2,
       endpointUrl: storageBackend.endpointUrl,
       region: storageBackend.region,
     });
@@ -294,27 +292,31 @@ async function createBucketWithAwsCli({
   endpointUrl: string;
   region: string;
 }) {
-  await retry(async () => {
-    await execDocker([
-      'run',
-      '--rm',
-      '--network',
-      `container:${container.getId()}`,
-      '-e',
-      `AWS_ACCESS_KEY_ID=${accessKeyId}`,
-      '-e',
-      `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
-      '-e',
-      `AWS_DEFAULT_REGION=${region}`,
-      'amazon/aws-cli',
-      's3api',
-      'create-bucket',
-      '--bucket',
-      bucketName,
-      '--endpoint-url',
-      endpointUrl,
-    ]);
-  }, 60, 1_000);
+  await retry(
+    async () => {
+      await execDocker([
+        'run',
+        '--rm',
+        '--network',
+        `container:${container.getId()}`,
+        '-e',
+        `AWS_ACCESS_KEY_ID=${accessKeyId}`,
+        '-e',
+        `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
+        '-e',
+        `AWS_DEFAULT_REGION=${region}`,
+        'amazon/aws-cli',
+        's3api',
+        'create-bucket',
+        '--bucket',
+        bucketName,
+        '--endpoint-url',
+        endpointUrl,
+      ]);
+    },
+    60,
+    1_000,
+  );
 }
 
 async function waitForBucketFromSiblingContainer({
@@ -332,27 +334,31 @@ async function waitForBucketFromSiblingContainer({
   endpointUrl: string;
   region: string;
 }) {
-  await retry(async () => {
-    await execDocker([
-      'run',
-      '--rm',
-      '--network',
-      network.getName(),
-      '-e',
-      `AWS_ACCESS_KEY_ID=${accessKeyId}`,
-      '-e',
-      `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
-      '-e',
-      `AWS_DEFAULT_REGION=${region}`,
-      'amazon/aws-cli',
-      's3api',
-      'head-bucket',
-      '--bucket',
-      bucketName,
-      '--endpoint-url',
-      endpointUrl,
-    ]);
-  }, 120, 1_000);
+  await retry(
+    async () => {
+      await execDocker([
+        'run',
+        '--rm',
+        '--network',
+        network.getName(),
+        '-e',
+        `AWS_ACCESS_KEY_ID=${accessKeyId}`,
+        '-e',
+        `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
+        '-e',
+        `AWS_DEFAULT_REGION=${region}`,
+        'amazon/aws-cli',
+        's3api',
+        'head-bucket',
+        '--bucket',
+        bucketName,
+        '--endpoint-url',
+        endpointUrl,
+      ]);
+    },
+    120,
+    1_000,
+  );
 }
 
 async function initializeGarage(container: StartedTestContainer, bucketName: string) {
@@ -440,14 +446,10 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
 
 function createConfig({
   bucketName,
-  bearerToken1,
-  bearerToken2,
   endpointUrl,
   region = 'us-east-1',
 }: {
   bucketName: string;
-  bearerToken1: string;
-  bearerToken2: string;
   endpointUrl: string;
   region?: string;
 }) {
@@ -503,12 +505,16 @@ function matchOrThrow(output: string, pattern: RegExp, label: string) {
 }
 
 async function waitForPublishedHttpEndpoint(url: string) {
-  await retry(async () => {
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(1_000),
-    });
-    response.body?.cancel();
-  }, 30, 500);
+  await retry(
+    async () => {
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(1_000),
+      });
+      response.body?.cancel();
+    },
+    30,
+    500,
+  );
 }
 
 async function stopAndRemove(container: StartedTestContainer | undefined) {
