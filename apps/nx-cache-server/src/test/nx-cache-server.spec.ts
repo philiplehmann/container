@@ -25,6 +25,8 @@ import { type NxCacheServerTestSetup, s3Backends, startNxCacheServerTestSetup } 
 
 describe('nx-cache-server', () => {
   [currentArch()].forEach((arch) => {
+    // SeaweedFS remains covered in the arm64 CI job; skip the flaky amd64 variant that fails to
+    // start reliably in the shared multi-backend test run.
     const backends = arch === 'amd64' ? s3Backends.filter((backend) => backend.id !== 'seaweedfs') : s3Backends;
     backends.forEach((backend) => {
       describe(`arch: ${arch} / s3: ${backend.name}`, () => {

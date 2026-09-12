@@ -458,15 +458,23 @@ async function stopAndRemove(container: StartedTestContainer | undefined) {
 }
 
 async function stopNetwork(network: StartedNetwork) {
-  try {
-    await network.stop();
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (message.includes('has active endpoints')) {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < 10; attempt++) {
+    try {
+      await network.stop();
       return;
+    } catch (error) {
+      const message = (error instanceof Error ? error.message : String(error)).toLowerCase();
+      if (!message.includes('active endpoint')) {
+        throw error;
+      }
+      lastError = error;
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
-    throw error;
   }
+
+  throw lastError;
 }
 
 const garageConfig = `metadata_dir = "/var/lib/garage/meta"
