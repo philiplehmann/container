@@ -53,7 +53,7 @@ describe('nx-cache-server', () => {
           network = await new Network().start();
 
           // Start MinIO container
-          minioContainer = await new GenericContainer('minio/minio:latest')
+            minioContainer = await new GenericContainer('quay.io/minio/minio:latest')
             .withNetwork(network)
             .withNetworkAliases(minioAlias)
             .withCommand(['server', '/data'])
