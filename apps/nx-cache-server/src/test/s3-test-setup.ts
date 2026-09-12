@@ -258,6 +258,7 @@ async function startGarageBackend({ bucketName, network }: { bucketName: string;
       },
     ])
     .withCommand(['/garage', '-c', '/etc/garage.toml', 'server'])
+    .withExposedPorts(3900)
     .withWaitStrategy(Wait.forLogMessage(/S3 API server listening on/i))
     .withStartupTimeout(120_000)
     .start();
