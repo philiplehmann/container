@@ -323,7 +323,20 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
     return nodeLine.split(/\s+/)[0] ?? '';
   });
 
-  await execDocker(['exec', container.getId(), '/garage', '-c', '/etc/garage.toml', 'layout', 'assign', '-z', 'dc1', '-c', '1G', nodeId]);
+  await execDocker([
+    'exec',
+    container.getId(),
+    '/garage',
+    '-c',
+    '/etc/garage.toml',
+    'layout',
+    'assign',
+    '-z',
+    'dc1',
+    '-c',
+    '1G',
+    nodeId,
+  ]);
 
   await retry(async () => {
     let lastError: Error | undefined;
@@ -344,9 +357,6 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
         return;
       } catch (error) {
         lastError = error as Error;
-        if (lastError.message.includes('Invalid new layout version')) {
-          continue;
-        }
       }
     }
 
