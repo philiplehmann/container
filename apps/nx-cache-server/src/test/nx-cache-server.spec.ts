@@ -19,147 +19,38 @@
  */
 
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
 import { currentArch } from '@riwi/docker';
-import { promiseSpawn } from '@riwi/nx';
 import { testRequest } from '@riwi/test/request';
-import { GenericContainer, Network, type StartedNetwork, type StartedTestContainer, Wait } from 'testcontainers';
+import { type NxCacheServerTestSetup, s3Backends, startNxCacheServerTestSetup } from './s3-test-setup';
 
 describe('nx-cache-server', () => {
   [currentArch()].forEach((arch) => {
-    describe(`arch: ${arch}`, () => {
-      let nxCacheContainer: StartedTestContainer;
-      let minioContainer: StartedTestContainer;
-      let network: StartedNetwork;
-      let cacheServerPort: number;
-      let minioPort: number;
-      let configDir: string;
-      const bearerToken1 = 'test-bearer-token-12345';
-      const bearerToken2 = 'test-bearer-token-23456';
-      const bucketName = 'nx-cache';
-      const minioAlias = 'minio';
-      const minioUser = 'admin';
-      const minioPassword = 'password';
+    s3Backends.forEach((backend) => {
+      describe(`arch: ${arch} / s3: ${backend.name}`, () => {
+        let setup: NxCacheServerTestSetup | undefined;
+        let cacheServerPort: number;
+        const bearerToken1 = 'test-bearer-token-12345';
+        const bearerToken2 = 'test-bearer-token-23456';
+        const bucketName = 'nx-cache';
 
-      beforeAll(
-        async () => {
-          // Create a temporary directory for config file
-          configDir = await mkdtemp(join(tmpdir(), 'nx-cache-test-'));
-          const configPath = join(configDir, 'config.yaml');
+        beforeAll(
+          async () => {
+            setup = await startNxCacheServerTestSetup({
+              arch,
+              backendId: backend.id,
+              bucketName,
+              bearerToken1,
+              bearerToken2,
+            });
 
-          // Create a custom network for container communication
-          network = await new Network().start();
+            cacheServerPort = setup.cacheServerPort;
+          },
+          { timeout: 240_000 },
+        );
 
-          // Start MinIO container
-          minioContainer = await new GenericContainer('quay.io/minio/minio:latest')
-            .withNetwork(network)
-            .withNetworkAliases(minioAlias)
-            .withCommand(['server', '/data'])
-            .withEnvironment({
-              MINIO_ROOT_USER: minioUser,
-              MINIO_ROOT_PASSWORD: minioPassword,
-            })
-            .withExposedPorts(9000)
-            .withWaitStrategy(Wait.forHttp('/minio/health/live', 9000).forStatusCode(200))
-            .withLogConsumer((stream) => stream.pipe(process.stdout))
-            .start();
-
-          minioPort = minioContainer.getMappedPort(9000);
-          const minioInternalEndpoint = `http://${minioAlias}:9000`;
-
-          console.log(`MinIO running at internal: ${minioInternalEndpoint}, external: http://localhost:${minioPort}`);
-
-          // Create bucket using docker exec with mc client
-          console.log('MinIO: Setting up mc alias');
-          const containerId = minioContainer.getId();
-
-          await promiseSpawn('docker', [
-            'exec',
-            containerId,
-            '/bin/mc',
-            'alias',
-            'set',
-            'local',
-            'http://localhost:9000',
-            minioUser,
-            minioPassword,
-          ]);
-          console.log('MinIO: Alias set successfully');
-
-          await promiseSpawn('docker', ['exec', containerId, '/bin/mc', 'mb', `local/${bucketName}`]);
-          console.log('MinIO: Bucket created');
-
-          // Create YAML config file for nx-cache-server
-          const configContent = `
-port: 3000
-
-buckets:
-  - name: test-backend
-    bucketName: ${bucketName}
-    region: us-east-1
-    endpointUrl: ${minioInternalEndpoint}
-    accessKeyIdEnv: NX_CACHE_BUCKET_ACCESS_KEY_ID
-    secretAccessKeyEnv: NX_CACHE_BUCKET_SECRET_ACCESS_KEY
-    forcePathStyle: true
-
-serviceAccessTokens:
-  - name: test-token1
-    bucket: test-backend
-    prefix: /
-    accessTokenEnv: NX_CACHE_SERVER_ACCESS_TOKEN1
-  - name: test-token2
-    bucket: test-backend
-    prefix: /test
-    accessTokenEnv: NX_CACHE_SERVER_ACCESS_TOKEN2
-`;
-
-          await writeFile(configPath, configContent, 'utf-8');
-          console.log(`Config file created at: ${configPath}`);
-          console.log('Config content:', configContent);
-
-          // Start nx-cache-server container on the same network
-          nxCacheContainer = await new GenericContainer(`philiplehmann/nx-cache-server:test-${arch}`)
-            .withNetwork(network)
-            .withUser('1000:1000')
-            .withEnvironment({
-              NX_CACHE_SERVER_ACCESS_TOKEN1: bearerToken1,
-              NX_CACHE_SERVER_ACCESS_TOKEN2: bearerToken2,
-              NX_CACHE_BUCKET_ACCESS_KEY_ID: minioUser,
-              NX_CACHE_BUCKET_SECRET_ACCESS_KEY: minioPassword,
-            })
-            .withBindMounts([
-              {
-                source: configPath,
-                target: '/config/config.yaml',
-                mode: 'ro',
-              },
-            ])
-            .withCommand(['/usr/local/bin/nx-cache-server', '--config', '/config/config.yaml'])
-            .withExposedPorts(3000)
-            .withWaitStrategy(Wait.forLogMessage(/Server running on port/i))
-            .withStartupTimeout(60_000)
-            .withLogConsumer((stream) => stream.pipe(process.stdout))
-            .start();
-
-          cacheServerPort = nxCacheContainer.getMappedPort(3000);
-          console.log(`nx-cache-server running on port: ${cacheServerPort}`);
-
-          // Wait a bit for server to be fully ready
-          await new Promise((resolve) => setTimeout(resolve, 2000));
-        },
-        { timeout: 180_000 },
-      );
-
-      afterAll(async () => {
-        await nxCacheContainer?.stop();
-        await minioContainer?.stop();
-        await network?.stop();
-        if (configDir) {
-          await rm(configDir, { recursive: true, force: true });
-        }
-      });
+        afterAll(async () => {
+          await setup?.stop();
+        });
 
       describe('PUT /v1/cache/{hash}', () => {
         it('should upload a cache artifact successfully', async () => {
@@ -768,6 +659,7 @@ serviceAccessTokens:
           // Verify they are different - tokens are isolated
           expect(token1Body).not.toBe(token2Body);
         });
+      });
       });
     });
   });
