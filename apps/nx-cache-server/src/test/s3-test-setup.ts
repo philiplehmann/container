@@ -205,12 +205,11 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
   const container = await new GenericContainer('chrislusf/seaweedfs:4.37')
     .withNetwork(network)
     .withNetworkAliases(alias)
-    .withCommand(['server', '-s3', '-dir=/data'])
+    .withCommand(['server', '-s3', '-dir=/data', `-ip=${alias}`, '-ip.bind=0.0.0.0', '-s3.ip.bind=0.0.0.0'])
     .withEnvironment({
       AWS_ACCESS_KEY_ID: accessKeyId,
       AWS_SECRET_ACCESS_KEY: secretAccessKey,
     })
-    .withExposedPorts(8333)
     .withWaitStrategy(Wait.forLogMessage(/Start Seaweed S3 API Server .* at http port 8333/i))
     .withStartupTimeout(120_000)
     .start();
