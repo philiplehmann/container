@@ -210,6 +210,7 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
       AWS_ACCESS_KEY_ID: accessKeyId,
       AWS_SECRET_ACCESS_KEY: secretAccessKey,
     })
+    .withExposedPorts(8333)
     .withWaitStrategy(Wait.forLogMessage(/Start Seaweed S3 API Server .* at http port 8333/i))
     .withStartupTimeout(120_000)
     .start();
@@ -220,6 +221,14 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
     secretAccessKey,
     bucketName,
     endpointUrl: 'http://127.0.0.1:8333',
+    region: 'us-east-1',
+  });
+  await waitForBucketFromSiblingContainer({
+    network,
+    accessKeyId,
+    secretAccessKey,
+    bucketName,
+    endpointUrl: `http://${alias}:8333`,
     region: 'us-east-1',
   });
 
@@ -304,6 +313,44 @@ async function createBucketWithAwsCli({
       endpointUrl,
     ]);
   }, 60, 1_000);
+}
+
+async function waitForBucketFromSiblingContainer({
+  network,
+  accessKeyId,
+  secretAccessKey,
+  bucketName,
+  endpointUrl,
+  region,
+}: {
+  network: StartedNetwork;
+  accessKeyId: string;
+  secretAccessKey: string;
+  bucketName: string;
+  endpointUrl: string;
+  region: string;
+}) {
+  await retry(async () => {
+    await execDocker([
+      'run',
+      '--rm',
+      '--network',
+      network.getName(),
+      '-e',
+      `AWS_ACCESS_KEY_ID=${accessKeyId}`,
+      '-e',
+      `AWS_SECRET_ACCESS_KEY=${secretAccessKey}`,
+      '-e',
+      `AWS_DEFAULT_REGION=${region}`,
+      'amazon/aws-cli',
+      's3api',
+      'head-bucket',
+      '--bucket',
+      bucketName,
+      '--endpoint-url',
+      endpointUrl,
+    ]);
+  }, 120, 1_000);
 }
 
 async function initializeGarage(container: StartedTestContainer, bucketName: string) {
