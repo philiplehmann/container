@@ -60,8 +60,6 @@ export async function startNxCacheServerTestSetup({
 
     const configContent = createConfig({
       bucketName,
-      bearerToken1,
-      bearerToken2,
       endpointUrl: storageBackend.endpointUrl,
       region: storageBackend.region,
     });
@@ -323,7 +321,20 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
     return nodeLine.split(/\s+/)[0] ?? '';
   });
 
-  await execDocker(['exec', container.getId(), '/garage', '-c', '/etc/garage.toml', 'layout', 'assign', '-z', 'dc1', '-c', '1G', nodeId]);
+  await execDocker([
+    'exec',
+    container.getId(),
+    '/garage',
+    '-c',
+    '/etc/garage.toml',
+    'layout',
+    'assign',
+    '-z',
+    'dc1',
+    '-c',
+    '1G',
+    nodeId,
+  ]);
 
   await retry(async () => {
     let lastError: Error | undefined;
@@ -344,9 +355,6 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
         return;
       } catch (error) {
         lastError = error as Error;
-        if (lastError.message.includes('Invalid new layout version')) {
-          continue;
-        }
       }
     }
 
@@ -383,14 +391,10 @@ async function initializeGarage(container: StartedTestContainer, bucketName: str
 
 function createConfig({
   bucketName,
-  bearerToken1,
-  bearerToken2,
   endpointUrl,
   region = 'us-east-1',
 }: {
   bucketName: string;
-  bearerToken1: string;
-  bearerToken2: string;
   endpointUrl: string;
   region?: string;
 }) {
