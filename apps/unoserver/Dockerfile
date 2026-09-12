@@ -7,42 +7,60 @@
 FROM oven/bun:1.4.2-slim
 
 ARG UNOSERVER_VERSION
-ARG JRE_VERSION
+ARG LIBREOFFICE_VERSION
+ARG JAVA_VERSION
+ARG TARGETPLATFORM
 
 WORKDIR /app
-
-# setup adoptium repository
-RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
-    --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    rm -f /etc/apt/apt.conf.d/docker-clean && \
-    apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    gnupg \
-    ca-certificates
-RUN curl -fsSL https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /usr/share/keyrings/adoptium-archive-keyring.gpg
-RUN echo "deb [signed-by=/usr/share/keyrings/adoptium-archive-keyring.gpg] https://packages.adoptium.net/artifactory/deb trixie main" > /etc/apt/sources.list.d/adoptium.list
 
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     rm -f /etc/apt/apt.conf.d/docker-clean && \
     apt-get update && \
     apt-get install --yes --no-install-recommends \
-                    python3-full python3-pip python3-uno uno-libs-private virtualenv \
-                    libreoffice-java-common \
-                    libreoffice-writer \
-                    libreoffice-calc \
-                    libreoffice-impress \
-                    libreoffice-draw \
-                    temurin-21-jdk \
+                    ca-certificates curl tar \
+                    libnss3 libnspr4 libdbus-1-3 libcairo2 libglib2.0-0t64 libcups2t64 libx11-xcb1 libxinerama1 \
+                    python3-full python3-pip virtualenv \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-freefont-ttf fonts-dejavu \
                     fonts-liberation fonts-noto-core fonts-noto-extra fonts-crosextra-carlito fonts-crosextra-caladea fonts-liberation2 && \
+    case "${TARGETPLATFORM}" in \
+        "linux/amd64") LIBREOFFICE_ARCH="x86_64"; JRE_ARCH="x64" ;; \
+        "linux/arm64") LIBREOFFICE_ARCH="aarch64"; JRE_ARCH="aarch64" ;; \
+        *) echo "Unsupported platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
+    esac && \
+    LIBREOFFICE_FILE="LibreOffice_${LIBREOFFICE_VERSION}_Linux_${LIBREOFFICE_ARCH}_deb.tar.gz" && \
+    curl -fsSL --retry 3 "https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_ARCH}/${LIBREOFFICE_FILE}" -o "/tmp/${LIBREOFFICE_FILE}" && \
+    mkdir /tmp/libreoffice && \
+    tar --strip-components=1 -C /tmp/libreoffice -zxf "/tmp/${LIBREOFFICE_FILE}" && \
+    apt-get install --yes --no-install-recommends /tmp/libreoffice/DEBS/*.deb && \
+    rm -rf /tmp/libreoffice "/tmp/${LIBREOFFICE_FILE}" && \
+    ln -s "/opt/libreoffice${LIBREOFFICE_VERSION%.*}" "/opt/libreoffice${LIBREOFFICE_VERSION}" && \
+    ln -s "/opt/libreoffice${LIBREOFFICE_VERSION}/program/soffice" /usr/local/bin/soffice && \
     virtualenv --python=/usr/bin/python3 --system-site-packages virtenv && \
     virtenv/bin/pip install unoserver==${UNOSERVER_VERSION}
+
+RUN case "${TARGETPLATFORM}" in \
+        "linux/amd64") JRE_ARCH="x64" ;; \
+        "linux/arm64") JRE_ARCH="aarch64" ;; \
+        *) echo "Unsupported platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
+    esac && \
+    JRE_BASE_URL="https://github.com/adoptium/temurin25-binaries/releases/download/jdk-${JAVA_VERSION%_*}%2B${JAVA_VERSION#*_}" && \
+    JRE_FILE="OpenJDK25U-jre_${JRE_ARCH}_linux_hotspot_${JAVA_VERSION}.tar.gz" && \
+    mkdir /java && \
+    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
+    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \
+    echo "$(cut -d' ' -f1 /tmp/SHA256.txt)  /tmp/${JRE_FILE}" | sha256sum -c - && \
+    tar --strip-components=1 -C /java -zxf "/tmp/${JRE_FILE}" && \
+    rm -f /tmp/SHA256.txt "/tmp/${JRE_FILE}"
 
 RUN mkdir /app/tmp && \
     chown -R 1000:1000 /app/tmp
 
 ENV PATH="/app/virtenv/bin:${PATH}"
+ENV JAVA_HOME=/java
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+ENV PYTHONPATH="/opt/libreoffice${LIBREOFFICE_VERSION}/program"
+ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice${LIBREOFFICE_VERSION}/program/fundamentalrc"
 ENV HOST=0.0.0.0
 ENV PORT=3000
 ENV UNOSERVER_DIRECT_ONLY=false
@@ -52,14 +70,9 @@ ENV UNOSERVER_FS_OUTPUT_ROOT=/data/out
 ENV UNOSERVER_PROCESS_ENABLED=false
 ENV UNOSERVER_PROCESS_RETENTION_MS=3600000
 ENV UNOSERVER_PROCESS_MAX_COMPLETED=1000
-ENV LIBREOFFICE_EXECUTABLE_PATH=/usr/bin/soffice
+ENV LIBREOFFICE_EXECUTABLE_PATH="/opt/libreoffice${LIBREOFFICE_VERSION}/program/soffice"
 
 COPY dist/apps/unoserver unoserver
-
-# You can remove this install step if you build with `--bundle` option.
-# The bundled output will include external dependencies.
-RUN bun install --production --cwd unoserver
-
 
 USER 1000:1000
 

@@ -11,7 +11,7 @@ export const schema = z
     convertTo: z.enum(ConvertTo).optional().default(ConvertTo.pdf),
     inputFilter: z.string().optional(),
     outputFilter: z.string().optional(),
-    filterOptions: z.union([z.string(), z.array(z.string())]).optional(),
+    filterOptions: z.union([z.string(), z.array(z.string()).min(1)]).optional(),
     timeoutMs: z.coerce.number().int().positive().optional(),
     updateIndex: booleanLiteral,
     dontUpdateIndex: booleanLiteral,

@@ -40,7 +40,7 @@ describe('unoserver', () => {
           expect(response.statusCode).toBe(200);
 
           const pages = await getPageCount(pdfBuffer);
-          expect(pages).toBe(9);
+          expect(pages).toBe(7);
         });
 
         it('should convert doc to pdf with outputFilter', async () => {
@@ -56,7 +56,7 @@ describe('unoserver', () => {
           expect(response.statusCode).toBe(200);
 
           const pages = await getPageCount(pdfBuffer);
-          expect(pages).toBe(9);
+          expect(pages).toBe(7);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions string(SelectPdfVersion)', async () => {
@@ -72,7 +72,7 @@ describe('unoserver', () => {
           expect(response.statusCode).toBe(200);
 
           const pages = await getPageCount(pdfBuffer);
-          expect(pages).toBe(9);
+          expect(pages).toBe(7);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions string(PageRange)', async () => {
@@ -88,7 +88,7 @@ describe('unoserver', () => {
           expect(response.statusCode).toBe(200);
 
           const pages = await getPageCount(pdfBuffer);
-          expect(pages).toBe(9);
+          expect(pages).toBe(2);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions json(SelectPdfVersion)', async () => {
@@ -106,7 +106,7 @@ describe('unoserver', () => {
           expect(response.statusCode).toBe(200);
 
           const pages = await getPageCount(pdfBuffer);
-          expect(pages).toBe(9);
+          expect(pages).toBe(7);
         });
 
         it('should convert doc to pdf with outputFilter/filterOptions json(PageRange)', async () => {

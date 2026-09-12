@@ -98,6 +98,25 @@ export async function libreoffice({
       throw new Error(`LibreOffice executable not found or not executable: ${execPath}`);
     }
 
+    const serializedFilterOptions = filterOptions
+      ? (() => {
+          const options = Array.isArray(filterOptions) ? filterOptions : [filterOptions];
+          if (options.some((option) => option.trim().startsWith('{'))) {
+            return options.join(',');
+          }
+          const properties = options.map((option) => {
+            const separator = option.indexOf('=');
+            if (separator === -1) return undefined;
+            const name = option.slice(0, separator);
+            const value = option.slice(separator + 1);
+            return [name, { type: /^-?\d+$/.test(value) ? 'long' : 'string', value }] as const;
+          });
+          return properties.every((property) => property !== undefined)
+            ? JSON.stringify(Object.fromEntries(properties))
+            : options.join(',');
+        })()
+      : undefined;
+
     const unoconvert = spawn(process.env.LIBREOFFICE_EXECUTABLE_PATH ?? 'libreoffice', [
       '--headless',
       '--invisible',
@@ -108,7 +127,7 @@ export async function libreoffice({
       '--norestore',
       `-env:UserInstallation=file://${userInstallationDir}`,
       '--convert-to',
-      `${convertTo}${outputFilter ? `:${outputFilter}${filterOptions ? `:${Array.isArray(filterOptions) ? filterOptions.join(',') : filterOptions}` : ''}` : ''}`,
+      `${convertTo}${outputFilter ? `:${outputFilter}${serializedFilterOptions ? `:${serializedFilterOptions}` : ''}` : ''}`,
       '--outdir',
       outDir,
       inFile,
