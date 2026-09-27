@@ -11,8 +11,7 @@ const bucketAccessKeyIdEnv = 'NX_CACHE_BUCKET_ACCESS_KEY_ID';
 const bucketSecretAccessKeyEnv = 'NX_CACHE_BUCKET_SECRET_ACCESS_KEY';
 
 export const s3Backends = [
-  // MinIO is intentionally excluded from the default matrix because upstream no
-  // longer publishes a public container image that CI can pull anonymously.
+  { id: 'minio', name: 'MinIO' },
   { id: 'garage', name: 'Garage' },
   { id: 'rustfs', name: 'RustFS' },
   { id: 'seaweedfs', name: 'SeaweedFS' },
@@ -117,6 +116,8 @@ async function startS3Backend({
   network: StartedNetwork;
 }): Promise<StartedS3Backend> {
   switch (backendId) {
+    case 'minio':
+      return startMinioBackend({ bucketName, network });
     case 'garage':
       return startGarageBackend({ bucketName, network });
     case 'rustfs':
@@ -124,6 +125,43 @@ async function startS3Backend({
     case 'seaweedfs':
       return startSeaweedfsBackend({ bucketName, network });
   }
+}
+
+const minioTestImage = 'quay.io/minio/aistor/minio:RELEASE.2023-08-29T23-07-35Z';
+
+async function startMinioBackend({ bucketName, network }: { bucketName: string; network: StartedNetwork }) {
+  const alias = 'minio';
+  const accessKeyId = 'admin';
+  const secretAccessKey = 'password';
+  const container = await new GenericContainer(minioTestImage)
+    .withNetwork(network)
+    .withNetworkAliases(alias)
+    .withCommand(['server', '/data'])
+    .withEnvironment({
+      MINIO_ROOT_USER: accessKeyId,
+      MINIO_ROOT_PASSWORD: secretAccessKey,
+    })
+    .withExposedPorts(9000)
+    .withWaitStrategy(Wait.forHttp('/minio/health/live', 9000).forStatusCode(200))
+    .withStartupTimeout(120_000)
+    .start();
+
+  await createBucketWithAwsCli({
+    container,
+    accessKeyId,
+    secretAccessKey,
+    bucketName,
+    endpointUrl: 'http://127.0.0.1:9000',
+    region: 'us-east-1',
+  });
+
+  return {
+    container,
+    accessKeyId,
+    secretAccessKey,
+    endpointUrl: `http://${alias}:9000`,
+    stop: () => stopAndRemove(container),
+  } satisfies StartedS3Backend;
 }
 
 async function startRustfsBackend({ bucketName, network }: { bucketName: string; network: StartedNetwork }) {
