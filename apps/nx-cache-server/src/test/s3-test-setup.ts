@@ -131,9 +131,10 @@ async function startMinioBackend({ bucketName, network }: { bucketName: string; 
   const alias = 'minio';
   const accessKeyId = 'admin';
   const secretAccessKey = 'password';
-  const container = await new GenericContainer('quay.io/minio/minio:latest')
+  const container = await new GenericContainer('harbor.riwi.dev/minio/minio:RELEASE.2024-07-16T23-46-41Z')
     .withNetwork(network)
     .withNetworkAliases(alias)
+
     .withCommand(['server', '/data'])
     .withEnvironment({
       MINIO_ROOT_USER: accessKeyId,
@@ -166,7 +167,7 @@ async function startRustfsBackend({ bucketName, network }: { bucketName: string;
   const alias = 'rustfs';
   const accessKeyId = 'rustfsadmin';
   const secretAccessKey = 'rustfsadmin';
-  const container = await new GenericContainer('rustfs/rustfs:latest')
+  const container = await new GenericContainer('rustfs/rustfs:1.0.0')
     .withNetwork(network)
     .withNetworkAliases(alias)
     .withEnvironment({
@@ -200,7 +201,7 @@ async function startSeaweedfsBackend({ bucketName, network }: { bucketName: stri
   const alias = 'seaweedfs';
   const accessKeyId = 'admin';
   const secretAccessKey = 'key';
-  const container = await new GenericContainer('chrislusf/seaweedfs:4.37')
+  const container = await new GenericContainer('chrislusf/seaweedfs:4.47')
     .withNetwork(network)
     .withNetworkAliases(alias)
     .withCommand(['server', '-s3', '-dir=/data', '-ip.bind=0.0.0.0', '-s3.ip.bind=0.0.0.0'])
