@@ -11,7 +11,7 @@
     "@nx/playwright": "23.2.1",
     "@nx/plugin": "23.2.1",
     "@nx/workspace": "23.2.1",
-    "@playwright/test": "1.63.0",
+    "@playwright/test": "1.64.0",
     "@swc-node/register": "1.12.1",
     "@swc/core": "1.16.13",
     "@swc/helpers": "0.5.23",
@@ -21,7 +21,7 @@
     "esbuild": "0.28.2",
     "nodemailer": "10.0.16",
     "nx": "23.2.1",
-    "playwright": "1.63.0",
+    "playwright": "1.64.0",
     "testcontainers": "12.2.0"
   },
   "dependencies": {
