@@ -25,7 +25,7 @@
     "testcontainers": "12.2.0"
   },
   "dependencies": {
-    "puppeteer-core": "25.12.0",
+    "puppeteer-core": "25.13.0",
     "zod": "4.6.5"
   },
   "engines": {
