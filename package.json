@@ -5,7 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
-    "@libpdf/core": "0.5.2",
+    "@libpdf/core": "0.5.3",
     "@nx/devkit": "23.3.0",
     "@nx/js": "23.3.0",
     "@nx/playwright": "23.3.0",
