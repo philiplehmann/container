@@ -11,7 +11,7 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
     },
-    "@nx/playwright:playwright": {
+    "@riwi/playwright:test": {
       "cache": true,
       "inputs": ["default"]
     },
@@ -75,19 +75,11 @@
   "defaultBase": "main",
   "parallel": 8,
   "release": {
-    "projects": ["bun", "biomejs", "tsc", "node", "docker", "nx"],
+    "projects": ["bun", "biomejs", "tsc", "node", "docker", "nx", "playwright"],
     "conventionalCommits": {},
     "changelog": {
       "projectChangelogs": true
     }
   },
-  "plugins": [
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    }
-  ],
   "analytics": false
 }

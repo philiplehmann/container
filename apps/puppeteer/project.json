@@ -41,21 +41,20 @@
       "options": {}
     },
     "docker-e2e": {
-      "executor": "@nx/playwright:playwright",
+      "executor": "@riwi/playwright:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "dependsOn": ["e2e-install", "docker-build-test"],
       "options": {
         "testFiles": ["src/e2e/snapshot.spec.ts"],
-        "browser": "chromium",
-        "skipInstall": true
+        "project": ["chromium"]
       }
     },
     "local-e2e": {
-      "executor": "@nx/playwright:playwright",
+      "executor": "@riwi/playwright:test",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "testFiles": ["src/e2e/snapshot.spec.ts"],
-        "browser": "chromium"
+        "project": ["chromium"]
       }
     },
     "docker-build-test": {

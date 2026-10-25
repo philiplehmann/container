@@ -1,8 +1,4 @@
-import { fileURLToPath } from 'node:url';
-import { nxE2EPreset } from '@nx/playwright/preset';
 import { defineConfig, devices } from '@playwright/test';
-
-const __filename = fileURLToPath(import.meta.url);
 
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env.BASE_URL || 'http://localhost:5000';
@@ -17,7 +13,18 @@ const baseURL = process.env.BASE_URL || 'http://localhost:5000';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  ...nxE2EPreset(__filename, { testDir: 'src/e2e/*.spec.ts' }),
+  testDir: './src/e2e',
+  outputDir: '../../dist/.playwright/apps/puppeteer/test-output',
+  /* Run tests in files in parallel */
+  fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
+  retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: [['html', { outputFolder: '../../dist/.playwright/apps/puppeteer/playwright-report', open: 'on-failure' }]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL,

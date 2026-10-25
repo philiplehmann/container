@@ -1,0 +1,39 @@
+{
+  "name": "playwright",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/playwright/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@riwi/biomejs:lint"
+    },
+    "test": {
+      "executor": "@riwi/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {}
+    },
+    "typecheck": {
+      "executor": "@riwi/tsc:typecheck"
+    },
+    "build": {
+      "executor": "@riwi/bun:build",
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/{projectRoot}",
+        "tsConfig": "libs/playwright/tsconfig.lib.json",
+        "entrypoints": ["{projectRoot}/src/index.ts", "{projectRoot}/src/executors/*/executor.ts"],
+        "generatePackageJson": true,
+        "assets": [
+          "libs/playwright/package.json",
+          "libs/playwright/executors.json",
+          "libs/playwright/src/executors/**/*.json",
+          "libs/playwright/README.md"
+        ],
+        "packages": "external"
+      }
+    }
+  }
+}
