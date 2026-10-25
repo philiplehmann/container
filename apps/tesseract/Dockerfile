@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/tesseract`.
-FROM oven/bun:1.4.4-slim
+FROM oven/bun:1.4.4-slim@sha256:1846adf22496bd711036aae8be147e57bdebbaea2e5264e3e0b5af1db187d9a4
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
@@ -37,5 +37,8 @@ COPY dist/apps/tesseract tesseract
 RUN bun install --production --cwd tesseract
 
 USER 1000:1000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD ["bun", "-e", "fetch(`http://127.0.0.1:${process.env.PORT}/health/liveness`).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 
 CMD [ "bun", "tesseract" ]

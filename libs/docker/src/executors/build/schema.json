@@ -37,6 +37,22 @@
       "type": "boolean",
       "default": true,
       "description": "Generate an SBOM attestation (SPDX) and attach it to the pushed image"
+    },
+    "provenance": {
+      "type": "boolean",
+      "default": true,
+      "description": "Attach a max-mode SLSA provenance attestation to the pushed image"
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Additional OCI labels/annotations, merged over the generated org.opencontainers.image.* defaults"
+    },
+    "metadataFile": {
+      "type": "string",
+      "description": "Write the buildx build result metadata (including containerimage.digest) to this file, relative to the workspace root"
     }
   },
   "required": []

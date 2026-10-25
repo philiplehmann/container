@@ -4,9 +4,11 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/pdftk`.
-FROM oven/bun:1.4.4-slim AS pdftk
+FROM oven/bun:1.4.4-slim@sha256:1846adf22496bd711036aae8be147e57bdebbaea2e5264e3e0b5af1db187d9a4 AS pdftk
 
 ARG PDFTK_VERSION
+ARG PDFTK_SHA256
+ARG BUILDKIT_SBOM_SCAN_STAGE=true
 ARG JAVA_VERSION
 ARG TARGETPLATFORM
 
@@ -17,7 +19,8 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get install --no-install-recommends --yes \
                     curl ca-certificates && \
     mkdir -p /pdftk && \
-    curl -o /pdftk/pdftk.jar https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v${PDFTK_VERSION}/pdftk-all.jar && \
+    curl -fsSL --retry 3 -o /pdftk/pdftk.jar "https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/v${PDFTK_VERSION}/pdftk-all.jar" && \
+    echo "${PDFTK_SHA256}  /pdftk/pdftk.jar" | sha256sum -c - && \
     \
     case "${TARGETPLATFORM}" in \
         "linux/amd64") JRE_ARCH="x64" ;; \
@@ -33,7 +36,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     tar --strip-components=1 -C /java -zxf "/tmp/${JRE_FILE}" && \
     rm -f /tmp/SHA256.txt "/tmp/${JRE_FILE}"
 
-FROM oven/bun:1.4.4-slim
+FROM oven/bun:1.4.4-slim@sha256:1846adf22496bd711036aae8be147e57bdebbaea2e5264e3e0b5af1db187d9a4
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
@@ -61,5 +64,8 @@ ENV PATH=$JAVA_HOME/bin/:$PATH
 RUN bun install --production --cwd pdftk
 
 USER 1000:1000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD ["bun", "-e", "fetch(`http://127.0.0.1:${process.env.PORT}/health/liveness`).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 
 CMD [ "bun", "pdftk" ]

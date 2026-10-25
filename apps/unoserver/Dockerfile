@@ -4,7 +4,9 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/unoserver`.
-FROM oven/bun:1.4.4-slim
+FROM oven/bun:1.4.4-slim@sha256:1846adf22496bd711036aae8be147e57bdebbaea2e5264e3e0b5af1db187d9a4
+
+LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
 ARG UNOSERVER_VERSION
 ARG LIBREOFFICE_VERSION
@@ -75,5 +77,8 @@ ENV LIBREOFFICE_EXECUTABLE_PATH="/opt/libreoffice${LIBREOFFICE_VERSION}/program/
 COPY dist/apps/unoserver unoserver
 
 USER 1000:1000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+    CMD ["bun", "-e", "fetch(`http://127.0.0.1:${process.env.PORT}/health/liveness`).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 
 CMD [ "bun", "unoserver" ]

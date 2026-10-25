@@ -7,12 +7,18 @@ export async function dockerBuildxBuild({
   file,
   tags,
   sbom = false,
+  provenance = false,
+  labels = {},
+  metadataFile,
 }: {
   platforms: DockerPlatform[];
   output: 'load' | 'push';
   file: string;
   tags: string[];
   sbom?: boolean;
+  provenance?: boolean;
+  labels?: Record<string, string>;
+  metadataFile?: string;
 }) {
   const builderName = `builder-${tags[0]?.split(':')?.[0]?.replaceAll('/', '-') ?? file.replaceAll('/', '-')}-${platforms.join('-')}`;
   try {
@@ -48,7 +54,14 @@ export async function dockerBuildxBuild({
         'type=gha,mode=max',
         ...tags.flatMap((tag) => ['--tag', tag]),
         ...Object.entries(processEnv).flatMap(([key, value]) => ['--build-arg', `${key}=${value}`]),
+        ...Object.entries(labels).flatMap(([key, value]) => ['--label', `${key}=${value}`]),
+        // multi-platform pushes need the metadata on the index too, labels only end up in the image configs
+        ...(output === 'push'
+          ? Object.entries(labels).flatMap(([key, value]) => ['--annotation', `index,manifest:${key}=${value}`])
+          : []),
         ...(sbom && output === 'push' ? ['--sbom=true'] : []),
+        ...(provenance && output === 'push' ? ['--provenance=mode=max'] : []),
+        ...(metadataFile ? ['--metadata-file', metadataFile] : []),
         '.',
       ]);
       docker.on('exit', (code) => {

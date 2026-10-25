@@ -6,10 +6,11 @@
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/nx-cache-server`.
 
 # Builder stage to download the binary
-FROM --platform=$BUILDPLATFORM debian:trixie-slim AS builder
+FROM --platform=$BUILDPLATFORM debian:trixie-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad AS builder
 
 ARG NX_CACHE_SERVER_VERSION
 ARG TARGETPLATFORM
+ARG BUILDKIT_SBOM_SCAN_STAGE=true
 
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -25,12 +26,18 @@ RUN ARCH_SUFFIX=$(case ${TARGETPLATFORM} in \
     linux/arm64) echo "arm64" ;; \
     *) echo "Unsupported platform: ${TARGETPLATFORM}" && exit 1 ;; \
     esac) && \
-    curl -L "https://github.com/philiplehmann/nx-cache-server/releases/download/v${NX_CACHE_SERVER_VERSION}/nx-cache-server-v${NX_CACHE_SERVER_VERSION}-linux-${ARCH_SUFFIX}" \
-    -o /tmp/nx-cache-server && \
+    RELEASE_URL="https://github.com/philiplehmann/nx-cache-server/releases/download/v${NX_CACHE_SERVER_VERSION}" && \
+    BINARY="nx-cache-server-v${NX_CACHE_SERVER_VERSION}-linux-${ARCH_SUFFIX}" && \
+    curl -fsSL --retry 3 "${RELEASE_URL}/checksums.txt" -o /tmp/checksums.txt && \
+    curl -fsSL --retry 3 "${RELEASE_URL}/${BINARY}" -o "/tmp/${BINARY}" && \
+    (cd /tmp && grep " ${BINARY}\$" checksums.txt | sha256sum -c -) && \
+    mv "/tmp/${BINARY}" /tmp/nx-cache-server && \
     chmod +x /tmp/nx-cache-server
 
 # Final stage - minimal runtime image
-FROM debian:trixie-slim
+FROM debian:trixie-slim@sha256:62bd423aeee912639ca8ee681c2b762cb3e25137e0a92b20be455898a9f034ad
+
+LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
 WORKDIR /nx-cache-server
 
@@ -68,5 +75,8 @@ COPY --from=builder /tmp/nx-cache-server /usr/local/bin/nx-cache-server
 
 USER nx-cache-server
 EXPOSE $PORT
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD ["bash", "-c", "exec 3<>/dev/tcp/127.0.0.1/${PORT} && printf 'GET /health HTTP/1.0\\r\\n\\r\\n' >&3 && head -n 1 <&3 | grep -q ' 200 '"]
 
 CMD [ "/usr/local/bin/nx-cache-server", "--config", "config.yaml" ]
