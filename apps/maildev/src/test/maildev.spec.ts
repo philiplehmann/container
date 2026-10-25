@@ -18,7 +18,7 @@ describe('mailcatcher', () => {
           container = await new GenericContainer(`philiplehmann/maildev:test-${arch}`)
             .withUser('1000:1000')
             .withLogConsumer((stream) => stream.pipe(process.stdout))
-            .withWaitStrategy(Wait.forHttp('/', 1080).forStatusCode(200))
+            .withWaitStrategy(Wait.forHttp('/api/healthz', 1080).forStatusCode(200))
             .withExposedPorts(1080, 1025)
             .withLogConsumer((stream) => stream.pipe(process.stdout))
             .start();
@@ -48,7 +48,7 @@ describe('mailcatcher', () => {
           method: 'GET',
           host: 'localhost',
           port: httpPort,
-          path: '/email',
+          path: '/api/email',
           headers: {
             'Content-Type': 'application/json',
           },

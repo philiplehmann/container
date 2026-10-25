@@ -54,9 +54,9 @@ curl -X POST \
 
 ## Ports
 
-| Port | Service | Description |
-|------|---------|-------------|
-| 3000 | HTTP | REST API server |
+| Port | Service | Description     |
+| ---- | ------- | --------------- |
+| 3000 | HTTP    | REST API server |
 
 ## Process Management
 
@@ -64,12 +64,12 @@ The service includes endpoints for monitoring and managing running child process
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | HTTP service port |
-| `POPPLER_PROCESS_ENABLED` | `false` | Enables `/processes` endpoints when set to `true` |
-| `POPPLER_PROCESS_RETENTION_MS` | `3600000` | How long to keep completed processes (1 hour) |
-| `POPPLER_PROCESS_MAX_COMPLETED` | `1000` | Maximum number of completed processes to retain |
+| Variable                        | Default   | Description                                       |
+| ------------------------------- | --------- | ------------------------------------------------- |
+| `PORT`                          | `3000`    | HTTP service port                                 |
+| `POPPLER_PROCESS_ENABLED`       | `false`   | Enables `/processes` endpoints when set to `true` |
+| `POPPLER_PROCESS_RETENTION_MS`  | `3600000` | How long to keep completed processes (1 hour)     |
+| `POPPLER_PROCESS_MAX_COMPLETED` | `1000`    | Maximum number of completed processes to retain   |
 
 ### List Processes
 

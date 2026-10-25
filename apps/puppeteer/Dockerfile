@@ -4,14 +4,14 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t puppeteer`.
-FROM oven/bun:1.4.3-slim
+FROM oven/bun:1.4.4-slim@sha256:1846adf22496bd711036aae8be147e57bdebbaea2e5264e3e0b5af1db187d9a4
 
 ENV NODE_ENV=production
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 ENV DBUS_SESSION_BUS_ADDRESS=autolaunch:
 ENV LANG=en_US.UTF-8
 
-LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
@@ -42,5 +42,8 @@ COPY --chown=1000:1000 dist/apps/puppeteer puppeteer
 RUN bun install --production --cwd puppeteer
 
 USER 1000:1000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+    CMD ["bun", "-e", "fetch(`http://127.0.0.1:${process.env.PORT}/health/liveness`).then((r) => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
 
 CMD [ "bun", "puppeteer" ]

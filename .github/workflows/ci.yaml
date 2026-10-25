@@ -175,6 +175,9 @@ jobs:
     permissions:
       contents: "read"
       actions: "read"
+      id-token: "write"
+      attestations: "write"
+      artifact-metadata: "write"
     needs:
       - nx-sha
       - lint
@@ -209,7 +212,23 @@ jobs:
       - name: Build & Push Docker Image for ${{ matrix.project }}
         run: |
           echo "Building and pushing Docker image for project: ${{ matrix.project }}"
-          bun nx run ${{ matrix.project }}:docker-push
+          bun nx run ${{ matrix.project }}:docker-push --metadataFile=dist/docker/${{ matrix.project }}/metadata.json
         env:
           NX_SELF_HOSTED_REMOTE_CACHE_SERVER: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_SERVER }}
           NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN: ${{ secrets.NX_SELF_HOSTED_REMOTE_CACHE_ACCESS_TOKEN }}
+
+      - name: Read pushed image digest
+        id: image
+        shell: bash
+        run: |
+          METADATA=dist/docker/${{ matrix.project }}/metadata.json
+          IMAGE=$(jq -r '."image.name" | split(",")[0] | split(":")[0] | sub("^(index\\.)?docker\\.io/"; "")' "$METADATA")
+          echo "name=index.docker.io/${IMAGE}" >> "$GITHUB_OUTPUT"
+          echo "digest=$(jq -r '."containerimage.digest"' "$METADATA")" >> "$GITHUB_OUTPUT"
+
+      - name: Attest build provenance for ${{ matrix.project }}
+        uses: actions/attest@v4
+        with:
+          subject-name: ${{ steps.image.outputs.name }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true

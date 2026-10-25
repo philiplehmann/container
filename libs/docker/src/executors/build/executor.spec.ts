@@ -9,6 +9,7 @@ const options: DockerBuildExecutorSchema = {
   tags: ['https://ghcr.io/philiplehmann/container/build:test'],
   versionSource: 'custom',
   versionFormat: '${YY_MM_DD}',
+  sbom: true,
 };
 
 describe.skip('DockerBuild Executor', () => {

@@ -39,6 +39,7 @@
       "@riwi/docker": ["./libs/docker/src/index.ts"],
       "@riwi/node": ["./libs/node/src/index.ts"],
       "@riwi/nx": ["./libs/nx/src/index.ts"],
+      "@riwi/playwright": ["./libs/playwright/src/index.ts"],
       "@riwi/helper": ["./libs/helper/src/index.ts"],
       "@riwi/http/body": ["./libs/http/body/src/index.ts"],
       "@riwi/http/error": ["./libs/http/error/src/index.ts"],

@@ -5,7 +5,7 @@ A containerized Node.js service that provides a REST API for converting web page
 ## Features
 
 - 🌐 **URL to PDF** - Convert any web page to PDF
-- 📄 **HTML to PDF** - Convert raw HTML content to PDF  
+- 📄 **HTML to PDF** - Convert raw HTML content to PDF
 - 🖼️ **URL to Image** - Generate screenshots of web pages
 - 🎨 **HTML to Image** - Convert HTML content to images
 - ⚙️ **Configurable** - Supports all Puppeteer PDF options
@@ -132,30 +132,31 @@ curl -X POST \
 
 All Puppeteer PDF options are supported (except `path`). See the [Puppeteer documentation](https://pptr.dev/api/puppeteer.pdfoptions) for complete details.
 
-| Option | Type | Description | Default |
-|--------|------|-------------|---------|
-| `format` | string | Paper format (A4, Letter, Legal, etc.) | A4 |
-| `landscape` | boolean | Paper orientation | false |
-| `printBackground` | boolean | Print background graphics | false |
-| `margin` | object | Page margins | {} |
-| `scale` | number | Scale of the webpage rendering | 1 |
-| `displayHeaderFooter` | boolean | Display header and footer | false |
-| `headerTemplate` | string | HTML template for header | |
-| `footerTemplate` | string | HTML template for footer | |
+| Option                | Type    | Description                            | Default |
+| --------------------- | ------- | -------------------------------------- | ------- |
+| `format`              | string  | Paper format (A4, Letter, Legal, etc.) | A4      |
+| `landscape`           | boolean | Paper orientation                      | false   |
+| `printBackground`     | boolean | Print background graphics              | false   |
+| `margin`              | object  | Page margins                           | {}      |
+| `scale`               | number  | Scale of the webpage rendering         | 1       |
+| `displayHeaderFooter` | boolean | Display header and footer              | false   |
+| `headerTemplate`      | string  | HTML template for header               |         |
+| `footerTemplate`      | string  | HTML template for footer               |         |
 
 ### Image Options
 
-| Option | Type | Description | Default |
-|--------|------|-------------|---------|
-| `type` | string | Image format (png, jpeg, webp) | png |
-| `quality` | number | Image quality (0-100, jpeg only) | 80 |
-| `fullPage` | boolean | Capture full scrollable page | false |
-| `viewport` | object | Page viewport size | {width: 800, height: 600} |
-| `clip` | object | Capture specific area | |
+| Option     | Type    | Description                      | Default                   |
+| ---------- | ------- | -------------------------------- | ------------------------- |
+| `type`     | string  | Image format (png, jpeg, webp)   | png                       |
+| `quality`  | number  | Image quality (0-100, jpeg only) | 80                        |
+| `fullPage` | boolean | Capture full scrollable page     | false                     |
+| `viewport` | object  | Page viewport size               | {width: 800, height: 600} |
+| `clip`     | object  | Capture specific area            |                           |
 
 ### Request Examples
 
 #### JavaScript/Node.js
+
 ```javascript
 const response = await fetch('http://localhost:3000/pdf', {
   method: 'POST',
@@ -165,14 +166,15 @@ const response = await fetch('http://localhost:3000/pdf', {
   body: JSON.stringify({
     url: 'https://example.com',
     format: 'A4',
-    margin: { top: '1cm', bottom: '1cm' }
-  })
+    margin: { top: '1cm', bottom: '1cm' },
+  }),
 });
 
 const pdfBuffer = await response.arrayBuffer();
 ```
 
 #### Python
+
 ```python
 import requests
 
@@ -187,6 +189,7 @@ with open('output.pdf', 'wb') as f:
 ```
 
 #### PHP
+
 ```php
 <?php
 $data = [
@@ -238,6 +241,7 @@ docker run -p 3000:3000 philiplehmann/puppeteer:latest
 ### Local Development Setup
 
 #### Prerequisites
+
 - Node.js 18+
 - Chrome/Chromium browser
 - Nx CLI
@@ -257,6 +261,7 @@ The server will be available at `http://localhost:3000`
 ### Testing
 
 #### Run All Tests Locally
+
 ```bash
 # Run end-to-end tests with Playwright
 bun x nx local-e2e puppeteer
@@ -266,6 +271,7 @@ bun x nx local-test puppeteer
 ```
 
 #### Update Test Snapshots
+
 ```bash
 bun x nx local-e2e puppeteer --update-snapshots
 ```
@@ -273,6 +279,7 @@ bun x nx local-e2e puppeteer --update-snapshots
 ### Building and Deployment
 
 #### Using Nx (Recommended)
+
 ```bash
 # Build Docker image
 nx build puppeteer
@@ -288,6 +295,7 @@ nx docker-push puppeteer
 ```
 
 #### Using Docker Directly
+
 ```bash
 # Build image
 docker build -t puppeteer -f apps/puppeteer/Dockerfile .
@@ -298,19 +306,18 @@ docker run -p 3000:3000 puppeteer
 
 ## Ports
 
-| Port | Service | Description |
-|------|---------|-------------|
-| 3000 | HTTP | REST API server |
+| Port | Service | Description     |
+| ---- | ------- | --------------- |
+| 3000 | HTTP    | REST API server |
 
 ## Environment Variables
 
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | HTTP service port |
-| `NODE_ENV` | `production` | Node.js runtime environment |
+| Variable                    | Default             | Description                                   |
+| --------------------------- | ------------------- | --------------------------------------------- |
+| `PORT`                      | `3000`              | HTTP service port                             |
+| `NODE_ENV`                  | `production`        | Node.js runtime environment                   |
 | `PUPPETEER_EXECUTABLE_PATH` | `/usr/bin/chromium` | Chromium executable path inside the container |
-| `LANG` | `en_US.UTF-8` | Locale used by Chromium and rendering |
+| `LANG`                      | `en_US.UTF-8`       | Locale used by Chromium and rendering         |
 
 ## Troubleshooting
 

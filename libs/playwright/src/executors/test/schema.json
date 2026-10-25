@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "playwright test runner",
+  "description": "Playwright test executor schema",
+  "type": "object",
+  "properties": {
+    "testFiles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Only run test files matching these regular expressions"
+    },
+    "config": {
+      "type": "string",
+      "description": "Configuration file, relative to the project root. Defaults to playwright.config.ts in the project root."
+    },
+    "project": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Only run tests from these projects of the config"
+    },
+    "grep": {
+      "type": "string",
+      "description": "Only run tests matching this regular expression"
+    },
+    "grepInvert": {
+      "type": "string",
+      "description": "Only run tests not matching this regular expression"
+    },
+    "headed": {
+      "type": "boolean",
+      "description": "Run tests in headed browsers"
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "Run tests with Playwright Inspector"
+    },
+    "ui": {
+      "type": "boolean",
+      "description": "Run tests in interactive UI mode"
+    },
+    "workers": {
+      "oneOf": [{ "type": "number" }, { "type": "string" }],
+      "description": "Number of concurrent workers or percentage of logical CPU cores, e.g. 50%"
+    },
+    "retries": {
+      "type": "number",
+      "description": "Maximum retry count for flaky tests"
+    },
+    "repeatEach": {
+      "type": "number",
+      "description": "Run each test N times"
+    },
+    "maxFailures": {
+      "type": "number",
+      "description": "Stop after the first N failures"
+    },
+    "timeout": {
+      "type": "number",
+      "description": "Test timeout threshold in milliseconds"
+    },
+    "reporter": {
+      "type": "string",
+      "description": "Reporter to use, comma-separated, e.g. list,html"
+    },
+    "outputDir": {
+      "type": "string",
+      "description": "Folder for output artifacts"
+    },
+    "shard": {
+      "type": "string",
+      "description": "Shard tests and execute only the selected shard, e.g. 1/3"
+    },
+    "updateSnapshots": {
+      "type": "string",
+      "enum": ["all", "changed", "missing", "none"],
+      "description": "Update snapshots with actual results"
+    },
+    "forbidOnly": {
+      "type": "boolean",
+      "description": "Fail if test.only is called"
+    },
+    "passWithNoTests": {
+      "type": "boolean",
+      "description": "Make test run succeed even if no tests were found"
+    },
+    "lastFailed": {
+      "type": "boolean",
+      "description": "Only re-run the failures"
+    },
+    "list": {
+      "type": "boolean",
+      "description": "Collect all the tests and report them, but do not run"
+    },
+    "env": {
+      "type": "object",
+      "description": "Environment variables to set for the test process",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": []
+}
