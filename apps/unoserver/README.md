@@ -81,16 +81,16 @@ This endpoint is disabled by default and only available when `UNOSERVER_FS_ENABL
 
 #### Environment Variables
 
-| Variable | Default | Description |
-|------|------|-------------|
-| `PORT` | `3000` | HTTP service port |
-| `UNOSERVER_DIRECT_ONLY` | `false` | Runs only direct LibreOffice conversion mode when set to `true` |
-| `UNOSERVER_FS_ENABLE` | `false` | Enables `POST /direct-fs` when set to `true` |
-| `UNOSERVER_FS_INPUT_ROOT` | `/data/in` | Root folder for reading input files |
-| `UNOSERVER_FS_OUTPUT_ROOT` | `/data/out` | Root folder for writing output files |
-| `UNOSERVER_PROCESS_ENABLED` | `false` | Enables `/processes` endpoints when set to `true` |
-| `UNOSERVER_PROCESS_RETENTION_MS` | `3600000` | How long to keep completed processes (1 hour) |
-| `UNOSERVER_PROCESS_MAX_COMPLETED` | `1000` | Maximum number of completed processes to retain |
+| Variable                          | Default     | Description                                                     |
+| --------------------------------- | ----------- | --------------------------------------------------------------- |
+| `PORT`                            | `3000`      | HTTP service port                                               |
+| `UNOSERVER_DIRECT_ONLY`           | `false`     | Runs only direct LibreOffice conversion mode when set to `true` |
+| `UNOSERVER_FS_ENABLE`             | `false`     | Enables `POST /direct-fs` when set to `true`                    |
+| `UNOSERVER_FS_INPUT_ROOT`         | `/data/in`  | Root folder for reading input files                             |
+| `UNOSERVER_FS_OUTPUT_ROOT`        | `/data/out` | Root folder for writing output files                            |
+| `UNOSERVER_PROCESS_ENABLED`       | `false`     | Enables `/processes` endpoints when set to `true`               |
+| `UNOSERVER_PROCESS_RETENTION_MS`  | `3600000`   | How long to keep completed processes (1 hour)                   |
+| `UNOSERVER_PROCESS_MAX_COMPLETED` | `1000`      | Maximum number of completed processes to retain                 |
 
 #### Docker Run with Mounted Input/Output Roots
 
@@ -241,9 +241,9 @@ curl -X POST \
 
 ## Ports
 
-| Port | Service | Description |
-|------|---------|-------------|
-| 3000 | HTTP | REST API server |
+| Port | Service | Description     |
+| ---- | ------- | --------------- |
+| 3000 | HTTP    | REST API server |
 
 ## Local Development
 

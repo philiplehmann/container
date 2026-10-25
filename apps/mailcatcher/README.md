@@ -26,8 +26,8 @@ services:
   mailcatcher:
     image: philiplehmann/mailcatcher:latest
     ports:
-      - "1080:1080"  # Web interface
-      - "1025:1025"  # SMTP server
+      - "1080:1080" # Web interface
+      - "1025:1025" # SMTP server
     container_name: mailcatcher-server
 ```
 
@@ -35,17 +35,17 @@ services:
 
 ### Ports
 
-| Port | Service | Description |
-|------|---------|-------------|
-| 1025 | SMTP | Mail server for receiving emails |
-| 1080 | HTTP | Web interface for viewing emails |
+| Port | Service | Description                      |
+| ---- | ------- | -------------------------------- |
+| 1025 | SMTP    | Mail server for receiving emails |
+| 1080 | HTTP    | Web interface for viewing emails |
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `SMTP_PORT` | 1025 | SMTP server port (not used by the current Dockerfile `CMD` in `apps/mailcatcher/Dockerfile`; changes require rebuilding the image or modifying `CMD` to read `SMTP_PORT`) |
-| `HTTP_PORT` | 1080 | Web interface port (not used by the current Dockerfile `CMD` in `apps/mailcatcher/Dockerfile`; changes require rebuilding the image or modifying `CMD` to read `HTTP_PORT`) |
+| Variable    | Default | Description                                                                                                                                                                 |
+| ----------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SMTP_PORT` | 1025    | SMTP server port (not used by the current Dockerfile `CMD` in `apps/mailcatcher/Dockerfile`; changes require rebuilding the image or modifying `CMD` to read `SMTP_PORT`)   |
+| `HTTP_PORT` | 1080    | Web interface port (not used by the current Dockerfile `CMD` in `apps/mailcatcher/Dockerfile`; changes require rebuilding the image or modifying `CMD` to read `HTTP_PORT`) |
 
 ## Usage
 
@@ -66,6 +66,7 @@ http://localhost:1080
 ### Example Configuration
 
 #### Node.js (Nodemailer)
+
 ```javascript
 const nodemailer = require('nodemailer');
 
@@ -73,11 +74,12 @@ const transporter = nodemailer.createTransport({
   host: 'localhost',
   port: 1025,
   secure: false, // No SSL/TLS
-  auth: null     // No authentication
+  auth: null, // No authentication
 });
 ```
 
 #### Python (smtplib)
+
 ```python
 import smtplib
 from email.mime.text import MIMEText
@@ -87,6 +89,7 @@ server = smtplib.SMTP('localhost', 1025)
 ```
 
 #### PHP
+
 ```php
 ini_set('SMTP', 'localhost');
 ini_set('smtp_port', 1025);
@@ -98,6 +101,7 @@ ini_set('smtp_port', 1025);
 ### Building the Image
 
 #### Using Nx (Recommended)
+
 ```bash
 # Build the Docker image using Nx
 nx docker-push mailcatcher
@@ -107,6 +111,7 @@ npx nx docker-push mailcatcher
 ```
 
 #### Using Docker directly
+
 ```bash
 docker build -t mailcatcher -f apps/mailcatcher/Dockerfile .
 ```
@@ -114,6 +119,7 @@ docker build -t mailcatcher -f apps/mailcatcher/Dockerfile .
 ### Running in Development Mode
 
 #### Using Nx
+
 ```bash
 # Run the container using Nx
 nx docker-run mailcatcher
@@ -126,6 +132,7 @@ nx test mailcatcher
 ```
 
 #### Using Docker directly
+
 ```bash
 # Run the container
 docker run -p 1080:1080 -p 1025:1025 mailcatcher

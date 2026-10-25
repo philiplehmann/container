@@ -30,8 +30,8 @@ services:
   maildev:
     image: philiplehmann/maildev:latest
     ports:
-      - "1080:1080"  # Web interface
-      - "1025:1025"  # SMTP server
+      - "1080:1080" # Web interface
+      - "1025:1025" # SMTP server
     container_name: maildev-server
     environment:
       - MAILDEV_WEB_PORT=1080
@@ -55,21 +55,21 @@ nx docker-test maildev
 
 ### Ports
 
-| Port | Service | Description |
-|------|---------|-------------|
-| 1025 | SMTP | Mail server for receiving emails |
-| 1080 | HTTP | Web interface for viewing emails |
+| Port | Service | Description                      |
+| ---- | ------- | -------------------------------- |
+| 1025 | SMTP    | Mail server for receiving emails |
+| 1080 | HTTP    | Web interface for viewing emails |
 
 ### Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MAILDEV_WEB_PORT` | 1080 | Web interface port |
-| `MAILDEV_SMTP_PORT` | 1025 | SMTP server port |
-| `MAILDEV_WEB_IP` | 0.0.0.0 | IP address to bind web interface |
-| `MAILDEV_SMTP_IP` | 0.0.0.0 | IP address to bind SMTP server |
-| `MAILDEV_BASE_PATHNAME` | / | Base path for web interface |
-| `MAILDEV_DISABLE_DNS` | false | Disable DNS lookups |
+| Variable                | Default | Description                      |
+| ----------------------- | ------- | -------------------------------- |
+| `MAILDEV_WEB_PORT`      | 1080    | Web interface port               |
+| `MAILDEV_SMTP_PORT`     | 1025    | SMTP server port                 |
+| `MAILDEV_WEB_IP`        | 0.0.0.0 | IP address to bind web interface |
+| `MAILDEV_SMTP_IP`       | 0.0.0.0 | IP address to bind SMTP server   |
+| `MAILDEV_BASE_PATHNAME` | /       | Base path for web interface      |
+| `MAILDEV_DISABLE_DNS`   | false   | Disable DNS lookups              |
 
 ## Usage
 
@@ -91,6 +91,7 @@ http://localhost:1080
 ### Example Configuration
 
 #### Node.js (Nodemailer)
+
 ```javascript
 const nodemailer = require('nodemailer');
 
@@ -98,10 +99,10 @@ const transporter = nodemailer.createTransport({
   host: 'localhost',
   port: 1025,
   secure: false, // No SSL/TLS
-  auth: null,    // No authentication
+  auth: null, // No authentication
   tls: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 // Send test email
@@ -110,11 +111,12 @@ transporter.sendMail({
   to: 'recipient@example.com',
   subject: 'Test Email',
   text: 'This is a test email',
-  html: '<p>This is a <strong>test email</strong></p>'
+  html: '<p>This is a <strong>test email</strong></p>',
 });
 ```
 
 #### Python (smtplib)
+
 ```python
 import smtplib
 from email.mime.text import MIMEText
@@ -139,6 +141,7 @@ server.quit()
 ```
 
 #### PHP
+
 ```php
 <?php
 // Configure mail settings
@@ -157,6 +160,7 @@ mail($to, $subject, $message, $headers);
 ```
 
 #### Laravel (.env configuration)
+
 ```env
 MAIL_MAILER=smtp
 MAIL_HOST=localhost
@@ -171,18 +175,21 @@ MAIL_FROM_NAME="${APP_NAME}"
 ## Web Interface Features
 
 ### Email List View
+
 - View all caught emails in chronological order
 - Filter by sender, recipient, or subject
 - Quick preview of email content
 - Attachment indicators
 
 ### Email Detail View
+
 - Toggle between HTML and plain text views
 - Download individual attachments
 - View email headers
 - Copy email content
 
 ### Toolbar Actions
+
 - 🔄 Refresh email list
 - 🗑️ Delete individual emails
 - 🗑️ Clear all emails
@@ -193,6 +200,7 @@ MAIL_FROM_NAME="${APP_NAME}"
 ### Building the Image
 
 #### Using Nx (Recommended)
+
 ```bash
 # Build and push the Docker image using Nx
 nx docker-push maildev
@@ -202,6 +210,7 @@ npx nx docker-push maildev
 ```
 
 #### Using Docker directly
+
 ```bash
 docker build -t maildev -f apps/maildev/Dockerfile .
 ```
@@ -209,6 +218,7 @@ docker build -t maildev -f apps/maildev/Dockerfile .
 ### Running in Development Mode
 
 #### Using Nx
+
 ```bash
 # Run the container using Nx
 nx docker-run maildev
@@ -224,6 +234,7 @@ nx lint maildev
 ```
 
 #### Using Docker directly
+
 ```bash
 # With custom configuration
 docker run -p 1080:1080 -p 1025:1025 \
@@ -278,15 +289,15 @@ docker logs -f maildev-server
 
 ## Comparison with MailCatcher
 
-| Feature | MailDev | MailCatcher |
-|---------|---------|-------------|
-| Technology | Node.js | Ruby |
-| Web Interface | Modern, responsive | Simple, functional |
-| Real-time Updates | ✅ | ❌ |
-| Attachment Support | ✅ | ✅ |
-| Search Functionality | ✅ | ❌ |
-| Mobile Responsive | ✅ | ✅ |
-| Memory Usage | Higher | Lower |
+| Feature              | MailDev            | MailCatcher        |
+| -------------------- | ------------------ | ------------------ |
+| Technology           | Node.js            | Ruby               |
+| Web Interface        | Modern, responsive | Simple, functional |
+| Real-time Updates    | ✅                 | ❌                 |
+| Attachment Support   | ✅                 | ✅                 |
+| Search Functionality | ✅                 | ❌                 |
+| Mobile Responsive    | ✅                 | ✅                 |
+| Memory Usage         | Higher             | Lower              |
 
 ## Contributing
 

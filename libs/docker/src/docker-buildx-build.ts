@@ -6,11 +6,13 @@ export async function dockerBuildxBuild({
   output,
   file,
   tags,
+  sbom = false,
 }: {
   platforms: DockerPlatform[];
   output: 'load' | 'push';
   file: string;
   tags: string[];
+  sbom?: boolean;
 }) {
   const builderName = `builder-${tags[0]?.split(':')?.[0]?.replaceAll('/', '-') ?? file.replaceAll('/', '-')}-${platforms.join('-')}`;
   try {
@@ -46,6 +48,7 @@ export async function dockerBuildxBuild({
         'type=gha,mode=max',
         ...tags.flatMap((tag) => ['--tag', tag]),
         ...Object.entries(processEnv).flatMap(([key, value]) => ['--build-arg', `${key}=${value}`]),
+        ...(sbom && output === 'push' ? ['--sbom=true'] : []),
         '.',
       ]);
       docker.on('exit', (code) => {

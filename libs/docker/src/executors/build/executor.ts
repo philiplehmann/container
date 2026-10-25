@@ -4,7 +4,7 @@ import { dockerBuildxBuild } from '../../docker-buildx-build';
 import type { DockerBuildExecutorSchema } from './schema';
 
 const runExecutor: Executor<DockerBuildExecutorSchema> = async (
-  { file, tags = [], platforms, versionSource, versionSourceEnv, versionSourcePackage, versionFormat },
+  { file, tags = [], platforms, versionSource, versionSourceEnv, versionSourcePackage, versionFormat, sbom = true },
   { projectName, projectGraph, root },
 ) => {
   tags = autoTagFormat({
@@ -24,6 +24,7 @@ const runExecutor: Executor<DockerBuildExecutorSchema> = async (
       output: 'push',
       file,
       tags: tags,
+      sbom,
     });
     return {
       success: true,

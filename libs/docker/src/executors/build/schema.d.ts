@@ -8,4 +8,5 @@ export interface DockerBuildExecutorSchema {
   versionSourceEnv?: string;
   versionSourcePackage?: string;
   versionFormat?: string;
+  sbom?: boolean;
 }

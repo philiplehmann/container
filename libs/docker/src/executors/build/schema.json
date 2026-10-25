@@ -32,6 +32,11 @@
     },
     "versionFormat": {
       "type": "string"
+    },
+    "sbom": {
+      "type": "boolean",
+      "default": true,
+      "description": "Generate an SBOM attestation (SPDX) and attach it to the pushed image"
     }
   },
   "required": []
