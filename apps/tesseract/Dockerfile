@@ -4,7 +4,7 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/tesseract`.
-FROM oven/bun:1.4.3-slim
+FROM oven/bun:1.4.4-slim
 
 ENV HOST=0.0.0.0
 ENV PORT=3000
@@ -15,7 +15,7 @@ ENV TESSERACT_PROCESS_MAX_COMPLETED=1000
 ARG TESSERACT_VERSION
 ARG TESSERACT_LOCALE_VERSION
 
-LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
 RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \

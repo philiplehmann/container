@@ -4,7 +4,7 @@
 
 FROM golang:1.27-trixie AS builder
 
-LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
 ARG MAILHOG_VERSION
 

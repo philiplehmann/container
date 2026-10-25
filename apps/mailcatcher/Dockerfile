@@ -2,9 +2,9 @@
 # MailCatcher Dockerfile
 #
 
-FROM ruby:4.0.7-trixie AS bundler
+FROM ruby:4.0.9-trixie AS bundler
 
-LABEL org.opencontainers.image.authors="philiplehmann@gmail.com"
+LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
 ARG MAILCATCHER_VERSION
 
