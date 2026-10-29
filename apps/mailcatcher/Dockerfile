@@ -2,7 +2,7 @@
 # MailCatcher Dockerfile
 #
 
-FROM ruby:4.0.9-trixie@sha256:127b7bfab0d522244d37e5e62694fc2358928818e4d0953a67e03ab756fbf443 AS bundler
+FROM ruby:4.0.9-trixie@sha256:86a4fd0b5020c6bdd07f371f7be89a40ccdc392247a628b821a126ace4e1155b AS bundler
 
 ARG MAILCATCHER_VERSION
 ARG BUILDKIT_SBOM_SCAN_STAGE=true
