@@ -18,7 +18,7 @@
     "@types/nodemailer": "8.0.2",
     "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "esbuild": "0.28.2",
-    "nodemailer": "10.2.1",
+    "nodemailer": "10.3.1",
     "nx": "24.0.3",
     "playwright": "1.64.1",
     "testcontainers": "12.2.1"
