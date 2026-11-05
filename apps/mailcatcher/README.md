@@ -52,6 +52,7 @@ services:
 ### Configure Your Application
 
 Point your application's SMTP settings to:
+
 - **Host:** `localhost` (or your Docker container IP)
 - **Port:** `1025`
 - **Authentication:** None required
@@ -59,6 +60,7 @@ Point your application's SMTP settings to:
 ### View Caught Emails
 
 Open your browser and navigate to:
+
 ```text
 http://localhost:1080
 ```
@@ -143,6 +145,7 @@ docker run -p 1080:1080 -p 1025:1025 mailcatcher
 ### Common Issues
 
 **Port already in use:**
+
 ```bash
 # Check what's using the port
 lsof -i :1080
@@ -154,11 +157,13 @@ docker rm mailcatcher-server
 ```
 
 **Can't access web interface:**
+
 - Ensure port 1080 is not blocked by firewall
 - Check if Docker container is running: `docker ps`
 - Verify port mapping: `docker port mailcatcher-server`
 
 **Emails not being caught:**
+
 - Verify your application is configured to use `localhost:1025`
 - Check container logs: `docker logs mailcatcher-server`
 - Ensure no authentication is configured in your email client

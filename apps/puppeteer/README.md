@@ -324,22 +324,26 @@ docker run -p 3000:3000 puppeteer
 ### Common Issues
 
 **Chrome fails to launch:**
+
 - Ensure sufficient memory is allocated to Docker
 - Check Chrome executable permissions
 - If you must use `--no-sandbox`, note it disables Chrome's renderer process isolation and increases attack surface. Only use it when Docker-level isolation is enforced (user namespaces, seccomp, caps) and all input HTML/URLs are validated or sanitized. Avoid `--no-sandbox` for untrusted-input or public-facing deployments.
 - Safer alternatives: increase Docker memory, run with proper sandboxing enabled, or run Chrome in a dedicated minimal-privilege container.
 
 **Memory issues:**
+
 - Increase Docker memory limits
 - Use `--max-old-space-size` Node.js flag
 - Consider adding swap space
 
 **Timeout errors:**
+
 - Increase timeout values in requests
 - Check network connectivity
 - Ensure target URLs are accessible
 
 **Font rendering issues:**
+
 - Install additional fonts in the container
 - Set proper locale settings
 - Use web-safe fonts
@@ -347,6 +351,7 @@ docker run -p 3000:3000 puppeteer
 ### Debug Mode
 
 Enable debug logging by setting:
+
 ```bash
 export DEBUG="puppeteer:*"
 bun x nx serve puppeteer

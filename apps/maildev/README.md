@@ -76,6 +76,7 @@ nx docker-test maildev
 ### Configure Your Application
 
 Point your application's SMTP settings to:
+
 - **Host:** `localhost` (or your Docker container IP)
 - **Port:** `1025`
 - **Authentication:** None required
@@ -84,6 +85,7 @@ Point your application's SMTP settings to:
 ### View Caught Emails
 
 Open your browser and navigate to:
+
 ```text
 http://localhost:1080
 ```
@@ -249,6 +251,7 @@ docker run -p 1080:1080 -p 1025:1025 \
 ### Common Issues
 
 **Port already in use:**
+
 ```bash
 # Check what's using the port
 lsof -i :1080
@@ -260,18 +263,21 @@ docker rm maildev-server
 ```
 
 **Can't access web interface:**
+
 - Ensure port 1080 is not blocked by firewall
 - Check if Docker container is running: `docker ps`
 - Verify port mapping: `docker port maildev-server`
 - Check container logs: `docker logs maildev-server`
 
 **Emails not being caught:**
+
 - Verify your application is configured to use `localhost:1025`
 - Ensure no authentication is configured in your email client
 - Check that TLS/SSL is disabled
 - Verify SMTP settings in your application
 
 **Web interface shows no emails:**
+
 - Check that emails are actually being sent by your application
 - Verify the container is receiving SMTP connections
 - Clear browser cache and refresh the page
@@ -279,6 +285,7 @@ docker rm maildev-server
 ### Logging
 
 To see MailDev logs:
+
 ```bash
 # View container logs
 docker logs maildev-server

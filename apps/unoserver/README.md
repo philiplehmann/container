@@ -229,6 +229,7 @@ curl -X POST \
 Optional timeout in milliseconds. If the timeout is reached, the conversion process is killed with `SIGKILL` and is reported as `killed` in process management.
 
 Supported on:
+
 - `/convert` (query parameter)
 - `/direct` (query parameter)
 - `/direct-fs` (JSON body)
@@ -281,6 +282,7 @@ curl 'http://localhost:3000/processes?status=running'
 ```
 
 Timeout behavior:
+
 - Timed out conversions are force-killed (`SIGKILL`) and appear with `status: killed`
 - Query timed out conversions via `curl 'http://localhost:3000/processes?status=killed'`
 
