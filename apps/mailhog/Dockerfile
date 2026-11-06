@@ -2,7 +2,7 @@
 # MailHog Dockerfile
 #
 
-FROM golang:1.27-trixie@sha256:2336eda24930976591abea806d9b7d99eeae38238f19755c5deec02facdc1594 AS builder
+FROM golang:1.27-trixie@sha256:af1bfc2614ebb1dbd31af514b78740fd678850e76498762b425ecee4c5c6ea80 AS builder
 
 ARG MAILHOG_VERSION
 ARG BUILDKIT_SBOM_SCAN_STAGE=true
