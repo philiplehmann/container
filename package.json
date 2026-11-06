@@ -10,7 +10,7 @@
     "@nx/js": "24.0.4",
     "@nx/plugin": "24.0.4",
     "@nx/workspace": "24.0.4",
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.0",
     "@swc-node/register": "1.12.1",
     "@swc/core": "1.16.21",
     "@swc/helpers": "0.5.24",
@@ -20,7 +20,7 @@
     "esbuild": "0.28.2",
     "nodemailer": "10.3.1",
     "nx": "24.0.4",
-    "playwright": "1.64.1",
+    "playwright": "1.65.0",
     "testcontainers": "12.2.1"
   },
   "dependencies": {
