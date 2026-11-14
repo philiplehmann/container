@@ -46,8 +46,8 @@ RUN case "${TARGETPLATFORM}" in \
         "linux/arm64") JRE_ARCH="aarch64" ;; \
         *) echo "Unsupported platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
     esac && \
-    JRE_BASE_URL="https://github.com/adoptium/temurin25-binaries/releases/download/jdk-${JAVA_VERSION%_*}%2B${JAVA_VERSION#*_}" && \
-    JRE_FILE="OpenJDK25U-jre_${JRE_ARCH}_linux_hotspot_${JAVA_VERSION}.tar.gz" && \
+    JRE_BASE_URL="https://github.com/adoptium/temurin${JAVA_VERSION%%.*}-binaries/releases/download/jdk-${JAVA_VERSION%+*}%2B${JAVA_VERSION#*+}" && \
+    JRE_FILE="OpenJDK${JAVA_VERSION%%.*}U-jre_${JRE_ARCH}_linux_hotspot_${JAVA_VERSION%+*}_${JAVA_VERSION#*+}.tar.gz" && \
     mkdir /java && \
     curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
     curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \

@@ -1,7 +1,54 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "docker:pinDigests"
+  "extends": ["config:recommended", "docker:pinDigests"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update versions in .env.docker files annotated with a `# renovate:` comment",
+      "managerFilePatterns": ["/(^|/)\\.env\\.docker$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(?:\\s+packageName=(?<packageName>\\S+))?(?:\\s+versioning=(?<versioning>\\S+))?\\s*\\n[A-Z0-9_]+=(?<currentValue>\\S+)"
+      ]
+    }
+  ],
+  "customDatasources": {
+    "libreoffice": {
+      "description": "Only versions still downloadable from the stable mirror",
+      "defaultRegistryUrlTemplate": "https://download.documentfoundation.org/libreoffice/stable/",
+      "format": "html"
+    }
+  },
+  "packageRules": [
+    {
+      "matchDatasources": ["custom.libreoffice"],
+      "extractVersion": "^(?<version>\\d+\\.\\d+\\.\\d+)/$"
+    },
+    {
+      "description": "Stay on the Java LTS line",
+      "matchDatasources": ["java-version"],
+      "allowedVersions": "/^25\\./",
+      "extractVersion": "^(?<version>\\d+\\.\\d+\\.\\d+\\+\\d+)"
+    },
+    {
+      "matchDatasources": ["gitlab-tags"],
+      "matchDepNames": ["pdftk"],
+      "extractVersion": "^v(?<version>.*)$",
+      "prBodyNotes": ["⚠️ Update `PDFTK_SHA256` in `apps/pdftk/.env.docker` before merging."]
+    },
+    {
+      "matchDatasources": ["github-releases"],
+      "matchDepNames": ["nx-cache-server"],
+      "extractVersion": "^v(?<version>.*)$"
+    },
+    {
+      "description": "Debian packages for the trixie-based oven/bun image",
+      "matchManagers": ["custom.regex"],
+      "matchDatasources": ["deb"],
+      "registryUrls": [
+        "https://deb.debian.org/debian?suite=trixie&components=main&binaryArch=amd64",
+        "https://deb.debian.org/debian?suite=trixie-updates&components=main&binaryArch=amd64",
+        "https://security.debian.org/debian-security?suite=trixie-security&components=main&binaryArch=amd64"
+      ]
+    }
   ]
 }
