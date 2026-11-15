@@ -4,7 +4,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@biomejs/biome": "2.6.6",
+    "@biomejs/biome": "2.6.8",
     "@libpdf/core": "0.5.3",
     "@nx/devkit": "24.0.6",
     "@nx/js": "24.0.6",
