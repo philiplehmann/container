@@ -32,7 +32,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
         *) echo "Unsupported platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
     esac && \
     LIBREOFFICE_FILE="LibreOffice_${LIBREOFFICE_VERSION}_Linux_${LIBREOFFICE_FILE_ARCH}_deb.tar.gz" && \
-    curl -fsSL --retry 3 "https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_DIR_ARCH}/${LIBREOFFICE_FILE}" -o "/tmp/${LIBREOFFICE_FILE}" && \
+    curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_DIR_ARCH}/${LIBREOFFICE_FILE}" -o "/tmp/${LIBREOFFICE_FILE}" && \
     mkdir /tmp/libreoffice && \
     tar --strip-components=1 -C /tmp/libreoffice -zxf "/tmp/${LIBREOFFICE_FILE}" && \
     apt-get install --yes --no-install-recommends /tmp/libreoffice/DEBS/*.deb && \
