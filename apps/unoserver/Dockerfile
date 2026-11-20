@@ -25,6 +25,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
                     python3-full python3-pip virtualenv \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-freefont-ttf fonts-dejavu \
                     fonts-liberation fonts-noto-core fonts-noto-extra fonts-crosextra-carlito fonts-crosextra-caladea fonts-liberation2 && \
+    update-ca-certificates && \
     case "${TARGETPLATFORM}" in \
         "linux/amd64") LIBREOFFICE_DIR_ARCH="x86_64"; LIBREOFFICE_FILE_ARCH="x86-64"; JRE_ARCH="x64" ;; \
         "linux/arm64") LIBREOFFICE_DIR_ARCH="aarch64"; LIBREOFFICE_FILE_ARCH="aarch64"; JRE_ARCH="aarch64" ;; \
