@@ -50,8 +50,8 @@ RUN case "${TARGETPLATFORM}" in \
     JRE_BASE_URL="https://github.com/adoptium/temurin${JAVA_VERSION%%.*}-binaries/releases/download/jdk-${JAVA_VERSION%+*}%2B${JAVA_VERSION#*+}" && \
     JRE_FILE="OpenJDK${JAVA_VERSION%%.*}U-jre_${JRE_ARCH}_linux_hotspot_${JAVA_VERSION%+*}_${JAVA_VERSION#*+}.tar.gz" && \
     mkdir /java && \
-    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
-    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \
+    curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
+    curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \
     echo "$(cut -d' ' -f1 /tmp/SHA256.txt)  /tmp/${JRE_FILE}" | sha256sum -c - && \
     tar --strip-components=1 -C /java -zxf "/tmp/${JRE_FILE}" && \
     rm -f /tmp/SHA256.txt "/tmp/${JRE_FILE}"
