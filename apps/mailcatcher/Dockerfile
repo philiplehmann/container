@@ -2,7 +2,7 @@
 # MailCatcher Dockerfile
 #
 
-FROM ruby:4.0.9-trixie@sha256:ac9b27edd4382328460376335b40bcc294c756be117ba93179cf0317f5e86bec AS bundler
+FROM ruby:4.0.10-trixie@sha256:84e854507d7f2ffc9061e32d47c16d7413bcb1fa55ec29c1927f9e4d62fa6cf3 AS bundler
 
 ARG MAILCATCHER_VERSION
 ARG BUILDKIT_SBOM_SCAN_STAGE=true
@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev && \
     gem install mailcatcher --version ${MAILCATCHER_VERSION} --no-document
 
-FROM ruby:4.0.9-slim-trixie@sha256:d8cb2c0714bdaba0f318af897a01d2dbde3cfa8e62d47e99cea55feb13c0e90d AS runner
+FROM ruby:4.0.10-slim-trixie@sha256:a4b3e62bfe56bd267a3aeacc1b89aea96be919faa0c7d77c6346e2ac14f6c175 AS runner
 
 LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
