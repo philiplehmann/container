@@ -25,13 +25,14 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
                     python3-full python3-pip virtualenv \
                     fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-freefont-ttf fonts-dejavu \
                     fonts-liberation fonts-noto-core fonts-noto-extra fonts-crosextra-carlito fonts-crosextra-caladea fonts-liberation2 && \
+    update-ca-certificates && \
     case "${TARGETPLATFORM}" in \
         "linux/amd64") LIBREOFFICE_DIR_ARCH="x86_64"; LIBREOFFICE_FILE_ARCH="x86-64"; JRE_ARCH="x64" ;; \
         "linux/arm64") LIBREOFFICE_DIR_ARCH="aarch64"; LIBREOFFICE_FILE_ARCH="aarch64"; JRE_ARCH="aarch64" ;; \
         *) echo "Unsupported platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
     esac && \
     LIBREOFFICE_FILE="LibreOffice_${LIBREOFFICE_VERSION}_Linux_${LIBREOFFICE_FILE_ARCH}_deb.tar.gz" && \
-    curl -fsSL --retry 3 "https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_DIR_ARCH}/${LIBREOFFICE_FILE}" -o "/tmp/${LIBREOFFICE_FILE}" && \
+    curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_DIR_ARCH}/${LIBREOFFICE_FILE}" -o "/tmp/${LIBREOFFICE_FILE}" && \
     mkdir /tmp/libreoffice && \
     tar --strip-components=1 -C /tmp/libreoffice -zxf "/tmp/${LIBREOFFICE_FILE}" && \
     apt-get install --yes --no-install-recommends /tmp/libreoffice/DEBS/*.deb && \
@@ -49,8 +50,8 @@ RUN case "${TARGETPLATFORM}" in \
     JRE_BASE_URL="https://github.com/adoptium/temurin${JAVA_VERSION%%.*}-binaries/releases/download/jdk-${JAVA_VERSION%+*}%2B${JAVA_VERSION#*+}" && \
     JRE_FILE="OpenJDK${JAVA_VERSION%%.*}U-jre_${JRE_ARCH}_linux_hotspot_${JAVA_VERSION%+*}_${JAVA_VERSION#*+}.tar.gz" && \
     mkdir /java && \
-    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
-    curl -fsSL --retry 3 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \
+    curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "${JRE_BASE_URL}/${JRE_FILE}.sha256.txt" -o /tmp/SHA256.txt && \
+    curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 "${JRE_BASE_URL}/${JRE_FILE}" -o "/tmp/${JRE_FILE}" && \
     echo "$(cut -d' ' -f1 /tmp/SHA256.txt)  /tmp/${JRE_FILE}" | sha256sum -c - && \
     tar --strip-components=1 -C /java -zxf "/tmp/${JRE_FILE}" && \
     rm -f /tmp/SHA256.txt "/tmp/${JRE_FILE}"
