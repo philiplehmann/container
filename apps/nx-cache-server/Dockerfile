@@ -6,7 +6,7 @@
 # Run the container with `docker run -p 3000:3000 -t philiplehmann/nx-cache-server`.
 
 # Builder stage to download the binary
-FROM --platform=$BUILDPLATFORM debian:trixie-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2 AS builder
+FROM --platform=$BUILDPLATFORM debian:trixie-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0 AS builder
 
 ARG NX_CACHE_SERVER_VERSION
 ARG TARGETPLATFORM
@@ -35,7 +35,7 @@ RUN ARCH_SUFFIX=$(case ${TARGETPLATFORM} in \
     chmod +x /tmp/nx-cache-server
 
 # Final stage - minimal runtime image
-FROM debian:trixie-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2
+FROM debian:trixie-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0
 
 LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
