@@ -24,7 +24,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "types": ["bun"],
-    "ignoreDeprecations": "6.0",
     "rootDir": ".",
     "paths": {
       "@riwi/binary/pdftk": ["./libs/binary/pdftk/src/index.ts"],

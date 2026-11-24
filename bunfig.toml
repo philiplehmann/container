@@ -1,0 +1,3 @@
+# bunfig.toml
+[install]
+linker = "isolated"

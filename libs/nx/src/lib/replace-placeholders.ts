@@ -1,7 +1,7 @@
 import { relative } from 'node:path';
 import { cwd } from 'node:process';
 import type { ExecutorContext } from '@nx/devkit';
-import { projectRoot as getProjectRoot } from './project-root';
+import { projectRoot as getProjectRoot } from './project-root.ts';
 
 export const replacePlaceholders = (context: ExecutorContext) => {
   const projectRoot = getProjectRoot(context);
