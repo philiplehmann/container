@@ -11,7 +11,7 @@ ARG BUILDKIT_SBOM_SCAN_STAGE=true
 RUN mkdir -p /root/gocode && \
     GOSUMDB=off GOPATH=/root/gocode GOPROXY=https://proxy.golang.org/cached-only go install github.com/mailhog/MailHog@${MAILHOG_VERSION}
 
-FROM debian:trixie-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2
+FROM debian:trixie-slim@sha256:8aa5a7bf5a1955bddbe7d74fcdd0b91ab30e74362a8b73af672b0481b35b44a0
 
 LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
