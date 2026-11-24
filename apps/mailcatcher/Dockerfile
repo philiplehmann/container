@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
     apt-get install --no-install-recommends --yes build-essential pkg-config sqlite3 libsqlite3-dev && \
     gem install mailcatcher --version ${MAILCATCHER_VERSION} --no-document
 
-FROM ruby:4.0.10-slim-trixie@sha256:58aa7df8384bc8a9ebb8373f6b1e41f26c1e51cdb1c61d0459c74f2a396563fd AS runner
+FROM ruby:4.0.10-slim-trixie@sha256:67fb5dbef860bb2205a3c69799f7f1c4f5b01c943ae089de436bc266ea8c102e AS runner
 
 LABEL org.opencontainers.image.authors="me@philiplehmann.ch"
 
