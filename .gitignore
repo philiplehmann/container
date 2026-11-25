@@ -52,3 +52,6 @@ chromium-data
 
 .claude/worktrees
 .claude/settings.local.json
+
+# rust
+target

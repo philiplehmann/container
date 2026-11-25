@@ -74,14 +74,18 @@ export const createProcessEndpointTests = (
   options?: {
     triggerFailingProcess?: (port: number) => Promise<void>;
     triggerTimeoutProcess?: (port: number) => Promise<void>;
+    /** Prefix of the process endpoints, e.g. `/v1` for a versioned API. Default: none. */
+    basePath?: string;
   },
 ): void => {
+  const basePath = options?.basePath ?? '';
+
   it('should list processes (empty initially or with existing)', async () => {
     const [response, text] = await testRequest({
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: '/processes',
+      path: `${basePath}/processes`,
     });
 
     expect(response.statusCode).toBe(200);
@@ -104,7 +108,7 @@ export const createProcessEndpointTests = (
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: '/processes',
+      path: `${basePath}/processes`,
     });
 
     expect(response.statusCode).toBe(200);
@@ -128,7 +132,7 @@ export const createProcessEndpointTests = (
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: '/processes?status=completed',
+      path: `${basePath}/processes?status=completed`,
     });
 
     expect(response.statusCode).toBe(200);
@@ -149,7 +153,7 @@ export const createProcessEndpointTests = (
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: '/processes',
+      path: `${basePath}/processes`,
     });
 
     expect(listResponse.statusCode).toBe(200);
@@ -167,7 +171,7 @@ export const createProcessEndpointTests = (
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: `/processes/${processId}`,
+      path: `${basePath}/processes/${processId}`,
     });
 
     expect(response.statusCode).toBe(200);
@@ -180,7 +184,7 @@ export const createProcessEndpointTests = (
       method: 'GET',
       host: 'localhost',
       port: getPort(),
-      path: `/processes/${NON_EXISTENT_UUID}`,
+      path: `${basePath}/processes/${NON_EXISTENT_UUID}`,
     });
 
     expect(response.statusCode).toBe(404);
@@ -195,7 +199,7 @@ export const createProcessEndpointTests = (
       method: 'DELETE',
       host: 'localhost',
       port: getPort(),
-      path: '/processes',
+      path: `${basePath}/processes`,
     });
 
     expect(response.statusCode).toBe(200);
@@ -209,7 +213,7 @@ export const createProcessEndpointTests = (
       method: 'DELETE',
       host: 'localhost',
       port: getPort(),
-      path: '/processes?olderThan=0',
+      path: `${basePath}/processes?olderThan=0`,
     });
 
     expect(response.statusCode).toBe(200);
@@ -222,7 +226,7 @@ export const createProcessEndpointTests = (
       method: 'DELETE',
       host: 'localhost',
       port: getPort(),
-      path: `/processes/${NON_EXISTENT_UUID}`,
+      path: `${basePath}/processes/${NON_EXISTENT_UUID}`,
     });
 
     expect(response.statusCode).toBe(404);
@@ -234,7 +238,7 @@ export const createProcessEndpointTests = (
         method: 'GET',
         host: 'localhost',
         port: getPort(),
-        path: '/processes',
+        path: `${basePath}/processes`,
       });
       expect(beforeResponse.statusCode).toBe(200);
       const beforeJson = JSON.parse(beforeText) as ProcessListResponse;
@@ -249,7 +253,7 @@ export const createProcessEndpointTests = (
           method: 'GET',
           host: 'localhost',
           port: getPort(),
-          path: '/processes',
+          path: `${basePath}/processes`,
         });
         expect(response.statusCode).toBe(200);
         const json = JSON.parse(text) as ProcessListResponse;
@@ -268,7 +272,7 @@ export const createProcessEndpointTests = (
         method: 'GET',
         host: 'localhost',
         port: getPort(),
-        path: '/processes?status=failed',
+        path: `${basePath}/processes?status=failed`,
       });
       expect(failedResponse.statusCode).toBe(200);
 
@@ -288,7 +292,7 @@ export const createProcessEndpointTests = (
         method: 'GET',
         host: 'localhost',
         port: getPort(),
-        path: '/processes',
+        path: `${basePath}/processes`,
       });
       expect(beforeResponse.statusCode).toBe(200);
       const beforeJson = JSON.parse(beforeText) as ProcessListResponse;
@@ -303,7 +307,7 @@ export const createProcessEndpointTests = (
           method: 'GET',
           host: 'localhost',
           port: getPort(),
-          path: '/processes',
+          path: `${basePath}/processes`,
         });
         expect(response.statusCode).toBe(200);
         const json = JSON.parse(text) as ProcessListResponse;
@@ -322,7 +326,7 @@ export const createProcessEndpointTests = (
         method: 'GET',
         host: 'localhost',
         port: getPort(),
-        path: '/processes?status=killed',
+        path: `${basePath}/processes?status=killed`,
       });
       expect(killedResponse.statusCode).toBe(200);
 

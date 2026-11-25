@@ -36,6 +36,7 @@
       "@riwi/binary/libreoffice-fs": ["./libs/binary/libreoffice-fs/src/index.ts"],
       "@riwi/biomejs": ["./libs/biomejs/src/index.ts"],
       "@riwi/bun": ["./libs/bun/src/index.ts"],
+      "@riwi/cargo": ["./libs/cargo/src/index.ts"],
       "@riwi/docker": ["./libs/docker/src/index.ts"],
       "@riwi/node": ["./libs/node/src/index.ts"],
       "@riwi/nx": ["./libs/nx/src/index.ts"],

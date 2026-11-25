@@ -1,0 +1,29 @@
+{
+  "info": {
+    "creator": "CorelDRAW",
+    "producer": "Corel PDF Engine Version 3.0.0.576",
+    "author": "Beattie",
+    "title": "Graphic1"
+  },
+  "meta": {
+    "id0": "e03fa4d27fcf93afc0999c98923ed6bc",
+    "id1": "a104ff725b47de4696193836607ed03e",
+    "numberOfPages": 1
+  },
+  "pages": [
+    {
+      "number": 1,
+      "rotation": 0,
+      "rect": [
+        -9,
+        -9,
+        604.276,
+        850.89
+      ],
+      "dimensions": [
+        613.276,
+        859.89
+      ]
+    }
+  ]
+}

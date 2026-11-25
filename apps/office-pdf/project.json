@@ -1,0 +1,85 @@
+{
+  "name": "office-pdf",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/office-pdf/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "install": {
+      "executor": "@riwi/cargo:install",
+      "options": {
+        "locked": true
+      }
+    },
+    "build": {
+      "executor": "@riwi/cargo:build",
+      "options": {
+        "release": true,
+        "locked": true
+      }
+    },
+    "serve": {
+      "executor": "@riwi/cargo:run",
+      "options": {
+        "env": {
+          "RUST_LOG": "info,tower_http=debug"
+        }
+      }
+    },
+    "test": {
+      "executor": "@riwi/cargo:test",
+      "options": {
+        "locked": true
+      }
+    },
+    "lint": {
+      "executor": "@riwi/cargo:lint",
+      "options": {
+        "locked": true
+      }
+    },
+    "typecheck": {
+      "executor": "@riwi/tsc:typecheck",
+      "options": {
+        "tsconfig": "tsconfig.json"
+      }
+    },
+    "format": {
+      "executor": "@riwi/cargo:format"
+    },
+    "docker-test": {
+      "executor": "@riwi/bun:test",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["docker-build-test"],
+      "options": {
+        "include": "e2e/**/*.spec.ts",
+        "exclude": "**/node_modules/**"
+      }
+    },
+    "docker-build-test": {
+      "executor": "@riwi/docker:test",
+      "options": {
+        "tag": "philiplehmann/office-pdf:test",
+        "file": "apps/office-pdf/Dockerfile"
+      }
+    },
+    "docker-push": {
+      "executor": "@riwi/docker:build",
+      "options": {
+        "platforms": ["amd64", "arm64"],
+        "tags": ["philiplehmann/office-pdf:auto"],
+        "file": "apps/office-pdf/Dockerfile",
+        "versionSource": "env",
+        "versionSourceEnv": "OFFICE_PDF_VERSION"
+      }
+    },
+    "docker-run": {
+      "executor": "@riwi/docker:run",
+      "options": {
+        "image": "philiplehmann/office-pdf:run",
+        "file": "apps/office-pdf/Dockerfile",
+        "port": ["3000"]
+      }
+    }
+  }
+}
