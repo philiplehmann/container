@@ -31,7 +31,16 @@ RUN --mount=type=cache,target=/var/lib/apt/lists,sharing=locked \
         *) echo "Unsupported platform: ${TARGETPLATFORM}" >&2; exit 1 ;; \
     esac && \
     LIBREOFFICE_FILE="LibreOffice_${LIBREOFFICE_VERSION}_Linux_${LIBREOFFICE_FILE_ARCH}_deb.tar.gz" && \
-    curl -fsSL --retry 3 "https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_DIR_ARCH}/${LIBREOFFICE_FILE}" -o "/tmp/${LIBREOFFICE_FILE}" && \
+    LIBREOFFICE_URL="https://download.documentfoundation.org/libreoffice/stable/${LIBREOFFICE_VERSION}/deb/${LIBREOFFICE_DIR_ARCH}/${LIBREOFFICE_FILE}" && \
+    LIBREOFFICE_SHA256="$(curl -fsSL --retry 3 "${LIBREOFFICE_URL}.sha256" | cut -d' ' -f1)" && \
+    LIBREOFFICE_MIRRORS="$(curl -fsSL --retry 3 "${LIBREOFFICE_URL}.meta4" | sed -n "s|.*<url[^>]*>\(https://[^<]*/${LIBREOFFICE_FILE}\)</url>.*|\1|p")" && \
+    for LIBREOFFICE_MIRROR in ${LIBREOFFICE_MIRRORS} "${LIBREOFFICE_URL}"; do \
+        echo "Downloading ${LIBREOFFICE_MIRROR}" && \
+        curl -fsSL --retry 2 "${LIBREOFFICE_MIRROR}" -o "/tmp/${LIBREOFFICE_FILE}" && \
+        echo "${LIBREOFFICE_SHA256}  /tmp/${LIBREOFFICE_FILE}" | sha256sum -c - && break; \
+        rm -f "/tmp/${LIBREOFFICE_FILE}"; \
+    done && \
+    test -f "/tmp/${LIBREOFFICE_FILE}" && \
     mkdir /tmp/libreoffice && \
     tar --strip-components=1 -C /tmp/libreoffice -zxf "/tmp/${LIBREOFFICE_FILE}" && \
     apt-get install --yes --no-install-recommends /tmp/libreoffice/DEBS/*.deb && \
