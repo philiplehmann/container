@@ -1,5 +1,5 @@
 import type { Executor } from '@nx/devkit';
-import { projectRoot, promiseSpawn } from '@riwi/nx';
+import { projectRoot, promiseSpawn } from '../../../../nx/src/index.ts';
 import { playwrightTestArgs } from './args';
 import type { PlaywrightTestExecutorSchema } from './schema';
 

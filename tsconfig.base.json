@@ -6,6 +6,7 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "esnext",
@@ -24,7 +25,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "types": ["bun"],
-    "ignoreDeprecations": "6.0",
     "rootDir": ".",
     "paths": {
       "@riwi/binary/pdftk": ["./libs/binary/pdftk/src/index.ts"],
