@@ -21,7 +21,7 @@
     },
     "@riwi/tsc:typecheck": {
       "cache": true,
-      "inputs": ["default", "{workspaceRoot}/tsconfig.base.json"]
+      "inputs": ["default", "^production", "{workspaceRoot}/tsconfig.base.json"]
     },
     "@riwi/node:test": {
       "cache": true,

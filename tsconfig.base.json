@@ -6,6 +6,7 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "esnext",
