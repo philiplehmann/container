@@ -38,6 +38,14 @@
       "cache": true,
       "inputs": ["production", "^production"]
     },
+    "@riwi/cargo:lint": {
+      "cache": true,
+      "inputs": ["default"]
+    },
+    "@riwi/cargo:test": {
+      "cache": true,
+      "inputs": ["default"]
+    },
     "@riwi/docker:test": {
       "cache": false,
       "inputs": ["default", "{projectRoot}/Dockerfile", "{projectRoot}/.env.docker"]
@@ -75,7 +83,7 @@
   "defaultBase": "main",
   "parallel": 8,
   "release": {
-    "projects": ["bun", "biomejs", "tsc", "node", "docker", "nx", "playwright"],
+    "projects": ["bun", "biomejs", "cargo", "tsc", "node", "docker", "nx", "playwright"],
     "conventionalCommits": {},
     "changelog": {
       "projectChangelogs": true

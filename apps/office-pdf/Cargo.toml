@@ -1,0 +1,70 @@
+[package]
+name = "office-pdf"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "MIT"
+publish = false
+description = "HTTP server converting office documents to PDF and images with ArtCraft's engines, with poppler and pdftk style PDF tools"
+
+[[bin]]
+name = "office-pdf"
+path = "src/main.rs"
+
+[dependencies]
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio", "query", "json", "multipart"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "signal", "sync", "fs", "time"] }
+tower-http = { version = "0.6", features = ["limit", "trace"] }
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+serde_json = "1"
+utoipa = { version = "6", features = ["axum_extras", "chrono"] }
+utoipa-axum = "0.3"
+lopdf = "0.47"
+axum-extra = { version = "0.12", default-features = false, features = ["query"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", default-features = false, features = ["std", "clock", "serde"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+
+# ArtCraft engines (MIT OR Apache-2.0), each pinned to one commit; bump them together with the
+# [patch.crates-io] block below.
+# WordCraft: DOCX / DOC / ODT / RTF / HTML / Markdown / TXT.
+wordcraft-engine = { git = "https://github.com/storytold/wordcraft", rev = "4d7100a7f8ad39d4ccdb22311fa89db8e0ccfc6a" }
+# DeckCraft: PPTX / PPT.
+deckcraft-engine = { git = "https://github.com/storytold/deckcraft", rev = "9db2fa0ca994ad8ae8d9cc5032d860ae985477d5" }
+# GridCraft: XLSX / XLS / XLSB / ODS / CSV.
+gridcraft-engine = { git = "https://github.com/storytold/gridcraft", rev = "1b92ec071e407895f4245b238bf4063ef1efdb68" }
+# craft-libs' PDF reader (vendored hayro): text extraction and page rendering. Same revision as
+# WordCraft's, so the build has one craft-pdf.
+craft-pdf = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49", features = ["read", "interpret", "raster"] }
+kurbo = "0.13"
+crc32fast = "1.5.6"
+getrandom = "0.3"
+serde_html_form = "0.4.1"
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }
+http-body-util = "0.1"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 16
+strip = true
+
+# The PDF writers (craft-pdf, deckcraft-pdf) build on craft-libs' fork of krilla. Cargo does not
+# carry [patch] sections over to dependents, so it is repeated here. WordCraft and DeckCraft pin
+# different craft-libs revisions of it; one patch serves both, at WordCraft's revision (see its
+# Cargo.toml). The hayro crates (craft-pdf's reader) are patched the same way.
+[patch.crates-io]
+krilla = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+hayro = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+hayro-interpret = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+hayro-syntax = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+hayro-jbig2 = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+hayro-cmap = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+hayro-postscript = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+vello_common = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }
+vello_cpu = { git = "https://github.com/storytold/craft-libs", rev = "b436ae992591173ce53fdb1314421ba2d8897e49" }

@@ -1,0 +1,34 @@
+{
+  "executors": {
+    "install": {
+      "implementation": "./src/executors/install/executor",
+      "schema": "./src/executors/install/schema.json",
+      "description": "cargo fetch: download the dependencies of a Cargo project"
+    },
+    "build": {
+      "implementation": "./src/executors/build/executor",
+      "schema": "./src/executors/build/schema.json",
+      "description": "cargo build"
+    },
+    "test": {
+      "implementation": "./src/executors/test/executor",
+      "schema": "./src/executors/test/schema.json",
+      "description": "cargo test"
+    },
+    "lint": {
+      "implementation": "./src/executors/lint/executor",
+      "schema": "./src/executors/lint/schema.json",
+      "description": "cargo clippy (and cargo fmt --check)"
+    },
+    "format": {
+      "implementation": "./src/executors/format/executor",
+      "schema": "./src/executors/format/schema.json",
+      "description": "cargo fmt"
+    },
+    "run": {
+      "implementation": "./src/executors/run/executor",
+      "schema": "./src/executors/run/schema.json",
+      "description": "cargo run"
+    }
+  }
+}

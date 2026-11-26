@@ -49,6 +49,16 @@ bun nx docker-run puppeteer
 bun nx docker-run pdftk
 ```
 
+### office-pdf (Rust)
+
+Office documents (text, presentations, spreadsheets) to PDF and images with ArtCraft WordCraft, DeckCraft and GridCraft, plus the PDF tools of poppler and pdftk (text, images, compress, encrypt, forms, split, merge, rotate, stamp), in one Rust binary without LibreOffice, poppler or a JVM. The unoserver, poppler and pdftk endpoints under `/v1`.
+
+- [doc](https://github.com/philiplehmann/container/blob/main/apps/office-pdf/README.md)
+
+```bash
+bun nx docker-run office-pdf
+```
+
 ## Mailboxes Apps
 
 ### MailCatcher (Ruby)

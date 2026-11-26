@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "cargo build",
+  "description": "Compile a Cargo project",
+  "type": "object",
+  "properties": {
+    "toolchain": {
+      "type": "string",
+      "description": "Rustup toolchain, run as `cargo +<toolchain>`. Without it the project's rust-toolchain.toml applies."
+    },
+    "manifestPath": {
+      "type": "string",
+      "description": "Path to Cargo.toml; {projectRoot} and {workspaceRoot} are replaced.",
+      "default": "{projectRoot}/Cargo.toml"
+    },
+    "package": {
+      "type": "string",
+      "description": "Package to select (--package)."
+    },
+    "locked": {
+      "type": "boolean",
+      "description": "Require Cargo.lock to be up to date (--locked)."
+    },
+    "frozen": {
+      "type": "boolean",
+      "description": "Require Cargo.lock and the cache to be up to date, no network (--frozen)."
+    },
+    "offline": {
+      "type": "boolean",
+      "description": "Run without network access (--offline)."
+    },
+    "target": {
+      "type": "string",
+      "description": "Target triple (--target)."
+    },
+    "targetDir": {
+      "type": "string",
+      "description": "Directory for all generated artifacts (--target-dir); {projectRoot} and {workspaceRoot} are replaced."
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Extra arguments passed to the cargo subcommand."
+    },
+    "env": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Environment variables for the cargo process."
+    },
+    "release": {
+      "type": "boolean",
+      "description": "Build in release mode (--release)."
+    },
+    "profile": {
+      "type": "string",
+      "description": "Build with the given profile (--profile)."
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Features to activate (--features)."
+    },
+    "allFeatures": {
+      "type": "boolean",
+      "description": "Activate all features (--all-features)."
+    },
+    "noDefaultFeatures": {
+      "type": "boolean",
+      "description": "Do not activate the default feature (--no-default-features)."
+    },
+    "bin": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Only build the given binaries (--bin)."
+    },
+    "allTargets": {
+      "type": "boolean",
+      "description": "Build all targets, tests and examples included (--all-targets)."
+    }
+  },
+  "required": []
+}

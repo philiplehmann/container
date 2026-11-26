@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "version": 2,
+  "title": "cargo fmt",
+  "description": "Format a Cargo project",
+  "type": "object",
+  "properties": {
+    "toolchain": {
+      "type": "string",
+      "description": "Rustup toolchain, run as `cargo +<toolchain>`. Without it the project's rust-toolchain.toml applies."
+    },
+    "manifestPath": {
+      "type": "string",
+      "description": "Path to Cargo.toml; {projectRoot} and {workspaceRoot} are replaced.",
+      "default": "{projectRoot}/Cargo.toml"
+    },
+    "package": {
+      "type": "string",
+      "description": "Package to select (--package)."
+    },
+    "args": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Extra arguments passed to the cargo subcommand."
+    },
+    "env": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Environment variables for the cargo process."
+    },
+    "check": {
+      "type": "boolean",
+      "description": "Only check the formatting, do not write (--check)."
+    }
+  },
+  "required": []
+}
